@@ -1,2 +1,0 @@
-file 'D:/myfolder/動画生成/技術解説/main content/presentation/gif_patent_png_drama/audio/scene_23_concat.wav'
-file 'D:/myfolder/動画生成/技術解説/main content/presentation/gif_patent_png_drama/audio/scene_23_pad.wav'

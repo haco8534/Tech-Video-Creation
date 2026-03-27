@@ -1,7 +1,0 @@
-file 'D:/myfolder/動画生成/技術解説/main content/presentation/gif_patent_png_drama/audio/scene_09_00.wav'
-file 'D:/myfolder/動画生成/技術解説/main content/presentation/gif_patent_png_drama/audio/silence_300ms.wav'
-file 'D:/myfolder/動画生成/技術解説/main content/presentation/gif_patent_png_drama/audio/scene_09_01.wav'
-file 'D:/myfolder/動画生成/技術解説/main content/presentation/gif_patent_png_drama/audio/silence_300ms.wav'
-file 'D:/myfolder/動画生成/技術解説/main content/presentation/gif_patent_png_drama/audio/scene_09_02.wav'
-file 'D:/myfolder/動画生成/技術解説/main content/presentation/gif_patent_png_drama/audio/silence_300ms.wav'
-file 'D:/myfolder/動画生成/技術解説/main content/presentation/gif_patent_png_drama/audio/scene_09_03.wav'

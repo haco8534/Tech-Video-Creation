@@ -1,7 +1,0 @@
-file 'D:/myfolder/動画生成/技術解説/main content/presentation/password_storage/audio/scene_17_00.wav'
-file 'D:/myfolder/動画生成/技術解説/main content/presentation/password_storage/audio/silence_300ms.wav'
-file 'D:/myfolder/動画生成/技術解説/main content/presentation/password_storage/audio/scene_17_01.wav'
-file 'D:/myfolder/動画生成/技術解説/main content/presentation/password_storage/audio/silence_300ms.wav'
-file 'D:/myfolder/動画生成/技術解説/main content/presentation/password_storage/audio/scene_17_02.wav'
-file 'D:/myfolder/動画生成/技術解説/main content/presentation/password_storage/audio/silence_300ms.wav'
-file 'D:/myfolder/動画生成/技術解説/main content/presentation/password_storage/audio/scene_17_03.wav'

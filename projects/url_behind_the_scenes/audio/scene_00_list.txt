@@ -1,5 +1,0 @@
-file 'D:/myfolder/動画生成/技術解説/main content/presentation/url_behind_the_scenes/audio/scene_00_00.wav'
-file 'D:/myfolder/動画生成/技術解説/main content/presentation/url_behind_the_scenes/audio/silence_300ms.wav'
-file 'D:/myfolder/動画生成/技術解説/main content/presentation/url_behind_the_scenes/audio/scene_00_01.wav'
-file 'D:/myfolder/動画生成/技術解説/main content/presentation/url_behind_the_scenes/audio/silence_300ms.wav'
-file 'D:/myfolder/動画生成/技術解説/main content/presentation/url_behind_the_scenes/audio/scene_00_02.wav'

@@ -1,2 +1,0 @@
-file 'D:/myfolder/動画生成/技術解説/main content/presentation/delete_key_file_fate/audio/scene_22_concat.wav'
-file 'D:/myfolder/動画生成/技術解説/main content/presentation/delete_key_file_fate/audio/scene_22_pad.wav'

@@ -1,2 +1,0 @@
-file 'D:/myfolder/動画生成/技術解説/main content/presentation/password_storage/audio/scene_12_concat.wav'
-file 'D:/myfolder/動画生成/技術解説/main content/presentation/password_storage/audio/scene_12_pad.wav'

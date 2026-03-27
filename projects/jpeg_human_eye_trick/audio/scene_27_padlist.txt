@@ -1,2 +1,0 @@
-file 'D:/myfolder/動画生成/技術解説/main content/presentation/jpeg_human_eye_trick/audio/scene_27_concat.wav'
-file 'D:/myfolder/動画生成/技術解説/main content/presentation/jpeg_human_eye_trick/audio/scene_27_pad.wav'

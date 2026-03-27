@@ -5,23 +5,19 @@ let current = 0;
 
 function showScene(idx) {
     scenes.forEach((s, i) => {
-        if (i === idx) {
-            s.classList.add('active');
-        } else {
-            s.classList.remove('active');
-        }
+        s.classList.toggle('active', i === idx);
     });
     current = idx;
 }
 
-// キーボード操作
 document.addEventListener('keydown', (e) => {
     if (e.key === 'ArrowRight' || e.key === ' ') {
+        e.preventDefault();
         showScene(Math.min(current + 1, scenes.length - 1));
     } else if (e.key === 'ArrowLeft') {
+        e.preventDefault();
         showScene(Math.max(current - 1, 0));
     }
 });
 
-// 初期表示
 showScene(0);
