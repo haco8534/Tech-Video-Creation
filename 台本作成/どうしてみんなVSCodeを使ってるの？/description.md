@@ -1,0 +1,47 @@
+# YouTube概要欄：どうしてみんなVSCodeを使ってるの？──エディタ戦争50年史で読み解く
+
+<!-- 以下をそのままYouTubeの概要欄にコピー＆ペーストして使う -->
+
+世界中のエンジニアの76%が同じエディタを使っている──Visual Studio Code。
+でもこのエディタ、たった10年前には存在すらしていませんでした。
+vi、Emacs、Sublime Text、Atom……50年以上続くエディタ戦争の歴史を辿りながら、
+VSCodeが「エディタとIDEの境界」をどう再定義したのか、その技術と戦略を解説します。
+
+▼ もくじ（タイムスタンプ）
+00:00 オープニング──76%の衝撃
+01:30 エディタとIDEの本質的な違い
+04:30 Sublime Text、Atom、そしてElectronの誕生
+08:30 LSP──M×N問題を解決した天才的設計
+13:30 「Linuxはcancer」からの大転換──Microsoftの信頼回復
+17:30 まとめ──エディタの歴史が収束した場所
+<!-- ※時間は推定値です。動画完成後に実際の時間に合わせて微調整してください -->
+
+▼ 参考文献・一次資料
+この動画の内容は以下の公的調査・公式発表等に基づいています。
+
+【調査・統計】
+• Stack Overflow Developer Survey 2025 – Visual Studio Codeが75.9%で4年連続1位
+• Stack Overflow Developer Survey 2015 – Sublime Textが25.2%で2位、VSCode未登場
+• Stack Overflow Developer Survey 2018 – VSCodeが35%で初の1位
+
+【公式発表・ドキュメント】
+• Microsoft (2025). Visual Studio + VS Codeが月間5000万アクティブユーザー到達
+• Microsoft (2015). Visual Studio Code発表 – Microsoft Build Conference
+• Microsoft. Language Server Protocol 公式仕様書 (https://microsoft.github.io/language-server-protocol/)
+• GitHub (2022). Sunsetting Atom – Atom開発終了の公式発表
+
+【人物・歴史】
+• Gamma, E., Helm, R., Johnson, R., Vlissides, J. (1994). 『Design Patterns: Elements of Reusable Object-Oriented Software』 Addison-Wesley
+• The Register. Erich GammaのMicrosoft入社とMonacoプロジェクトについての報道
+
+【参考記事・解説】
+• Wikipedia. Visual Studio Code / Atom (text editor) / Electron (software framework)
+• vscodium.com – VSCodiumプロジェクト（テレメトリ除去版VSCode）
+
+---
+
+📘 このチャンネルについて
+一次情報と研究データに基づきながら、難しいテーマをずんだもんとめたんの対話で楽しくわかりやすく解説するチャンネルです。
+「わかりやすく親しみやすい。でも、ちゃんと本当のことを言っている。」を大切にしています。
+
+#VSCode #エディタ #プログラミング #ソフトウェア開発 #テキストエディタ

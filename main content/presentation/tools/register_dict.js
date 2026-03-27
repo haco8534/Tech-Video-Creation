@@ -1,318 +1,373 @@
+#!/usr/bin/env node
 /**
- * register_dict.js
+ * VOICEVOX辞書一括登録スクリプト
  * 
- * scene_map.json 内のセリフテキストを解析し、英語・専門用語・読み間違えやすい単語を
- * VOICEVOX のユーザー辞書 API に自動登録する。
+ * 使い方: node register_dict.js <project_id>
  * 
- * 使い方: node tools/register_dict.js <project_dir>
+ * scene_map.json を解析し、英語・技術用語を自動検出してVOICEVOX辞書に登録する。
+ * 既存エントリと同じ surface+pronunciation の場合はスキップする。
  * 
- * 動作:
- *   1. scene_map.json からセリフ全文を取得
- *   2. 台本中の英語・専門用語を正規表現で抽出
- *   3. 組み込み辞書 + プロジェクト固有辞書(.voicevox_dict.json)を読み込み
- *   4. 既に VOICEVOX に登録済みの単語はスキップ
- *   5. 未登録の単語を VOICEVOX ユーザー辞書 API で登録
+ * 登録は2段階:
+ *   1. WELL_KNOWN_TERMS: 常に登録される頻出技術用語（言語名、企業名など）
+ *   2. scene_map.json スキャン: テキスト内の英語トークンを検出し、未登録なら警告
  */
+const http = require('http');
 const fs = require('fs');
 const path = require('path');
-const http = require('http');
 
-// ============================================================
-// 組み込み辞書（全プロジェクト共通で読み間違えやすい単語）
-// surface: 台本上の表記（全角半角どちらでもマッチさせる）
-// pronunciation: カタカナ読み（VOICEVOX形式）
-// accent_type: アクセント核の位置（0=平板）
-// ============================================================
-const BUILTIN_DICT = [
-    // 一般的な学術用語・略語
-    { surface: 'DOMS', pronunciation: 'ドムス', accent_type: 1 },
-    { surface: 'pH', pronunciation: 'ピーエイチ', accent_type: 3 },
-    { surface: 'vs', pronunciation: 'バーサス', accent_type: 1 },
-    { surface: 'VS', pronunciation: 'バーサス', accent_type: 1 },
-    { surface: 'RBE', pronunciation: 'アールビーイー', accent_type: 5 },
+const projectId = process.argv[2];
+if (!projectId) { console.error('Usage: node register_dict.js <project_id>'); process.exit(1); }
 
-    // 英語略語（よく出るもの）
-    { surface: 'AI', pronunciation: 'エーアイ', accent_type: 3 },
-    { surface: 'IQ', pronunciation: 'アイキュー', accent_type: 3 },
-    { surface: 'SNS', pronunciation: 'エスエヌエス', accent_type: 5 },
-    { surface: 'DNA', pronunciation: 'ディーエヌエー', accent_type: 5 },
-    { surface: 'RNA', pronunciation: 'アールエヌエー', accent_type: 5 },
-    { surface: 'fMRI', pronunciation: 'エフエムアールアイ', accent_type: 7 },
-    { surface: 'EEG', pronunciation: 'イーイージー', accent_type: 5 },
-    { surface: 'BMI', pronunciation: 'ビーエムアイ', accent_type: 5 },
-    { surface: 'WHO', pronunciation: 'ダブリューエイチオー', accent_type: 7 },
-    { surface: 'APA', pronunciation: 'エーピーエー', accent_type: 5 },
-    { surface: 'ADHD', pronunciation: 'エーディーエイチディー', accent_type: 7 },
-    { surface: 'LLM', pronunciation: 'エルエルエム', accent_type: 5 },
-    { surface: 'GPT', pronunciation: 'ジーピーティー', accent_type: 5 },
-    { surface: 'RCT', pronunciation: 'アールシーティー', accent_type: 5 },
-    { surface: 'BPE', pronunciation: 'ビーピーイー', accent_type: 5 },
-    { surface: 'UC', pronunciation: 'ユーシー', accent_type: 3 },
+const BASE_DIR = path.resolve(__dirname, '..');
+const sceneMapPath = path.join(BASE_DIR, projectId, 'scene_map.json');
+if (!fs.existsSync(sceneMapPath)) { console.error('scene_map.json not found: ' + sceneMapPath); process.exit(1); }
 
-    // 英語単語（個別に登録。フレーズではなく1単語ずつ）
-    { surface: 'George', pronunciation: 'ジョージ', accent_type: 1 },
-    { surface: 'Brooks', pronunciation: 'ブルックス', accent_type: 1 },
-    { surface: 'Hill', pronunciation: 'ヒル', accent_type: 0 },
-    { surface: 'Meyerhof', pronunciation: 'マイヤーホフ', accent_type: 1 },
-    { surface: 'Fletcher', pronunciation: 'フレッチャー', accent_type: 1 },
-    { surface: 'Hopkins', pronunciation: 'ホプキンズ', accent_type: 1 },
-    { surface: 'Berkeley', pronunciation: 'バークレー', accent_type: 1 },
-    { surface: 'Nobel', pronunciation: 'ノーベル', accent_type: 1 },
-    { surface: 'Cell', pronunciation: 'セル', accent_type: 0 },
-    { surface: 'Metabolism', pronunciation: 'メタボリズム', accent_type: 1 },
-    { surface: 'Repeated', pronunciation: 'リピーテッド', accent_type: 1 },
-    { surface: 'Bout', pronunciation: 'バウト', accent_type: 1 },
-    { surface: 'Effect', pronunciation: 'エフェクト', accent_type: 1 },
-    { surface: 'Delayed', pronunciation: 'ディレイド', accent_type: 1 },
-    { surface: 'Onset', pronunciation: 'オンセット', accent_type: 1 },
-    { surface: 'Muscle', pronunciation: 'マッスル', accent_type: 1 },
-    { surface: 'Soreness', pronunciation: 'ソーネス', accent_type: 1 },
-    { surface: 'Word', pronunciation: 'ワード', accent_type: 1 },
-    { surface: 'Embedding', pronunciation: 'エンベディング', accent_type: 1 },
-    { surface: 'Nature', pronunciation: 'ネイチャー', accent_type: 1 },
-    { surface: 'Science', pronunciation: 'サイエンス', accent_type: 1 },
-    { surface: 'Journal', pronunciation: 'ジャーナル', accent_type: 1 },
-    { surface: 'Review', pronunciation: 'レビュー', accent_type: 1 },
-    { surface: 'Study', pronunciation: 'スタディ', accent_type: 1 },
-    { surface: 'Research', pronunciation: 'リサーチ', accent_type: 1 },
-    { surface: 'University', pronunciation: 'ユニバーシティ', accent_type: 1 },
-    { surface: 'Professor', pronunciation: 'プロフェッサー', accent_type: 1 },
-    { surface: 'Theory', pronunciation: 'セオリー', accent_type: 1 },
-    { surface: 'Experiment', pronunciation: 'エクスペリメント', accent_type: 1 },
-    { surface: 'Evidence', pronunciation: 'エビデンス', accent_type: 1 },
-    { surface: 'Bias', pronunciation: 'バイアス', accent_type: 1 },
-    { surface: 'Meta', pronunciation: 'メタ', accent_type: 1 },
-    { surface: 'Analysis', pronunciation: 'アナリシス', accent_type: 1 },
-    { surface: 'Placebo', pronunciation: 'プラセボ', accent_type: 1 },
-    { surface: 'Correlation', pronunciation: 'コリレーション', accent_type: 1 },
-    { surface: 'Causation', pronunciation: 'コーゼーション', accent_type: 1 },
-    { surface: 'Cognitive', pronunciation: 'コグニティブ', accent_type: 1 },
-    { surface: 'Psychology', pronunciation: 'サイコロジー', accent_type: 1 },
-    { surface: 'Neuroscience', pronunciation: 'ニューロサイエンス', accent_type: 1 },
-
-    // 記号・数式的表記
-    { surface: 'H+', pronunciation: 'エイチプラス', accent_type: 3 },
-
-    // カタカナ人名・学術用語（読み間違え防止）
-    { surface: 'フレッチャー', pronunciation: 'フレッチャー', accent_type: 4 },
-    { surface: 'ホプキンズ', pronunciation: 'ホプキンズ', accent_type: 1 },
-    { surface: 'ブルックス', pronunciation: 'ブルックス', accent_type: 1 },
-    { surface: 'マイヤーホフ', pronunciation: 'マイヤーホフ', accent_type: 1 },
-    { surface: 'デュ・ボワ', pronunciation: 'デュボワ', accent_type: 1 },
-    { surface: 'レイモン', pronunciation: 'レイモン', accent_type: 1 },
-    { surface: 'エキセントリック', pronunciation: 'エキセントリック', accent_type: 5 },
-    { surface: 'コンセントリック', pronunciation: 'コンセントリック', accent_type: 5 },
-    { surface: 'マクロファージ', pronunciation: 'マクロファージ', accent_type: 5 },
-    { surface: 'ブラジキニン', pronunciation: 'ブラジキニン', accent_type: 4 },
-    { surface: 'プロスタグランジン', pronunciation: 'プロスタグランジン', accent_type: 7 },
-    { surface: 'アストロサイト', pronunciation: 'アストロサイト', accent_type: 5 },
-    { surface: 'グルコース', pronunciation: 'グルコース', accent_type: 3 },
-    { surface: 'ラクテート', pronunciation: 'ラクテート', accent_type: 3 },
-    { surface: 'ラクトルモン', pronunciation: 'ラクトルモン', accent_type: 5 },
-    { surface: 'ニューロン', pronunciation: 'ニューロン', accent_type: 1 },
+// ===== 頻出技術用語辞書（随時追加） =====
+const WELL_KNOWN_TERMS = [
+    // Programming Languages
+    { surface: 'FORTRAN', pronunciation: 'フォートラン' },
+    { surface: 'COBOL', pronunciation: 'コボル' },
+    { surface: 'JavaScript', pronunciation: 'ジャバスクリプト' },
+    { surface: 'Python', pronunciation: 'パイソン' },
+    { surface: 'TypeScript', pronunciation: 'タイプスクリプト' },
+    { surface: 'Objective-C', pronunciation: 'オブジェクティブシー' },
+    { surface: 'Swift', pronunciation: 'スウィフト' },
+    { surface: 'Kotlin', pronunciation: 'コトリン' },
+    { surface: 'Haskell', pronunciation: 'ハスケル' },
+    { surface: 'Erlang', pronunciation: 'アーラン' },
+    { surface: 'Prolog', pronunciation: 'プロログ' },
+    { surface: 'Ruby', pronunciation: 'ルビー' },
+    { surface: 'Rust', pronunciation: 'ラスト' },
+    { surface: 'Perl', pronunciation: 'パール' },
+    { surface: 'Scala', pronunciation: 'スカラ' },
+    { surface: 'Clojure', pronunciation: 'クロージャー' },
+    { surface: 'Elixir', pronunciation: 'エリクサー' },
+    { surface: 'Dart', pronunciation: 'ダート' },
+    { surface: 'LiveScript', pronunciation: 'ライブスクリプト' },
+    { surface: 'CoffeeScript', pronunciation: 'コーヒースクリプト' },
+    { surface: 'C++', pronunciation: 'シープラスプラス' },
+    { surface: 'C#', pronunciation: 'シーシャープ' },
+    { surface: 'Go言語', pronunciation: 'ゴーゲンゴ' },
+    { surface: 'Java', pronunciation: 'ジャバ' },
+    // Frameworks / Tools
+    { surface: 'Docker', pronunciation: 'ドッカー' },
+    { surface: 'Kubernetes', pronunciation: 'クバネティス' },
+    { surface: 'React', pronunciation: 'リアクト' },
+    { surface: 'Angular', pronunciation: 'アンギュラー' },
+    { surface: 'Vue', pronunciation: 'ビュー' },
+    { surface: 'Node.js', pronunciation: 'ノードジェイエス' },
+    { surface: 'npm', pronunciation: 'エヌピーエム' },
+    { surface: 'Git', pronunciation: 'ギット' },
+    { surface: 'GitHub', pronunciation: 'ギットハブ' },
+    { surface: 'VSCode', pronunciation: 'ブイエスコード' },
+    { surface: 'Linux', pronunciation: 'リナックス' },
+    { surface: 'UNIX', pronunciation: 'ユニックス' },
+    { surface: 'PostgreSQL', pronunciation: 'ポストグレスキューエル' },
+    { surface: 'MongoDB', pronunciation: 'モンゴディービー' },
+    { surface: 'Redis', pronunciation: 'レディス' },
+    { surface: 'nginx', pronunciation: 'エンジンエックス' },
+    { surface: 'Apache', pronunciation: 'アパッチ' },
+    { surface: 'Webpack', pronunciation: 'ウェブパック' },
+    { surface: 'Babel', pronunciation: 'バベル' },
+    { surface: 'ESLint', pronunciation: 'イーエスリント' },
+    { surface: 'GraphQL', pronunciation: 'グラフキューエル' },
+    // Companies / Organizations
+    { surface: 'JetBrains', pronunciation: 'ジェットブレインズ' },
+    { surface: 'Microsoft', pronunciation: 'マイクロソフト' },
+    { surface: 'Google', pronunciation: 'グーグル' },
+    { surface: 'Apple', pronunciation: 'アップル' },
+    { surface: 'IBM', pronunciation: 'アイビーエム' },
+    { surface: 'Mozilla', pronunciation: 'モジラ' },
+    { surface: 'Oracle', pronunciation: 'オラクル' },
+    { surface: 'Amazon', pronunciation: 'アマゾン' },
+    { surface: 'AWS', pronunciation: 'エーダブリューエス' },
+    { surface: 'Netflix', pronunciation: 'ネットフリックス' },
+    { surface: 'Netscape', pronunciation: 'ネットスケープ' },
+    // Technical Terms
+    { surface: 'typeof', pronunciation: 'タイプオブ' },
+    { surface: 'null', pronunciation: 'ヌル' },
+    { surface: 'object', pronunciation: 'オブジェクト' },
+    { surface: 'DSL', pronunciation: 'ディーエスエル' },
+    { surface: 'OOP', pronunciation: 'オーオーピー' },
+    { surface: 'API', pronunciation: 'エーピーアイ' },
+    { surface: 'SQL', pronunciation: 'エスキューエル' },
+    { surface: 'HTML', pronunciation: 'エイチティーエムエル' },
+    { surface: 'CSS', pronunciation: 'シーエスエス' },
+    { surface: 'ECMAScript', pronunciation: 'エクマスクリプト' },
+    { surface: 'Wikipedia', pronunciation: 'ウィキペディア' },
+    { surface: 'OS', pronunciation: 'オーエス' },
+    { surface: 'CPU', pronunciation: 'シーピーユー' },
+    { surface: 'GPU', pronunciation: 'ジーピーユー' },
+    { surface: 'RAM', pronunciation: 'ラム' },
+    { surface: 'SSD', pronunciation: 'エスエスディー' },
+    { surface: 'USB', pronunciation: 'ユーエスビー' },
+    { surface: 'HTTPS', pronunciation: 'エイチティーティーピーエス' },
+    { surface: 'URL', pronunciation: 'ユーアールエル' },
+    { surface: 'JSON', pronunciation: 'ジェイソン' },
+    { surface: 'YAML', pronunciation: 'ヤムル' },
+    { surface: 'XML', pronunciation: 'エックスエムエル' },
+    { surface: 'TCP', pronunciation: 'ティーシーピー' },
+    { surface: 'UDP', pronunciation: 'ユーディーピー' },
+    { surface: 'IP', pronunciation: 'アイピー' },
+    { surface: 'DNS', pronunciation: 'ディーエヌエス' },
+    { surface: 'SSH', pronunciation: 'エスエスエイチ' },
+    { surface: 'CI', pronunciation: 'シーアイ' },
+    { surface: 'CD', pronunciation: 'シーディー' },
+    { surface: 'AI', pronunciation: 'エーアイ' },
+    { surface: 'LLM', pronunciation: 'エルエルエム' },
+    { surface: 'GPT', pronunciation: 'ジーピーティー' },
+    { surface: 'IoT', pronunciation: 'アイオーティー' },
+    { surface: 'VM', pronunciation: 'ブイエム' },
+    { surface: 'GUI', pronunciation: 'ジーユーアイ' },
+    { surface: 'CLI', pronunciation: 'シーエルアイ' },
+    { surface: 'IDE', pronunciation: 'アイディーイー' },
+    { surface: 'SDK', pronunciation: 'エスディーケー' },
+    { surface: 'REST', pronunciation: 'レスト' },
+    { surface: 'SOAP', pronunciation: 'ソープ' },
+    { surface: 'OAuth', pronunciation: 'オーオース' },
+    { surface: 'JWT', pronunciation: 'ジェイダブリューティー' },
+    { surface: 'WebSocket', pronunciation: 'ウェブソケット' },
+    { surface: 'DevOps', pronunciation: 'デブオプス' },
+    { surface: 'SaaS', pronunciation: 'サース' },
+    { surface: 'PaaS', pronunciation: 'パース' },
+    { surface: 'IaaS', pronunciation: 'イアース' },
+    { surface: 'Programmer', pronunciation: 'プログラマー' },
+    { surface: 'Programmers', pronunciation: 'プログラマーズ' },
+    { surface: 'ChatGPT', pronunciation: 'チャットジーピーティー' },
+    { surface: 'OpenAI', pronunciation: 'オープンエーアイ' },
+    { surface: 'vibe', pronunciation: 'バイブ' },
+    { surface: 'vibe coding', pronunciation: 'バイブコーディング' },
+    { surface: 'coding', pronunciation: 'コーディング' },
+    { surface: 'Objective-C', pronunciation: 'オブジェクティブシー' },
+    { surface: 'OK', pronunciation: 'オーケー' },
+    { surface: 'FORTRAN', pronunciation: 'フォートラン' },
+    { surface: 'Real', pronunciation: 'リアル' },
+    { surface: 'Don\'t', pronunciation: 'ドント' },
+    { surface: 'Use', pronunciation: 'ユーズ' },
+    { surface: 'Pascal', pronunciation: 'パスカル' },
+    { surface: 'METR', pronunciation: 'メター' },
+    { surface: 'NumPy', pronunciation: 'ナムパイ' },
+    { surface: 'numpy', pronunciation: 'ナムパイ' },
+    { surface: 'Numpy', pronunciation: 'ナムパイ' },
+    { surface: 'NUMPY', pronunciation: 'ナムパイ' },
+    { surface: 'Num', pronunciation: 'ナム' },
+    { surface: 'pandas', pronunciation: 'パンダス' },
+    { surface: 'scikit-learn', pronunciation: 'サイキットラーン' },
+    { surface: 'scikit', pronunciation: 'サイキット' },
+    { surface: 'learn', pronunciation: 'ラーン' },
+    { surface: 'PyTorch', pronunciation: 'パイトーチ' },
+    { surface: 'TF', pronunciation: 'ティーエフ' },
+    { surface: 'Guido', pronunciation: 'グイド' },
+    { surface: 'van', pronunciation: 'バン' },
+    { surface: 'Rossum', pronunciation: 'ロッサム' },
+    { surface: 'TIOBE', pronunciation: 'ティオベ' },
+    { surface: 'CS', pronunciation: 'シーエス' },
+    { surface: 'MIT', pronunciation: 'エムアイティー' },
+    { surface: 'UC', pronunciation: 'ユーシー' },
+    { surface: 'PyPI', pronunciation: 'パイピーアイ' },
+    { surface: 'Fortran', pronunciation: 'フォートラン' },
+    { surface: 'fortran', pronunciation: 'フォートラン' },
+    { surface: 'No', pronunciation: 'ナンバー' },
+    { surface: 'SIMD', pronunciation: 'シムド' },
+    { surface: 'CUDA', pronunciation: 'クーダ' },
+    { surface: 'CUDA', pronunciation: 'クーダ' },
+    { surface: 'PEP', pronunciation: 'ペップ' },
+    { surface: 'Mojo', pronunciation: 'モジョ' },
+    { surface: 'Julia', pronunciation: 'ジュリア' },
+    { surface: 'Go', pronunciation: 'ゴー' },
+    { surface: 'ATM', pronunciation: 'エーティーエム' },
+    { surface: 'HPC', pronunciation: 'エイチピーシー' },
+    { surface: 'PC', pronunciation: 'ピーシー' },
+    { surface: 'Web', pronunciation: 'ウェブ' },
+    { surface: 'Overflow', pronunciation: 'オーバーフロー' },
+    // TypeScript video specific
+    { surface: 'Anders', pronunciation: 'アンダース' },
+    { surface: 'Hejlsberg', pronunciation: 'ハイルズバーグ' },
+    { surface: 'Svelte', pronunciation: 'スベルト' },
+    { surface: 'any', pronunciation: 'エニー' },
+    { surface: 'JSDoc', pronunciation: 'ジェイエスドック' },
+    { surface: 'Copilot', pronunciation: 'コパイロット' },
+    { surface: 'Ajax', pronunciation: 'エイジャックス' },
+    { surface: 'Gmail', pronunciation: 'ジーメール' },
+    { surface: 'Hello', pronunciation: 'ハロー' },
+    { surface: 'World', pronunciation: 'ワールド' },
+    { surface: 'Delphi', pronunciation: 'デルファイ' },
+    { surface: 'Turbo', pronunciation: 'ターボ' },
+    { surface: 'DHH', pronunciation: 'ディーエイチエイチ' },
+    { surface: 'Rich', pronunciation: 'リッチ' },
+    { surface: 'Harris', pronunciation: 'ハリス' },
+    { surface: 'IntelliSense', pronunciation: 'インテリセンス' },
+    { surface: 'SvelteKit', pronunciation: 'スベルトキット' },
+    // Mac obsession video specific
+    { surface: 'NeXTSTEP', pronunciation: 'ネクストステップ' },
+    { surface: 'NeXT', pronunciation: 'ネクスト' },
+    { surface: 'POSIX', pronunciation: 'ポジックス' },
+    { surface: 'IEEE', pronunciation: 'アイトリプルイー' },
+    { surface: 'Unix', pronunciation: 'ユニックス' },
+    { surface: 'Mach', pronunciation: 'マーク' },
+    { surface: 'BSD', pronunciation: 'ビーエスディー' },
+    { surface: 'CERN', pronunciation: 'セルン' },
+    { surface: 'Copland', pronunciation: 'コープランド' },
+    { surface: 'Taligent', pronunciation: 'タリジェント' },
+    { surface: 'Xcode', pronunciation: 'エックスコード' },
+    { surface: 'macOS', pronunciation: 'マックオーエス' },
+    { surface: 'iOS', pronunciation: 'アイオーエス' },
+    { surface: 'iPadOS', pronunciation: 'アイパッドオーエス' },
+    { surface: 'iPhone', pronunciation: 'アイフォーン' },
+    { surface: 'MacBook', pronunciation: 'マックブック' },
+    { surface: 'Mac', pronunciation: 'マック' },
+    { surface: 'Homebrew', pronunciation: 'ホームブルー' },
+    { surface: 'brew', pronunciation: 'ブリュー' },
+    { surface: 'install', pronunciation: 'インストール' },
+    { surface: 'update', pronunciation: 'アップデート' },
+    { surface: 'node', pronunciation: 'ノード' },
+    { surface: 'python', pronunciation: 'パイソン' },
+    { surface: 'postgresql', pronunciation: 'ポストグレスキューエル' },
+    { surface: 'WSL2', pronunciation: 'ダブリューエスエルツー' },
+    { surface: 'WSL', pronunciation: 'ダブリューエスエル' },
+    { surface: 'DirectX', pronunciation: 'ダイレクトエックス' },
+    { surface: 'Rosetta', pronunciation: 'ロゼッタ' },
+    { surface: 'ARM', pronunciation: 'アーム' },
+    { surface: 'x86', pronunciation: 'エックスはちろく' },
+    { surface: 'Silicon', pronunciation: 'シリコン' },
+    { surface: 'Valley', pronunciation: 'バレー' },
+    { surface: 'Qiita', pronunciation: 'キータ' },
+    { surface: 'Zenn', pronunciation: 'ゼン' },
+    { surface: 'CEO', pronunciation: 'シーイーオー' },
+    { surface: 'IT', pronunciation: 'アイティー' },
+    { surface: 'UI', pronunciation: 'ユーアイ' },
+    { surface: 'EXE', pronunciation: 'エグゼ' },
+    { surface: 'GCP', pronunciation: 'ジーシーピー' },
+    { surface: 'Active', pronunciation: 'アクティブ' },
+    { surface: 'Directory', pronunciation: 'ディレクトリ' },
+    { surface: 'Subsystem', pronunciation: 'サブシステム' },
+    { surface: 'for', pronunciation: 'フォー' },
+    { surface: 'Desktop', pronunciation: 'デスクトップ' },
+    { surface: 'Visual', pronunciation: 'ビジュアル' },
+    { surface: 'Studio', pronunciation: 'スタジオ' },
+    { surface: 'Store', pronunciation: 'ストア' },
+    { surface: 'App', pronunciation: 'アップ' },
+    { surface: 'Stack', pronunciation: 'スタック' },
+    { surface: 'Developer', pronunciation: 'デベロッパー' },
+    { surface: 'Survey', pronunciation: 'サーベイ' },
+    { surface: 'Classic', pronunciation: 'クラシック' },
+    { surface: 'Air', pronunciation: 'エアー' },
+    { surface: 'Pro', pronunciation: 'プロ' },
+    { surface: 'VS', pronunciation: 'ブイエス' },
+    { surface: 'Code', pronunciation: 'コード' },
+    { surface: 'ls', pronunciation: 'エルエス' },
+    { surface: 'grep', pronunciation: 'グレップ' },
+    { surface: 'sed', pronunciation: 'セド' },
+    { surface: 'awk', pronunciation: 'オーク' },
+    { surface: 'curl', pronunciation: 'カール' },
+    { surface: 'cp', pronunciation: 'シーピー' },
+    { surface: 'dir', pronunciation: 'ディレ' },
+    { surface: 'copy', pronunciation: 'コピー' },
+    { surface: 'ssh', pronunciation: 'エスエスエイチ' },
+    { surface: 'findstr', pronunciation: 'ファインドストリング' },
+    { surface: '.NET', pronunciation: 'ドットネット' },
+    { surface: 'NET', pronunciation: 'ネット' },
+    { surface: 'Windows', pronunciation: 'ウィンドウズ' },
+    { surface: 'M系', pronunciation: 'エムケイ' },
+    { surface: 'Obj-C', pronunciation: 'オブジェクティブシー' },
+    { surface: 'SwiftUI', pronunciation: 'スウィフトユーアイ' },
+    // rust_vs_cpp specific
+    { surface: 'UnrealEngine', pronunciation: 'アンリアルエンジン' },
+    { surface: 'Cloudflare', pronunciation: 'クラウドフレア' },
+    { surface: 'Firecracker', pronunciation: 'ファイアクラッカー' },
+    { surface: 'Pingora', pronunciation: 'ピンゴーラ' },
+    { surface: 'Discord', pronunciation: 'ディスコード' },
+    { surface: 'DARPA', pronunciation: 'ダルパ' },
+    { surface: 'Android', pronunciation: 'アンドロイド' },
+    { surface: 'CVE', pronunciation: 'シーブイイー' },
+    { surface: 'Nginx', pronunciation: 'エンジンエックス' },
+    { surface: 'FFI', pronunciation: 'エフエフアイ' },
+    { surface: 'ONCD', pronunciation: 'オーエヌシーディー' },
+    { surface: 'Dropbox', pronunciation: 'ドロップボックス' },
+    { surface: 'WebAssembly', pronunciation: 'ウェブアセンブリ' },
 ];
 
-// ============================================================
-// HTTP リクエストヘルパー
-// ============================================================
-function httpRequest(url, options = {}) {
+function httpGet(url) {
     return new Promise((resolve, reject) => {
-        const urlObj = new URL(url);
-        const req = http.request({
-            hostname: urlObj.hostname, port: urlObj.port,
-            path: urlObj.pathname + urlObj.search,
-            method: options.method || 'GET',
-            headers: options.headers || {},
-        }, (res) => {
-            const chunks = [];
-            res.on('data', (chunk) => chunks.push(chunk));
-            res.on('end', () => resolve({ status: res.statusCode, body: Buffer.concat(chunks) }));
+        http.get(url, res => {
+            let data = '';
+            res.on('data', chunk => data += chunk);
+            res.on('end', () => resolve(JSON.parse(data)));
+        }).on('error', reject);
+    });
+}
+
+function httpPost(url) {
+    return new Promise((resolve, reject) => {
+        const u = new URL(url);
+        const req = http.request({ hostname: u.hostname, port: u.port, path: u.pathname + u.search, method: 'POST' }, res => {
+            let data = '';
+            res.on('data', chunk => data += chunk);
+            res.on('end', () => resolve({ status: res.statusCode, body: data }));
         });
         req.on('error', reject);
-        if (options.body) req.write(options.body);
         req.end();
     });
 }
 
-// ============================================================
-// メイン処理
-// ============================================================
 async function main() {
-    const args = process.argv.slice(2);
-    if (args.length === 0) {
-        console.error('Usage: node register_dict.js <project_dir>');
-        process.exit(1);
+    // Read scene_map.json and collect all text
+    const sceneMap = JSON.parse(fs.readFileSync(sceneMapPath, 'utf8'));
+    const allTexts = [];
+    sceneMap.scenes.forEach(s => s.lines.forEach(l => allTexts.push(l.text)));
+    const fullText = allTexts.join(' ');
+
+    // 1. Get existing dictionary
+    const dict = await httpGet('http://localhost:50021/user_dict');
+    const existing = new Map();
+    for (const [uuid, entry] of Object.entries(dict)) {
+        existing.set(entry.surface, { uuid, pronunciation: entry.pronunciation });
     }
+    console.log(`\n📖 Existing VOICEVOX dictionary: ${existing.size} entries`);
 
-    const PRES_ROOT = path.resolve(__dirname, '..');
-    const PROJECT_DIR = path.resolve(PRES_ROOT, args[0]);
-    const MAP_FILE = path.join(PROJECT_DIR, 'scene_map.json');
+    // 2. Filter WELL_KNOWN_TERMS to only those appearing in text
+    const termsToRegister = WELL_KNOWN_TERMS.filter(t => fullText.includes(t.surface));
+    console.log(`🔍 Terms found in scene_map.json: ${termsToRegister.length}`);
 
-    if (!fs.existsSync(MAP_FILE)) {
-        console.error(`scene_map.json not found: ${MAP_FILE}`);
-        process.exit(1);
-    }
-
-    const map = JSON.parse(fs.readFileSync(MAP_FILE, 'utf-8'));
-    const voicevoxUrl = map.voicevox_url || 'http://localhost:50021';
-
-    // 1. 全セリフテキストを結合
-    const allText = map.scenes.flatMap(s => s.lines.map(l => l.text)).join('\n');
-    console.log(`Total text length: ${allText.length} chars\n`);
-
-    // 2. プロジェクト固有辞書の読み込み（あれば）
-    const projectDictPath = path.join(PROJECT_DIR, '.voicevox_dict.json');
-    let projectDict = [];
-    if (fs.existsSync(projectDictPath)) {
-        try {
-            projectDict = JSON.parse(fs.readFileSync(projectDictPath, 'utf-8'));
-            console.log(`Project dict: ${projectDict.length} entries loaded`);
-        } catch (e) {
-            console.warn(`Warning: could not parse project dict: ${e.message}`);
-        }
-    }
-
-    // 3. 組み込み辞書 + プロジェクト辞書を統合
-    const fullDict = [...BUILTIN_DICT, ...projectDict];
-
-    // 4. テキスト中に出現する単語だけフィルタ
-    const relevantEntries = [];
-    const seenSurfaces = new Set();
-    for (const entry of fullDict) {
-        if (seenSurfaces.has(entry.surface.toLowerCase())) continue;
-        if (allText.includes(entry.surface)) {
-            relevantEntries.push(entry);
-            seenSurfaces.add(entry.surface.toLowerCase());
-        }
-    }
-    console.log(`Relevant dict entries found in text: ${relevantEntries.length}\n`);
-
-    // 5. 現在の VOICEVOX 辞書を取得
-    const existingRes = await httpRequest(`${voicevoxUrl}/user_dict`);
-    if (existingRes.status !== 200) {
-        console.error(`Failed to get user_dict: ${existingRes.status}`);
-        process.exit(1);
-    }
-    const existingDict = JSON.parse(existingRes.body.toString());
-    const existingSurfaces = new Map();
-    for (const [uuid, entry] of Object.entries(existingDict)) {
-        // VOICEVOX stores surfaces in full-width, normalize for comparison
-        const normalized = entry.surface
-            .replace(/[Ａ-Ｚ]/g, c => String.fromCharCode(c.charCodeAt(0) - 0xFEE0))
-            .replace(/[ａ-ｚ]/g, c => String.fromCharCode(c.charCodeAt(0) - 0xFEE0))
-            .replace(/[０-９]/g, c => String.fromCharCode(c.charCodeAt(0) - 0xFEE0));
-        existingSurfaces.set(normalized.toLowerCase(), { uuid, ...entry });
-    }
-    console.log(`VOICEVOX dict already has: ${existingSurfaces.size} entries\n`);
-
-    // 6. 未登録の単語を登録
-    let registered = 0;
-    let skipped = 0;
-    let updated = 0;
-
-    for (const entry of relevantEntries) {
-        const normalizedSurface = entry.surface.toLowerCase();
-        const existing = existingSurfaces.get(normalizedSurface);
-
-        if (existing) {
-            // 読みが同じならスキップ
-            if (existing.pronunciation === entry.pronunciation) {
-                console.log(`  SKIP: "${entry.surface}" (already registered as ${existing.pronunciation})`);
-                skipped++;
-                continue;
-            }
-            // 読みが違うなら更新
-            console.log(`  UPDATE: "${entry.surface}" ${existing.pronunciation} -> ${entry.pronunciation}`);
-            const updateUrl = `${voicevoxUrl}/user_dict_word/${existing.uuid}?` +
-                `surface=${encodeURIComponent(entry.surface)}` +
-                `&pronunciation=${encodeURIComponent(entry.pronunciation)}` +
-                `&accent_type=${entry.accent_type}` +
-                `&priority=${entry.priority || 5}`;
-            const updateRes = await httpRequest(updateUrl, { method: 'PUT' });
-            if (updateRes.status === 204) {
-                updated++;
-            } else {
-                console.error(`    Failed to update: ${updateRes.status} ${updateRes.body.toString()}`);
-            }
+    // 3. Register
+    let added = 0, skipped = 0;
+    for (const term of termsToRegister) {
+        const ex = existing.get(term.surface);
+        if (ex && ex.pronunciation === term.pronunciation) {
+            skipped++;
             continue;
         }
-
-        // 新規登録
-        const registerUrl = `${voicevoxUrl}/user_dict_word?` +
-            `surface=${encodeURIComponent(entry.surface)}` +
-            `&pronunciation=${encodeURIComponent(entry.pronunciation)}` +
-            `&accent_type=${entry.accent_type}` +
-            `&priority=${entry.priority || 5}`;
-        const registerRes = await httpRequest(registerUrl, { method: 'POST' });
-
-        if (registerRes.status === 200) {
-            console.log(`  ✅ REGISTERED: "${entry.surface}" -> ${entry.pronunciation}`);
-            registered++;
+        const url = `http://localhost:50021/user_dict_word?surface=${encodeURIComponent(term.surface)}&pronunciation=${encodeURIComponent(term.pronunciation)}&accent_type=1`;
+        const res = await httpPost(url);
+        if (res.status === 200) {
+            console.log(`  ✅ [registered] ${term.surface} → ${term.pronunciation}`);
+            added++;
         } else {
-            console.error(`  ❌ FAILED: "${entry.surface}" -> ${registerRes.status} ${registerRes.body.toString()}`);
+            console.log(`  ❌ [error] ${term.surface}: ${res.status}`);
         }
     }
 
-    console.log(`\n=== Dictionary registration complete ===`);
-    console.log(`  Registered: ${registered}`);
-    console.log(`  Updated: ${updated}`);
-    console.log(`  Skipped: ${skipped}`);
-    console.log(`  Total in VOICEVOX: ${existingSurfaces.size + registered}`);
-
-    // ============================================================
-    // 7. 辞書カバー漏れチェック: テキスト中の英語表記を全て検出し、
-    //    辞書（組み込み＋プロジェクト＋既存VOICEVOX）でカバーされていないものを報告
-    // ============================================================
-    console.log(`\n--- Checking for uncovered English text ---`);
-
-    // 英語の正規表現: 2文字以上の英語（略語、単語、フレーズ）を検出
-    // ただし単一文字（pH の p など）はフレーズの一部として検出
-    const englishPatterns = [];
-    const engRe = /[A-Za-z][A-Za-z\s.'-]*[A-Za-z]/g;
-    let engMatch;
-    while ((engMatch = engRe.exec(allText)) !== null) {
-        const raw = engMatch[0].trim();
-        if (raw.length >= 2) englishPatterns.push(raw);
+    // 4. Scan for unregistered English tokens (warning)
+    // 大文字始まり・小文字始まり・全大文字を検出
+    const englishPattern = /[a-zA-Z][a-zA-Z0-9.#+]{1,}/g;
+    const foundTokens = new Set();
+    let match;
+    while ((match = englishPattern.exec(fullText)) !== null) {
+        foundTokens.add(match[0]);
     }
-    // 単独の英字+記号パターン（例: pH, H+）
-    const singleRe = /(?<![A-Za-z])[A-Za-z]{1,2}(?:\+|-|#)?(?![A-Za-z])/g;
-    while ((engMatch = singleRe.exec(allText)) !== null) {
-        const raw = engMatch[0].trim();
-        if (raw.length >= 2 || /[+\-#]/.test(raw)) englishPatterns.push(raw);
-    }
-    const uniqueEnglish = [...new Set(englishPatterns)];
-
-    // 辞書でカバーされている表記のSet（surface単位）
-    const coveredSurfaces = new Set();
-    for (const entry of fullDict) {
-        coveredSurfaces.add(entry.surface);
-        coveredSurfaces.add(entry.surface.toLowerCase());
-        coveredSurfaces.add(entry.surface.toUpperCase());
-    }
-    // 既存VOICEVOX辞書もカバー済みとして扱う
-    for (const [normalized] of existingSurfaces) {
-        coveredSurfaces.add(normalized);
+    const registered = new Set(termsToRegister.map(t => t.surface));
+    // Also check existing dict
+    for (const [surface] of existing) registered.add(surface);
+    
+    const unregistered = [...foundTokens].filter(t => !registered.has(t) && t.length > 1);
+    if (unregistered.length > 0) {
+        console.log(`\n⚠️ Potentially unregistered English terms detected:`);
+        unregistered.forEach(t => console.log(`  ⚠️ "${t}" — add to WELL_KNOWN_TERMS if mispronounced`));
     }
 
-    // 各英語表記を単語単位に分割し、個々の単語がカバーされているかチェック
-    const uncoveredWords = new Set();
-    for (const eng of uniqueEnglish) {
-        // フレーズの場合は個別単語に分割
-        const words = eng.split(/[\s.'-]+/).filter(w => w.length >= 2);
-        for (const word of words) {
-            if (coveredSurfaces.has(word) || coveredSurfaces.has(word.toLowerCase()) || coveredSurfaces.has(word.toUpperCase())) continue;
-            uncoveredWords.add(word);
-        }
-    }
-
-    if (uncoveredWords.size > 0) {
-        console.log(`\n🚨 ${uncoveredWords.size} English word(s) NOT covered by dictionary:`);
-        [...uncoveredWords].sort().forEach(w => console.log(`  ❌ "${w}"`));
-        console.log(`\nPlease add these to .voicevox_dict.json with correct pronunciation.`);
-        console.log(`Format: { "surface": "${[...uncoveredWords][0]}", "pronunciation": "カタカナ", "accent_type": 0 }`);
-        process.exit(1);
-    } else {
-        console.log(`✅ All English words are covered by dictionary.`);
+    console.log(`\n✅ Done! Added: ${added}, Skipped (already exists): ${skipped}`);
+    if (unregistered.length > 0) {
+        console.log(`⚠️ ${unregistered.length} potentially unregistered terms found (check above)`);
     }
 }
 

@@ -1,0 +1,495 @@
+[
+  {
+    "id": 0,
+    "title": "救世主か死神か",
+    "duration": 12.1,
+    "audioFiles": [
+      {
+        "file": "scene_00_00.wav",
+        "duration": 4.085333333333334,
+        "speaker": "めたん"
+      },
+      {
+        "file": "scene_00_01.wav",
+        "duration": 7.189333333333333,
+        "speaker": "ずんだもん"
+      }
+    ]
+  },
+  {
+    "id": 1,
+    "title": "89%の支配率",
+    "duration": 9.5,
+    "audioFiles": [
+      {
+        "file": "scene_01_00.wav",
+        "duration": 4.490666666666667,
+        "speaker": "めたん"
+      },
+      {
+        "file": "scene_01_01.wav",
+        "duration": 4.192,
+        "speaker": "ずんだもん"
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "title": "JSの「魔法」は死んだ",
+    "duration": 10.7,
+    "audioFiles": [
+      {
+        "file": "scene_02_00.wav",
+        "duration": 6.005333333333334,
+        "speaker": "ずんだもん"
+      },
+      {
+        "file": "scene_02_01.wav",
+        "duration": 3.9146666666666667,
+        "speaker": "めたん"
+      }
+    ]
+  },
+  {
+    "id": 3,
+    "title": "救世主と死神",
+    "duration": 13.6,
+    "audioFiles": [
+      {
+        "file": "scene_03_00.wav",
+        "duration": 6.773333333333333,
+        "speaker": "ずんだもん"
+      },
+      {
+        "file": "scene_03_01.wav",
+        "duration": 6.005333333333334,
+        "speaker": "ずんだもん"
+      }
+    ]
+  },
+  {
+    "id": 4,
+    "title": "粘土とレゴブロック",
+    "duration": 9,
+    "audioFiles": [
+      {
+        "file": "scene_04_00.wav",
+        "duration": 3.018666666666667,
+        "speaker": "めたん"
+      },
+      {
+        "file": "scene_04_01.wav",
+        "duration": 5.226666666666667,
+        "speaker": "ずんだもん"
+      }
+    ]
+  },
+  {
+    "id": 5,
+    "title": "粘土の自由さ",
+    "duration": 10.4,
+    "audioFiles": [
+      {
+        "file": "scene_05_00.wav",
+        "duration": 5.056,
+        "speaker": "ずんだもん"
+      },
+      {
+        "file": "scene_05_01.wav",
+        "duration": 4.586666666666667,
+        "speaker": "めたん"
+      }
+    ]
+  },
+  {
+    "id": 6,
+    "title": "粘土の城は崩れる",
+    "duration": 8.7,
+    "audioFiles": [
+      {
+        "file": "scene_06_00.wav",
+        "duration": 3.7973333333333334,
+        "speaker": "ずんだもん"
+      },
+      {
+        "file": "scene_06_01.wav",
+        "duration": 4.1386666666666665,
+        "speaker": "めたん"
+      }
+    ]
+  },
+  {
+    "id": 7,
+    "title": "レゴブロック化",
+    "duration": 11.6,
+    "audioFiles": [
+      {
+        "file": "scene_07_00.wav",
+        "duration": 5.536,
+        "speaker": "ずんだもん"
+      },
+      {
+        "file": "scene_07_01.wav",
+        "duration": 5.301333333333333,
+        "speaker": "めたん"
+      }
+    ]
+  },
+  {
+    "id": 8,
+    "title": "JSの肥大化の歴史",
+    "duration": 7.5,
+    "audioFiles": [
+      {
+        "file": "scene_08_00.wav",
+        "duration": 2.965333333333333,
+        "speaker": "めたん"
+      },
+      {
+        "file": "scene_08_01.wav",
+        "duration": 3.7013333333333334,
+        "speaker": "ずんだもん"
+      }
+    ]
+  },
+  {
+    "id": 9,
+    "title": "飾りから巨大アプリへ",
+    "duration": 13.4,
+    "audioFiles": [
+      {
+        "file": "scene_09_00.wav",
+        "duration": 6.336,
+        "speaker": "ずんだもん"
+      },
+      {
+        "file": "scene_09_01.wav",
+        "duration": 6.250666666666667,
+        "speaker": "ずんだもん"
+      }
+    ]
+  },
+  {
+    "id": 10,
+    "title": "実行時エラーの恐怖",
+    "duration": 12.3,
+    "audioFiles": [
+      {
+        "file": "scene_10_00.wav",
+        "duration": 5.152,
+        "speaker": "めたん"
+      },
+      {
+        "file": "scene_10_01.wav",
+        "duration": 6.304,
+        "speaker": "ずんだもん"
+      }
+    ]
+  },
+  {
+    "id": 11,
+    "title": "TSのコンパイルエラー",
+    "duration": 9.3,
+    "audioFiles": [
+      {
+        "file": "scene_11_00.wav",
+        "duration": 3.6266666666666665,
+        "speaker": "めたん"
+      },
+      {
+        "file": "scene_11_01.wav",
+        "duration": 4.906666666666666,
+        "speaker": "ずんだもん"
+      }
+    ]
+  },
+  {
+    "id": 12,
+    "title": "Hejlsbergの設計思想",
+    "duration": 11.7,
+    "audioFiles": [
+      {
+        "file": "scene_12_00.wav",
+        "duration": 5.589333333333333,
+        "speaker": "ずんだもん"
+      },
+      {
+        "file": "scene_12_01.wav",
+        "duration": 5.269333333333333,
+        "speaker": "めたん"
+      }
+    ]
+  },
+  {
+    "id": 13,
+    "title": "スーパーセット戦略",
+    "duration": 11.1,
+    "audioFiles": [
+      {
+        "file": "scene_13_00.wav",
+        "duration": 4.864,
+        "speaker": "ずんだもん"
+      },
+      {
+        "file": "scene_13_01.wav",
+        "duration": 5.482666666666667,
+        "speaker": "ずんだもん"
+      }
+    ]
+  },
+  {
+    "id": 14,
+    "title": "しかし代償がある",
+    "duration": 9.9,
+    "audioFiles": [
+      {
+        "file": "scene_14_00.wav",
+        "duration": 4.128,
+        "speaker": "めたん"
+      },
+      {
+        "file": "scene_14_01.wav",
+        "duration": 5.013333333333334,
+        "speaker": "ずんだもん"
+      }
+    ]
+  },
+  {
+    "id": 15,
+    "title": "失われた手軽さ",
+    "duration": 10.3,
+    "audioFiles": [
+      {
+        "file": "scene_15_00.wav",
+        "duration": 2.570666666666667,
+        "speaker": "めたん"
+      },
+      {
+        "file": "scene_15_01.wav",
+        "duration": 6.954666666666666,
+        "speaker": "ずんだもん"
+      }
+    ]
+  },
+  {
+    "id": 16,
+    "title": "型パズルの恐怖",
+    "duration": 7.6,
+    "audioFiles": [
+      {
+        "file": "scene_16_00.wav",
+        "duration": 3.3066666666666666,
+        "speaker": "ずんだもん"
+      },
+      {
+        "file": "scene_16_01.wav",
+        "duration": 3.488,
+        "speaker": "めたん"
+      }
+    ]
+  },
+  {
+    "id": 17,
+    "title": "手軽さの死",
+    "duration": 11.4,
+    "audioFiles": [
+      {
+        "file": "scene_17_00.wav",
+        "duration": 5.930666666666666,
+        "speaker": "ずんだもん"
+      },
+      {
+        "file": "scene_17_01.wav",
+        "duration": 4.629333333333333,
+        "speaker": "めたん"
+      }
+    ]
+  },
+  {
+    "id": 18,
+    "title": "any型という裏切り",
+    "duration": 8.2,
+    "audioFiles": [
+      {
+        "file": "scene_18_00.wav",
+        "duration": 3.1466666666666665,
+        "speaker": "ずんだもん"
+      },
+      {
+        "file": "scene_18_01.wav",
+        "duration": 4.288,
+        "speaker": "めたん"
+      }
+    ]
+  },
+  {
+    "id": 19,
+    "title": "脱TSの声",
+    "duration": 9.6,
+    "audioFiles": [
+      {
+        "file": "scene_19_00.wav",
+        "duration": 5.514666666666667,
+        "speaker": "ずんだもん"
+      },
+      {
+        "file": "scene_19_01.wav",
+        "duration": 3.2533333333333334,
+        "speaker": "めたん"
+      }
+    ]
+  },
+  {
+    "id": 20,
+    "title": "JSとTSの関係",
+    "duration": 9.7,
+    "audioFiles": [
+      {
+        "file": "scene_20_00.wav",
+        "duration": 4.704,
+        "speaker": "ずんだもん"
+      },
+      {
+        "file": "scene_20_01.wav",
+        "duration": 4.149333333333334,
+        "speaker": "めたん"
+      }
+    ]
+  },
+  {
+    "id": 21,
+    "title": "トレードオフの構造",
+    "duration": 10.2,
+    "audioFiles": [
+      {
+        "file": "scene_21_00.wav",
+        "duration": 4.608,
+        "speaker": "ずんだもん"
+      },
+      {
+        "file": "scene_21_01.wav",
+        "duration": 4.810666666666667,
+        "speaker": "めたん"
+      }
+    ]
+  },
+  {
+    "id": 22,
+    "title": "AIとTSの相性",
+    "duration": 10.8,
+    "audioFiles": [
+      {
+        "file": "scene_22_00.wav",
+        "duration": 6.421333333333333,
+        "speaker": "ずんだもん"
+      },
+      {
+        "file": "scene_22_01.wav",
+        "duration": 3.616,
+        "speaker": "めたん"
+      }
+    ]
+  },
+  {
+    "id": 23,
+    "title": "型がAIの道案内",
+    "duration": 11.8,
+    "audioFiles": [
+      {
+        "file": "scene_23_00.wav",
+        "duration": 6.8373333333333335,
+        "speaker": "ずんだもん"
+      },
+      {
+        "file": "scene_23_01.wav",
+        "duration": 4.149333333333334,
+        "speaker": "めたん"
+      }
+    ]
+  },
+  {
+    "id": 24,
+    "title": "TC39提案",
+    "duration": 12.6,
+    "audioFiles": [
+      {
+        "file": "scene_24_00.wav",
+        "duration": 7.349333333333333,
+        "speaker": "ずんだもん"
+      },
+      {
+        "file": "scene_24_01.wav",
+        "duration": 4.448,
+        "speaker": "めたん"
+      }
+    ]
+  },
+  {
+    "id": 25,
+    "title": "魔法の終わりと機械文明",
+    "duration": 8.7,
+    "audioFiles": [
+      {
+        "file": "scene_25_00.wav",
+        "duration": 5.12,
+        "speaker": "ずんだもん"
+      },
+      {
+        "file": "scene_25_01.wav",
+        "duration": 2.7733333333333334,
+        "speaker": "めたん"
+      }
+    ]
+  },
+  {
+    "id": 26,
+    "title": "粘土から都市へ",
+    "duration": 13.4,
+    "audioFiles": [
+      {
+        "file": "scene_26_00.wav",
+        "duration": 6.133333333333334,
+        "speaker": "ずんだもん"
+      },
+      {
+        "file": "scene_26_01.wav",
+        "duration": 6.485333333333333,
+        "speaker": "ずんだもん"
+      }
+    ]
+  },
+  {
+    "id": 27,
+    "title": "3つの教訓",
+    "duration": 12.1,
+    "audioFiles": [
+      {
+        "file": "scene_27_00.wav",
+        "duration": 5.333333333333333,
+        "speaker": "めたん"
+      },
+      {
+        "file": "scene_27_01.wav",
+        "duration": 5.941333333333334,
+        "speaker": "ずんだもん"
+      }
+    ]
+  },
+  {
+    "id": 28,
+    "title": "ご視聴ありがとう",
+    "duration": 10.4,
+    "audioFiles": [
+      {
+        "file": "scene_28_00.wav",
+        "duration": 5.002666666666666,
+        "speaker": "めたん"
+      },
+      {
+        "file": "scene_28_01.wav",
+        "duration": 4.608,
+        "speaker": "ずんだもん"
+      }
+    ]
+  }
+]

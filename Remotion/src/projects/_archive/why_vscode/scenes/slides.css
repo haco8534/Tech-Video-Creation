@@ -1,0 +1,1364 @@
+/* === Why VSCode – Premium Light Presentation Styles === */
+/* Clean, modern light theme with soft shadows & vibrant accents */
+
+/* ────────────────────────────────────────────
+   1. カラートークン & CSS変数
+   ──────────────────────────────────────────── */
+:root {
+    --bg: #f8f9fc;
+    --bg-alt: #eef1f6;
+    --bg-card: rgba(255, 255, 255, 0.92);
+    --bg-glass: rgba(255, 255, 255, 0.75);
+    --text: #1a1d23;
+    --text-light: #5a6270;
+    --text-muted: #9ca3af;
+    --primary: #4f46e5;
+    --primary-rgb: 79, 70, 229;
+    --primary-dark: #3730a3;
+    --primary-light: rgba(79, 70, 229, 0.10);
+    --teal: #0d9488;
+    --teal-rgb: 13, 148, 136;
+    --teal-light: rgba(13, 148, 136, 0.10);
+    --coral: #ef4444;
+    --coral-rgb: 239, 68, 68;
+    --coral-light: rgba(239, 68, 68, 0.08);
+    --amber: #d97706;
+    --amber-rgb: 217, 119, 6;
+    --amber-light: rgba(217, 119, 6, 0.08);
+    --purple: #7c3aed;
+    --purple-rgb: 124, 58, 237;
+    --purple-light: rgba(124, 58, 237, 0.08);
+    --border: rgba(0, 0, 0, 0.06);
+    --border-bright: rgba(0, 0, 0, 0.12);
+    --shadow: 0 4px 24px rgba(0, 0, 0, 0.06), 0 1px 4px rgba(0, 0, 0, 0.04);
+    --shadow-lg: 0 12px 40px rgba(0, 0, 0, 0.10), 0 2px 8px rgba(0, 0, 0, 0.05);
+    --shadow-glow-primary: 0 4px 20px rgba(var(--primary-rgb), 0.15), 0 0 40px rgba(var(--primary-rgb), 0.06);
+    --shadow-glow-teal: 0 4px 20px rgba(var(--teal-rgb), 0.15);
+    --shadow-glow-coral: 0 4px 20px rgba(var(--coral-rgb), 0.15);
+    --shadow-glow-purple: 0 4px 20px rgba(var(--purple-rgb), 0.15);
+    --radius: 16px;
+    --radius-sm: 10px;
+    --radius-lg: 24px;
+    --radius-pill: 100px;
+    --transition: 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    --transition-fast: 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    --gradient-primary: linear-gradient(135deg, #4f46e5, #818cf8);
+    --gradient-teal: linear-gradient(135deg, #0d9488, #2dd4bf);
+    --gradient-coral: linear-gradient(135deg, #dc2626, #f87171);
+    --gradient-amber: linear-gradient(135deg, #b45309, #fbbf24);
+    --gradient-purple: linear-gradient(135deg, #7c3aed, #a78bfa);
+    --gradient-mesh: radial-gradient(ellipse at 20% 50%, rgba(var(--primary-rgb), 0.05) 0%, transparent 50%),
+                     radial-gradient(ellipse at 80% 20%, rgba(var(--purple-rgb), 0.04) 0%, transparent 50%),
+                     radial-gradient(ellipse at 60% 80%, rgba(var(--teal-rgb), 0.03) 0%, transparent 50%);
+}
+
+/* ────────────────────────────────────────────
+   2. リセット & ベーススタイル
+   ──────────────────────────────────────────── */
+*,
+*::before,
+*::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    font-size: 30px;
+}
+html, body {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background: var(--bg);
+    font-family: 'Noto Sans JP', sans-serif;
+    color: var(--text);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* ────────────────────────────────────────────
+   3. シーン共通レイアウト
+   ──────────────────────────────────────────── */
+.scene {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 1;
+    pointer-events: auto;
+    background: var(--bg);
+    background-image: var(--gradient-mesh);
+}
+
+.content {
+    width: 100%;
+    max-width: 1600px;
+    padding: 60px 80px;
+    text-align: center;
+    position: relative;
+    z-index: 2;
+}
+.center-layout {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+.card-layout {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* ────────────────────────────────────────────
+   4. Canvas背景
+   ──────────────────────────────────────────── */
+.bg-canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    pointer-events: none;
+}
+
+/* ────────────────────────────────────────────
+   5. stagger アニメーション
+   ──────────────────────────────────────────── */
+.stagger-item {
+    animation: staggerFadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+.stagger-item:nth-child(1) { animation-delay: 0.00s; }
+.stagger-item:nth-child(2) { animation-delay: 0.12s; }
+.stagger-item:nth-child(3) { animation-delay: 0.24s; }
+.stagger-item:nth-child(4) { animation-delay: 0.36s; }
+.stagger-item:nth-child(5) { animation-delay: 0.48s; }
+.stagger-item:nth-child(6) { animation-delay: 0.60s; }
+.stagger-item:nth-child(7) { animation-delay: 0.72s; }
+.stagger-item:nth-child(8) { animation-delay: 0.84s; }
+.stagger-item:nth-child(9) { animation-delay: 0.96s; }
+.stagger-item:nth-child(10) { animation-delay: 1.08s; }
+
+@keyframes staggerFadeIn {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* ────────────────────────────────────────────
+   6. テキストユーティリティ
+   ──────────────────────────────────────────── */
+.scene-title {
+    font-size: 2.2rem;
+    font-weight: 900;
+    letter-spacing: -0.02em;
+    margin-bottom: 1.5rem;
+    color: var(--text);
+    line-height: 1.3;
+    text-shadow: 0 2px 8px rgba(0,0,0,0.3);
+}
+.emphasis-text {
+    font-size: 1.8rem;
+    font-weight: 700;
+    line-height: 1.5;
+    color: var(--text);
+}
+.emphasis-text-large {
+    font-size: 5rem;
+    font-weight: 900;
+    letter-spacing: -0.03em;
+    line-height: 1.1;
+    color: var(--text);
+    text-shadow: 0 4px 16px rgba(0,0,0,0.3);
+}
+.emphasis-sub {
+    font-size: 1.2rem;
+    color: var(--text-light);
+    margin-top: 1rem;
+    line-height: 1.6;
+}
+.footnote {
+    font-size: 0.95rem;
+    color: var(--text-muted);
+    margin-top: 0.8rem;
+    font-style: italic;
+}
+.comparison-note {
+    font-size: 1rem;
+    color: var(--text-light);
+    margin-top: 0.8rem;
+    font-style: italic;
+    background: rgba(88, 166, 255, 0.06);
+    padding: 10px 20px;
+    border-radius: var(--radius-sm);
+    border-left: 3px solid var(--primary);
+    backdrop-filter: blur(8px);
+}
+
+/* ────────────────────────────────────────────
+   7. アクセントカラー・グロウテキスト
+   ──────────────────────────────────────────── */
+.accent-primary {
+    color: var(--primary);
+    text-shadow: 0 0 20px rgba(var(--primary-rgb), 0.3);
+}
+.accent-teal { color: var(--teal); }
+.accent-coral { color: var(--coral); }
+.accent-amber { color: var(--amber); }
+.accent-purple { color: var(--purple); }
+.accent-bg-primary {
+    background: var(--gradient-primary);
+    color: #fff;
+    box-shadow: 0 4px 16px rgba(var(--primary-rgb), 0.3);
+}
+.accent-bg-teal {
+    background: var(--gradient-teal);
+    color: #fff;
+    box-shadow: 0 4px 16px rgba(var(--teal-rgb), 0.3);
+}
+.accent-bg-amber {
+    background: var(--gradient-amber);
+    color: #fff;
+    box-shadow: 0 4px 16px rgba(var(--amber-rgb), 0.3);
+}
+.accent-bg-coral {
+    background: var(--gradient-coral);
+    color: #fff;
+    box-shadow: 0 4px 16px rgba(var(--coral-rgb), 0.3);
+}
+.accent-bg-purple {
+    background: var(--gradient-purple);
+    color: #fff;
+    box-shadow: 0 4px 16px rgba(var(--purple-rgb), 0.3);
+}
+
+/* ────────────────────────────────────────────
+   8. 数値インパクト
+   ──────────────────────────────────────────── */
+.num-unit {
+    font-size: 3rem;
+    font-weight: 700;
+    color: var(--text-light);
+    margin-left: 8px;
+}
+.source-badge {
+    display: inline-block;
+    padding: 6px 18px;
+    border-radius: var(--radius-pill);
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    color: var(--text-light);
+    background: rgba(255, 255, 255, 0.04);
+    margin-top: 0.5rem;
+    border: 1px solid var(--border);
+    backdrop-filter: blur(8px);
+}
+
+/* ────────────────────────────────────────────
+   9. ──── ガラスカード (共通) ────
+   ──────────────────────────────────────────── */
+.glass-card {
+    background: var(--bg-glass);
+    backdrop-filter: blur(16px) saturate(180%);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+}
+
+/* ────────────────────────────────────────────
+   10. VS カード（比較対照）
+   ──────────────────────────────────────────── */
+.vs-container {
+    display: flex;
+    align-items: stretch;
+    gap: 24px;
+    justify-content: center;
+}
+.vs-card {
+    background: var(--bg-glass);
+    backdrop-filter: blur(16px) saturate(180%);
+    border-radius: var(--radius);
+    padding: 28px 32px;
+    box-shadow: var(--shadow);
+    min-width: 280px;
+    max-width: 380px;
+    text-align: center;
+    transition: transform var(--transition-fast), box-shadow var(--transition-fast), border-color var(--transition-fast);
+    border: 1px solid var(--border);
+}
+.vs-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lg);
+    border-color: var(--border-bright);
+}
+.vs-badge {
+    display: inline-block;
+    padding: 4px 14px;
+    border-radius: var(--radius-pill);
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+}
+.safe-badge {
+    background: var(--teal-light);
+    color: var(--teal);
+    border: 1px solid rgba(var(--teal-rgb), 0.3);
+}
+.danger-badge {
+    background: var(--coral-light);
+    color: var(--coral);
+    border: 1px solid rgba(var(--coral-rgb), 0.3);
+}
+.warning-badge {
+    background: var(--amber-light);
+    color: var(--amber);
+    border: 1px solid rgba(var(--amber-rgb), 0.3);
+}
+.vs-title {
+    font-size: 1.6rem;
+    font-weight: 900;
+    margin-bottom: 8px;
+    color: var(--text);
+}
+.vs-desc {
+    font-size: 1rem;
+    color: var(--text-light);
+    margin-bottom: 6px;
+}
+.vs-detail {
+    font-size: 0.95rem;
+    color: var(--text-muted);
+    padding: 4px 0;
+    border-bottom: 1px solid var(--border);
+}
+.vs-detail:last-child {
+    border-bottom: none;
+}
+.vs-divider {
+    font-size: 1.6rem;
+    font-weight: 900;
+    color: var(--text-muted);
+    display: flex;
+    align-items: center;
+}
+.vs-icon-text {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--text);
+    margin: 8px 0;
+    font-style: italic;
+}
+
+/* ────────────────────────────────────────────
+   11. バーチャート
+   ──────────────────────────────────────────── */
+.bar-comparison {
+    width: 80%;
+    max-width: 900px;
+}
+.bar-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 14px;
+}
+.bar-label {
+    font-weight: 700;
+    font-size: 1rem;
+    width: 140px;
+    text-align: right;
+    flex-shrink: 0;
+    color: var(--text-light);
+}
+.bar-track {
+    flex: 1;
+    height: 36px;
+    background: rgba(255, 255, 255, 0.04);
+    border-radius: 18px;
+    overflow: hidden;
+    position: relative;
+    border: 1px solid var(--border);
+}
+.bar-fill {
+    height: 100%;
+    border-radius: 18px;
+    width: var(--w);
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding-right: 14px;
+    position: relative;
+}
+.bar-primary-fill {
+    background: var(--gradient-primary);
+    box-shadow: 0 0 16px rgba(var(--primary-rgb), 0.3);
+}
+.bar-teal-fill {
+    background: var(--gradient-teal);
+}
+.bar-amber-fill {
+    background: var(--gradient-amber);
+}
+.bar-coral-fill {
+    background: var(--gradient-coral);
+}
+.bar-value {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: #fff;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+}
+
+/* ────────────────────────────────────────────
+   12. フロー図（チェーン）
+   ──────────────────────────────────────────── */
+.flow-chain {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+.flow-node {
+    background: var(--bg-glass);
+    backdrop-filter: blur(12px);
+    border-radius: var(--radius);
+    padding: 16px 20px;
+    box-shadow: var(--shadow);
+    text-align: center;
+    min-width: 140px;
+    border: 1px solid var(--border);
+    transition: transform var(--transition-fast), border-color var(--transition-fast);
+}
+.flow-node:hover {
+    transform: translateY(-2px);
+    border-color: var(--border-bright);
+}
+.flow-node-dark {
+    background: rgba(248, 81, 73, 0.08);
+    border-color: rgba(var(--coral-rgb), 0.3);
+}
+.flow-year {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--primary);
+    margin-bottom: 4px;
+    letter-spacing: 0.05em;
+}
+.flow-text {
+    font-size: 0.95rem;
+    line-height: 1.5;
+    color: var(--text);
+}
+.flow-name {
+    font-weight: 900;
+    font-size: 1.1rem;
+}
+.flow-sub {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+}
+.flow-arrow {
+    font-size: 1.5rem;
+    color: var(--text-muted);
+    font-weight: 700;
+}
+
+/* ────────────────────────────────────────────
+   13. 数式・公式
+   ──────────────────────────────────────────── */
+.formula-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    flex-wrap: wrap;
+}
+.formula-part {
+    font-size: 2.2rem;
+    font-weight: 700;
+    background: var(--bg-glass);
+    backdrop-filter: blur(12px);
+    padding: 16px 28px;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    border: 1px solid var(--border);
+    color: var(--text);
+}
+.formula-op {
+    font-size: 2.5rem;
+    font-weight: 900;
+    color: var(--text-muted);
+}
+.formula-eq {
+    font-size: 2.5rem;
+    font-weight: 900;
+    color: var(--text-muted);
+}
+.formula-result {
+    font-size: 2.8rem;
+    font-weight: 900;
+    background: var(--bg-glass);
+    backdrop-filter: blur(12px);
+    padding: 16px 28px;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-lg), var(--shadow-glow-coral);
+    border: 2px solid var(--coral);
+    color: var(--coral);
+}
+
+/* ────────────────────────────────────────────
+   14. 段階的リスト（ナンバーリスト）
+   ──────────────────────────────────────────── */
+.numbered-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    width: 80%;
+    max-width: 600px;
+}
+.numbered-item {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    background: var(--bg-glass);
+    backdrop-filter: blur(12px);
+    padding: 14px 20px;
+    border-radius: var(--radius-sm);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    border: 1px solid var(--border);
+    transition: transform var(--transition-fast), border-color var(--transition-fast);
+}
+.numbered-item:hover {
+    transform: translateX(4px);
+    border-color: var(--border-bright);
+}
+.number-circle {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: var(--gradient-primary);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 900;
+    font-size: 1rem;
+    flex-shrink: 0;
+    box-shadow: 0 2px 8px rgba(var(--primary-rgb), 0.3);
+}
+.numbered-text {
+    font-size: 1.1rem;
+    font-weight: 500;
+    text-align: left;
+    color: var(--text);
+}
+
+/* ────────────────────────────────────────────
+   15. 横並びカード（3列）
+   ──────────────────────────────────────────── */
+.triple-card {
+    display: flex;
+    gap: 24px;
+    justify-content: center;
+}
+.factor-card {
+    background: var(--bg-glass);
+    backdrop-filter: blur(16px);
+    border-radius: var(--radius);
+    padding: 28px 24px;
+    box-shadow: var(--shadow);
+    min-width: 200px;
+    max-width: 280px;
+    text-align: center;
+    transition: transform var(--transition-fast), box-shadow var(--transition-fast), border-color var(--transition-fast);
+    border: 1px solid var(--border);
+}
+.factor-card:hover {
+    transform: translateY(-6px);
+    box-shadow: var(--shadow-lg);
+    border-color: var(--border-bright);
+}
+.factor-icon {
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 900;
+    font-size: 1.3rem;
+    margin: 0 auto 14px;
+}
+.factor-name {
+    font-weight: 900;
+    font-size: 1.15rem;
+    margin-bottom: 8px;
+    color: var(--text);
+}
+.factor-desc {
+    font-size: 0.9rem;
+    color: var(--text-light);
+    line-height: 1.5;
+}
+
+/* ────────────────────────────────────────────
+   16. 引用カード
+   ──────────────────────────────────────────── */
+.quote-card {
+    background: var(--bg-glass);
+    backdrop-filter: blur(16px);
+    border-left: 5px solid var(--primary);
+    border-radius: 0 var(--radius) var(--radius) 0;
+    padding: 32px 36px;
+    box-shadow: var(--shadow);
+    max-width: 700px;
+    text-align: left;
+    position: relative;
+    border-top: 1px solid var(--border);
+    border-right: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+}
+.quote-card.quote-warning {
+    border-left-color: var(--coral);
+    background: rgba(248, 81, 73, 0.08);
+    box-shadow: var(--shadow), var(--shadow-glow-coral);
+}
+.quote-mark {
+    font-size: 3.5rem;
+    font-weight: 900;
+    color: var(--coral);
+    line-height: 1;
+    position: absolute;
+    top: 12px;
+    left: 16px;
+    opacity: 0.3;
+}
+.quote-text {
+    font-size: 2.2rem;
+    font-weight: 700;
+    line-height: 1.4;
+    padding-left: 28px;
+    color: var(--text);
+}
+.quote-source {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    margin-top: 14px;
+    padding-left: 28px;
+    font-style: italic;
+}
+
+/* ────────────────────────────────────────────
+   17. パイプライン（変換フロー）
+   ──────────────────────────────────────────── */
+.pipeline {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    flex-wrap: wrap;
+}
+.pipe-stage {
+    text-align: center;
+    padding: 12px;
+}
+.pipe-icon {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 900;
+    font-size: 0.85rem;
+    margin: 0 auto 10px;
+}
+.pipe-label {
+    font-weight: 900;
+    font-size: 1.1rem;
+    margin-bottom: 4px;
+    color: var(--text);
+}
+.pipe-desc {
+    font-size: 0.85rem;
+    color: var(--text-light);
+}
+.pipe-arrow {
+    font-size: 1.4rem;
+    color: var(--text-muted);
+    font-weight: 700;
+}
+.pipe-result {
+    animation: pulseGlow 2.5s ease-in-out infinite;
+}
+
+/* ────────────────────────────────────────────
+   18. アーキテクチャ図
+   ──────────────────────────────────────────── */
+.arch-stack {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+}
+.arch-layer {
+    width: 70%;
+    max-width: 600px;
+    padding: 22px 28px;
+    border-radius: var(--radius-sm);
+    text-align: center;
+    transition: transform var(--transition-fast);
+    backdrop-filter: blur(12px);
+}
+.arch-layer:hover {
+    transform: scale(1.02);
+}
+.arch-layer-top {
+    background: rgba(var(--primary-rgb), 0.12);
+    border: 1px solid rgba(var(--primary-rgb), 0.3);
+}
+.arch-layer-mid {
+    background: rgba(var(--teal-rgb), 0.12);
+    border: 1px solid rgba(var(--teal-rgb), 0.3);
+}
+.arch-layer-base {
+    background: rgba(var(--amber-rgb), 0.12);
+    border: 1px solid rgba(var(--amber-rgb), 0.3);
+}
+.arch-label {
+    font-weight: 900;
+    font-size: 1.2rem;
+    color: var(--text);
+}
+.arch-desc {
+    font-size: 0.9rem;
+    color: var(--text-light);
+    margin-top: 4px;
+}
+.arch-arrow {
+    font-size: 1.4rem;
+    color: var(--text-muted);
+}
+
+/* ────────────────────────────────────────────
+   19. ダークシーン（強調用）
+   ──────────────────────────────────────────── */
+.dark-scene {
+    background: linear-gradient(135deg, #0d1117, #161b22);
+    background-image: radial-gradient(ellipse at 50% 50%, rgba(var(--coral-rgb), 0.06) 0%, transparent 60%);
+}
+.dark-scene .scene-title {
+    color: var(--text);
+}
+.light-text {
+    color: var(--text) !important;
+}
+
+/* ────────────────────────────────────────────
+   20. SVG共通 & M×Nビジュアル
+   ──────────────────────────────────────────── */
+.mxn-svg,
+.lsp-svg {
+    width: 80%;
+    max-width: 900px;
+    height: auto;
+}
+.mxn-lines line {
+    stroke: var(--coral);
+    stroke-width: 1;
+    opacity: 0.25;
+}
+.scene.active .mxn-lines line {
+    animation: drawMxnLine 0.8s ease forwards;
+    animation-delay: calc(var(--i, 0) * 0.03s);
+}
+@keyframes drawMxnLine {
+    from { opacity: 0; }
+    to { opacity: 0.25; }
+}
+
+/* ────────────────────────────────────────────
+   21. マトリックスグリッド（M×N思考実験）
+   ──────────────────────────────────────────── */
+.matrix-grid {
+    display: grid;
+    grid-template-columns: 120px repeat(5, 1fr);
+    gap: 4px;
+    max-width: 800px;
+    margin: 0 auto;
+}
+.matrix-corner {
+    background: transparent;
+}
+.matrix-header {
+    background: rgba(var(--teal-rgb), 0.12);
+    color: var(--teal);
+    font-weight: 700;
+    font-size: 0.9rem;
+    padding: 10px 8px;
+    border-radius: var(--radius-sm);
+    text-align: center;
+    border: 1px solid rgba(var(--teal-rgb), 0.2);
+}
+.matrix-lang {
+    background: rgba(var(--primary-rgb), 0.12);
+    color: var(--primary);
+    font-weight: 700;
+    font-size: 0.9rem;
+    padding: 10px 8px;
+    border-radius: var(--radius-sm);
+    text-align: right;
+    border: 1px solid rgba(var(--primary-rgb), 0.2);
+}
+.matrix-cell {
+    background: rgba(var(--coral-rgb), 0.1);
+    color: var(--coral);
+    font-size: 0.8rem;
+    font-weight: 700;
+    padding: 10px 8px;
+    border-radius: var(--radius-sm);
+    text-align: center;
+    opacity: 0.7;
+    transition: opacity var(--transition-fast), transform var(--transition-fast);
+    border: 1px solid rgba(var(--coral-rgb), 0.15);
+}
+.scene.active .matrix-cell {
+    animation: matrixPop 0.4s ease forwards;
+    animation-delay: calc(var(--d, 0) * 0.05s);
+}
+@keyframes matrixPop {
+    0% { transform: scale(0.8); opacity: 0; }
+    100% { transform: scale(1); opacity: 0.7; }
+}
+
+/* ────────────────────────────────────────────
+   22. 変換ビジュアル（Atom Shell → Electron）
+   ──────────────────────────────────────────── */
+.transform-visual {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 28px;
+}
+.transform-from {
+    font-size: 2.4rem;
+    font-weight: 900;
+    color: var(--text-light);
+    background: var(--bg-glass);
+    backdrop-filter: blur(12px);
+    padding: 24px 40px;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    border: 1px solid var(--border);
+}
+.transform-arrow {
+    font-size: 3rem;
+    font-weight: 900;
+    color: var(--primary);
+    animation: arrowBounce 1.5s ease-in-out infinite;
+    text-shadow: var(--shadow-glow-primary);
+}
+@keyframes arrowBounce {
+    0%, 100% { transform: translateX(0); }
+    50% { transform: translateX(8px); }
+}
+.transform-to {
+    font-size: 2.4rem;
+    font-weight: 900;
+    background: var(--bg-glass);
+    backdrop-filter: blur(12px);
+    padding: 24px 40px;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-lg), var(--shadow-glow-primary);
+    border: 2px solid var(--primary);
+    color: var(--primary);
+}
+
+/* ────────────────────────────────────────────
+   23. Atom アーキテクチャ図
+   ──────────────────────────────────────────── */
+.atom-arch {
+    position: relative;
+    width: 400px;
+    height: 400px;
+    margin: 0 auto;
+}
+.atom-core {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 84px;
+    height: 84px;
+    border-radius: 50%;
+    background: var(--gradient-primary);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 900;
+    font-size: 1.1rem;
+    z-index: 2;
+    box-shadow: var(--shadow-glow-primary);
+    animation: coreGlow 3s ease-in-out infinite;
+}
+@keyframes coreGlow {
+    0%, 100% { box-shadow: var(--shadow-glow-primary); }
+    50% { box-shadow: 0 0 50px rgba(var(--primary-rgb), 0.4), 0 0 80px rgba(var(--primary-rgb), 0.2); }
+}
+.atom-ring {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+.atom-ext {
+    position: absolute;
+    width: 84px;
+    height: 42px;
+    background: var(--bg-glass);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(var(--primary-rgb), 0.3);
+    border-radius: var(--radius-sm);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--primary);
+    box-shadow: var(--shadow);
+    transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+}
+.atom-ext:hover {
+    transform: scale(1.1);
+    box-shadow: var(--shadow-lg);
+}
+.ext-1 { top: 10px; left: 50%; transform: translateX(-50%); }
+.ext-2 { top: 30%; right: 10px; }
+.ext-3 { top: 60%; right: 10px; }
+.ext-4 { bottom: 10px; left: 50%; transform: translateX(-50%); }
+.ext-5 { top: 30%; left: 10px; }
+.ext-6 { top: 60%; left: 10px; }
+
+/* ────────────────────────────────────────────
+   24. パフォーマンス比較
+   ──────────────────────────────────────────── */
+.perf-comparison {
+    width: 70%;
+    max-width: 700px;
+}
+.perf-bar {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 18px;
+}
+.perf-label {
+    font-weight: 700;
+    font-size: 0.95rem;
+    width: 120px;
+    text-align: right;
+    flex-shrink: 0;
+    color: var(--text-light);
+}
+.perf-track {
+    flex: 1;
+    height: 30px;
+    background: rgba(255, 255, 255, 0.04);
+    border-radius: 15px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+}
+.perf-fill {
+    height: 100%;
+    border-radius: 15px;
+    width: var(--w);
+}
+.perf-fast {
+    background: var(--gradient-teal);
+    box-shadow: 0 0 12px rgba(var(--teal-rgb), 0.3);
+}
+.perf-mid {
+    background: var(--gradient-amber);
+}
+.perf-slow {
+    background: var(--gradient-coral);
+    box-shadow: 0 0 12px rgba(var(--coral-rgb), 0.3);
+}
+.perf-time {
+    font-weight: 700;
+    font-size: 0.95rem;
+    color: var(--text-light);
+    width: 80px;
+    flex-shrink: 0;
+}
+
+/* ────────────────────────────────────────────
+   25. プロセスビジュアル
+   ──────────────────────────────────────────── */
+.process-visual {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    margin: 14px 0;
+}
+.process-item {
+    padding: 10px 14px;
+    border-radius: var(--radius-sm);
+    font-size: 0.85rem;
+    font-weight: 700;
+}
+.process-single .process-item {
+    background: var(--coral-light);
+    color: var(--coral);
+    border: 1px solid rgba(var(--coral-rgb), 0.3);
+}
+.process-single .process-crash {
+    background: var(--coral);
+    color: #fff;
+    animation: crashPulse 1.5s infinite;
+    border: none;
+    box-shadow: 0 0 16px rgba(var(--coral-rgb), 0.4);
+}
+.process-separate .process-item {
+    background: var(--teal-light);
+    color: var(--teal);
+    border: 1px solid rgba(var(--teal-rgb), 0.3);
+}
+.process-separate .process-crash {
+    background: var(--coral-light);
+    color: var(--coral);
+    border-color: rgba(var(--coral-rgb), 0.3);
+}
+.process-safe { /* semantic marker */ }
+.process-separator {
+    color: var(--text-muted);
+    font-weight: 700;
+    font-size: 1.2rem;
+}
+
+/* ────────────────────────────────────────────
+   26. エラ・タイムライン
+   ──────────────────────────────────────────── */
+.era-timeline {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+.era-block {
+    text-align: center;
+    padding: 18px 22px;
+    border-radius: var(--radius);
+    min-width: 110px;
+    transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+    border: 1px solid var(--border);
+    backdrop-filter: blur(12px);
+}
+.era-block:hover {
+    transform: translateY(-3px);
+}
+.era-classic {
+    background: rgba(255, 255, 255, 0.04);
+}
+.era-sublime {
+    background: rgba(var(--amber-rgb), 0.1);
+    border-color: rgba(var(--amber-rgb), 0.3);
+}
+.era-atom {
+    background: rgba(var(--coral-rgb), 0.1);
+    border-color: rgba(var(--coral-rgb), 0.3);
+}
+.era-vscode {
+    background: rgba(var(--primary-rgb), 0.1);
+    border-color: rgba(var(--primary-rgb), 0.3);
+}
+.era-highlight {
+    box-shadow: var(--shadow-glow-primary);
+    transform: scale(1.1);
+    border-width: 2px;
+    border-color: var(--primary);
+}
+.era-label {
+    font-weight: 900;
+    font-size: 1.1rem;
+    color: var(--text);
+}
+.era-years {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    margin-top: 2px;
+}
+.era-detail {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    margin-top: 4px;
+}
+.era-arrow {
+    font-size: 1.2rem;
+    color: var(--text-muted);
+}
+
+/* ────────────────────────────────────────────
+   27. 人物カード（Erich Gamma）
+   ──────────────────────────────────────────── */
+.person-card {
+    background: var(--bg-glass);
+    backdrop-filter: blur(16px);
+    border-radius: var(--radius-lg);
+    padding: 32px 40px;
+    box-shadow: var(--shadow-lg);
+    max-width: 600px;
+    margin: 0 auto;
+    border: 1px solid var(--border);
+}
+.person-name {
+    font-size: 2.2rem;
+    font-weight: 900;
+    background: var(--gradient-primary);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 18px;
+    filter: drop-shadow(0 2px 4px rgba(var(--primary-rgb), 0.3));
+}
+.person-achievements {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+}
+.achievement-tag {
+    padding: 6px 18px;
+    border-radius: var(--radius-pill);
+    font-size: 0.85rem;
+    font-weight: 700;
+    transition: transform var(--transition-fast);
+}
+.achievement-tag:hover {
+    transform: scale(1.05);
+}
+.achievement-primary {
+    background: var(--primary-light);
+    color: var(--primary);
+    border: 1px solid rgba(var(--primary-rgb), 0.3);
+}
+.achievement-teal {
+    background: var(--teal-light);
+    color: var(--teal);
+    border: 1px solid rgba(var(--teal-rgb), 0.3);
+}
+.achievement-amber {
+    background: var(--amber-light);
+    color: var(--amber);
+    border: 1px solid rgba(var(--amber-rgb), 0.3);
+}
+.achievement-coral {
+    background: var(--coral-light);
+    color: var(--coral);
+    border: 1px solid rgba(var(--coral-rgb), 0.3);
+}
+
+/* ────────────────────────────────────────────
+   28. プラットフォームビジュアル
+   ──────────────────────────────────────────── */
+.platform-visual {
+    position: relative;
+    width: 500px;
+    height: 420px;
+    margin: 0 auto;
+}
+.platform-core {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    background: var(--gradient-primary);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 900;
+    font-size: 1.2rem;
+    text-align: center;
+    line-height: 1.3;
+    box-shadow: var(--shadow-glow-primary);
+    z-index: 2;
+    animation: coreGlow 3s ease-in-out infinite;
+}
+.platform-satellite {
+    position: absolute;
+    background: var(--bg-glass);
+    backdrop-filter: blur(16px);
+    border-radius: var(--radius);
+    padding: 14px 18px;
+    box-shadow: var(--shadow);
+    font-size: 0.9rem;
+    font-weight: 700;
+    text-align: center;
+    line-height: 1.4;
+    border: 1px solid var(--border);
+    transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+    color: var(--text);
+}
+.platform-satellite:hover {
+    transform: scale(1.05);
+    box-shadow: var(--shadow-lg);
+}
+.platform-stat {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    font-weight: 400;
+    display: block;
+    margin-top: 2px;
+}
+.platform-top {
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+.platform-left {
+    top: 50%;
+    left: 10px;
+    transform: translateY(-50%);
+}
+.platform-right {
+    top: 50%;
+    right: 10px;
+    transform: translateY(-50%);
+}
+.platform-bottom {
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+/* ────────────────────────────────────────────
+   29. アニメーション・キーフレーム
+   ──────────────────────────────────────────── */
+.heart-pulse {
+    display: inline-block;
+    animation: heartBeat 1.5s ease-in-out infinite;
+}
+@keyframes heartBeat {
+    0%, 100% { transform: scale(1); }
+    14% { transform: scale(1.2); }
+    28% { transform: scale(1); }
+    42% { transform: scale(1.2); }
+    56% { transform: scale(1); }
+}
+
+@keyframes pulseGlow {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+}
+
+@keyframes crashPulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+}
+
+@keyframes cardSlideUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes shimmer {
+    0% { background-position: -200% 0; }
+    100% { background-position: 200% 0; }
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+}
+
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+@keyframes scaleIn {
+    from { transform: scale(0.8); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+}
+
+/* ────────────────────────────────────────────
+   30. SVGパスアニメーション
+   ──────────────────────────────────────────── */
+.trend-line {
+    stroke-dasharray: 500;
+    stroke-dashoffset: 500;
+    animation: drawLine 2s ease forwards 0.5s;
+}
+@keyframes drawLine {
+    to { stroke-dashoffset: 0; }
+}
+
+.scatter-dot {
+    fill: var(--primary);
+    opacity: 0;
+    animation: dotAppear 0.3s ease forwards;
+    animation-delay: calc(var(--d) * 0.08s);
+}
+@keyframes dotAppear {
+    to { opacity: 0.7; }
+}
+
+/* ── リング進捗 ── */
+.ring-bg {
+    fill: none;
+    stroke: rgba(255,255,255,0.06);
+    stroke-width: 10;
+}
+.ring-fill {
+    fill: none;
+    stroke: var(--primary);
+    stroke-width: 10;
+    stroke-linecap: round;
+    stroke-dasharray: calc(2 * 3.14159 * 54);
+    stroke-dashoffset: calc(2 * 3.14159 * 54 * (1 - var(--percent) / 100));
+    transition: stroke-dashoffset 1.5s ease;
+    transform: rotate(-90deg);
+    transform-origin: center;
+}
+
+/* ────────────────────────────────────────────
+   31. ユーティリティ
+   ──────────────────────────────────────────── */
+.mt-1 { margin-top: 0.5rem; }
+.mt-2 { margin-top: 1rem; }
+.mt-3 { margin-top: 1.5rem; }
+.mt-4 { margin-top: 2rem; }
+.mb-1 { margin-bottom: 0.5rem; }
+.mb-2 { margin-bottom: 1rem; }
+.gap-sm { gap: 8px; }
+.gap-md { gap: 16px; }
+.gap-lg { gap: 24px; }
+.text-sm { font-size: 0.85rem; }
+.text-md { font-size: 1rem; }
+.text-lg { font-size: 1.3rem; }
+.text-left { text-align: left; }
+.text-right { text-align: right; }
+.w-full { width: 100%; }
+.flex-center { display: flex; align-items: center; justify-content: center; }

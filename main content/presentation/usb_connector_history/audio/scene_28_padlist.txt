@@ -1,0 +1,2 @@
+file 'D:/myfolder/動画生成/技術解説/main content/presentation/usb_connector_history/audio/scene_28_concat.wav'
+file 'D:/myfolder/動画生成/技術解説/main content/presentation/usb_connector_history/audio/scene_28_pad.wav'

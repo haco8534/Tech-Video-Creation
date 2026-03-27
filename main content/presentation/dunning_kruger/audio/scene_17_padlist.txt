@@ -1,2 +1,0 @@
-file 'D:/myfolder/動画生成/main content/presentation/dunning_kruger/audio/scene_17_concat.wav'
-file 'D:/myfolder/動画生成/main content/presentation/dunning_kruger/audio/scene_17_pad.wav'

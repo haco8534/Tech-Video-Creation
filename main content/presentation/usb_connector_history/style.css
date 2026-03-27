@@ -1,0 +1,312 @@
+/* ===================================================================
+   USB Connector History — White Theme (Zoom-compatible)
+   =================================================================== */
+
+/* Google Fonts - loaded via Puppeteer network */
+
+/* ── Design Tokens ── */
+:root {
+    --bg-primary: #ffffff;
+    --bg-secondary: #f0f1f3;
+    --bg-card: rgba(0, 0, 0, 0.04);
+    --glass: rgba(0, 0, 0, 0.05);
+    --glass-border: rgba(0, 0, 0, 0.12);
+
+    --text-primary: #1a1a1a;
+    --text-secondary: #444444;
+    --text-dim: #888888;
+
+    --accent-cyan: #0891b2;
+    --accent-teal: #0d9488;
+    --accent-purple: #7c3aed;
+    --accent-blue: #2563eb;
+    --accent-amber: #d97706;
+    --accent-red: #dc2626;
+    --accent-green: #16a34a;
+    --accent-pink: #db2777;
+
+    --gradient-main: linear-gradient(135deg, #0891b2 0%, #7c3aed 100%);
+    --gradient-warm: linear-gradient(135deg, #d97706 0%, #dc2626 100%);
+    --gradient-cool: linear-gradient(135deg, #0d9488 0%, #2563eb 100%);
+
+    --font-display: 'Zen Maru Gothic', 'Hiragino Kaku Gothic ProN', 'Meiryo', sans-serif;
+    --font-body: 'Inter', 'Zen Maru Gothic', 'Hiragino Kaku Gothic ProN', sans-serif;
+
+    --radius-sm: 8px;
+    --radius-md: 16px;
+    --radius-lg: 24px;
+    --radius-xl: 32px;
+}
+
+/* ── Reset & Base ── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    font-family: var(--font-body);
+    background: var(--bg-primary);
+    color: var(--text-primary);
+}
+
+/* ── Scene System ── */
+.scene {
+    position: absolute;
+    inset: 0;
+    width: 100vw;
+    height: 100vh;
+    display: none;
+    background: var(--bg-primary);
+    overflow: hidden;
+}
+
+.scene.active {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: sceneIn 0.5s ease-out;
+}
+
+@keyframes sceneIn {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+
+.content {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    max-width: 88vw;
+    padding: 3rem 4rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+/* ── Typography ── */
+.section-label {
+    font-family: var(--font-body);
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 5px;
+    text-transform: uppercase;
+    color: var(--accent-cyan);
+    margin-bottom: 0.8rem;
+    opacity: 0.7;
+}
+
+.section-header {
+    font-family: var(--font-display);
+    font-size: 2.2rem;
+    font-weight: 900;
+    line-height: 1.3;
+    margin-bottom: 1.5rem;
+    background: var(--gradient-main);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.big-text {
+    font-family: var(--font-display);
+    font-size: 2.6rem;
+    font-weight: 900;
+    line-height: 1.4;
+    color: var(--text-primary);
+}
+
+.big-text .highlight {
+    background: var(--gradient-main);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.big-text .highlight-warm {
+    background: var(--gradient-warm);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.subtitle-text {
+    font-family: var(--font-display);
+    font-size: 1.2rem;
+    font-weight: 500;
+    line-height: 1.8;
+    color: var(--text-secondary);
+    margin-top: 1.2rem;
+}
+
+/* ── Title Scene ── */
+.title-main {
+    font-family: var(--font-display);
+    font-size: 3.5rem;
+    font-weight: 900;
+    line-height: 1.3;
+    background: var(--gradient-main);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 1rem;
+}
+
+.title-sub {
+    font-family: var(--font-display);
+    font-size: 1.4rem;
+    font-weight: 500;
+    color: var(--text-secondary);
+}
+
+.title-decoration {
+    width: 80px;
+    height: 3px;
+    background: var(--gradient-main);
+    border-radius: 2px;
+    margin: 1.5rem auto 0;
+}
+
+/* ── Connector Shapes ── */
+.connector-grid {
+    display: flex;
+    gap: 2rem;
+    justify-content: center;
+    align-items: flex-end;
+    flex-wrap: wrap;
+    margin-top: 1.2rem;
+}
+.connector-item { display: flex; flex-direction: column; align-items: center; gap: 0.6rem; }
+
+.connector-shape {
+    display: flex; align-items: center; justify-content: center;
+    width: 60px; height: 34px;
+    border: 2px solid var(--accent-cyan);
+    border-radius: var(--radius-sm);
+    font-family: var(--font-body); font-size: 0.8rem; font-weight: 700;
+    color: var(--accent-cyan); background: rgba(8,145,178,0.06);
+}
+.connector-shape.type-a { width: 76px; height: 30px; border-radius: 4px; }
+.connector-shape.type-b { width: 48px; height: 48px; border-color: var(--accent-purple); color: var(--accent-purple); background: rgba(124,58,237,0.06); border-radius: 6px 6px 12px 12px; }
+.connector-shape.mini-b { width: 44px; height: 20px; border-color: var(--accent-amber); color: var(--accent-amber); background: rgba(217,119,6,0.06); border-radius: 3px 3px 8px 8px; }
+.connector-shape.micro-b { width: 42px; height: 14px; border-color: var(--accent-green); color: var(--accent-green); background: rgba(22,163,74,0.06); border-radius: 3px; }
+.connector-shape.usb-c { width: 50px; height: 18px; border-color: var(--accent-pink); color: var(--accent-pink); background: rgba(219,39,119,0.06); border-radius: 10px; }
+.connector-shape.usb3-micro { width: 70px; height: 14px; border-color: var(--accent-red); color: var(--accent-red); background: rgba(220,38,38,0.06); border-radius: 3px; }
+.connector-label { font-family: var(--font-display); font-size: 0.85rem; font-weight: 700; color: var(--text-primary); }
+.connector-note { font-size: 0.75rem; color: var(--text-secondary); }
+
+/* ── Comparison ── */
+.comparison { display: flex; gap: 1.5rem; align-items: stretch; justify-content: center; margin-top: 1.2rem; }
+.compare-card {
+    flex: 1; max-width: 340px;
+    background: var(--glass); border: 1px solid var(--glass-border);
+    border-radius: var(--radius-lg); padding: 1.5rem; text-align: left;
+}
+.compare-card h3 { font-family: var(--font-display); font-size: 1.1rem; font-weight: 800; margin-bottom: 1rem; color: var(--accent-cyan); }
+.compare-card ul { list-style: none; padding: 0; }
+.compare-card ul li { padding: 0.4rem 0; padding-left: 1.2rem; position: relative; font-size: 0.9rem; color: var(--text-secondary); line-height: 1.5; }
+.compare-card ul li::before { content: '•'; position: absolute; left: 0; color: var(--accent-cyan); font-weight: 900; }
+.compare-vs { display: flex; align-items: center; justify-content: center; font-size: 1.4rem; font-weight: 900; color: var(--text-dim); min-width: 50px; }
+
+/* ── Impact Numbers ── */
+.impact-number {
+    font-family: var(--font-body); font-size: 5rem; font-weight: 900; line-height: 1;
+    background: var(--gradient-main); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+}
+.impact-number.danger { background: var(--gradient-warm); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+.impact-unit { font-family: var(--font-display); font-size: 1.2rem; font-weight: 700; color: var(--text-secondary); margin-top: 0.4rem; }
+.impact-context { font-size: 1rem; color: var(--text-secondary); margin-top: 1.2rem; line-height: 1.7; }
+
+/* ── Port Grid ── */
+.port-grid { display: flex; gap: 1.5rem; justify-content: center; flex-wrap: wrap; margin-top: 1.2rem; }
+.port-item { display: flex; flex-direction: column; align-items: center; gap: 0.5rem; }
+.port-shape { display: flex; align-items: center; justify-content: center; font-family: var(--font-body); font-size: 0.75rem; font-weight: 700; border: 2px solid; background: rgba(0,0,0,0.02); }
+.port-label { font-family: var(--font-display); font-size: 0.8rem; font-weight: 700; }
+
+/* ── Diagram Box ── */
+.diagram-box {
+    background: var(--glass); border: 1px solid var(--glass-border);
+    border-radius: var(--radius-lg); padding: 2rem 2.5rem; width: 100%; max-width: 700px;
+}
+.diagram-title { font-family: var(--font-display); font-size: 0.95rem; font-weight: 700; color: var(--text-secondary); margin-bottom: 1.2rem; letter-spacing: 1px; }
+
+/* ── Pin Row ── */
+.pin-row { display: flex; gap: 5px; justify-content: center; }
+.pin { display: flex; align-items: center; justify-content: center; width: 50px; height: 30px; border-radius: 4px; font-size: 0.65rem; font-weight: 700; color: #fff; }
+.pin.vbus { background: linear-gradient(135deg, #ef4444, #dc2626); }
+.pin.d-plus { background: linear-gradient(135deg, #22c55e, #16a34a); }
+.pin.d-minus { background: linear-gradient(135deg, #f59e0b, #d97706); }
+.pin.gnd { background: linear-gradient(135deg, #64748b, #475569); }
+.pin.ss-tx { background: linear-gradient(135deg, #3b82f6, #2563eb); }
+.pin.ss-rx { background: linear-gradient(135deg, #8b5cf6, #7c3aed); }
+.pin.drain { background: linear-gradient(135deg, #6b7280, #4b5563); }
+.pin.cc { background: linear-gradient(135deg, #ec4899, #db2777); }
+.pin-legend { display: flex; gap: 1.2rem; justify-content: center; margin-top: 1rem; flex-wrap: wrap; }
+.pin-legend-item { display: flex; align-items: center; gap: 0.4rem; font-size: 0.75rem; color: var(--text-secondary); }
+.pin-legend-color { width: 10px; height: 10px; border-radius: 3px; }
+
+/* ── PC Diagram ── */
+.pc-diagram { display: flex; align-items: center; justify-content: center; gap: 0; margin-top: 1.5rem; }
+.pc-box { display: flex; flex-direction: column; align-items: center; gap: 0.4rem; padding: 1.5rem 2.5rem; background: var(--glass); border: 2px solid var(--glass-border); border-radius: var(--radius-lg); }
+.pc-box.danger { border-color: rgba(220,38,38,0.3); }
+.pc-box .label { font-size: 1.1rem; font-weight: 800; }
+.pc-box .sub { font-size: 0.9rem; color: var(--accent-red); font-weight: 700; }
+.cable-line { width: 100px; height: 3px; background: rgba(220,38,38,0.25); position: relative; display: flex; align-items: center; justify-content: center; }
+.spark { font-size: 2rem; position: absolute; top: -16px; animation: sparkPulse 0.8s ease-in-out infinite; }
+@keyframes sparkPulse { 0%,100%{transform:scale(1);opacity:1} 50%{transform:scale(1.3);opacity:0.6} }
+
+/* ── Thought Box ── */
+.thought-box { background: var(--glass); border: 2px solid rgba(217,119,6,0.15); border-radius: var(--radius-xl); padding: 2.5rem 3rem; max-width: 650px; }
+.thought-icon { font-size: 2.8rem; margin-bottom: 1.2rem; }
+.thought-question { font-family: var(--font-display); font-size: 2rem; font-weight: 800; line-height: 1.5; color: var(--text-primary); }
+
+/* ── Flow Arrow ── */
+.flow-arrow { display: flex; align-items: center; justify-content: center; gap: 0.6rem; margin-top: 1.5rem; flex-wrap: wrap; }
+.flow-step { background: var(--glass); border: 1px solid var(--glass-border); border-radius: var(--radius-md); padding: 0.8rem 1.2rem; font-family: var(--font-display); font-size: 0.95rem; font-weight: 700; color: var(--text-secondary); line-height: 1.4; }
+.flow-step.highlight-step { border-color: rgba(8,145,178,0.25); background: rgba(8,145,178,0.06); color: var(--accent-cyan); }
+.flow-arrow-icon { font-size: 1.2rem; color: var(--accent-amber); font-weight: 900; }
+
+/* ── Tag List ── */
+.tag-list { display: flex; gap: 0.6rem; justify-content: center; flex-wrap: wrap; margin-top: 1.2rem; }
+.tag { padding: 0.4rem 1rem; border-radius: 16px; font-size: 0.85rem; font-weight: 600; background: var(--glass); border: 1px solid var(--glass-border); color: var(--text-secondary); }
+.tag.accent { border-color: rgba(8,145,178,0.25); color: var(--accent-cyan); }
+
+/* ── Speed Comparison ── */
+.speed-row { display: flex; gap: 2.5rem; justify-content: center; align-items: center; margin-top: 1.5rem; }
+.speed-item { text-align: center; }
+.speed-label { font-size: 0.95rem; color: var(--text-secondary); margin-bottom: 0.4rem; }
+.speed-value { font-family: var(--font-body); font-size: 3.2rem; font-weight: 900; line-height: 1; }
+.speed-unit { font-size: 1.1rem; font-weight: 700; color: var(--text-secondary); margin-top: 0.3rem; }
+.speed-arrow { font-size: 2.5rem; color: var(--accent-amber); }
+
+/* ── Cable Comparison ── */
+.cable-row { display: flex; gap: 2rem; justify-content: center; margin-top: 1.5rem; }
+.cable-item { text-align: center; padding: 1.2rem 1.5rem; background: var(--glass); border: 1px solid var(--glass-border); border-radius: var(--radius-lg); min-width: 150px; }
+.cable-visual { width: 50px; height: 16px; background: var(--gradient-main); border-radius: 8px; margin: 0 auto 0.8rem; }
+.cable-specs { display: flex; flex-direction: column; gap: 0.2rem; margin-bottom: 0.6rem; }
+.cable-specs .speed { font-weight: 800; font-size: 1.1rem; color: var(--accent-cyan); }
+.cable-specs .power { font-weight: 700; font-size: 0.85rem; color: var(--accent-amber); }
+
+/* ── Step List ── */
+.step-list { display: flex; flex-direction: column; gap: 0.8rem; margin-top: 1.2rem; text-align: left; max-width: 600px; }
+.step-item { display: flex; align-items: center; gap: 1rem; background: var(--glass); border: 1px solid var(--glass-border); border-radius: var(--radius-md); padding: 0.8rem 1.2rem; }
+.step-num { width: 30px; height: 30px; border-radius: 50%; background: var(--gradient-main); display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 0.8rem; color: #fff; flex-shrink: 0; }
+.step-text { font-size: 0.95rem; color: var(--text-secondary); line-height: 1.4; }
+.step-text strong { color: var(--text-primary); font-weight: 800; }
+
+/* ── Summary Grid ── */
+.summary-grid { display: flex; gap: 1.5rem; justify-content: center; margin-top: 1.2rem; }
+.summary-item { flex: 1; max-width: 260px; background: var(--glass); border: 1px solid var(--glass-border); border-radius: var(--radius-lg); padding: 1.2rem; text-align: left; }
+.summary-item .num { font-family: var(--font-body); font-size: 1.2rem; font-weight: 900; color: var(--accent-cyan); margin-bottom: 0.4rem; }
+.summary-item h4 { font-family: var(--font-display); font-size: 1rem; font-weight: 800; color: var(--text-primary); margin-bottom: 0.4rem; }
+.summary-item p { font-size: 0.85rem; color: var(--text-secondary); line-height: 1.5; }
+
+/* ── Check List ── */
+.check-list { display: flex; flex-direction: column; gap: 0.6rem; margin-top: 1.2rem; }
+.check-item { display: flex; align-items: center; gap: 0.8rem; font-family: var(--font-display); font-size: 1rem; font-weight: 700; color: var(--text-secondary); }
+.check-icon { font-size: 1.1rem; }
+
+/* ── Decorative ── */
+.glow-orb { display: none; }
+.divider { width: 60px; height: 3px; background: var(--gradient-main); border-radius: 2px; margin: 1.2rem auto; }

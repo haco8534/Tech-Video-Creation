@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1920,height=1080">
+<title>Deleteキーを押すとファイルはどうなる？</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- Scene 0: タイトルカード -->
+<div class="scene active" id="scene-0">
+  <div class="content">
+    <div class="key-icon">Delete</div>
+    <div class="title-main">Deleteキーを押すと<br>ファイルはどうなる？</div>
+    <div class="title-sub">──OSが「消す」の正体を暴く</div>
+  </div>
+</div>
+
+<!-- Scene 1: テキスト強調 -->
+<div class="scene" id="scene-1">
+  <div class="content">
+    <div class="big-text">あなたが今日消したファイルは<br><span class="highlight">まだディスクの上に<br>丸ごと残っています</span></div>
+  </div>
+</div>
+
+<!-- Scene 2: 思考実験 -->
+<div class="scene" id="scene-2">
+  <div class="content">
+    <div class="thought-box">
+      <div class="thought-icon">🗑️</div>
+      <div class="thought-question">消したファイル → どこへ行く？</div>
+    </div>
+    <div class="comparison" style="margin-top:2rem;">
+      <div class="compare-card">
+        <h3>Shift+Delete</h3>
+        <p>ゴミ箱をスキップ</p>
+        <p style="color:var(--accent-red);">でもデータは残る</p>
+      </div>
+      <div class="compare-vs">→</div>
+      <div class="compare-card">
+        <h3>復元ソフト</h3>
+        <p>消したファイルを復活</p>
+        <p style="color:var(--accent-green);">なぜ可能？</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Scene 3: アナロジー -->
+<div class="scene" id="scene-3">
+  <div class="content">
+    <div class="section-header">📚 図書館のたとえ</div>
+    <div class="library-diagram">
+      <div class="lib-item"><div class="lib-icon">📋</div><div class="lib-label">蔵書目録カード<br><small>= メタデータ</small></div></div>
+      <div class="lib-arrow">→</div>
+      <div class="lib-item"><div class="lib-icon">📚</div><div class="lib-label">本棚の本<br><small>= 実データ</small></div></div>
+      <div class="lib-arrow">←</div>
+      <div class="lib-item"><div class="lib-icon">👤</div><div class="lib-label">図書館員<br><small>= OS</small></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- Scene 4: アナロジー -->
+<div class="scene" id="scene-4">
+  <div class="content">
+    <div class="section-header">目録カードの中身</div>
+    <div class="card-visual">
+      <div class="card-field"><span class="card-label">タイトル</span><span class="card-value">= ファイル名</span></div>
+      <div class="card-field"><span class="card-label">棚番号</span><span class="card-value">= ディスク位置</span></div>
+      <div class="card-field"><span class="card-label">ページ数</span><span class="card-value">= ファイルサイズ</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- Scene 5: アナロジー -->
+<div class="scene" id="scene-5">
+  <div class="content">
+    <div class="section-header">ファイル保存 = 本を追加</div>
+    <div class="flow-arrow">
+      <div class="flow-step">① 空き棚に本を置く<br><small>= データ書き込み</small></div>
+      <div class="flow-arrow-icon">→</div>
+      <div class="flow-step">② 目録カードを作る<br><small>= メタデータ記録</small></div>
+    </div>
+  </div>
+</div>
+
+<!-- Scene 6: アナロジー -->
+<div class="scene" id="scene-6">
+  <div class="content">
+    <div class="section-header" style="color:var(--accent-red);">ファイル削除 = ???</div>
+    <div class="comparison">
+      <div class="compare-card" style="opacity:0.5;">
+        <h3 style="color:var(--accent-red);">❌ みんなの想像</h3>
+        <p>本を取り出して<br>シュレッダーにかける</p>
+      </div>
+      <div class="compare-vs">VS</div>
+      <div class="compare-card">
+        <h3 style="color:var(--accent-green);">✅ 実際のOS</h3>
+        <p>目録カードを捨てるだけ<br><strong>本は1ページも消えない</strong></p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Scene 7: テキスト強調 -->
+<div class="scene" id="scene-7">
+  <div class="content">
+    <div class="big-text">削除 ＝<br><span class="highlight">目録カードを捨てるだけ</span></div>
+    <div class="subtitle-text">本（データ）は1ページも消えない</div>
+    <div class="subtitle-text" style="margin-top:1rem;color:var(--accent-cyan);">復元ソフト = 目録を無視して本棚を直接調査</div>
+  </div>
+</div>
+
+<!-- Scene 8: フロー図 -->
+<div class="scene" id="scene-8">
+  <div class="content">
+    <div class="section-header">Deleteキーから「消える」までの道のり</div>
+    <div class="flow-arrow">
+      <div class="flow-step">Delete<br>キー押下</div>
+      <div class="flow-arrow-icon">→</div>
+      <div class="flow-step">ゴミ箱に<br>移動</div>
+      <div class="flow-arrow-icon">→</div>
+      <div class="flow-step">ゴミ箱を<br>空にする</div>
+      <div class="flow-arrow-icon">→</div>
+      <div class="flow-step">メタデータ<br>更新</div>
+      <div class="flow-arrow-icon">→</div>
+      <div class="flow-step highlight-step">データは<br>残存！</div>
+    </div>
+  </div>
+</div>
+
+<!-- Scene 9: 段階的リスト -->
+<div class="scene" id="scene-9">
+  <div class="content">
+    <div class="section-header">第1段階：ゴミ箱行き = ただの引っ越し</div>
+    <div class="step-list">
+      <div class="step-item"><div class="step-num">1</div><div class="step-text"><strong>$Recycle.Bin</strong> 隠しフォルダに移動</div></div>
+      <div class="step-item"><div class="step-num">2</div><div class="step-text"><strong>$R</strong> ファイル = データ本体（リネームされただけ）</div></div>
+      <div class="step-item"><div class="step-num">3</div><div class="step-text"><strong>$I</strong> ファイル = 元パス・削除日時の記録</div></div>
+    </div>
+    <div class="subtitle-text" style="margin-top:1.5rem;">データは<span class="highlight-inline">1ビットも変わっていない</span></div>
+  </div>
+</div>
+
+<!-- Scene 10: 段階的リスト -->
+<div class="scene" id="scene-10">
+  <div class="content">
+    <div class="section-header">第2段階：ゴミ箱を空にする</div>
+    <div class="big-text" style="font-size:2.5rem;">それでも<br><span class="highlight-warm">データは消えない</span></div>
+  </div>
+</div>
+
+<!-- Scene 11: SVG図解 -->
+<div class="scene" id="scene-11">
+  <div class="content">
+    <div class="section-header">NTFS の MFT（マスターファイルテーブル）</div>
+    <div class="mft-diagram">
+      <div class="mft-entry">
+        <div class="mft-field">ファイル名: document.pdf</div>
+        <div class="mft-field">サイズ: 2.4 MB</div>
+        <div class="mft-field">位置: セクタ 48201〜</div>
+        <div class="mft-flag used">フラグ: 0x0001（使用中）</div>
+      </div>
+      <div class="mft-arrow">→</div>
+      <div class="mft-entry deleted">
+        <div class="mft-field dim">ファイル名: document.pdf</div>
+        <div class="mft-field dim">サイズ: 2.4 MB</div>
+        <div class="mft-field dim">位置: セクタ 48201〜</div>
+        <div class="mft-flag deleted-flag">フラグ: 0x0000（削除済み）</div>
+      </div>
+    </div>
+    <div class="subtitle-text" style="margin-top:1rem;">フラグが1つ変わるだけ。情報はすべて残る</div>
+  </div>
+</div>
+
+<!-- Scene 12: SVG図解 -->
+<div class="scene" id="scene-12">
+  <div class="content">
+    <div class="section-header">ディスク上のデータブロック</div>
+    <div class="disk-blocks">
+      <div class="block used">01101</div>
+      <div class="block used">10110</div>
+      <div class="block used">01001</div>
+      <div class="block free-mark">空き</div>
+      <div class="block free-mark">空き</div>
+      <div class="block free-mark">空き</div>
+      <div class="block other">他のデータ</div>
+    </div>
+    <div class="subtitle-text" style="margin-top:1rem;">「空き」マークが付くだけ。ビット列はそのまま残存</div>
+    <div class="subtitle-text" style="color:var(--accent-cyan);">Windows / Linux / macOS ── すべて同じ原理</div>
+  </div>
+</div>
+
+<!-- Scene 13: 思考実験 -->
+<div class="scene" id="scene-13">
+  <div class="content">
+    <div class="thought-box">
+      <div class="thought-icon">🧪</div>
+      <div class="thought-question">もしOSが毎回<br>全データを上書きしたら？</div>
+    </div>
+    <div class="comparison" style="margin-top:2rem;">
+      <div class="compare-card">
+        <h3>10GB 動画の削除</h3>
+        <div class="impact-number danger" style="font-size:3rem;">数分</div>
+        <p>ゼロ埋め所要時間</p>
+      </div>
+      <div class="compare-vs">VS</div>
+      <div class="compare-card">
+        <h3>メタデータ書き換え</h3>
+        <div class="impact-number" style="font-size:3rem;">数ms</div>
+        <p>1000分の1秒以下</p>
+      </div>
+    </div>
+    <div class="subtitle-text" style="margin-top:1rem;">パフォーマンスのために あえて消さない</div>
+  </div>
+</div>
+
+<!-- Scene 14: テキスト強調 -->
+<div class="scene" id="scene-14">
+  <div class="content">
+    <div class="big-text" style="color:var(--accent-red);">⚠️ ここまでの理解<br>実は<span class="highlight-warm">HDDの話</span>に限った話です</div>
+  </div>
+</div>
+
+<!-- Scene 15: 比較対照 -->
+<div class="scene" id="scene-15">
+  <div class="content">
+    <div class="section-header">HDD vs SSD</div>
+    <div class="comparison">
+      <div class="compare-card">
+        <h3>HDD（磁気ディスク）</h3>
+        <p>削除後もデータ残存</p>
+        <p style="color:var(--accent-green);">復元の可能性あり</p>
+      </div>
+      <div class="compare-vs">VS</div>
+      <div class="compare-card">
+        <h3>SSD（NANDフラッシュ）</h3>
+        <p>削除後データが<strong>本当に消える</strong></p>
+        <p style="color:var(--accent-red);">復元ほぼ不可能</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Scene 16: SVG図解 -->
+<div class="scene" id="scene-16">
+  <div class="content">
+    <div class="section-header">NANDフラッシュの決定的な制約</div>
+    <div class="nand-diagram">
+      <div class="nand-cell empty"><span>空</span><small>書き込みOK</small></div>
+      <div class="nand-cell filled"><span>データあり</span><small style="color:var(--accent-red);">上書きNG！</small></div>
+    </div>
+    <div class="big-text" style="font-size:2.2rem;margin-top:1.5rem;"><span class="highlight-warm">上書きができない</span></div>
+    <div class="subtitle-text">消してからじゃないと書けない</div>
+  </div>
+</div>
+
+<!-- Scene 17: SVG図解 -->
+<div class="scene" id="scene-17">
+  <div class="content">
+    <div class="section-header">ブロック消去 → 書き込みの2ステップ</div>
+    <div class="flow-arrow">
+      <div class="flow-step" style="border-color:var(--accent-red);">ブロック全体を<br>電気的に消去</div>
+      <div class="flow-arrow-icon">→</div>
+      <div class="flow-step highlight-step">新しいデータを<br>書き込み</div>
+    </div>
+    <div class="subtitle-text" style="margin-top:1.5rem;">ホワイトボードと同じ。消さないと書けない</div>
+  </div>
+</div>
+
+<!-- Scene 18: フロー図 -->
+<div class="scene" id="scene-18">
+  <div class="content">
+    <div class="section-header">TRIMコマンドの仕組み</div>
+    <div class="flow-arrow">
+      <div class="flow-step">ファイル削除</div>
+      <div class="flow-arrow-icon">→</div>
+      <div class="flow-step">OS→SSD<br>「ここ空いたよ」<br><small>TRIM送信</small></div>
+      <div class="flow-arrow-icon">→</div>
+      <div class="flow-step">SSDコントローラ<br>ガベージ<br>コレクション</div>
+      <div class="flow-arrow-icon">→</div>
+      <div class="flow-step highlight-step" style="border-color:var(--accent-red);">ブロック<br>物理消去</div>
+    </div>
+  </div>
+</div>
+
+<!-- Scene 19: 比較対照 -->
+<div class="scene" id="scene-19">
+  <div class="content">
+    <div class="section-header">図書館アナロジーの拡張</div>
+    <div class="comparison">
+      <div class="compare-card">
+        <h3>HDD図書館</h3>
+        <p>目録カードを捨てる</p>
+        <p><strong>→ 本はそのまま</strong></p>
+        <p style="color:var(--text-secondary);">何年でも残る</p>
+      </div>
+      <div class="compare-vs">VS</div>
+      <div class="compare-card">
+        <h3>SSD図書館</h3>
+        <p>目録カードを捨てる</p>
+        <p><strong style="color:var(--accent-red);">→ 本も自動焼却</strong></p>
+        <p style="color:var(--text-secondary);">勤勉な焼却担当</p>
+      </div>
+    </div>
+    <div class="subtitle-text" style="margin-top:1rem;">TRIMはデフォルトで有効。あなたのPCはたぶんSSD図書館</div>
+  </div>
+</div>
+
+<!-- Scene 20: テキスト強調 -->
+<div class="scene" id="scene-20">
+  <div class="content">
+    <div class="big-text">TRIMが有効なSSDでは<br><span class="highlight-warm">削除ファイルの復元は<br>ほぼ不可能</span></div>
+    <div class="subtitle-text" style="margin-top:1rem;">TRIMは数秒〜数分で自動実行される</div>
+  </div>
+</div>
+
+<!-- Scene 21: タイトルカード -->
+<div class="scene" id="scene-21">
+  <div class="content">
+    <div class="title-main" style="font-size:3rem;">データを<br><span class="highlight">"本当に"</span><br>消す方法</div>
+  </div>
+</div>
+
+<!-- Scene 22: 比較対照 -->
+<div class="scene" id="scene-22">
+  <div class="content">
+    <div class="section-header">消せない vs 消えてほしくない</div>
+    <div class="comparison">
+      <div class="compare-card">
+        <h3 style="color:var(--accent-red);">消したいのに消えない</h3>
+        <p>中古PC売却時の情報漏洩</p>
+        <p>フォレンジック復元</p>
+      </div>
+      <div class="compare-vs">⟷</div>
+      <div class="compare-card">
+        <h3 style="color:var(--accent-amber);">消えてほしくないのに消える</h3>
+        <p>誤削除 + SSD</p>
+        <p>TRIMで即座に消去</p>
+      </div>
+    </div>
+    <div class="subtitle-text" style="margin-top:1rem;">大相撲八百長事件（2011）：壊した携帯からデータ復元</div>
+  </div>
+</div>
+
+<!-- Scene 23: フロー図 -->
+<div class="scene" id="scene-23">
+  <div class="content">
+    <div class="section-header">DoD 5220.22-M（米国国防総省規格）</div>
+    <div class="flow-arrow">
+      <div class="flow-step">① 固定値（0xFF）<br>で全領域上書き</div>
+      <div class="flow-arrow-icon">→</div>
+      <div class="flow-step">② 補数（0x00）<br>で再上書き</div>
+      <div class="flow-arrow-icon">→</div>
+      <div class="flow-step highlight-step">③ 乱数<br>で最終上書き</div>
+    </div>
+    <div class="subtitle-text" style="margin-top:1rem;">3回の上書きで復元不可能に</div>
+  </div>
+</div>
+
+<!-- Scene 24: 数値インパクト -->
+<div class="scene" id="scene-24">
+  <div class="content">
+    <div class="impact-number">35<span style="font-size:2rem;">回</span></div>
+    <div class="impact-unit">Gutmann方式の上書き回数（1996年）</div>
+    <div class="impact-context">当時のHDDの磁気残留痕跡を完全に消すため<br>↓ しかし現在では……</div>
+    <div class="impact-number" style="font-size:4rem;color:var(--accent-green);margin-top:1rem;">1回</div>
+    <div class="impact-unit">NIST SP 800-88（2014年）推奨<br>現代のHDDはたった1回の上書きで十分</div>
+  </div>
+</div>
+
+<!-- Scene 25: SVG図解 -->
+<div class="scene" id="scene-25">
+  <div class="content">
+    <div class="section-header">SSDのウェアレベリング問題</div>
+    <div class="wear-diagram">
+      <div class="wear-column">
+        <div class="wear-label">論理アドレス</div>
+        <div class="wear-block">セクタ 100</div>
+        <div class="wear-block">セクタ 101</div>
+        <div class="wear-block">セクタ 102</div>
+      </div>
+      <div class="wear-controller">SSD<br>コントローラ<br>🔀</div>
+      <div class="wear-column">
+        <div class="wear-label">物理アドレス</div>
+        <div class="wear-block shuffled">ブロック 47</div>
+        <div class="wear-block shuffled">ブロック 12</div>
+        <div class="wear-block shuffled">ブロック 83</div>
+      </div>
+    </div>
+    <div class="subtitle-text" style="margin-top:1rem;">「ここを上書き」→ 実際は別の場所に書かれる<br>Apple: macOS High Sierraで「確実に空にする」機能を廃止</div>
+  </div>
+</div>
+
+<!-- Scene 26: 段階的リスト -->
+<div class="scene" id="scene-26">
+  <div class="content">
+    <div class="section-header">SSDを安全に消去する方法</div>
+    <div class="step-list">
+      <div class="step-item"><div class="step-num">1</div><div class="step-text"><strong>Secure Erase</strong> コマンド<br><small>SSD内部で全ブロック一括消去</small></div></div>
+      <div class="step-item"><div class="step-num">2</div><div class="step-text"><strong>暗号化消去</strong><br><small>ディスクを暗号化 → 鍵を破棄</small></div></div>
+      <div class="step-item"><div class="step-num">3</div><div class="step-text"><strong>物理破壊</strong><br><small>最終手段</small></div></div>
+    </div>
+    <div class="subtitle-text" style="margin-top:1rem;">データを消さなくても、<span class="highlight-inline">読めなくすれば同じ効果</span></div>
+  </div>
+</div>
+
+<!-- Scene 27: まとめカード -->
+<div class="scene" id="scene-27">
+  <div class="content">
+    <div class="section-header">Deleteキーの真実</div>
+    <div class="summary-grid">
+      <div class="summary-item">
+        <div class="num">①</div>
+        <h4>削除 ≠ 消去</h4>
+        <p>参照を外すだけ<br>データは残存</p>
+      </div>
+      <div class="summary-item">
+        <div class="num" style="color:var(--accent-amber);">②</div>
+        <h4>HDD → 残る<br>SSD → TRIMで消える</h4>
+        <p>記憶装置で<br>結果が真逆</p>
+      </div>
+      <div class="summary-item">
+        <div class="num" style="color:var(--accent-red);">③</div>
+        <h4>完全消去は<br>想像以上に難しい</h4>
+        <p>上書きもウェアレベリングで<br>確実じゃない</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Scene 28: 変換フロー -->
+<div class="scene" id="scene-28">
+  <div class="content">
+    <div class="section-header">「消す」の全体像</div>
+    <div class="flow-vertical">
+      <div class="flow-v-step">Delete キー押下</div>
+      <div class="flow-v-arrow">↓</div>
+      <div class="flow-v-step">ゴミ箱（ただの引っ越し）</div>
+      <div class="flow-v-arrow">↓</div>
+      <div class="flow-v-step">ゴミ箱を空に（メタデータ削除）</div>
+      <div class="flow-v-arrow">↓</div>
+      <div class="flow-v-branch">
+        <div class="flow-v-step hdd-step">HDD → データ残存<br><small>上書きされるまで幽霊</small></div>
+        <div class="flow-v-step ssd-step">SSD → TRIM で物理消去<br><small>数秒で焼却処分</small></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Scene 29: テキスト強調 -->
+<div class="scene" id="scene-29">
+  <div class="content">
+    <div class="big-text">私たちの「消す」は<br>OSにとっては<br><span class="highlight">「見えなくする」</span><br>だった</div>
+  </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

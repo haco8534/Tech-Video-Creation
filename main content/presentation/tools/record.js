@@ -26,7 +26,7 @@ const PROJECT_DIR = path.resolve(PRES_ROOT, args[0]);
 const NUM_WORKERS = parseInt(args[1]) || 4;
 const VIEWPORT = args[2] || '1440x810';
 const [WIDTH, HEIGHT] = VIEWPORT.split('x').map(Number);
-const CSS_ZOOM = parseFloat(args[3]) || 1.5;
+const CSS_ZOOM = parseFloat(args[3]) || 2.0;
 
 const DURATIONS_FILE = path.join(PROJECT_DIR, 'scene_durations.json');
 const HTML_FILE = path.join(PROJECT_DIR, 'index.html');
@@ -41,20 +41,20 @@ async function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
  * Record a chunk of scenes in a single browser instance
  */
 async function recordChunk(chunkId, scenes, fileUrl, outputPath) {
+    // Use deviceScaleFactor to scale content (must divide 1920 and 1080 evenly)
+    const vpW = Math.round(WIDTH / CSS_ZOOM);
+    const vpH = Math.round(HEIGHT / CSS_ZOOM);
+
     const browser = await puppeteer.launch({
         headless: 'new',
         args: [`--window-size=${WIDTH},${HEIGHT}`, '--no-sandbox', '--disable-setuid-sandbox'],
     });
 
     const page = await browser.newPage();
-    await page.setViewport({ width: WIDTH, height: HEIGHT });
+    await page.setViewport({ width: vpW, height: vpH, deviceScaleFactor: CSS_ZOOM });
     await page.goto(fileUrl, { waitUntil: 'networkidle0', timeout: 30000 });
     await page.evaluate(() => document.fonts.ready);
-    // Apply CSS zoom to enlarge content and reduce margins
-    if (CSS_ZOOM !== 1.0) {
-        await page.evaluate((z) => { document.body.style.zoom = String(z); }, CSS_ZOOM);
-    }
-    // Force canvas resize/init in headless mode
+    // Force resize event for any responsive scripts
     await page.evaluate(() => window.dispatchEvent(new Event('resize')));
     await sleep(2000);
 
@@ -65,11 +65,25 @@ async function recordChunk(chunkId, scenes, fileUrl, outputPath) {
         '-c:v', 'libx264', '-preset', 'fast', '-crf', '20',
         '-pix_fmt', 'yuv420p', '-r', String(FPS),
         outputPath,
-    ], { stdio: ['pipe', 'pipe', 'pipe'] });
+    ], { stdio: ['pipe', 'ignore', 'ignore'] });
 
-    const ffmpegDone = new Promise((resolve, reject) => {
-        ffmpeg.on('close', (code) => code === 0 ? resolve() : reject(new Error(`ffmpeg exit ${code}`)));
+    // EPIPE等のstdinエラーは無視
+    ffmpeg.stdin.on('error', (e) => {
+        if (e.code !== 'EPIPE') console.warn(`  [Worker ${chunkId}] stdin error: ${e.code}`);
     });
+
+    let ffmpegExitCode = null;
+    const ffmpegDone = new Promise((resolve, reject) => {
+        ffmpeg.on('close', (code) => {
+            ffmpegExitCode = code;
+            if (code === 0) resolve();
+            else {
+                console.warn(`  [Worker ${chunkId}] ffmpeg exit ${code}`);
+                reject(new Error(`ffmpeg exit ${code}`));
+            }
+        });
+    });
+
 
     // CDP screencast
     const cdp = await page.createCDPSession();
@@ -112,7 +126,8 @@ async function recordChunk(chunkId, scenes, fileUrl, outputPath) {
         // Capture all frames (transition animation plays within scene duration)
         for (let f = 0; f < sceneFrames; f++) {
             if (latestFrameBuffer && !ffmpeg.stdin.destroyed) {
-                ffmpeg.stdin.write(latestFrameBuffer);
+                const ok = ffmpeg.stdin.write(latestFrameBuffer);
+                if (!ok) await new Promise(r => ffmpeg.stdin.once('drain', r));
                 frameCount++;
             }
             await sleep(frameInterval);
@@ -122,12 +137,16 @@ async function recordChunk(chunkId, scenes, fileUrl, outputPath) {
     }
 
     try { await cdp.send('Page.stopScreencast'); } catch (e) { }
+
+    // ffmpegにstdinを閉じて終了を通知し、確実に完了するまで待つ
     ffmpeg.stdin.end();
-    // Wait for ffmpeg to finish (needs time to write moov atom)
+    console.log(`  [Worker ${chunkId}] Waiting for ffmpeg to finish writing...`);
     await Promise.race([
-        ffmpegDone.catch(() => { }),
-        new Promise(r => setTimeout(r, 120000))
-    ]);
+        ffmpegDone,
+        new Promise((_, reject) => setTimeout(() => reject(new Error('ffmpeg timeout')), 180000))
+    ]).catch(err => console.warn(`  [Worker ${chunkId}] ffmpeg: ${err.message}`));
+
+    // ffmpegが完全に書き込み終わった後にブラウザを閉じる
     try {
         await Promise.race([
             browser.close(),
@@ -136,6 +155,7 @@ async function recordChunk(chunkId, scenes, fileUrl, outputPath) {
     } catch (e) { }
     try { browser.process()?.kill('SIGKILL'); } catch (e) { }
 
+    console.log(`  [Worker ${chunkId}] Done. Total frames: ${frameCount}`);
     return frameCount;
 }
 
@@ -154,9 +174,8 @@ async function main() {
     console.log(`Total duration: ${totalDuration.toFixed(1)}s (${(totalDuration / 60).toFixed(1)}min)`);
     console.log(`Workers: ${NUM_WORKERS}\n`);
 
-    // Clean chunks directory
-    if (fs.existsSync(CHUNKS_DIR)) fs.rmSync(CHUNKS_DIR, { recursive: true });
-    fs.mkdirSync(CHUNKS_DIR, { recursive: true });
+    // Clean chunks directory (only delete broken chunks; keep valid ones)
+    if (!fs.existsSync(CHUNKS_DIR)) fs.mkdirSync(CHUNKS_DIR, { recursive: true });
 
     // Split scenes into chunks for parallel recording
     const scenesPerWorker = Math.ceil(durations.length / NUM_WORKERS);
@@ -176,15 +195,33 @@ async function main() {
     });
     console.log('');
 
-    // Record all chunks in parallel
+    // Record ALL CHUNKS IN PARALLEL for maximum speed
+    console.log(`Recording ${chunks.length} chunks in PARALLEL...`);
     const startTime = Date.now();
-    const chunkPromises = chunks.map((scenes, i) => {
+
+    const promises = chunks.map(async (scenes, i) => {
         const chunkPath = path.join(CHUNKS_DIR, `chunk_${String(i).padStart(2, '0')}.mkv`);
-        return recordChunk(i, scenes, fileUrl, chunkPath)
-            .then(frames => ({ id: i, frames, path: chunkPath }));
+
+        // 既存の正常なチャンクはスキップ
+        if (fs.existsSync(chunkPath) && fs.statSync(chunkPath).size > 1024 * 1024) {
+            try {
+                const dur = parseFloat(require('child_process').execFileSync('ffprobe', [
+                    '-v', 'error', '-show_entries', 'format=duration', '-of', 'csv=p=0', chunkPath
+                ], { encoding: 'utf-8' }).trim());
+                if (!isNaN(dur) && dur > 10) {
+                    console.log(`  Chunk ${i}: SKIPPED (already valid, ${dur.toFixed(1)}s)`);
+                    const totalFrames = Math.round(dur * FPS);
+                    return { id: i, frames: totalFrames, path: chunkPath };
+                }
+            } catch (e) { /* 読めないので再録画 */ }
+        }
+
+        console.log(`  --> Recording Chunk ${i} (${scenes.length} scenes) ...`);
+        const frames = await recordChunk(i, scenes, fileUrl, chunkPath);
+        return { id: i, frames, path: chunkPath };
     });
 
-    const results = await Promise.all(chunkPromises);
+    const results = (await Promise.all(promises)).sort((a, b) => a.id - b.id);
     const elapsed = ((Date.now() - startTime) / 1000).toFixed(0);
     console.log(`\nAll chunks recorded in ${elapsed}s`);
 

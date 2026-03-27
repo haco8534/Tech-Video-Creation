@@ -1,0 +1,97 @@
+[
+  {
+    "surface": "AdWords",
+    "pronunciation": "アドワーズ",
+    "accent_type": 0
+  },
+  {
+    "surface": "AltaVista",
+    "pronunciation": "アルタビスタ",
+    "accent_type": 0
+  },
+  {
+    "surface": "BERT",
+    "pronunciation": "バート",
+    "accent_type": 0
+  },
+  {
+    "surface": "CEO",
+    "pronunciation": "シーイーオー",
+    "accent_type": 0
+  },
+  {
+    "surface": "Compaq",
+    "pronunciation": "コンパック",
+    "accent_type": 0
+  },
+  {
+    "surface": "DEC",
+    "pronunciation": "デック",
+    "accent_type": 0
+  },
+  {
+    "surface": "Excite",
+    "pronunciation": "エキサイト",
+    "accent_type": 0
+  },
+  {
+    "surface": "HP",
+    "pronunciation": "エイチピー",
+    "accent_type": 0
+  },
+  {
+    "surface": "Hummingbird",
+    "pronunciation": "ハミングバード",
+    "accent_type": 0
+  },
+  {
+    "surface": "Lycos",
+    "pronunciation": "ライコス",
+    "accent_type": 0
+  },
+  {
+    "surface": "Page",
+    "pronunciation": "ペイジ",
+    "accent_type": 0
+  },
+  {
+    "surface": "PageRank",
+    "pronunciation": "ページランク",
+    "accent_type": 0
+  },
+  {
+    "surface": "Panda",
+    "pronunciation": "パンダ",
+    "accent_type": 0
+  },
+  {
+    "surface": "Penguin",
+    "pronunciation": "ペンギン",
+    "accent_type": 0
+  },
+  {
+    "surface": "RankBrain",
+    "pronunciation": "ランクブレイン",
+    "accent_type": 0
+  },
+  {
+    "surface": "Scooter",
+    "pronunciation": "スクーター",
+    "accent_type": 0
+  },
+  {
+    "surface": "Yahoo",
+    "pronunciation": "ヤフー",
+    "accent_type": 0
+  },
+  {
+    "surface": "nofollow",
+    "pronunciation": "ノーフォロー",
+    "accent_type": 0
+  },
+  {
+    "surface": "Google",
+    "pronunciation": "グーグル",
+    "accent_type": 0
+  }
+]

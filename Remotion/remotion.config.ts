@@ -11,3 +11,8 @@ import { enableTailwind } from '@remotion/tailwind-v4';
 Config.setVideoImageFormat("jpeg");
 Config.setOverwriteOutput(true);
 Config.overrideWebpackConfig(enableTailwind);
+
+// シーン切替時のカクつき防止: フレームを直列レンダリング
+// 並列(concurrency>1)だとReactのmount/unmount境界フレームで
+// DOM描画完了前にスクリーンショットが撮られてカクつく
+Config.setConcurrency(1);

@@ -116,9 +116,12 @@ async function main() {
             const filename = `scene_${String(scene.id).padStart(2, '0')}_${String(li).padStart(2, '0')}.wav`;
             const filepath = path.join(AUDIO_DIR, filename);
 
-            // SKIP only if file exists AND text matches manifest
+            // Use "reading" field for VOICEVOX if available, otherwise fall back to "text"
+            const audioText = line.reading || line.text;
+
+            // SKIP only if file exists AND audioText matches manifest
             const manifestText = manifest[filename];
-            const textMatch = manifestText === line.text;
+            const textMatch = manifestText === audioText;
 
             if (fs.existsSync(filepath) && textMatch) {
                 const buf = fs.readFileSync(filepath);
@@ -139,12 +142,12 @@ async function main() {
             }
 
             try {
-                const wav = await synthesize(line.text, speakerId, voicevox_url, speedScale);
+                const wav = await synthesize(audioText, speakerId, voicevox_url, speedScale);
                 fs.writeFileSync(filepath, wav);
                 const dur = getWavDuration(wav);
                 sceneDuration += dur;
                 sceneAudioFiles.push({ file: filename, duration: dur, speaker: line.speaker });
-                manifest[filename] = line.text;
+                manifest[filename] = audioText;
                 console.log(`  -> ${dur.toFixed(1)}s`);
             } catch (e) {
                 console.error(`  ERROR: ${e.message}`);

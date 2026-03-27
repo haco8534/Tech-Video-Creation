@@ -10,6 +10,15 @@ node_modules/
 *.webm
 *.avi
 
+# Image files
+*.png
+*.jpg
+*.jpeg
+*.gif
+*.webp
+*.bmp
+*.svg
+
 # Recording chunks
 chunks/
 

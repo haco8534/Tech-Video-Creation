@@ -1,0 +1,830 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>なぜ画像形式はこんなにたくさんあるのか</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <!-- Scene 0: タイトルカード なぜ画像形式はこんなにたくさんあるのか -->
+    <div class="scene" id="scene-0">
+        <canvas id="canvas-0" class="bg-canvas"></canvas>
+        <div class="content center-layout">
+            <div class="section-badge accent-bg-primary">INTRODUCTION</div>
+            <h2 class="title-large stagger-item">なぜ<span class="accent-primary">画像形式</span>は<br>こんなにたくさんあるのか</h2>
+            <div class="title-sub stagger-item">JPEG・PNG・GIF・WebP・AVIF──「万能」が存在しない理由</div>
+        </div>
+    </div>
+
+    <!-- Scene 1: 思考実験 もし画像形式が1種類しかなかったら -->
+    <div class="scene" id="scene-1">
+        <canvas id="canvas-1" class="bg-canvas"></canvas>
+        <div class="content center-layout">
+            <div class="section-badge accent-bg-amber">THOUGHT EXPERIMENT</div>
+            <h2 class="scene-title stagger-item">もし画像形式が<span class="accent-coral">1つだけ</span>だったら？</h2>
+            <div class="thought-exp-visual stagger-item">
+                <div class="thought-box">
+                    <div class="thought-icon">📷</div>
+                    <div class="thought-label">写真</div>
+                </div>
+                <div class="thought-plus">+</div>
+                <div class="thought-box">
+                    <div class="thought-icon-svg"><svg viewBox="0 0 60 60" width="48" height="48">
+                            <rect x="5" y="5" width="50" height="50" rx="8" fill="none" stroke="#4f46e5"
+                                stroke-width="3" /><text x="30" y="38" text-anchor="middle" font-size="20"
+                                font-weight="bold" fill="#4f46e5">A</text>
+                        </svg></div>
+                    <div class="thought-label">ロゴ</div>
+                </div>
+                <div class="thought-plus">+</div>
+                <div class="thought-box">
+                    <div class="thought-icon">🎞</div>
+                    <div class="thought-label">アニメ</div>
+                </div>
+                <div class="thought-plus">+</div>
+                <div class="thought-box">
+                    <div class="thought-icon-svg"><svg viewBox="0 0 60 60" width="48" height="48">
+                            <rect x="5" y="5" width="50" height="50" rx="8" fill="none" stroke="#14b8a6"
+                                stroke-width="3" stroke-dasharray="8 4" /><text x="30" y="38" text-anchor="middle"
+                                font-size="16" fill="#14b8a6">透過</text>
+                        </svg></div>
+                    <div class="thought-label">透明</div>
+                </div>
+            </div>
+            <div class="emphasis-sub stagger-item">全部を1つの形式に押し込めると……？</div>
+        </div>
+    </div>
+
+    <!-- Scene 2: 分岐図 写真→巨大/ロゴ→ボヤける/アニメ→不可/透過→不可 -->
+    <div class="scene" id="scene-2">
+        <div class="content card-layout">
+            <h2 class="scene-title stagger-item">1つの形式では<span class="accent-coral">全部ダメ</span></h2>
+            <div class="fail-grid stagger-item">
+                <div class="fail-card">
+                    <div class="fail-icon">📷</div>
+                    <div class="fail-title">写真を保存</div>
+                    <div class="fail-result fail-bad">ファイルが巨大に</div>
+                    <div class="fail-x">✗</div>
+                </div>
+                <div class="fail-card">
+                    <div class="fail-icon-svg"><svg viewBox="0 0 50 50" width="40" height="40">
+                            <rect x="5" y="5" width="40" height="40" rx="6" fill="none" stroke="#4f46e5"
+                                stroke-width="3" /><text x="25" y="33" text-anchor="middle" font-size="18"
+                                font-weight="bold" fill="#4f46e5">A</text>
+                        </svg></div>
+                    <div class="fail-title">ロゴを保存</div>
+                    <div class="fail-result fail-bad">輪郭がボヤける</div>
+                    <div class="fail-x">✗</div>
+                </div>
+                <div class="fail-card">
+                    <div class="fail-icon">🎞</div>
+                    <div class="fail-title">アニメーション</div>
+                    <div class="fail-result fail-bad">対応不可</div>
+                    <div class="fail-x">✗</div>
+                </div>
+                <div class="fail-card">
+                    <div class="fail-icon-svg"><svg viewBox="0 0 50 50" width="40" height="40">
+                            <rect x="5" y="5" width="40" height="40" rx="6" fill="none" stroke="#14b8a6"
+                                stroke-width="3" stroke-dasharray="6 3" />
+                        </svg></div>
+                    <div class="fail-title">透過</div>
+                    <div class="fail-result fail-bad">不可能</div>
+                    <div class="fail-x">✗</div>
+                </div>
+            </div>
+            <div class="emphasis-text stagger-item"><span class="accent-coral">「万能な画像形式」</span>は原理的にありえない</div>
+            <div class="footnote stagger-item">それぞれ異なる要件を持つ画像は、1つの形式では最適化できない</div>
+        </div>
+    </div>
+
+    <!-- Scene 3: アナロジー 引っ越しの荷造り＝圧縮 -->
+    <div class="scene" id="scene-3">
+        <div class="content center-layout">
+            <div class="section-badge accent-bg-primary">TOPIC 1</div>
+            <h2 class="scene-title stagger-item">圧縮の正体<br><span class="accent-primary">捨てるか、畳むか</span></h2>
+            <div class="analogy-visual stagger-item">
+                <div class="analogy-box analogy-raw">
+                    <div class="analogy-icon-large">📦📦📦📦</div>
+                    <div class="analogy-label">無圧縮 = BMP</div>
+                    <div class="analogy-desc">そのまま放り込む</div>
+                    <div class="analogy-size">6MB / 枚</div>
+                </div>
+            </div>
+            <div class="emphasis-sub stagger-item">荷物を全部そのまま箱に入れたら何十箱にもなる</div>
+        </div>
+    </div>
+
+    <!-- Scene 4: アナロジー 可逆圧縮＝畳む -->
+    <div class="scene" id="scene-4">
+        <div class="content center-layout">
+            <h2 class="scene-title stagger-item"><span class="accent-teal">可逆圧縮</span> = 丁寧に畳む</h2>
+            <div class="compress-compare stagger-item">
+                <div class="compress-card compress-lossless">
+                    <svg class="compress-svg" viewBox="0 0 200 120" width="280" height="168">
+                        <rect x="10" y="10" width="80" height="100" rx="6" fill="#e0e7ff" stroke="#4f46e5"
+                            stroke-width="2" />
+                        <rect x="20" y="20" width="60" height="15" rx="3" fill="#818cf8" opacity="0.6" />
+                        <rect x="20" y="42" width="60" height="15" rx="3" fill="#818cf8" opacity="0.6" />
+                        <rect x="20" y="64" width="60" height="15" rx="3" fill="#818cf8" opacity="0.6" />
+                        <rect x="20" y="86" width="60" height="15" rx="3" fill="#818cf8" opacity="0.6" />
+                        <text x="125" y="40" text-anchor="middle" font-size="14" font-weight="700"
+                            fill="#4f46e5">畳む</text>
+                        <path d="M100 60 L140 60" stroke="#4f46e5" stroke-width="2" marker-end="url(#arrowBlue)" />
+                        <rect x="148" y="30" width="42" height="60" rx="6" fill="#c7d2fe" stroke="#4f46e5"
+                            stroke-width="2" />
+                        <rect x="154" y="38" width="30" height="10" rx="2" fill="#818cf8" opacity="0.8" />
+                        <rect x="154" y="52" width="30" height="10" rx="2" fill="#818cf8" opacity="0.8" />
+                        <rect x="154" y="66" width="30" height="10" rx="2" fill="#818cf8" opacity="0.8" />
+                        <defs>
+                            <marker id="arrowBlue" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+                                <path d="M0,0 L8,3 L0,6" fill="#4f46e5" />
+                            </marker>
+                        </defs>
+                    </svg>
+                    <div class="compress-label">PNG / GIF</div>
+                    <div class="compress-desc">元に戻せる・情報を失わない</div>
+                </div>
+            </div>
+            <div class="emphasis-sub stagger-item">1ビットも失わない。完全復元可能</div>
+            <div class="footnote stagger-item">同じ色の繰り返しをまとめて効率化する</div>
+        </div>
+    </div>
+
+    <!-- Scene 5: アナロジー 非可逆圧縮＝捨てる -->
+    <div class="scene" id="scene-5">
+        <div class="content center-layout">
+            <h2 class="scene-title stagger-item"><span class="accent-coral">非可逆圧縮</span> = 思い切って捨てる</h2>
+            <div class="compress-compare stagger-item">
+                <div class="compress-card compress-lossy">
+                    <svg class="compress-svg" viewBox="0 0 200 120" width="280" height="168">
+                        <rect x="10" y="10" width="80" height="100" rx="6" fill="#fee2e2" stroke="#ef4444"
+                            stroke-width="2" />
+                        <rect x="20" y="20" width="60" height="15" rx="3" fill="#fca5a5" opacity="0.6" />
+                        <rect x="20" y="42" width="60" height="15" rx="3" fill="#fca5a5" opacity="0.6" />
+                        <rect x="20" y="64" width="60" height="15" rx="3" fill="#fca5a5" opacity="0.3"
+                            stroke-dasharray="4 2" stroke="#ef4444" />
+                        <rect x="20" y="86" width="60" height="15" rx="3" fill="#fca5a5" opacity="0.3"
+                            stroke-dasharray="4 2" stroke="#ef4444" />
+                        <text x="55" y="73" text-anchor="middle" font-size="10" fill="#ef4444">捨てる</text>
+                        <text x="55" y="95" text-anchor="middle" font-size="10" fill="#ef4444">捨てる</text>
+                        <path d="M100 60 L140 60" stroke="#ef4444" stroke-width="2" marker-end="url(#arrowRed)" />
+                        <rect x="155" y="40" width="30" height="40" rx="6" fill="#fecaca" stroke="#ef4444"
+                            stroke-width="2" />
+                        <rect x="160" y="48" width="20" height="10" rx="2" fill="#fca5a5" opacity="0.8" />
+                        <rect x="160" y="62" width="20" height="10" rx="2" fill="#fca5a5" opacity="0.8" />
+                        <defs>
+                            <marker id="arrowRed" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+                                <path d="M0,0 L8,3 L0,6" fill="#ef4444" />
+                            </marker>
+                        </defs>
+                    </svg>
+                    <div class="compress-label">JPEG</div>
+                    <div class="compress-desc">劇的に小さくなるが、二度と戻らない</div>
+                </div>
+            </div>
+            <div class="emphasis-sub stagger-item">捨てた情報は二度と復元できない</div>
+            <div class="footnote stagger-item">写真のような複雑な画像に有効</div>
+        </div>
+    </div>
+
+    <!-- Scene 6: 比較対照 可逆 vs 非可逆 -->
+    <div class="scene" id="scene-6">
+        <div class="content center-layout">
+            <h2 class="scene-title stagger-item">画像圧縮の<span class="accent-primary">根本的トレードオフ</span></h2>
+            <div class="vs-container stagger-item">
+                <div class="vs-card vs-left">
+                    <div class="vs-badge safe-badge">LOSSLESS</div>
+                    <div class="vs-title">可逆圧縮</div>
+                    <div class="vs-desc">畳む = 情報を保持</div>
+                    <div class="vs-detail">圧縮率は低い</div>
+                    <div class="vs-formats">PNG / GIF</div>
+                </div>
+                <div class="vs-divider">vs</div>
+                <div class="vs-card vs-right">
+                    <div class="vs-badge danger-badge">LOSSY</div>
+                    <div class="vs-title">非可逆圧縮</div>
+                    <div class="vs-desc">捨てる = 情報損失</div>
+                    <div class="vs-detail">圧縮率は高い</div>
+                    <div class="vs-formats">JPEG</div>
+                </div>
+            </div>
+            <div class="emphasis-text stagger-item">この<span class="accent-coral">トレードオフ</span>が画像形式が増え続ける根本原因</div>
+            <div class="footnote stagger-item">物理法則のように、サイズと画質は両立できない</div>
+        </div>
+    </div>
+
+    <!-- Scene 7: 変換フロー JPEGの圧縮パイプライン -->
+    <div class="scene" id="scene-7">
+        <div class="content card-layout">
+            <h2 class="scene-title stagger-item">JPEG圧縮の<span class="accent-primary">パイプライン</span></h2>
+            <div class="pipeline stagger-item">
+                <div class="pipe-stage">
+                    <div class="pipe-icon accent-bg-primary">元</div>
+                    <div class="pipe-label">元画像</div>
+                    <div class="pipe-desc">RGBピクセル</div>
+                </div>
+                <div class="pipe-arrow">→</div>
+                <div class="pipe-stage">
+                    <div class="pipe-icon accent-bg-teal">色</div>
+                    <div class="pipe-label">YCbCr変換</div>
+                    <div class="pipe-desc">輝度と色に分離</div>
+                </div>
+                <div class="pipe-arrow">→</div>
+                <div class="pipe-stage">
+                    <div class="pipe-icon accent-bg-amber">分</div>
+                    <div class="pipe-label">8×8ブロック</div>
+                    <div class="pipe-desc">小さく分割</div>
+                </div>
+                <div class="pipe-arrow">→</div>
+                <div class="pipe-stage">
+                    <div class="pipe-icon" style="background:#8b5cf6;color:#fff">波</div>
+                    <div class="pipe-label">DCT</div>
+                    <div class="pipe-desc">波に変換</div>
+                </div>
+                <div class="pipe-arrow">→</div>
+                <div class="pipe-stage">
+                    <div class="pipe-icon accent-bg-coral">捨</div>
+                    <div class="pipe-label">量子化</div>
+                    <div class="pipe-desc">高周波を捨てる</div>
+                </div>
+                <div class="pipe-arrow">→</div>
+                <div class="pipe-stage pipe-result">
+                    <div class="pipe-icon" style="background:#059669;color:#fff">出</div>
+                    <div class="pipe-label">JPEG</div>
+                    <div class="pipe-desc">完成</div>
+                </div>
+            </div>
+            <div class="emphasis-sub stagger-item">画像を「波の組み合わせ」に変換し、見えない波を捨てる</div>
+            <div class="footnote stagger-item">離散コサイン変換（DCT）により空間→周波数領域に変換</div>
+        </div>
+    </div>
+
+    <!-- Scene 8: SVG図解 低周波と高周波の波 -->
+    <div class="scene" id="scene-8">
+        <div class="content center-layout">
+            <h2 class="scene-title stagger-item"><span class="accent-primary">人間の目のバグ</span>を利用する</h2>
+            <div class="wave-visual stagger-item">
+                <div class="wave-card wave-low">
+                    <div class="wave-label">低周波（ゆっくり）</div>
+                    <svg viewBox="0 0 300 80" width="340" height="90">
+                        <path class="wave-path wave-low-path" d="M10,40 Q75,5 150,40 Q225,75 290,40" fill="none"
+                            stroke="#4f46e5" stroke-width="3" />
+                    </svg>
+                    <div class="wave-desc">全体の明暗・ぼんやりした形</div>
+                    <div class="wave-verdict wave-keep">人間の目に敏感 → 残す</div>
+                </div>
+                <div class="wave-card wave-high">
+                    <div class="wave-label">高周波（細かい）</div>
+                    <svg viewBox="0 0 300 80" width="340" height="90">
+                        <path class="wave-path wave-high-path"
+                            d="M10,40 Q25,10 40,40 Q55,70 70,40 Q85,10 100,40 Q115,70 130,40 Q145,10 160,40 Q175,70 190,40 Q205,10 220,40 Q235,70 250,40 Q265,10 280,40 Q290,55 295,40"
+                            fill="none" stroke="#ef4444" stroke-width="3" />
+                    </svg>
+                    <div class="wave-desc">くっきりした輪郭・細かい模様</div>
+                    <div class="wave-verdict wave-discard">区別しにくい → 捨てる ✗</div>
+                </div>
+            </div>
+            <div class="emphasis-sub stagger-item">JPEGは「見えない情報」を捨てて劇的にサイズを縮める</div>
+            <div class="footnote stagger-item">知覚心理学に基づいた巧みな圧縮方式</div>
+        </div>
+    </div>
+
+    <!-- Scene 9: ビフォーアフター ロゴのJPEG劣化 -->
+    <div class="scene" id="scene-9">
+        <div class="content center-layout">
+            <h2 class="scene-title stagger-item">JPEGの<span class="accent-coral">致命的な弱点</span></h2>
+            <div class="ba-container stagger-item">
+                <div class="ba-card ba-before">
+                    <div class="ba-badge">ORIGINAL</div>
+                    <div class="ba-visual">
+                        <svg viewBox="0 0 120 80" width="200" height="133">
+                            <rect x="10" y="10" width="100" height="60" rx="8" fill="#f8f9fa" stroke="#1a1a2e"
+                                stroke-width="3" />
+                            <text x="60" y="48" text-anchor="middle" font-size="28" font-weight="900"
+                                fill="#4f46e5">LOGO</text>
+                        </svg>
+                    </div>
+                    <div class="ba-desc">くっきりしたエッジ</div>
+                </div>
+                <div class="ba-arrow stagger-item">→</div>
+                <div class="ba-card ba-after ba-bad">
+                    <div class="ba-badge accent-bg-coral">JPEG保存後</div>
+                    <div class="ba-visual">
+                        <svg viewBox="0 0 120 80" width="200" height="133">
+                            <defs>
+                                <filter id="noise">
+                                    <feTurbulence baseFrequency="0.2" numOctaves="2" result="turb" />
+                                    <feDisplacementMap in="SourceGraphic" in2="turb" scale="3" />
+                                </filter>
+                            </defs>
+                            <rect x="10" y="10" width="100" height="60" rx="8" fill="#f8f9fa" stroke="#1a1a2e"
+                                stroke-width="3" filter="url(#noise)" />
+                            <text x="60" y="48" text-anchor="middle" font-size="28" font-weight="900" fill="#4f46e5"
+                                filter="url(#noise)">LOGO</text>
+                            <rect x="10" y="10" width="25" height="15" fill="rgba(239,68,68,0.1)" rx="2" />
+                            <rect x="35" y="10" width="25" height="15" fill="rgba(239,68,68,0.05)" rx="2" />
+                            <rect x="60" y="10" width="25" height="15" fill="rgba(239,68,68,0.1)" rx="2" />
+                            <rect x="85" y="10" width="25" height="15" fill="rgba(239,68,68,0.05)" rx="2" />
+                        </svg>
+                    </div>
+                    <div class="ba-desc"><span class="accent-coral">ブロックノイズ・モスキートノイズ</span></div>
+                </div>
+            </div>
+            <div class="emphasis-sub stagger-item">ロゴのくっきりしたエッジ＝JPEGが捨てる「高周波」情報</div>
+            <div class="footnote stagger-item">写真には最適でも、イラストやテキストには不向き</div>
+        </div>
+    </div>
+
+    <!-- Scene 10: SVG図解 写真が得意/ロゴが苦手 -->
+    <div class="scene" id="scene-10">
+        <div class="content center-layout">
+            <h2 class="scene-title stagger-item">画像の種類で<span class="accent-primary">被害が違う</span></h2>
+            <div class="vs-container stagger-item">
+                <div class="vs-card vs-left">
+                    <div class="vs-badge safe-badge">JPEG得意</div>
+                    <div class="vs-title">写真</div>
+                    <div class="vs-desc">滑らかなグラデーション</div>
+                    <div class="vs-detail">高周波成分が少ない</div>
+                    <svg viewBox="0 0 100 60" width="160" height="96" style="margin-top:8px">
+                        <defs>
+                            <linearGradient id="grad1" x1="0" y1="0" x2="1" y2="1">
+                                <stop offset="0%" stop-color="#93c5fd" />
+                                <stop offset="50%" stop-color="#6366f1" />
+                                <stop offset="100%" stop-color="#1e1b4b" />
+                            </linearGradient>
+                        </defs>
+                        <rect width="100" height="60" rx="8" fill="url(#grad1)" />
+                    </svg>
+                </div>
+                <div class="vs-divider">vs</div>
+                <div class="vs-card vs-right">
+                    <div class="vs-badge danger-badge">JPEG苦手</div>
+                    <div class="vs-title">ロゴ・テキスト</div>
+                    <div class="vs-desc">くっきりしたエッジ</div>
+                    <div class="vs-detail">高周波成分が多い</div>
+                    <svg viewBox="0 0 100 60" width="160" height="96" style="margin-top:8px">
+                        <rect width="100" height="60" rx="8" fill="#f0f0f0" /><text x="50" y="38" text-anchor="middle"
+                            font-size="22" font-weight="900" fill="#1a1a2e">TEXT</text>
+                    </svg>
+                </div>
+            </div>
+            <div class="footnote stagger-item">同じ圧縮でも画像の性質で結果が大きく異なる</div>
+        </div>
+    </div>
+
+    <!-- Scene 11: 思考実験 JPEG再保存の劣化 -->
+    <div class="scene" id="scene-11">
+        <div class="content center-layout">
+            <h2 class="scene-title stagger-item">保存するたびに<span class="accent-coral">壊れていく</span></h2>
+            <div class="degrade-visual stagger-item">
+                <div class="degrade-step">
+                    <div class="degrade-gen">1回目</div>
+                    <div class="degrade-bar" style="--quality: 90%">
+                        <div class="degrade-fill deg-1"></div>
+                    </div>
+                    <div class="degrade-quality">品質 90%</div>
+                </div>
+                <div class="degrade-arrow">→</div>
+                <div class="degrade-step">
+                    <div class="degrade-gen">10回目</div>
+                    <div class="degrade-bar" style="--quality: 60%">
+                        <div class="degrade-fill deg-10"></div>
+                    </div>
+                    <div class="degrade-quality">品質 60%</div>
+                </div>
+                <div class="degrade-arrow">→</div>
+                <div class="degrade-step">
+                    <div class="degrade-gen">50回目</div>
+                    <div class="degrade-bar" style="--quality: 15%">
+                        <div class="degrade-fill deg-50"></div>
+                    </div>
+                    <div class="degrade-quality accent-coral">判別不能</div>
+                </div>
+            </div>
+            <div class="emphasis-text stagger-item">非可逆圧縮の<span class="accent-coral">宿命</span></div>
+            <div class="footnote stagger-item">保存→編集→保存を繰り返すごとに情報が失われ続ける</div>
+        </div>
+    </div>
+
+    <!-- Scene 12: タイトルカード だからPNGが必要だった -->
+    <div class="scene" id="scene-12">
+        <canvas id="canvas-12" class="bg-canvas"></canvas>
+        <div class="content center-layout">
+            <h2 class="title-medium stagger-item">だから<br><span class="accent-teal">PNG</span>が必要だった</h2>
+            <div class="png-features stagger-item">
+                <div class="png-feat"><span class="feat-check">✓</span> 1ビットも失わない</div>
+                <div class="png-feat"><span class="feat-check">✓</span> ロゴ・アイコンに最適</div>
+                <div class="png-feat"><span class="feat-check">✓</span> 半透明（アルファチャンネル）</div>
+            </div>
+            <div class="emphasis-sub stagger-item">JPEGの弱点を補完する存在として誕生</div>
+        </div>
+    </div>
+
+    <!-- Scene 13: タイムライン 1987年 GIF誕生 -->
+    <div class="scene" id="scene-13">
+        <div class="content card-layout">
+            <div class="section-badge accent-bg-amber">TOPIC 3</div>
+            <h2 class="scene-title stagger-item">GIFの<span class="accent-amber">数奇な運命</span></h2>
+            <div class="flow-chain stagger-item">
+                <div class="flow-node">
+                    <div class="flow-year">1987</div>
+                    <div class="flow-text"><span class="flow-name">CompuServe</span><br>GIF誕生<br><span
+                            class="flow-sub">電話回線の時代</span></div>
+                </div>
+                <div class="flow-arrow">&rarr;</div>
+                <div class="flow-node">
+                    <div class="flow-year">1989</div>
+                    <div class="flow-text"><span class="flow-name">GIF89a</span><br>アニメーション対応<br><span
+                            class="flow-sub">パラパラ漫画</span></div>
+                </div>
+            </div>
+            <div class="emphasis-sub stagger-item">モデム速度 300〜2400bps の時代に生まれた</div>
+            <div class="footnote stagger-item">今の通信速度の数十万分の1</div>
+        </div>
+    </div>
+
+    <!-- Scene 14: 数値インパクト モデム速度と256色 -->
+    <div class="scene" id="scene-14">
+        <div class="content center-layout">
+            <h2 class="scene-title stagger-item">大胆な<span class="accent-amber">割り切り</span></h2>
+            <div class="impact-row stagger-item">
+                <div class="impact-card">
+                    <div class="impact-number"><span class="big-num accent-coral">300</span><span
+                            class="num-unit">bps</span></div>
+                    <div class="impact-desc">当時のモデム速度</div>
+                </div>
+                <div class="impact-card">
+                    <div class="impact-number"><span class="big-num accent-amber">256</span><span
+                            class="num-unit">色</span></div>
+                    <div class="impact-desc">1677万色から削減</div>
+                </div>
+            </div>
+            <div class="emphasis-sub stagger-item">色を256色に絞ることでファイルサイズを劇的に削減</div>
+            <div class="footnote stagger-item">イラストやアイコンには十分な色数</div>
+        </div>
+    </div>
+
+    <!-- Scene 15: SVG図解 LZW特許問題 -->
+    <div class="scene dark-scene" id="scene-15">
+        <div class="content center-layout">
+            <h2 class="scene-title light-text stagger-item"><span class="accent-coral">特許事件</span>勃発</h2>
+            <div class="patent-visual stagger-item">
+                <svg viewBox="0 0 300 150" width="400" height="200">
+                    <rect x="20" y="20" width="120" height="110" rx="10" fill="#2d1b69" stroke="#8b5cf6"
+                        stroke-width="2" />
+                    <text x="80" y="55" text-anchor="middle" font-size="14" fill="#c4b5fd"
+                        font-weight="700">LZW圧縮</text>
+                    <text x="80" y="80" text-anchor="middle" font-size="24" fill="#f59e0b">🔒</text>
+                    <text x="80" y="110" text-anchor="middle" font-size="11" fill="#a78bfa">Unisys社の特許</text>
+                    <path d="M150 75 L190 75" stroke="#ef4444" stroke-width="2" marker-end="url(#arrowPat)" />
+                    <rect x="200" y="30" width="80" height="90" rx="10" fill="#1e1b4b" stroke="#ef4444"
+                        stroke-width="2" />
+                    <text x="240" y="65" text-anchor="middle" font-size="12" fill="#fca5a5"
+                        font-weight="700">1994年</text>
+                    <text x="240" y="88" text-anchor="middle" font-size="11" fill="#fca5a5">ライセンス料</text>
+                    <text x="240" y="104" text-anchor="middle" font-size="11" fill="#fca5a5">を請求！</text>
+                    <defs>
+                        <marker id="arrowPat" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+                            <path d="M0,0 L8,3 L0,6" fill="#ef4444" />
+                        </marker>
+                    </defs>
+                </svg>
+            </div>
+            <div class="emphasis-sub light-text stagger-item">無料で使わせておいて、普及してから「金を払え」</div>
+            <div class="footnote light-text stagger-item">GIFの内部で使われていたLZW圧縮技術にUnisys社が特許を主張</div>
+        </div>
+    </div>
+
+    <!-- Scene 16: テキスト強調 Burn All GIFs -->
+    <div class="scene dark-scene" id="scene-16">
+        <canvas id="canvas-16" class="bg-canvas"></canvas>
+        <div class="content center-layout">
+            <div class="emphasis-text-large stagger-item light-text"><span class="accent-coral">Burn All GIFs</span>
+            </div>
+            <div class="emphasis-sub stagger-item light-text">「GIFを全部燃やせ」運動</div>
+            <div class="emphasis-text stagger-item light-text">インターネットコミュニティの<span
+                    class="accent-amber">怒り</span>が<br>新しい画像形式を生み出した</div>
+            <div class="footnote stagger-item light-text">League for Programming Freedom が呼びかけ</div>
+        </div>
+    </div>
+
+    <!-- Scene 17: タイトルカード PNG誕生 -->
+    <div class="scene" id="scene-17">
+        <canvas id="canvas-17" class="bg-canvas"></canvas>
+        <div class="content center-layout">
+            <div class="section-badge accent-bg-teal">1995</div>
+            <h2 class="title-medium stagger-item"><span class="accent-teal">PNG</span>誕生<br>特許フリーの画像形式</h2>
+            <div class="png-name-visual stagger-item">
+                <div class="png-name-item"><span class="accent-primary">P</span>ortable</div>
+                <div class="png-name-item"><span class="accent-primary">N</span>etwork</div>
+                <div class="png-name-item"><span class="accent-primary">G</span>raphics</div>
+            </div>
+            <div class="emphasis-sub stagger-item">= <span class="accent-teal">PNG is Not GIF</span></div>
+            <div class="footnote stagger-item">GIF特許は2003年に失効、しかしPNGはすでに普及</div>
+        </div>
+    </div>
+
+    <!-- Scene 18: タイムライン 2010年 GIF復活 -->
+    <div class="scene" id="scene-18">
+        <div class="content card-layout">
+            <h2 class="scene-title stagger-item">GIFの<span class="accent-amber">大復活</span></h2>
+            <div class="flow-chain stagger-item">
+                <div class="flow-node">
+                    <div class="flow-year">2010</div>
+                    <div class="flow-text"><span class="flow-name">Jobs</span><br>iPhone Flash排除<br><span
+                            class="flow-sub">動くコンテンツ消失</span></div>
+                </div>
+                <div class="flow-arrow">&rarr;</div>
+                <div class="flow-node flow-node-highlight">
+                    <div class="flow-year">2012</div>
+                    <div class="flow-text"><span class="flow-name">GIF復活</span><br>SNSで大ブレイク<br><span
+                            class="flow-sub">年間最優秀語に選出</span></div>
+                </div>
+            </div>
+            <div class="emphasis-sub stagger-item">技術的には古いがシンプルだから生き残り続ける</div>
+            <div class="footnote stagger-item">技術・特許・企業戦略・社会変化すべてが画像形式の運命を左右する</div>
+        </div>
+    </div>
+
+    <!-- Scene 19: 比較対照 JPEG/PNG/GIF三形式 -->
+    <div class="scene" id="scene-19">
+        <div class="content card-layout">
+            <div class="section-badge accent-bg-primary">TOPIC 4</div>
+            <h2 class="scene-title stagger-item">従来形式の<span class="accent-primary">得意・不得意</span></h2>
+            <div class="comparison-table stagger-item">
+                <div class="comp-row comp-header">
+                    <div class="comp-cell"></div>
+                    <div class="comp-cell">圧縮方式</div>
+                    <div class="comp-cell">写真</div>
+                    <div class="comp-cell">ロゴ</div>
+                    <div class="comp-cell">透過</div>
+                    <div class="comp-cell">アニメ</div>
+                </div>
+                <div class="comp-row">
+                    <div class="comp-cell comp-name accent-primary">JPEG</div>
+                    <div class="comp-cell">非可逆</div>
+                    <div class="comp-cell"><span class="check-good">◎</span></div>
+                    <div class="comp-cell"><span class="check-bad">✗</span></div>
+                    <div class="comp-cell"><span class="check-bad">✗</span></div>
+                    <div class="comp-cell"><span class="check-bad">✗</span></div>
+                </div>
+                <div class="comp-row">
+                    <div class="comp-cell comp-name accent-teal">PNG</div>
+                    <div class="comp-cell">可逆</div>
+                    <div class="comp-cell"><span class="check-mid">△</span></div>
+                    <div class="comp-cell"><span class="check-good">◎</span></div>
+                    <div class="comp-cell"><span class="check-good">◎</span></div>
+                    <div class="comp-cell"><span class="check-bad">✗</span></div>
+                </div>
+                <div class="comp-row">
+                    <div class="comp-cell comp-name accent-amber">GIF</div>
+                    <div class="comp-cell">可逆</div>
+                    <div class="comp-cell"><span class="check-bad">✗</span></div>
+                    <div class="comp-cell"><span class="check-mid">○</span></div>
+                    <div class="comp-cell"><span class="check-mid">○</span></div>
+                    <div class="comp-cell"><span class="check-good">◎</span></div>
+                </div>
+            </div>
+            <div class="emphasis-sub stagger-item">全部◎の形式は存在しない</div>
+            <div class="footnote stagger-item">それぞれの得意分野が異なるから複数が共存する</div>
+        </div>
+    </div>
+
+    <!-- Scene 20: 変換フロー 動画コーデック→画像形式 -->
+    <div class="scene" id="scene-20">
+        <div class="content center-layout">
+            <h2 class="scene-title stagger-item"><span class="accent-primary">動画技術</span>から画像形式が生まれる</h2>
+            <div class="codec-visual stagger-item">
+                <div class="codec-card">
+                    <div class="codec-icon" style="background:#4f46e5">VP8</div>
+                    <div class="codec-arrow">→</div>
+                    <div class="codec-result"><span class="accent-primary">WebP</span></div>
+                    <div class="codec-by">by Google</div>
+                </div>
+                <div class="codec-card">
+                    <div class="codec-icon" style="background:#14b8a6">AV1</div>
+                    <div class="codec-arrow">→</div>
+                    <div class="codec-result"><span class="accent-teal">AVIF</span></div>
+                    <div class="codec-by">by AOM</div>
+                </div>
+            </div>
+            <div class="emphasis-sub stagger-item">動画コーデックの超効率圧縮を「1枚」に適用</div>
+            <div class="footnote stagger-item">動画＝1秒30枚の画像→その技術で1枚を圧縮</div>
+        </div>
+    </div>
+
+    <!-- Scene 21: 数値インパクト WebP/AVIF -->
+    <div class="scene" id="scene-21">
+        <div class="content center-layout">
+            <h2 class="scene-title stagger-item">次世代形式の<span class="accent-primary">圧縮力</span></h2>
+            <div class="bar-comparison stagger-item">
+                <div class="bar-row">
+                    <div class="bar-label">JPEG</div>
+                    <div class="bar-track">
+                        <div class="bar-fill bar-jpeg" style="--w:100%"></div>
+                    </div>
+                    <div class="bar-value">100%</div>
+                </div>
+                <div class="bar-row">
+                    <div class="bar-label accent-primary">WebP</div>
+                    <div class="bar-track">
+                        <div class="bar-fill bar-webp" style="--w:68%"></div>
+                    </div>
+                    <div class="bar-value accent-primary">-25〜34%</div>
+                </div>
+                <div class="bar-row">
+                    <div class="bar-label accent-teal">AVIF</div>
+                    <div class="bar-track">
+                        <div class="bar-fill bar-avif" style="--w:50%"></div>
+                    </div>
+                    <div class="bar-value accent-teal">-50%</div>
+                </div>
+            </div>
+            <div class="emphasis-text stagger-item">同じ画質で<span class="accent-teal">半分</span>のサイズ</div>
+            <div class="footnote stagger-item">Webページの読み込みが劇的に高速化</div>
+        </div>
+    </div>
+
+    <!-- Scene 22: 比較対照 WebP/AVIFの制約 -->
+    <div class="scene" id="scene-22">
+        <div class="content center-layout">
+            <h2 class="scene-title stagger-item">でも<span class="accent-coral">やっぱり</span>トレードオフ</h2>
+            <div class="vs-container stagger-item">
+                <div class="vs-card vs-left">
+                    <div class="vs-badge" style="background:#4f46e5;color:white">WebP</div>
+                    <div class="vs-title">8ビットのみ</div>
+                    <div class="vs-desc">HDR非対応</div>
+                    <div class="vs-detail">色表現に限界</div>
+                </div>
+                <div class="vs-divider">vs</div>
+                <div class="vs-card vs-right">
+                    <div class="vs-badge accent-bg-teal">AVIF</div>
+                    <div class="vs-title">エンコードが遅い</div>
+                    <div class="vs-desc">変換に数秒/枚</div>
+                    <div class="vs-detail">大量処理に不向き</div>
+                </div>
+            </div>
+            <div class="emphasis-sub stagger-item">万能に見えても、まだ弱点がある</div>
+            <div class="footnote stagger-item">最新の圧縮袋でも真空ポンプが遅くて時間がかかる</div>
+        </div>
+    </div>
+
+    <!-- Scene 23: タイムライン JPEG XL論争 -->
+    <div class="scene" id="scene-23">
+        <div class="content card-layout">
+            <h2 class="scene-title stagger-item">JPEG XL<span class="accent-amber">論争</span></h2>
+            <div class="flow-chain flow-chain-compact stagger-item">
+                <div class="flow-node">
+                    <div class="flow-year">2022</div>
+                    <div class="flow-text"><span class="flow-name">JPEG XL</span><br>「最後の画像形式」<br><span
+                            class="flow-sub">全部入り</span></div>
+                </div>
+                <div class="flow-arrow">&rarr;</div>
+                <div class="flow-node flow-node-bad">
+                    <div class="flow-year">2023</div>
+                    <div class="flow-text"><span class="flow-name">Chrome</span><br>サポート削除<br><span
+                            class="flow-sub">「関心不足」</span></div>
+                </div>
+                <div class="flow-arrow">&rarr;</div>
+                <div class="flow-node">
+                    <div class="flow-year">2025</div>
+                    <div class="flow-text"><span class="flow-name">Chromium</span><br>復帰の動き<br><span
+                            class="flow-sub">戦いは続く</span></div>
+                </div>
+            </div>
+            <div class="emphasis-sub stagger-item">技術の良し悪しだけでなく、<span class="accent-coral">企業の力関係</span>が影響</div>
+            <div class="footnote stagger-item">GIF特許問題と同じ構造──技術以外の力が運命を変える</div>
+        </div>
+    </div>
+
+    <!-- Scene 24: 段階的リスト 4つの根本原因 -->
+    <div class="scene" id="scene-24">
+        <div class="content card-layout">
+            <div class="section-badge accent-bg-primary">CONCLUSION</div>
+            <h2 class="scene-title stagger-item">画像形式が<span class="accent-primary">増え続ける</span>4つの理由</h2>
+            <div class="numbered-list stagger-item">
+                <div class="numbered-item">
+                    <div class="number-circle">1</div>
+                    <div class="numbered-text"><span class="accent-primary">トレードオフ</span>の不可避性</div>
+                </div>
+                <div class="numbered-item">
+                    <div class="number-circle num-amber">2</div>
+                    <div class="numbered-text">特許・<span class="accent-amber">ライセンス</span>問題</div>
+                </div>
+                <div class="numbered-item">
+                    <div class="number-circle num-teal">3</div>
+                    <div class="numbered-text">新しい<span class="accent-teal">用途</span>の誕生</div>
+                </div>
+                <div class="numbered-item">
+                    <div class="number-circle num-coral">4</div>
+                    <div class="numbered-text">企業間の<span class="accent-coral">技術覇権</span>争い</div>
+                </div>
+            </div>
+            <div class="footnote stagger-item">技術・法律・ビジネス・社会の4つの力が画像形式を生み出す</div>
+        </div>
+    </div>
+
+    <!-- Scene 25: フロー図 トレードオフの構造 -->
+    <div class="scene" id="scene-25">
+        <div class="content center-layout">
+            <h2 class="scene-title stagger-item">トレードオフは<span class="accent-primary">原理的に不可避</span></h2>
+            <div class="tradeoff-visual stagger-item">
+                <div class="tradeoff-axis">
+                    <div class="tradeoff-item">
+                        <span class="tradeoff-label">サイズ</span>
+                        <div class="tradeoff-bar">
+                            <div class="tradeoff-fill tradeoff-a"></div>
+                        </div>
+                        <span class="tradeoff-label">画質</span>
+                    </div>
+                    <div class="tradeoff-item">
+                        <span class="tradeoff-label">速度</span>
+                        <div class="tradeoff-bar">
+                            <div class="tradeoff-fill tradeoff-b"></div>
+                        </div>
+                        <span class="tradeoff-label">機能性</span>
+                    </div>
+                    <div class="tradeoff-item">
+                        <span class="tradeoff-label">互換性</span>
+                        <div class="tradeoff-bar">
+                            <div class="tradeoff-fill tradeoff-c"></div>
+                        </div>
+                        <span class="tradeoff-label">先進性</span>
+                    </div>
+                </div>
+            </div>
+            <div class="emphasis-text stagger-item"><span class="accent-coral">万能は原理的に不可能</span></div>
+            <div class="footnote stagger-item">だからJPEGとPNGが共存し、GIFも生き残る</div>
+        </div>
+    </div>
+
+    <!-- Scene 26: SVG図解 4つの力 -->
+    <div class="scene" id="scene-26">
+        <div class="content center-layout">
+            <h2 class="scene-title stagger-item">画像形式を動かす<span class="accent-primary">4つの力</span></h2>
+            <div class="forces-visual stagger-item">
+                <div class="force-card">
+                    <div class="force-icon accent-bg-coral">🔒</div>
+                    <div class="force-name">特許問題</div>
+                    <div class="force-ex">GIF → PNG</div>
+                </div>
+                <div class="force-card">
+                    <div class="force-icon accent-bg-teal">🆕</div>
+                    <div class="force-name">新用途</div>
+                    <div class="force-ex">HDR・Web速度</div>
+                </div>
+                <div class="force-card">
+                    <div class="force-icon accent-bg-primary">🏢</div>
+                    <div class="force-name">企業勢力</div>
+                    <div class="force-ex">Google・Apple・AOM</div>
+                </div>
+            </div>
+            <div class="footnote stagger-item">技術だけでなく、誰が標準を握るかの戦い</div>
+        </div>
+    </div>
+
+    <!-- Scene 27: まとめカード ビフォーアフター認識変化 -->
+    <div class="scene" id="scene-27">
+        <div class="content center-layout">
+            <h2 class="scene-title stagger-item">あなたの<span class="accent-primary">認識の変化</span></h2>
+            <div class="ba-container stagger-item">
+                <div class="ba-card ba-before">
+                    <div class="ba-badge">BEFORE</div>
+                    <div class="ba-value" style="font-size:1.2em">画像形式多すぎ<br>1つでいいのに</div>
+                </div>
+                <div class="ba-arrow">→</div>
+                <div class="ba-card ba-after">
+                    <div class="ba-badge accent-bg-primary">AFTER</div>
+                    <div class="ba-value accent-primary" style="font-size:1.2em">それぞれの<br>最適解がある</div>
+                </div>
+            </div>
+            <div class="emphasis-text stagger-item">多様性は<span class="accent-primary">バグじゃなくてフィーチャー</span></div>
+            <div class="footnote stagger-item">「統一できないからこそ多様」──それが画像形式の世界</div>
+        </div>
+    </div>
+
+    <!-- Scene 28: タイトルカード 結びのメッセージ -->
+    <div class="scene" id="scene-28">
+        <canvas id="canvas-28" class="bg-canvas"></canvas>
+        <div class="content center-layout">
+            <h2 class="title-medium stagger-item">画像形式の多様性は<br><span class="accent-primary">バグじゃなくてフィーチャー</span></h2>
+            <div class="format-summary stagger-item">
+                <span class="fmt-tag fmt-jpeg">JPEG = 写真</span>
+                <span class="fmt-tag fmt-png">PNG = ロゴ</span>
+                <span class="fmt-tag fmt-gif">GIF = アニメ</span>
+                <span class="fmt-tag fmt-webp">WebP = Web</span>
+                <span class="fmt-tag fmt-avif">AVIF = 最高画質</span>
+            </div>
+            <div class="title-sub stagger-item">用途を理解すれば、もう迷わない</div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>

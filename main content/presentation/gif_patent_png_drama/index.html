@@ -1,0 +1,742 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GIF特許騒動がPNGを生んだドラマ</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- Scene 0: タイトルカード GIF・PNG・JPEGアイコン -->
+    <div class="scene" id="scene-0">
+        <canvas id="canvas-0" class="bg-canvas"></canvas>
+        <div class="content center-layout">
+            <div class="format-icons stagger-item">
+                <div class="format-icon format-gif">GIF</div>
+                <div class="format-icon format-png">PNG</div>
+                <div class="format-icon format-jpeg">JPEG</div>
+            </div>
+            <h2 class="title-medium stagger-item">画像形式の<br><span class="accent-primary">知られざるドラマ</span></h2>
+            <div class="title-sub stagger-item">毎日使うファイル形式の裏側</div>
+        </div>
+    </div>
+
+    <!-- Scene 1: テキスト強調 PNG is Not GIF -->
+    <div class="scene" id="scene-1">
+        <canvas id="canvas-1" class="bg-canvas"></canvas>
+        <div class="content center-layout">
+            <div class="emphasis-text stagger-item">P<span class="accent-primary">N</span>G</div>
+            <div class="png-reveal stagger-item">
+                <span class="reveal-line">P<span class="accent-coral">NG</span> is <span class="accent-coral">N</span>ot
+                    <span class="accent-coral">G</span>IF</span>
+            </div>
+            <div class="emphasis-sub stagger-item">PNGはGIFではない ── 名前に込められた怒り</div>
+        </div>
+    </div>
+
+    <!-- Scene 2: タイムライン 1987→2003 -->
+    <div class="scene" id="scene-2">
+        <div class="content card-layout">
+            <h2 class="scene-title stagger-item">歴史の4つのターニングポイント</h2>
+            <div class="timeline-horizontal">
+                <div class="tl-node stagger-item">
+                    <div class="tl-year accent-bg-teal">1987</div>
+                    <div class="tl-label">GIF誕生</div>
+                </div>
+                <div class="tl-connector stagger-item">&rarr;</div>
+                <div class="tl-node stagger-item">
+                    <div class="tl-year accent-bg-amber">1994</div>
+                    <div class="tl-label">特許騒動</div>
+                </div>
+                <div class="tl-connector stagger-item">&rarr;</div>
+                <div class="tl-node stagger-item">
+                    <div class="tl-year accent-bg-primary">1995</div>
+                    <div class="tl-label">PNG誕生</div>
+                </div>
+                <div class="tl-connector stagger-item">&rarr;</div>
+                <div class="tl-node stagger-item">
+                    <div class="tl-year accent-bg-coral">2003</div>
+                    <div class="tl-label">特許失効</div>
+                </div>
+            </div>
+            <div class="footnote stagger-item">たった1つの特許がインターネット全体を敵に回した</div>
+        </div>
+    </div>
+
+    <!-- Scene 3: SVG図解 ダイアルアップモデム 14.4kbps -->
+    <div class="scene" id="scene-3">
+        <div class="content center-layout">
+            <h2 class="scene-title stagger-item">1987年のインターネット</h2>
+            <div class="modem-visual stagger-item">
+                <svg viewBox="0 0 400 200" class="modem-svg">
+                    <rect x="50" y="60" width="300" height="80" rx="12" fill="#e2e8f0" stroke="#94a3b8"
+                        stroke-width="2" />
+                    <circle cx="120" cy="100" r="8" fill="#22c55e" class="modem-led" />
+                    <circle cx="150" cy="100" r="8" fill="#ef4444" class="modem-led led-2" />
+                    <rect x="200" y="85" width="120" height="30" rx="4" fill="#1e293b" />
+                    <text x="260" y="105" text-anchor="middle" fill="#22c55e" font-family="monospace"
+                        font-size="14">14.4kbps</text>
+                    <line x1="100" y1="140" x2="300" y2="140" stroke="#94a3b8" stroke-width="1" stroke-dasharray="4" />
+                </svg>
+            </div>
+            <div class="speed-compare stagger-item">
+                <div class="speed-item speed-old">
+                    <div class="speed-label">1987年</div>
+                    <div class="speed-bar" style="--w: 0.1%"></div>
+                    <div class="speed-value">14.4 kbps</div>
+                </div>
+                <div class="speed-item speed-new">
+                    <div class="speed-label">現在</div>
+                    <div class="speed-bar speed-bar-modern" style="--w: 100%"></div>
+                    <div class="speed-value">1 Gbps+</div>
+                </div>
+            </div>
+            <div class="emphasis-sub stagger-item">画像1枚で数分待つ時代</div>
+        </div>
+    </div>
+
+    <!-- Scene 4: アナロジー 元のデータ→圧縮 -->
+    <div class="scene" id="scene-4">
+        <div class="content center-layout">
+            <h2 class="scene-title stagger-item">圧縮という発想</h2>
+            <div class="ba-container stagger-item">
+                <div class="ba-card ba-before">
+                    <div class="ba-badge">BEFORE</div>
+                    <svg viewBox="0 0 100 100" class="ba-visual-svg">
+                        <rect x="10" y="10" width="80" height="80" rx="8" fill="#e2e8f0" stroke="#94a3b8" />
+                        <text x="50" y="55" text-anchor="middle" fill="#1e293b" font-size="12" font-weight="700">100
+                            KB</text>
+                    </svg>
+                    <div class="ba-desc">元の画像データ</div>
+                </div>
+                <div class="ba-arrow stagger-item">&rarr;</div>
+                <div class="ba-card ba-after">
+                    <div class="ba-badge accent-bg-primary">AFTER</div>
+                    <svg viewBox="0 0 100 100" class="ba-visual-svg">
+                        <rect x="25" y="25" width="50" height="50" rx="8" fill="#e0e7ff" stroke="#4f46e5"
+                            stroke-width="2" />
+                        <text x="50" y="55" text-anchor="middle" fill="#4f46e5" font-size="12" font-weight="700">30
+                            KB</text>
+                    </svg>
+                    <div class="ba-desc">圧縮後</div>
+                </div>
+            </div>
+            <div class="emphasis-sub stagger-item">CompuServe「データを小さくすれば速く送れる」</div>
+        </div>
+    </div>
+
+    <!-- Scene 5: アナロジー あだ名をつけるLZW -->
+    <div class="scene" id="scene-5">
+        <div class="content center-layout">
+            <h2 class="scene-title stagger-item">LZW圧縮 = あだ名方式</h2>
+            <div class="nickname-visual stagger-item">
+                <div class="nickname-before">
+                    <div class="nickname-phrase">いつもの場所で<br>いつもの時間に</div>
+                </div>
+                <div class="nickname-arrow">&darr;</div>
+                <div class="nickname-after">
+                    <div class="nickname-short accent-bg-primary">いつもので</div>
+                </div>
+            </div>
+            <div class="footnote stagger-item">よく使うパターンに短い名前をつける = 圧縮</div>
+        </div>
+    </div>
+
+    <!-- Scene 6: SVG図解 LZW辞書構築アニメーション -->
+    <div class="scene" id="scene-6">
+        <div class="content card-layout">
+            <h2 class="scene-title stagger-item">辞書を作りながら圧縮するLZW</h2>
+            <div class="lzw-visual stagger-item">
+                <div class="lzw-input">
+                    <div class="lzw-label">入力データ</div>
+                    <div class="lzw-stream">A B A B A B C A B C</div>
+                </div>
+                <div class="lzw-dict">
+                    <div class="lzw-label">辞書テーブル</div>
+                    <div class="dict-entry stagger-item"><span class="dict-code">#1</span> A</div>
+                    <div class="dict-entry stagger-item"><span class="dict-code">#2</span> B</div>
+                    <div class="dict-entry stagger-item"><span class="dict-code">#3</span> AB</div>
+                    <div class="dict-entry stagger-item"><span class="dict-code">#4</span> BA</div>
+                    <div class="dict-entry stagger-item"><span class="dict-code">#5</span> ABC</div>
+                </div>
+            </div>
+            <div class="emphasis-sub stagger-item">パターンを覚えるほど効率が上がる</div>
+        </div>
+    </div>
+
+    <!-- Scene 7: SVG図解 LZW学習効果 -->
+    <div class="scene" id="scene-7">
+        <div class="content center-layout">
+            <h2 class="scene-title stagger-item">LZWの系譜</h2>
+            <div class="flow-chain stagger-item">
+                <div class="flow-node stagger-item">
+                    <div class="flow-year">1977</div>
+                    <div class="flow-text"><span class="flow-name">LZ77</span><br>Lempel & Ziv</div>
+                </div>
+                <div class="flow-arrow stagger-item">&rarr;</div>
+                <div class="flow-node stagger-item">
+                    <div class="flow-year">1978</div>
+                    <div class="flow-text"><span class="flow-name">LZ78</span><br>辞書ベースへ</div>
+                </div>
+                <div class="flow-arrow stagger-item">&rarr;</div>
+                <div class="flow-node stagger-item">
+                    <div class="flow-year">1984</div>
+                    <div class="flow-text"><span class="flow-name">LZW</span><br>Welchが改良</div>
+                </div>
+            </div>
+            <div class="footnote stagger-item">3人の研究者の頭文字 L-Z-W</div>
+        </div>
+    </div>
+
+    <!-- Scene 8: チャート GIF普及曲線 -->
+    <div class="scene" id="scene-8">
+        <div class="content center-layout">
+            <h2 class="scene-title stagger-item">GIFの爆発的普及</h2>
+            <div class="chart-container stagger-item">
+                <svg viewBox="0 0 500 250" class="chart-svg">
+                    <line x1="50" y1="200" x2="450" y2="200" stroke="#94a3b8" stroke-width="1" />
+                    <line x1="50" y1="200" x2="50" y2="30" stroke="#94a3b8" stroke-width="1" />
+                    <text x="100" y="220" fill="#6c757d" font-size="11">1987</text>
+                    <text x="200" y="220" fill="#6c757d" font-size="11">1990</text>
+                    <text x="300" y="220" fill="#6c757d" font-size="11">1993</text>
+                    <text x="400" y="220" fill="#6c757d" font-size="11">1995</text>
+                    <path d="M100,190 C150,185 200,160 250,120 C300,80 350,50 400,40" fill="none" stroke="#14b8a6"
+                        stroke-width="3" class="trend-line" />
+                    <circle cx="100" cy="190" r="5" fill="#14b8a6" class="scatter-dot" style="--d:0" />
+                    <circle cx="200" cy="160" r="5" fill="#14b8a6" class="scatter-dot" style="--d:1" />
+                    <circle cx="300" cy="100" r="5" fill="#14b8a6" class="scatter-dot" style="--d:2" />
+                    <circle cx="400" cy="40" r="5" fill="#14b8a6" class="scatter-dot" style="--d:3" />
+                    <text x="30" y="35" fill="#6c757d" font-size="10">普及率</text>
+                </svg>
+            </div>
+            <div class="emphasis-sub stagger-item">90年代のWebは、どこを見てもGIFだらけ</div>
+            <div class="footnote stagger-item">しかし、この「当たり前」の裏に時限爆弾が…</div>
+        </div>
+    </div>
+
+    <!-- Scene 9: 思考実験 もし… -->
+    <div class="scene" id="scene-9">
+        <canvas id="canvas-9" class="bg-canvas"></canvas>
+        <div class="content center-layout">
+            <div class="emphasis-text-large stagger-item">もし<span class="accent-coral">……</span></div>
+            <div class="thought-card stagger-item">
+                <div class="thought-icon">?</div>
+                <div class="thought-text">毎日使っている<span class="accent-primary">通学路</span>に<br>ある日突然……</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scene 10: テキスト強調 特許通行料 -->
+    <div class="scene dark-scene" id="scene-10">
+        <div class="content center-layout">
+            <div class="alert-card stagger-item">
+                <div class="alert-icon">!</div>
+                <div class="alert-title">この道の設計には<span class="accent-coral">特許</span>があります</div>
+                <div class="alert-sub">通行料を払ってください</div>
+            </div>
+            <div class="emphasis-sub stagger-item light-text">1994年、これとほぼ同じことが起きた</div>
+        </div>
+    </div>
+
+    <!-- Scene 11: タイムライン 1983→1993 -->
+    <div class="scene" id="scene-11">
+        <div class="content card-layout">
+            <h2 class="scene-title stagger-item">特許と無知の時系列</h2>
+            <div class="timeline-horizontal">
+                <div class="tl-node stagger-item">
+                    <div class="tl-year accent-bg-amber">1983</div>
+                    <div class="tl-label">LZW特許出願</div>
+                    <div class="tl-sub">Terry Welch</div>
+                </div>
+                <div class="tl-connector stagger-item">&rarr;</div>
+                <div class="tl-node stagger-item">
+                    <div class="tl-year accent-bg-coral">1985</div>
+                    <div class="tl-label">特許成立</div>
+                    <div class="tl-sub">Sperry→Unisys</div>
+                </div>
+                <div class="tl-connector stagger-item">&rarr;</div>
+                <div class="tl-node stagger-item">
+                    <div class="tl-year accent-bg-teal">1987</div>
+                    <div class="tl-label">GIF誕生</div>
+                    <div class="tl-sub">特許を知らず</div>
+                </div>
+                <div class="tl-connector stagger-item">&rarr;</div>
+                <div class="tl-node stagger-item">
+                    <div class="tl-year accent-bg-primary">1993</div>
+                    <div class="tl-label">抵触発覚</div>
+                    <div class="tl-sub">8年後に判明</div>
+                </div>
+            </div>
+            <div class="footnote stagger-item">CompuServeのエンジニアはLZWが特許であることを知らなかった</div>
+        </div>
+    </div>
+
+    <!-- Scene 12: 比較対照 学術論文 vs 特許 -->
+    <div class="scene" id="scene-12">
+        <div class="content center-layout">
+            <h2 class="scene-title stagger-item">論文公開 ≠ 自由に使える</h2>
+            <div class="vs-container stagger-item">
+                <div class="vs-card vs-left stagger-item">
+                    <div class="vs-badge safe-badge">外見</div>
+                    <div class="vs-title">学術論文で公開</div>
+                    <div class="vs-desc">自由に使える<br>公開技術に見えた</div>
+                </div>
+                <div class="vs-divider stagger-item">vs</div>
+                <div class="vs-card vs-right stagger-item">
+                    <div class="vs-badge danger-badge">実態</div>
+                    <div class="vs-title">米国特許 4,558,302</div>
+                    <div class="vs-desc">特許で保護された<br>私有技術だった</div>
+                </div>
+            </div>
+            <div class="emphasis-sub stagger-item">ソフトウェア特許の落とし穴</div>
+        </div>
+    </div>
+
+    <!-- Scene 13: 数値インパクト $5,000/年 -->
+    <div class="scene dark-scene" id="scene-13">
+        <div class="content center-layout">
+            <h2 class="scene-title light-text stagger-item">Unisysの請求額</h2>
+            <div class="impact-number stagger-item">
+                <span class="big-num accent-coral">$5,000</span><span class="num-unit"> / 年</span>
+            </div>
+            <div class="emphasis-sub light-text stagger-item">ウェブサイト1つあたり（非商用含む）</div>
+            <div class="impact-sub stagger-item">
+                <span class="big-num-sm accent-coral">$3,800,000</span>
+                <span class="impact-label">AccuWeatherへの請求額</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scene 14: SVG図解 インターネット vs Unisys -->
+    <div class="scene" id="scene-14">
+        <div class="content center-layout">
+            <h2 class="scene-title stagger-item">インターネット全体が怒った</h2>
+            <div class="internet-vs-unisys stagger-item">
+                <svg viewBox="0 0 500 300" class="net-svg">
+                    <circle cx="250" cy="150" r="40" fill="#ef4444" opacity="0.9" class="unisys-node" />
+                    <text x="250" y="155" text-anchor="middle" fill="white" font-size="12"
+                        font-weight="700">Unisys</text>
+                    <text x="250" y="210" text-anchor="middle" fill="#ef4444" font-size="11">GIF税</text>
+                    <circle cx="100" cy="60" r="15" fill="#e0e7ff" stroke="#4f46e5" class="pc-node" style="--d:0" />
+                    <circle cx="400" cy="60" r="15" fill="#e0e7ff" stroke="#4f46e5" class="pc-node" style="--d:1" />
+                    <circle cx="60" cy="200" r="15" fill="#e0e7ff" stroke="#4f46e5" class="pc-node" style="--d:2" />
+                    <circle cx="440" cy="200" r="15" fill="#e0e7ff" stroke="#4f46e5" class="pc-node" style="--d:3" />
+                    <circle cx="150" cy="270" r="15" fill="#e0e7ff" stroke="#4f46e5" class="pc-node" style="--d:4" />
+                    <circle cx="350" cy="270" r="15" fill="#e0e7ff" stroke="#4f46e5" class="pc-node" style="--d:5" />
+                    <line x1="100" y1="60" x2="230" y2="130" stroke="#ef4444" stroke-width="1" opacity="0.4"
+                        class="anger-line" />
+                    <line x1="400" y1="60" x2="270" y2="130" stroke="#ef4444" stroke-width="1" opacity="0.4"
+                        class="anger-line" />
+                    <line x1="60" y1="200" x2="220" y2="160" stroke="#ef4444" stroke-width="1" opacity="0.4"
+                        class="anger-line" />
+                    <line x1="440" y1="200" x2="280" y2="160" stroke="#ef4444" stroke-width="1" opacity="0.4"
+                        class="anger-line" />
+                </svg>
+            </div>
+            <div class="quote-card quote-warning stagger-item">
+                <div class="quote-mark">"</div>
+                <div class="quote-text">彼らは全部タダで仲良くやりたいらしい。<br>幸い、<span class="accent-coral">それはアメリカのやり方じゃない</span>
+                </div>
+                <div class="quote-source">Unisys 特許弁護士</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scene 15: 段階的リスト コミュニティの抵抗 -->
+    <div class="scene" id="scene-15">
+        <div class="content card-layout">
+            <h2 class="scene-title stagger-item">コミュニティの集団的抵抗</h2>
+            <div class="numbered-list">
+                <div class="numbered-item stagger-item">
+                    <div class="number-circle">1</div>
+                    <div class="numbered-text"><span class="accent-primary">GNUプロジェクト</span>がGIF使用を全面拒否</div>
+                </div>
+                <div class="numbered-item stagger-item">
+                    <div class="number-circle">2</div>
+                    <div class="numbered-text"><span class="accent-primary">AccuWeather</span>がPNGへ公式切り替え</div>
+                </div>
+                <div class="numbered-item stagger-item">
+                    <div class="number-circle">3</div>
+                    <div class="numbered-text">8ヶ月で<span class="accent-coral">支払いはたった1件</span></div>
+                </div>
+            </div>
+            <div class="footnote stagger-item">インターネットは払わずに抵抗した</div>
+        </div>
+    </div>
+
+    <!-- Scene 16: テキスト強調 Burn All GIFs Day -->
+    <div class="scene dark-scene" id="scene-16">
+        <canvas id="canvas-16" class="bg-canvas"></canvas>
+        <div class="content center-layout">
+            <div class="section-badge accent-bg-coral stagger-item">1999年11月5日</div>
+            <div class="emphasis-text-large stagger-item light-text">Burn All <span class="accent-coral">GIF</span>s Day
+            </div>
+            <div class="emphasis-sub light-text stagger-item">GIFを全部燃やせ ── 怒りの抗議活動</div>
+            <div class="footnote light-text stagger-item">米国国防総省もGIF→PNG移行を検討</div>
+        </div>
+    </div>
+
+    <!-- Scene 17: 引用カード Thomas Boutell Usenet投稿 -->
+    <div class="scene" id="scene-17">
+        <div class="content center-layout">
+            <h2 class="scene-title stagger-item">怒りが創造に変わった瞬間</h2>
+            <div class="quote-card stagger-item">
+                <div class="quote-mark">"</div>
+                <div class="quote-text">GIFに代わる、<span class="accent-primary">自由で特許フリー</span>な<br>画像形式を作ろう</div>
+                <div class="quote-source">Thomas Boutell, comp.graphics, 1995年1月4日</div>
+            </div>
+            <div class="emphasis-sub stagger-item">ライセンス発表からわずか1週間後</div>
+        </div>
+    </div>
+
+    <!-- Scene 18: タイムライン PBF→PNG仕様凍結 -->
+    <div class="scene" id="scene-18">
+        <div class="content card-layout">
+            <h2 class="scene-title stagger-item">驚異的な開発スピード</h2>
+            <div class="timeline-horizontal">
+                <div class="tl-node stagger-item">
+                    <div class="tl-year accent-bg-primary">1/4</div>
+                    <div class="tl-label">PBF提案</div>
+                </div>
+                <div class="tl-connector stagger-item">&rarr;</div>
+                <div class="tl-node stagger-item">
+                    <div class="tl-year accent-bg-teal">1月中旬</div>
+                    <div class="tl-label">主要機能設計</div>
+                </div>
+                <div class="tl-connector stagger-item">&rarr;</div>
+                <div class="tl-node stagger-item">
+                    <div class="tl-year accent-bg-amber">2/7</div>
+                    <div class="tl-label">CompuServe支持</div>
+                </div>
+                <div class="tl-connector stagger-item">&rarr;</div>
+                <div class="tl-node stagger-item">
+                    <div class="tl-year accent-bg-coral">3月初</div>
+                    <div class="tl-label">Draft 9 仕様凍結</div>
+                </div>
+            </div>
+            <div class="impact-number stagger-item">
+                <span class="big-num accent-primary">2</span><span class="num-unit">ヶ月</span>
+            </div>
+            <div class="footnote stagger-item">怒りのエネルギー × 集合知 = 驚異的スピード</div>
+        </div>
+    </div>
+
+    <!-- Scene 19: 比較対照 LZW vs Deflate -->
+    <div class="scene" id="scene-19">
+        <div class="content center-layout">
+            <h2 class="scene-title stagger-item">圧縮方式の対決</h2>
+            <div class="vs-container stagger-item">
+                <div class="vs-card vs-left stagger-item">
+                    <div class="vs-badge danger-badge">特許あり</div>
+                    <div class="vs-title">LZW</div>
+                    <div class="vs-desc">辞書方式</div>
+                </div>
+                <div class="vs-divider stagger-item">vs</div>
+                <div class="vs-card vs-right stagger-item">
+                    <div class="vs-badge safe-badge">特許フリー</div>
+                    <div class="vs-title">Deflate</div>
+                    <div class="vs-desc">LZ77 + ハフマン</div>
+                </div>
+            </div>
+            <div class="emphasis-sub stagger-item">特許フリーで特許技術を超えられるのか？</div>
+        </div>
+    </div>
+
+    <!-- Scene 20: SVG図解 Deflate LZ77 -->
+    <div class="scene" id="scene-20">
+        <div class="content card-layout">
+            <h2 class="scene-title stagger-item">Deflate 第1段階：LZ77</h2>
+            <div class="deflate-visual stagger-item">
+                <div class="deflate-step">
+                    <div class="deflate-label accent-bg-teal">Step 1</div>
+                    <div class="deflate-desc">過去のデータを振り返って参照</div>
+                </div>
+                <div class="deflate-example stagger-item">
+                    <div class="def-stream">
+                        <span class="def-past">A B C D</span>
+                        <span class="def-match accent-primary">A B C</span>
+                    </div>
+                    <div class="def-instruction">&darr;</div>
+                    <div class="def-result">「<span class="accent-primary">4文字前に戻って3文字コピー</span>」</div>
+                </div>
+            </div>
+            <div class="emphasis-sub stagger-item">辞書は持たない ── 過去のデータ自体が辞書</div>
+        </div>
+    </div>
+
+    <!-- Scene 21: SVG図解 ハフマン符号化 -->
+    <div class="scene" id="scene-21">
+        <div class="content center-layout">
+            <h2 class="scene-title stagger-item">Deflate 第2段階：ハフマン符号化</h2>
+            <div class="huffman-visual stagger-item">
+                <div class="huff-row stagger-item">
+                    <div class="huff-label">頻出パターン</div>
+                    <div class="huff-code huff-short accent-bg-primary">01</div>
+                    <div class="huff-note">短いコード</div>
+                </div>
+                <div class="huff-row stagger-item">
+                    <div class="huff-label">稀なパターン</div>
+                    <div class="huff-code huff-long accent-bg-amber">110101</div>
+                    <div class="huff-note">長いコード</div>
+                </div>
+            </div>
+            <div class="comparison-note stagger-item">
+                <span class="accent-primary">モールス信号</span>のE「・」とQ「ーー・ー」と同じ原理
+            </div>
+        </div>
+    </div>
+
+    <!-- Scene 22: 数値インパクト 10〜50% -->
+    <div class="scene" id="scene-22">
+        <div class="content center-layout">
+            <h2 class="scene-title stagger-item">特許フリーなのに高性能</h2>
+            <div class="impact-number stagger-item">
+                <span class="big-num accent-primary">10〜50</span><span class="num-unit">%</span>
+            </div>
+            <div class="emphasis-sub stagger-item">PNGはGIFより10〜50%高い圧縮率を実現</div>
+            <div class="bar-comparison stagger-item">
+                <div class="bar-row">
+                    <div class="bar-label">GIF (LZW)</div>
+                    <div class="bar-track">
+                        <div class="bar-fill bar-a-fill" style="--w:60%"></div>
+                    </div>
+                </div>
+                <div class="bar-row">
+                    <div class="bar-label">PNG (Deflate)</div>
+                    <div class="bar-track">
+                        <div class="bar-fill bar-b-fill" style="--w:90%"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="footnote stagger-item">二段構え圧縮 + 前処理フィルタリングの成果</div>
+        </div>
+    </div>
+
+    <!-- Scene 23: テキスト強調 CompuServe支持 -->
+    <div class="scene" id="scene-23">
+        <canvas id="canvas-23" class="bg-canvas"></canvas>
+        <div class="content center-layout">
+            <div class="section-badge accent-bg-primary stagger-item">1995年2月7日</div>
+            <div class="emphasis-text stagger-item">CompuServe</div>
+            <div class="emphasis-text-large stagger-item">PNGを<span class="accent-primary">GIFの後継</span>として<br>公式に支持
+            </div>
+            <div class="emphasis-sub stagger-item">GIFの生みの親が後継者を認めた</div>
+            <div class="png-final stagger-item">
+                <span class="accent-primary">PNG is Not GIF</span> ── 自由な技術
+            </div>
+        </div>
+    </div>
+
+    <!-- Scene 24: タイムライン 特許失効 -->
+    <div class="scene" id="scene-24">
+        <div class="content center-layout">
+            <h2 class="scene-title stagger-item">20年の特許期間の終わり</h2>
+            <div class="chain-break stagger-item">
+                <svg viewBox="0 0 400 120" class="chain-svg">
+                    <path d="M50,60 L150,60" stroke="#94a3b8" stroke-width="6" stroke-linecap="round" />
+                    <path d="M250,60 L350,60" stroke="#94a3b8" stroke-width="6" stroke-linecap="round" />
+                    <line x1="170" y1="40" x2="230" y2="80" stroke="#ef4444" stroke-width="4" class="chain-cut" />
+                    <line x1="170" y1="80" x2="230" y2="40" stroke="#ef4444" stroke-width="4" class="chain-cut" />
+                    <text x="200" y="110" text-anchor="middle" fill="#ef4444" font-size="14" font-weight="700">失効</text>
+                </svg>
+            </div>
+            <div class="tl-dual stagger-item">
+                <div class="tl-point"><span class="accent-coral">2003年</span> 米国で失効</div>
+                <div class="tl-point"><span class="accent-coral">2004年</span> 日本・欧州で失効</div>
+            </div>
+            <div class="emphasis-sub stagger-item">GIFはようやく完全に自由になった</div>
+        </div>
+    </div>
+
+    <!-- Scene 25: 思考実験 PNGの勝利？ -->
+    <div class="scene" id="scene-25">
+        <canvas id="canvas-25" class="bg-canvas"></canvas>
+        <div class="content center-layout">
+            <div class="emphasis-text stagger-item">PNGの<span class="accent-primary">勝利</span></div>
+            <div class="cross-mark stagger-item">
+                <svg viewBox="0 0 100 100" class="cross-svg">
+                    <line x1="20" y1="20" x2="80" y2="80" stroke="#ef4444" stroke-width="8" stroke-linecap="round" />
+                    <line x1="80" y1="20" x2="20" y2="80" stroke="#ef4444" stroke-width="8" stroke-linecap="round" />
+                </svg>
+            </div>
+            <div class="emphasis-text-large stagger-item">……<span class="accent-coral">本当に？</span></div>
+        </div>
+    </div>
+
+    <!-- Scene 26: 比較対照 PNGの勝利 vs アニメーション非対応 -->
+    <div class="scene" id="scene-26">
+        <div class="content center-layout">
+            <h2 class="scene-title stagger-item">PNGの唯一の弱点</h2>
+            <div class="vs-container stagger-item">
+                <div class="vs-card vs-left stagger-item">
+                    <div class="vs-badge safe-badge">PNG勝利</div>
+                    <div class="vs-desc">圧縮率 ↑<br>1677万色<br>アルファ透過<br>特許フリー</div>
+                </div>
+                <div class="vs-divider stagger-item">but</div>
+                <div class="vs-card vs-right stagger-item">
+                    <div class="vs-badge danger-badge">PNGの弱点</div>
+                    <div class="vs-title accent-coral">アニメーション<br>非対応</div>
+                    <div class="vs-desc">意図的な設計判断</div>
+                </div>
+            </div>
+            <div class="footnote stagger-item">MNG→不採用、APNG→時すでに遅し</div>
+        </div>
+    </div>
+
+    <!-- Scene 27: SVG図解 SNS×GIF復活 -->
+    <div class="scene" id="scene-27">
+        <div class="content card-layout">
+            <h2 class="scene-title stagger-item">2010年代：GIFの不死鳥</h2>
+            <div class="triple-card stagger-item">
+                <div class="factor-card stagger-item">
+                    <div class="factor-icon accent-bg-primary">T</div>
+                    <div class="factor-name">Tumblr</div>
+                    <div class="factor-desc">GIF文化の発信地</div>
+                </div>
+                <div class="factor-card stagger-item">
+                    <div class="factor-icon accent-bg-teal">X</div>
+                    <div class="factor-name">Twitter</div>
+                    <div class="factor-desc">リアクション</div>
+                </div>
+                <div class="factor-card stagger-item">
+                    <div class="factor-icon accent-bg-amber">f</div>
+                    <div class="factor-name">Facebook</div>
+                    <div class="factor-desc">ミーム拡散</div>
+                </div>
+            </div>
+            <div class="emphasis-sub stagger-item">「短くてループする」= 感情を一瞬で伝える</div>
+        </div>
+    </div>
+
+    <!-- Scene 28: 数値インパクト Giphy 4億ドル -->
+    <div class="scene" id="scene-28">
+        <div class="content center-layout">
+            <h2 class="scene-title stagger-item">「燃やせ」と言われた形式の価値</h2>
+            <div class="source-badge stagger-item">Facebook, 2020年</div>
+            <div class="impact-number stagger-item">
+                <span class="big-num accent-primary">$400M</span>
+            </div>
+            <div class="emphasis-sub stagger-item">FacebookがGiphyを<span class="accent-primary">4億ドル</span>で買収</div>
+            <div class="footnote stagger-item">かつて「全部燃やせ」と言われたGIF形式が生んだビジネス</div>
+        </div>
+    </div>
+
+    <!-- Scene 29: フロー図 技術標準の4要素 -->
+    <div class="scene" id="scene-29">
+        <div class="content center-layout">
+            <h2 class="scene-title stagger-item">技術の勝者を決める4つの力</h2>
+            <div class="four-forces stagger-item">
+                <svg viewBox="0 0 400 300" class="forces-svg">
+                    <circle cx="200" cy="150" r="50" fill="#e0e7ff" stroke="#4f46e5" stroke-width="2" />
+                    <text x="200" y="145" text-anchor="middle" fill="#4f46e5" font-size="10"
+                        font-weight="700">技術標準</text>
+                    <text x="200" y="162" text-anchor="middle" fill="#4f46e5" font-size="8">の勝者</text>
+                    <rect x="60" y="20" width="80" height="36" rx="8" fill="#f59e0b" class="force-node" style="--d:0" />
+                    <text x="100" y="43" text-anchor="middle" fill="white" font-size="11" font-weight="700">特許</text>
+                    <rect x="260" y="20" width="80" height="36" rx="8" fill="#ef4444" class="force-node"
+                        style="--d:1" />
+                    <text x="300" y="43" text-anchor="middle" fill="white" font-size="11" font-weight="700">法律</text>
+                    <rect x="30" y="240" width="100" height="36" rx="8" fill="#14b8a6" class="force-node"
+                        style="--d:2" />
+                    <text x="80" y="263" text-anchor="middle" fill="white" font-size="11"
+                        font-weight="700">コミュニティ</text>
+                    <rect x="270" y="240" width="80" height="36" rx="8" fill="#4f46e5" class="force-node"
+                        style="--d:3" />
+                    <text x="310" y="263" text-anchor="middle" fill="white" font-size="11" font-weight="700">文化</text>
+                    <line x1="140" y1="38" x2="160" y2="110" stroke="#f59e0b" stroke-width="1.5" opacity="0.5" />
+                    <line x1="260" y1="38" x2="240" y2="110" stroke="#ef4444" stroke-width="1.5" opacity="0.5" />
+                    <line x1="100" y1="240" x2="170" y2="190" stroke="#14b8a6" stroke-width="1.5" opacity="0.5" />
+                    <line x1="280" y1="240" x2="230" y2="190" stroke="#4f46e5" stroke-width="1.5" opacity="0.5" />
+                </svg>
+            </div>
+            <div class="emphasis-sub stagger-item">技術的優劣だけでは勝者は決まらない</div>
+        </div>
+    </div>
+
+    <!-- Scene 30: まとめカード 3つの洞察 -->
+    <div class="scene" id="scene-30">
+        <div class="content center-layout">
+            <h2 class="scene-title stagger-item">GIF特許騒動から学べること</h2>
+            <div class="summary-cards">
+                <div class="summary-card stagger-item">
+                    <div class="summary-num">1</div>
+                    <div class="summary-text">PNGは<span class="accent-primary">怒りから生まれた</span>技術の結晶</div>
+                </div>
+                <div class="summary-card stagger-item">
+                    <div class="summary-num">2</div>
+                    <div class="summary-text"><span class="accent-primary">特許フリー</span>でも特許技術を超えられる</div>
+                </div>
+                <div class="summary-card stagger-item">
+                    <div class="summary-num">3</div>
+                    <div class="summary-text">勝者は<span class="accent-primary">技術×文化</span>の力学で決まる</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scene 31: テキスト強調 PNG is Not GIF 最終 -->
+    <div class="scene" id="scene-31">
+        <canvas id="canvas-31" class="bg-canvas"></canvas>
+        <div class="content center-layout">
+            <div class="final-reveal stagger-item">
+                <div class="emphasis-text-large"><span class="accent-primary glow-text">PNG is Not GIF</span></div>
+            </div>
+            <div class="emphasis-sub stagger-item">「私たちは特許に縛られない。インターネットは自由であるべきだ」</div>
+        </div>
+    </div>
+
+    <!-- Scene 32: SVG図解 GIFとPNGの共存 -->
+    <div class="scene" id="scene-32">
+        <div class="content center-layout">
+            <h2 class="scene-title stagger-item">共存 ── それぞれの得意分野で</h2>
+            <div class="coexist-visual stagger-item">
+                <div class="coexist-side">
+                    <div class="coexist-icon format-png">PNG</div>
+                    <div class="coexist-role">静止画の王様</div>
+                </div>
+                <div class="coexist-handshake stagger-item">
+                    <svg viewBox="0 0 60 60" class="handshake-svg">
+                        <path d="M10,35 Q15,20 30,25 Q45,30 50,35" fill="none" stroke="#4f46e5" stroke-width="3"
+                            class="trend-line" />
+                        <circle cx="30" cy="25" r="8" fill="#e0e7ff" stroke="#4f46e5" stroke-width="2" />
+                    </svg>
+                </div>
+                <div class="coexist-side">
+                    <div class="coexist-icon format-gif">GIF</div>
+                    <div class="coexist-role">アニメーション文化</div>
+                </div>
+            </div>
+            <div class="emphasis-sub stagger-item">「どちらが正しい」ではなく、両方が勝った</div>
+        </div>
+    </div>
+
+    <!-- Scene 33: エンディング .pngの3文字 -->
+    <div class="scene" id="scene-33">
+        <canvas id="canvas-33" class="bg-canvas"></canvas>
+        <div class="content center-layout">
+            <div class="ext-visual stagger-item">
+                <div class="ext-dot">.</div>
+                <div class="ext-letters">
+                    <span class="ext-p">p</span><span class="ext-n">n</span><span class="ext-g">g</span>
+                </div>
+            </div>
+            <div class="ending-keywords stagger-item">
+                <span class="ending-kw">特許</span>
+                <span class="ending-kw">自由</span>
+                <span class="ending-kw">圧縮</span>
+                <span class="ending-kw">怒り</span>
+                <span class="ending-kw">共存</span>
+            </div>
+            <div class="emphasis-sub stagger-item">3文字の中にドラマが詰まっている</div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>

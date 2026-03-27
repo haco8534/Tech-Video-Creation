@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "Skill(update-config)",
+      "Skill(update-config:*)",
+      "Bash(powershell -Command \"Get-Process | Where-Object { $_.Modules.FileName -like ''*git*'' -or $_.ProcessName -like ''*git*'' -or $_.ProcessName -like ''*node*'' } | Select-Object Id, ProcessName | Format-Table -AutoSize\")",
+      "Bash(powershell -Command \"try { [System.IO.File]::Delete\\(''D:\\\\myfolder\\\\動画生成\\\\技術解説\\\\.git\\\\index.lock''\\) } catch { Write-Host $_.Exception.Message }\")",
+      "Bash(powershell -Command \"Stop-Process -Id 8480 -Force; Stop-Process -Id 29932 -Force; Stop-Process -Id 31992 -Force\")",
+      "Bash(powershell -Command \"& { Set-Location ''D:\\\\myfolder\\\\動画生成\\\\技術解説''; git add -A 2>&1; git commit -m ''chore: gitignoreに画像ファイルを追加、重いメディアをトラッキングから除外'' 2>&1 }\")"
+    ]
+  }
+}

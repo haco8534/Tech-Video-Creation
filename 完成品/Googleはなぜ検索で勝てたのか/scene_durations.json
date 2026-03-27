@@ -1,0 +1,1201 @@
+[
+  {
+    "id": 0,
+    "title": "Googleはなぜ検索で勝てたのか",
+    "duration": 13.9,
+    "audioFiles": [
+      {
+        "file": "scene_00_00.wav",
+        "duration": 3.8506666666666667,
+        "speaker": "めたん"
+      },
+      {
+        "file": "scene_00_01.wav",
+        "duration": 4.010666666666666,
+        "speaker": "ずんだもん"
+      },
+      {
+        "file": "scene_00_02.wav",
+        "duration": 4.96,
+        "speaker": "ずんだもん"
+      }
+    ]
+  },
+  {
+    "id": 1,
+    "title": "検索エンジンがない世界。画面中央に「？」マーク、周囲に本・人・電話・図書館のアイコンが散在",
+    "duration": 35,
+    "audioFiles": [
+      {
+        "file": "scene_01_00.wav",
+        "duration": 4.384,
+        "speaker": "めたん"
+      },
+      {
+        "file": "scene_01_01.wav",
+        "duration": 2.2506666666666666,
+        "speaker": "めたん"
+      },
+      {
+        "file": "scene_01_02.wav",
+        "duration": 3.744,
+        "speaker": "ずんだもん"
+      },
+      {
+        "file": "scene_01_03.wav",
+        "duration": 3.7013333333333334,
+        "speaker": "ずんだもん"
+      },
+      {
+        "file": "scene_01_04.wav",
+        "duration": 5.216,
+        "speaker": "めたん"
+      },
+      {
+        "file": "scene_01_05.wav",
+        "duration": 6.453333333333333,
+        "speaker": "ずんだもん"
+      },
+      {
+        "file": "scene_01_06.wav",
+        "duration": 5.258666666666667,
+        "speaker": "ずんだもん"
+      },
+      {
+        "file": "scene_01_07.wav",
+        "duration": 1.44,
+        "speaker": "めたん"
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "title": "左側「現在のGoogle検索」＝入力→的確な結果が上位に表示。右側「1990年代の検索」＝入力→関係ない結果が大量に表示、広告だらけ",
+    "duration": 46.2,
+    "audioFiles": [
+      {
+        "file": "scene_02_00.wav",
+        "duration": 3.2853333333333334,
+        "speaker": "ずんだもん"
+      },
+      {
+        "file": "scene_02_01.wav",
+        "duration": 4.16,
+        "speaker": "ずんだもん"
+      },
+      {
+        "file": "scene_02_02.wav",
+        "duration": 3.68,
+        "speaker": "ずんだもん"
+      },
+      {
+        "file": "scene_02_03.wav",
+        "duration": 2.848,
+        "speaker": "めたん"
+      },
+      {
+        "file": "scene_02_04.wav",
+        "duration": 5.504,
+        "speaker": "ずんだもん"
+      },
+      {
+        "file": "scene_02_05.wav",
+        "duration": 4.810666666666667,
+        "speaker": "ずんだもん"
+      },
+      {
+        "file": "scene_02_06.wav",
+        "duration": 2.1546666666666665,
+        "speaker": "めたん"
+      },
+      {
+        "file": "scene_02_07.wav",
+        "duration": 5.536,
+        "speaker": "ずんだもん"
+      },
+      {
+        "file": "scene_02_08.wav",
+        "duration": 5.664,
+        "speaker": "ずんだもん"
+      },
+      {
+        "file": "scene_02_09.wav",
+        "duration": 5.386666666666667,
+        "speaker": "ずんだもん"
+      }
+    ]
+  },
+  {
+    "id": 3,
+    "title": "ウェブを巨大な図書館にたとえる。無限に広がる本棚のビジュアル。「司書なし」「整理番号なし」のラベル",
+    "duration": 20,
+    "audioFiles": [
+      {
+        "file": "scene_03_00.wav",
+        "duration": 4.906666666666666,
+        "speaker": "ずんだもん"
+      },
+      {
+        "file": "scene_03_01.wav",
+        "duration": 4.362666666666667,
+        "speaker": "ずんだもん"
+      },
+      {
+        "file": "scene_03_02.wav",
+        "duration": 5.546666666666667,
+        "speaker": "ずんだもん"
+      },
+      {
+        "file": "scene_03_03.wav",
+        "duration": 3.8293333333333335,
+        "speaker": "めたん"
+      }
+    ]
+  },
+  {
+    "id": 4,
+    "title": "Yahoo!のアプローチ：人間のスタッフが1冊ずつ分類→「スポーツ→野球→MLB」のようなカテゴリツリー構造。ただし本が増えると追いつかない",
+    "duration": 41.8,
+    "audioFiles": [
+      {
+        "file": "scene_04_00.wav",
+        "duration": 4.522666666666667,
+        "speaker": "ずんだもん"
+      },
+      {
+        "file": "scene_04_01.wav",
+        "duration": 5.173333333333333,
+        "speaker": "ずんだもん"
+      },
+      {
+        "file": "scene_04_02.wav",
+        "duration": 4.32,
+        "speaker": "ずんだもん"
+      },
+      {
+        "file": "scene_04_03.wav",
+        "duration": 4.576,
+        "speaker": "めたん"
+      },
+      {
+        "file": "scene_04_04.wav",
+        "duration": 5.056,
+        "speaker": "ずんだもん"
+      },
+      {
+        "file": "scene_04_05.wav",
+        "duration": 4.917333333333334,
+        "speaker": "ずんだもん"
+      },
+      {
+        "file": "scene_04_06.wav",
+        "duration": 4.256,
+        "speaker": "ずんだもん"
+      },
+      {
+        "file": "scene_04_07.wav",
+        "duration": 1.984,
+        "speaker": "めたん"
+      },
+      {
+        "file": "scene_04_08.wav",
+        "duration": 4.1386666666666665,
+        "speaker": "ずんだもん"
+      }
+    ]
+  },
+  {
+    "id": 5,
+    "title": "ウェブサイト数の爆発的増加グラフ。1994年：約3,000サイト → 1998年：約200万 → 2000年：約1,700万サイト。矢印が急上昇",
+    "duration": 19.2,
+    "audioFiles": [
+      {
+        "file": "scene_05_00.wav",
+        "duration": 1.632,
+        "speaker": "ずんだもん"
+      },
+      {
+        "file": "scene_05_01.wav",
+        "duration": 4.373333333333333,
+        "speaker": "めたん"
+      },
+      {
+        "file": "scene_05_02.wav",
+        "duration": 7.946666666666666,
+        "speaker": "ずんだもん"
+      },
+      {
+        "file": "scene_05_03.wav",
+        "duration": 3.8293333333333335,
+        "speaker": "ずんだもん"
+      }
+    ]
+  },
+  {
+    "id": 6,
+    "title": "AltaVistaのアプローチ：ロボット「Scooter」がページの文字を自動で読む→キーワード一致で検索結果を返す。ただし「良いページ」の判断ができない",
+    "duration": 36.5,
+    "audioFiles": [
+      {
+        "file": "scene_06_00.wav",
+        "duration": 4.224,
+        "speaker": "ずんだもん"
+      },
+      {
+        "file": "scene_06_01.wav",
+        "duration": 4.2026666666666666,
+        "speaker": "ずんだもん"
+      },
+      {
+        "file": "scene_06_02.wav",
+        "duration": 5.333333333333333,
+        "speaker": "ずんだもん"
+      },
+      {
+        "file": "scene_06_03.wav",
+        "duration": 2.848,
+        "speaker": "めたん"
+      },
+      {
+        "file": "scene_06_04.wav",
+        "duration": 5.1626666666666665,
+        "speaker": "ずんだもん"
+      },
+      {
+        "file": "scene_06_05.wav",
+        "duration": 3.1786666666666665,
+        "speaker": "ずんだもん"
+      },
+      {
+        "file": "scene_06_06.wav",
+        "duration": 3.008,
+        "speaker": "ずんだもん"
+      },
+      {
+        "file": "scene_06_07.wav",
+        "duration": 1.856,
+        "speaker": "めたん"
+      },
+      {
+        "file": "scene_06_08.wav",
+        "duration": 3.7866666666666666,
+        "speaker": "ずんだもん"
+      }
+    ]
+  },
+  {
+    "id": 7,
+    "title": "「犬のしつけ方」で検索→キーワードが含まれるページが100万件ヒットするイメージ→「どれが専門家の記事で、どれが素人のブログ？」と問いかける",
+    "duration": 43.5,
+    "audioFiles": [
+      {
+        "file": "scene_07_00.wav",
+        "duration": 3.2106666666666666,
+        "speaker": "めたん"
+      },
+      {
+        "file": "scene_07_01.wav",
+        "duration": 2.1226666666666665,
+        "speaker": "ずんだもん"
+      },
+      {
+        "file": "scene_07_02.wav",
+        "duration": 4.917333333333334,
+        "speaker": "ずんだもん"
+      },
+      {
+        "file": "scene_07_03.wav",
+        "duration": 6.634666666666667,
+        "speaker": "ずんだもん"
+      },
+      {
+        "file": "scene_07_04.wav",
+        "duration": 4.352,
+        "speaker": "めたん"
+      },
+      {
+        "file": "scene_07_05.wav",
+        "duration": 6.208,
+        "speaker": "ずんだもん"
+      },
+      {
+        "file": "scene_07_06.wav",
+        "duration": 5.450666666666667,
+        "speaker": "ずんだもん"
+      },
+      {
+        "file": "scene_07_07.wav",
+        "duration": 3.7333333333333334,
+        "speaker": "ずんだもん"
+      },
+      {
+        "file": "scene_07_08.wav",
+        "duration": 3.925333333333333,
+        "speaker": "ずんだもん"
+      }
+    ]
+  },
+  {
+    "id": 8,
+    "title": "Larry Pageの着想：「学術論文では、多くの論文に引用される論文は重要。ウェブのリンクも同じ構造ではないか？」── Larry Page, Stanford大学 (1996)",
+    "duration": 21.1,
+    "audioFiles": [
+      {
+        "file": "scene_08_00.wav",
+        "duration": 7.914666666666666,
+        "speaker": "ずんだもん"
+      },
+      {
+        "file": "scene_08_01.wav",
+        "duration": 3.2746666666666666,
+        "speaker": "ずんだもん"
+      },
+      {
+        "file": "scene_08_02.wav",
+        "duration": 4.224,
+        "speaker": "めたん"
+      },
+      {
+        "file": "scene_08_03.wav",
+        "duration": 4.32,
+        "speaker": "ずんだもん"
+      }
+    ]
+  },
+  {
+    "id": 9,
+    "title": "学術論文のネットワーク図。論文Aに多くの矢印（引用）が集まっている＝重要な論文。矢印が少ない論文＝重要度が低い。引用が「投票」であることを示す",
+    "duration": 51.4,
+    "audioFiles": [
+      {
+        "file": "scene_09_00.wav",
+        "duration": 6.005333333333334,
+        "speaker": "ずんだもん"
+      },
+      {
+        "file": "scene_09_01.wav",
+        "duration": 6.698666666666667,
+        "speaker": "ずんだもん"
+      },
+      {
+        "file": "scene_09_02.wav",
+        "duration": 4.618666666666667,
+        "speaker": "めたん"
+      },
+      {
+        "file": "scene_09_03.wav",
+        "duration": 3.84,
+        "speaker": "ずんだもん"
+      },
+      {
+        "file": "scene_09_04.wav",
+        "duration": 6.24,
+        "speaker": "ずんだもん"
+      },
+      {
+        "file": "scene_09_05.wav",
+        "duration": 3.7546666666666666,
+        "speaker": "ずんだもん"
+      },
+      {
+        "file": "scene_09_06.wav",
+        "duration": 5.728,
+        "speaker": "ずんだもん"
+      },
+      {
+        "file": "scene_09_07.wav",
+        "duration": 5.237333333333333,
+        "speaker": "めたん"
+      },
+      {
+        "file": "scene_09_08.wav",
+        "duration": 6.421333333333333,
+        "speaker": "ずんだもん"
+      }
+    ]
+  },
+  {
+    "id": 10,
+    "title": "学術引用のネットワーク図が滑らかにウェブのリンク構造に変形するアニメーション。「引用→リンク」「論文→ウェブページ」の対応ラベルが表示",
+    "duration": 37,
+    "audioFiles": [
+      {
+        "file": "scene_10_00.wav",
+        "duration": 2.8373333333333335,
+        "speaker": "ずんだもん"
+      },
+      {
+        "file": "scene_10_01.wav",
+        "duration": 4.565333333333333,
+        "speaker": "ずんだもん"
+      },
+      {
+        "file": "scene_10_02.wav",
+        "duration": 6.048,
+        "speaker": "めたん"
+      },
+      {
+        "file": "scene_10_03.wav",
+        "duration": 1.6533333333333333,
+        "speaker": "ずんだもん"
+      },
+      {
+        "file": "scene_10_04.wav",
+        "duration": 4.042666666666666,
+        "speaker": "ずんだもん"
+      },
+      {
+        "file": "scene_10_05.wav",
+        "duration": 5.1626666666666665,
+        "speaker": "ずんだもん"
+      },
+      {
+        "file": "scene_10_06.wav",
+        "duration": 4.757333333333333,
+        "speaker": "ずんだもん"
+      },
+      {
+        "file": "scene_10_07.wav",
+        "duration": 5.354666666666667,
+        "speaker": "めたん"
+      }
+    ]
+  },
+  {
+    "id": 11,
+    "title": "ウェブページのノードとリンクの矢印が表示。ノードのサイズがPageRank値に比例して変化し、重要なページのノードがどんどん大きくなる",
+    "duration": 21.2,
+    "audioFiles": [
+      {
+        "file": "scene_11_00.wav",
+        "duration": 5.0986666666666665,
+        "speaker": "ずんだもん"
+      },
+      {
+        "file": "scene_11_01.wav",
+        "duration": 4.842666666666666,
+        "speaker": "ずんだもん"
+      },
+      {
+        "file": "scene_11_02.wav",
+        "duration": 2.272,
+        "speaker": "めたん"
+      },
+      {
+        "file": "scene_11_03.wav",
+        "duration": 3.029333333333333,
+        "speaker": "ずんだもん"
+      },
+      {
+        "file": "scene_11_04.wav",
+        "duration": 2.1973333333333334,
+        "speaker": "めたん"
+      },
+      {
+        "file": "scene_11_05.wav",
+        "duration": 1.728,
+        "speaker": "ずんだもん"
+      }
+    ]
+  },
+  {
+    "id": 12,
+    "title": "ランダムサーファーの旅を可視化。人型アイコンがリンクからリンクへランダムに移動し、よく通過するページが明るく光って大きくなる",
+    "duration": 46,
+    "audioFiles": [
+      {
+        "file": "scene_12_00.wav",
+        "duration": 4.789333333333333,
+        "speaker": "ずんだもん"
+      },
+      {
+        "file": "scene_12_01.wav",
+        "duration": 2.656,
+        "speaker": "ずんだもん"
+      },
+      {
+        "file": "scene_12_02.wav",
+        "duration": 2.368,
+        "speaker": "めたん"
+      },
+      {
+        "file": "scene_12_03.wav",
+        "duration": 4.298666666666667,
+        "speaker": "ずんだもん"
+      },
+      {
+        "file": "scene_12_04.wav",
+        "duration": 4.32,
+        "speaker": "ずんだもん"
+      },
+      {
+        "file": "scene_12_05.wav",
+        "duration": 3.52,
+        "speaker": "ずんだもん"
+      },
+      {
+        "file": "scene_12_06.wav",
+        "duration": 4.309333333333333,
+        "speaker": "ずんだもん"
+      },
+      {
+        "file": "scene_12_07.wav",
+        "duration": 7.072,
+        "speaker": "ずんだもん"
+      },
+      {
+        "file": "scene_12_08.wav",
+        "duration": 3.9146666666666667,
+        "speaker": "めたん"
+      },
+      {
+        "file": "scene_12_09.wav",
+        "duration": 5.504,
+        "speaker": "ずんだもん"
+      }
+    ]
+  },
+  {
+    "id": 13,
+    "title": "Google検索の成長カーブグラフ。1998年：1日1万クエリ → 2000年：1日1,800万 → 2024年：1日137億回。指数関数的な成長",
+    "duration": 47.2,
+    "audioFiles": [
+      {
+        "file": "scene_13_00.wav",
+        "duration": 6.069333333333334,
+        "speaker": "ずんだもん"
+      },
+      {
+        "file": "scene_13_01.wav",
+        "duration": 5.0986666666666665,
+        "speaker": "ずんだもん"
+      },
+      {
+        "file": "scene_13_02.wav",
+        "duration": 6.293333333333333,
+        "speaker": "ずんだもん"
+      },
+      {
+        "file": "scene_13_03.wav",
+        "duration": 4.736,
+        "speaker": "めたん"
+      },
+      {
+        "file": "scene_13_04.wav",
+        "duration": 6.037333333333334,
+        "speaker": "ずんだもん"
+      },
+      {
+        "file": "scene_13_05.wav",
+        "duration": 5.226666666666667,
+        "speaker": "ずんだもん"
+      },
+      {
+        "file": "scene_13_06.wav",
+        "duration": 3.424,
+        "speaker": "ずんだもん"
+      },
+      {
+        "file": "scene_13_07.wav",
+        "duration": 2.986666666666667,
+        "speaker": "めたん"
+      },
+      {
+        "file": "scene_13_08.wav",
+        "duration": 4.394666666666667,
+        "speaker": "ずんだもん"
+      }
+    ]
+  },
+  {
+    "id": 14,
+    "title": "「もしあなたが悪い人だったら、PageRankをどう悪用する？」の問いかけ。画面に考える人のシルエットと「？」マーク",
+    "duration": 21.3,
+    "audioFiles": [
+      {
+        "file": "scene_14_00.wav",
+        "duration": 4.405333333333333,
+        "speaker": "ずんだもん"
+      },
+      {
+        "file": "scene_14_01.wav",
+        "duration": 4.2026666666666666,
+        "speaker": "めたん"
+      },
+      {
+        "file": "scene_14_02.wav",
+        "duration": 2.8373333333333335,
+        "speaker": "ずんだもん"
+      },
+      {
+        "file": "scene_14_03.wav",
+        "duration": 4.298666666666667,
+        "speaker": "ずんだもん"
+      },
+      {
+        "file": "scene_14_04.wav",
+        "duration": 3.8293333333333335,
+        "speaker": "めたん"
+      }
+    ]
+  },
+  {
+    "id": 15,
+    "title": "リンクファームの構造図。大量のスパムサイトが相互にリンクし合いターゲットサイトにリンクを集中させる。「偽の投票」ラベル付き",
+    "duration": 49,
+    "audioFiles": [
+      {
+        "file": "scene_15_00.wav",
+        "duration": 3.808,
+        "speaker": "ずんだもん"
+      },
+      {
+        "file": "scene_15_01.wav",
+        "duration": 5.472,
+        "speaker": "ずんだもん"
+      },
+      {
+        "file": "scene_15_02.wav",
+        "duration": 1.952,
+        "speaker": "めたん"
+      },
+      {
+        "file": "scene_15_03.wav",
+        "duration": 3.7546666666666666,
+        "speaker": "ずんだもん"
+      },
+      {
+        "file": "scene_15_04.wav",
+        "duration": 5.632,
+        "speaker": "ずんだもん"
+      },
+      {
+        "file": "scene_15_05.wav",
+        "duration": 3.456,
+        "speaker": "ずんだもん"
+      },
+      {
+        "file": "scene_15_06.wav",
+        "duration": 4.789333333333333,
+        "speaker": "めたん"
+      },
+      {
+        "file": "scene_15_07.wav",
+        "duration": 5.184,
+        "speaker": "ずんだもん"
+      },
+      {
+        "file": "scene_15_08.wav",
+        "duration": 3.050666666666667,
+        "speaker": "ずんだもん"
+      },
+      {
+        "file": "scene_15_09.wav",
+        "duration": 6.688,
+        "speaker": "ずんだもん"
+      },
+      {
+        "file": "scene_15_10.wav",
+        "duration": 1.6853333333333333,
+        "speaker": "めたん"
+      }
+    ]
+  },
+  {
+    "id": 16,
+    "title": "Googleのスパム対策の歴史年表。2005年：nofollow導入 → 2011年：Pandaアップデート → 2012年：Penguinアップデート → 2016年：PageRankスコア公開廃止",
+    "duration": 27.1,
+    "audioFiles": [
+      {
+        "file": "scene_16_00.wav",
+        "duration": 3.008,
+        "speaker": "めたん"
+      },
+      {
+        "file": "scene_16_01.wav",
+        "duration": 5.184,
+        "speaker": "ずんだもん"
+      },
+      {
+        "file": "scene_16_02.wav",
+        "duration": 5.386666666666667,
+        "speaker": "ずんだもん"
+      },
+      {
+        "file": "scene_16_03.wav",
+        "duration": 6.528,
+        "speaker": "ずんだもん"
+      },
+      {
+        "file": "scene_16_04.wav",
+        "duration": 5.322666666666667,
+        "speaker": "ずんだもん"
+      }
+    ]
+  },
+  {
+    "id": 17,
+    "title": "検索アルゴリズムの進化フロー図。左から右へ「キーワード一致」→「リンク分析（PageRank）」→「意味の理解（Hummingbird 2013）」→「意図の推測（RankBrain 2015）」→「文脈の理解（BERT 2019）」",
+    "duration": 60,
+    "audioFiles": [
+      {
+        "file": "scene_17_00.wav",
+        "duration": 5.045333333333334,
+        "speaker": "ずんだもん"
+      },
+      {
+        "file": "scene_17_01.wav",
+        "duration": 2.933333333333333,
+        "speaker": "ずんだもん"
+      },
+      {
+        "file": "scene_17_02.wav",
+        "duration": 6.954666666666666,
+        "speaker": "ずんだもん"
+      },
+      {
+        "file": "scene_17_03.wav",
+        "duration": 2.453333333333333,
+        "speaker": "めたん"
+      },
+      {
+        "file": "scene_17_04.wav",
+        "duration": 5.749333333333333,
+        "speaker": "ずんだもん"
+      },
+      {
+        "file": "scene_17_05.wav",
+        "duration": 4.405333333333333,
+        "speaker": "ずんだもん"
+      },
+      {
+        "file": "scene_17_06.wav",
+        "duration": 3.0933333333333333,
+        "speaker": "めたん"
+      },
+      {
+        "file": "scene_17_07.wav",
+        "duration": 5.28,
+        "speaker": "ずんだもん"
+      },
+      {
+        "file": "scene_17_08.wav",
+        "duration": 5.045333333333334,
+        "speaker": "ずんだもん"
+      },
+      {
+        "file": "scene_17_09.wav",
+        "duration": 5.344,
+        "speaker": "ずんだもん"
+      },
+      {
+        "file": "scene_17_10.wav",
+        "duration": 5.578666666666667,
+        "speaker": "ずんだもん"
+      },
+      {
+        "file": "scene_17_11.wav",
+        "duration": 4.352,
+        "speaker": "ずんだもん"
+      }
+    ]
+  },
+  {
+    "id": 18,
+    "title": "「キーワード → 意味 → 意図 → 文脈」と段階的に矢印で進化していくテキストアニメーション。各段階に年号ラベル付き",
+    "duration": 24,
+    "audioFiles": [
+      {
+        "file": "scene_18_00.wav",
+        "duration": 7.232,
+        "speaker": "ずんだもん"
+      },
+      {
+        "file": "scene_18_01.wav",
+        "duration": 4.938666666666666,
+        "speaker": "ずんだもん"
+      },
+      {
+        "file": "scene_18_02.wav",
+        "duration": 4,
+        "speaker": "めたん"
+      },
+      {
+        "file": "scene_18_03.wav",
+        "duration": 6.442666666666667,
+        "speaker": "ずんだもん"
+      }
+    ]
+  },
+  {
+    "id": 19,
+    "title": "Exciteの判断（1999年）：「Googleの検索結果が良すぎると、ユーザーがすぐサイトを離脱する。広告を見てもらえない」→ Google買収を75万〜100万ドルで拒否",
+    "duration": 39.9,
+    "audioFiles": [
+      {
+        "file": "scene_19_00.wav",
+        "duration": 2.7946666666666666,
+        "speaker": "ずんだもん"
+      },
+      {
+        "file": "scene_19_01.wav",
+        "duration": 4.512,
+        "speaker": "ずんだもん"
+      },
+      {
+        "file": "scene_19_02.wav",
+        "duration": 1.6746666666666667,
+        "speaker": "めたん"
+      },
+      {
+        "file": "scene_19_03.wav",
+        "duration": 7.061333333333334,
+        "speaker": "ずんだもん"
+      },
+      {
+        "file": "scene_19_04.wav",
+        "duration": 5.994666666666666,
+        "speaker": "ずんだもん"
+      },
+      {
+        "file": "scene_19_05.wav",
+        "duration": 5.866666666666666,
+        "speaker": "ずんだもん"
+      },
+      {
+        "file": "scene_19_06.wav",
+        "duration": 5.450666666666667,
+        "speaker": "めたん"
+      },
+      {
+        "file": "scene_19_07.wav",
+        "duration": 3.957333333333333,
+        "speaker": "ずんだもん"
+      }
+    ]
+  },
+  {
+    "id": 20,
+    "title": "左「Exciteの考え方」→良い検索結果→ユーザーがすぐ離脱→広告閲覧時間減→収益減。右「Googleの考え方」→良い検索結果→ユーザーが信頼→検索回数増加→広告効果増→収益増",
+    "duration": 27.9,
+    "audioFiles": [
+      {
+        "file": "scene_20_00.wav",
+        "duration": 1.3653333333333333,
+        "speaker": "ずんだもん"
+      },
+      {
+        "file": "scene_20_01.wav",
+        "duration": 5.749333333333333,
+        "speaker": "ずんだもん"
+      },
+      {
+        "file": "scene_20_02.wav",
+        "duration": 3.808,
+        "speaker": "めたん"
+      },
+      {
+        "file": "scene_20_03.wav",
+        "duration": 4.586666666666667,
+        "speaker": "ずんだもん"
+      },
+      {
+        "file": "scene_20_04.wav",
+        "duration": 3.072,
+        "speaker": "ずんだもん"
+      },
+      {
+        "file": "scene_20_05.wav",
+        "duration": 4.490666666666667,
+        "speaker": "ずんだもん"
+      },
+      {
+        "file": "scene_20_06.wav",
+        "duration": 2.517333333333333,
+        "speaker": "めたん"
+      }
+    ]
+  },
+  {
+    "id": 21,
+    "title": "左「1999年のAltaVistaのホームページ」＝広告バナー、ニュース、リンク集でごちゃごちゃ。右「1999年のGoogleのホームページ」＝真っ白な背景に検索窓ひとつだけ",
+    "duration": 44.2,
+    "audioFiles": [
+      {
+        "file": "scene_21_00.wav",
+        "duration": 4.597333333333333,
+        "speaker": "ずんだもん"
+      },
+      {
+        "file": "scene_21_01.wav",
+        "duration": 6.016,
+        "speaker": "ずんだもん"
+      },
+      {
+        "file": "scene_21_02.wav",
+        "duration": 3.2746666666666666,
+        "speaker": "ずんだもん"
+      },
+      {
+        "file": "scene_21_03.wav",
+        "duration": 1.8453333333333333,
+        "speaker": "めたん"
+      },
+      {
+        "file": "scene_21_04.wav",
+        "duration": 5.546666666666667,
+        "speaker": "ずんだもん"
+      },
+      {
+        "file": "scene_21_05.wav",
+        "duration": 5.205333333333333,
+        "speaker": "ずんだもん"
+      },
+      {
+        "file": "scene_21_06.wav",
+        "duration": 6.144,
+        "speaker": "ずんだもん"
+      },
+      {
+        "file": "scene_21_07.wav",
+        "duration": 3.808,
+        "speaker": "めたん"
+      },
+      {
+        "file": "scene_21_08.wav",
+        "duration": 4.906666666666666,
+        "speaker": "ずんだもん"
+      }
+    ]
+  },
+  {
+    "id": 22,
+    "title": "Googleの好循環サイクル図。「良い検索結果→ユーザーが信頼して何度も使う→検索回数増加→広告のインプレッション増加→収益増→技術に再投資→さらに良い検索結果→…」",
+    "duration": 37,
+    "audioFiles": [
+      {
+        "file": "scene_22_00.wav",
+        "duration": 3.498666666666667,
+        "speaker": "ずんだもん"
+      },
+      {
+        "file": "scene_22_01.wav",
+        "duration": 5.290666666666667,
+        "speaker": "ずんだもん"
+      },
+      {
+        "file": "scene_22_02.wav",
+        "duration": 2.848,
+        "speaker": "ずんだもん"
+      },
+      {
+        "file": "scene_22_03.wav",
+        "duration": 5.216,
+        "speaker": "ずんだもん"
+      },
+      {
+        "file": "scene_22_04.wav",
+        "duration": 2.2933333333333334,
+        "speaker": "めたん"
+      },
+      {
+        "file": "scene_22_05.wav",
+        "duration": 4.917333333333334,
+        "speaker": "ずんだもん"
+      },
+      {
+        "file": "scene_22_06.wav",
+        "duration": 5.28,
+        "speaker": "ずんだもん"
+      },
+      {
+        "file": "scene_22_07.wav",
+        "duration": 5.0986666666666665,
+        "speaker": "ずんだもん"
+      }
+    ]
+  },
+  {
+    "id": 23,
+    "title": "「検索の質を上げることは、ビジネスの敵ではない。最強の味方である。」中央に大きく表示",
+    "duration": 34,
+    "audioFiles": [
+      {
+        "file": "scene_23_00.wav",
+        "duration": 4.512,
+        "speaker": "ずんだもん"
+      },
+      {
+        "file": "scene_23_01.wav",
+        "duration": 5.44,
+        "speaker": "めたん"
+      },
+      {
+        "file": "scene_23_02.wav",
+        "duration": 3.7973333333333334,
+        "speaker": "ずんだもん"
+      },
+      {
+        "file": "scene_23_03.wav",
+        "duration": 5.301333333333333,
+        "speaker": "ずんだもん"
+      },
+      {
+        "file": "scene_23_04.wav",
+        "duration": 4.1706666666666665,
+        "speaker": "ずんだもん"
+      },
+      {
+        "file": "scene_23_05.wav",
+        "duration": 4.661333333333333,
+        "speaker": "ずんだもん"
+      },
+      {
+        "file": "scene_23_06.wav",
+        "duration": 3.808,
+        "speaker": "めたん"
+      }
+    ]
+  },
+  {
+    "id": 24,
+    "title": "「Googleが勝てた3つの理由」➀ウェブを「選挙」として見た（PageRank） ②検索の本質を見失わなかった（シンプルUI） ③「良い検索＝良いビジネス」の好循環を作った",
+    "duration": 21.4,
+    "audioFiles": [
+      {
+        "file": "scene_24_00.wav",
+        "duration": 4.1706666666666665,
+        "speaker": "ずんだもん"
+      },
+      {
+        "file": "scene_24_01.wav",
+        "duration": 1.6,
+        "speaker": "ずんだもん"
+      },
+      {
+        "file": "scene_24_02.wav",
+        "duration": 3.328,
+        "speaker": "ずんだもん"
+      },
+      {
+        "file": "scene_24_03.wav",
+        "duration": 4.288,
+        "speaker": "ずんだもん"
+      },
+      {
+        "file": "scene_24_04.wav",
+        "duration": 6.336,
+        "speaker": "ずんだもん"
+      }
+    ]
+  },
+  {
+    "id": 25,
+    "title": "「良いページかどうかは、そのページ自身ではなく、他のページが教えてくれる」という核心メッセージが画面中央にアニメーション表示",
+    "duration": 32.3,
+    "audioFiles": [
+      {
+        "file": "scene_25_00.wav",
+        "duration": 5.1946666666666665,
+        "speaker": "めたん"
+      },
+      {
+        "file": "scene_25_01.wav",
+        "duration": 4.864,
+        "speaker": "めたん"
+      },
+      {
+        "file": "scene_25_02.wav",
+        "duration": 4.1706666666666665,
+        "speaker": "ずんだもん"
+      },
+      {
+        "file": "scene_25_03.wav",
+        "duration": 5.8453333333333335,
+        "speaker": "ずんだもん"
+      },
+      {
+        "file": "scene_25_04.wav",
+        "duration": 5.12,
+        "speaker": "ずんだもん"
+      },
+      {
+        "file": "scene_25_05.wav",
+        "duration": 5.0986666666666665,
+        "speaker": "ずんだもん"
+      }
+    ]
+  },
+  {
+    "id": 26,
+    "title": "学術論文の「引用ネットワーク」→ウェブの「リンクネットワーク」→共通する「つながりの構造」が浮かび上がるアニメーション",
+    "duration": 67.8,
+    "audioFiles": [
+      {
+        "file": "scene_26_00.wav",
+        "duration": 3.808,
+        "speaker": "ずんだもん"
+      },
+      {
+        "file": "scene_26_01.wav",
+        "duration": 4.096,
+        "speaker": "ずんだもん"
+      },
+      {
+        "file": "scene_26_02.wav",
+        "duration": 5.824,
+        "speaker": "ずんだもん"
+      },
+      {
+        "file": "scene_26_03.wav",
+        "duration": 7.232,
+        "speaker": "ずんだもん"
+      },
+      {
+        "file": "scene_26_04.wav",
+        "duration": 5.205333333333333,
+        "speaker": "ずんだもん"
+      },
+      {
+        "file": "scene_26_05.wav",
+        "duration": 4.736,
+        "speaker": "めたん"
+      },
+      {
+        "file": "scene_26_06.wav",
+        "duration": 5.088,
+        "speaker": "ずんだもん"
+      },
+      {
+        "file": "scene_26_07.wav",
+        "duration": 5.216,
+        "speaker": "ずんだもん"
+      },
+      {
+        "file": "scene_26_08.wav",
+        "duration": 6.229333333333333,
+        "speaker": "ずんだもん"
+      },
+      {
+        "file": "scene_26_09.wav",
+        "duration": 3.9146666666666667,
+        "speaker": "ずんだもん"
+      },
+      {
+        "file": "scene_26_10.wav",
+        "duration": 4.981333333333334,
+        "speaker": "ずんだもん"
+      },
+      {
+        "file": "scene_26_11.wav",
+        "duration": 3.808,
+        "speaker": "ずんだもん"
+      },
+      {
+        "file": "scene_26_12.wav",
+        "duration": 3.552,
+        "speaker": "めたん"
+      }
+    ]
+  }
+]

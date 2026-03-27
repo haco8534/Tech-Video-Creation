@@ -1,0 +1,162 @@
+[
+  {
+    "surface": "USB",
+    "pronunciation": "ユーエスビー",
+    "accent_type": 0
+  },
+  {
+    "surface": "Universal",
+    "pronunciation": "ユニバーサル",
+    "accent_type": 0
+  },
+  {
+    "surface": "Serial",
+    "pronunciation": "シリアル",
+    "accent_type": 0
+  },
+  {
+    "surface": "Bus",
+    "pronunciation": "バス",
+    "accent_type": 0
+  },
+  {
+    "surface": "PS",
+    "pronunciation": "ピーエス",
+    "accent_type": 0
+  },
+  {
+    "surface": "IRQ",
+    "pronunciation": "アイアールキュー",
+    "accent_type": 0
+  },
+  {
+    "surface": "COM",
+    "pronunciation": "コム",
+    "accent_type": 0
+  },
+  {
+    "surface": "Intel",
+    "pronunciation": "インテル",
+    "accent_type": 0
+  },
+  {
+    "surface": "Ajay",
+    "pronunciation": "アジェイ",
+    "accent_type": 0
+  },
+  {
+    "surface": "Bhatt",
+    "pronunciation": "バット",
+    "accent_type": 0
+  },
+  {
+    "surface": "Compaq",
+    "pronunciation": "コンパック",
+    "accent_type": 0
+  },
+  {
+    "surface": "DEC",
+    "pronunciation": "デック",
+    "accent_type": 0
+  },
+  {
+    "surface": "IBM",
+    "pronunciation": "アイビーエム",
+    "accent_type": 0
+  },
+  {
+    "surface": "Microsoft",
+    "pronunciation": "マイクロソフト",
+    "accent_type": 0
+  },
+  {
+    "surface": "NEC",
+    "pronunciation": "エヌイーシー",
+    "accent_type": 0
+  },
+  {
+    "surface": "Nortel",
+    "pronunciation": "ノーテル",
+    "accent_type": 0
+  },
+  {
+    "surface": "Type",
+    "pronunciation": "タイプ",
+    "accent_type": 0
+  },
+  {
+    "surface": "Apple",
+    "pronunciation": "アップル",
+    "accent_type": 0
+  },
+  {
+    "surface": "iMac",
+    "pronunciation": "アイマック",
+    "accent_type": 0
+  },
+  {
+    "surface": "Mini",
+    "pronunciation": "ミニ",
+    "accent_type": 0
+  },
+  {
+    "surface": "Micro",
+    "pronunciation": "マイクロ",
+    "accent_type": 0
+  },
+  {
+    "surface": "Mbps",
+    "pronunciation": "メガビーピーエス",
+    "accent_type": 0
+  },
+  {
+    "surface": "Gbps",
+    "pronunciation": "ギガビーピーエス",
+    "accent_type": 0
+  },
+  {
+    "surface": "HDD",
+    "pronunciation": "エイチディーディー",
+    "accent_type": 0
+  },
+  {
+    "surface": "CC",
+    "pronunciation": "シーシー",
+    "accent_type": 0
+  },
+  {
+    "surface": "Configuration",
+    "pronunciation": "コンフィギュレーション",
+    "accent_type": 0
+  },
+  {
+    "surface": "Channel",
+    "pronunciation": "チャンネル",
+    "accent_type": 0
+  },
+  {
+    "surface": "Marker",
+    "pronunciation": "マーカー",
+    "accent_type": 0
+  },
+  {
+    "surface": "IC",
+    "pronunciation": "アイシー",
+    "accent_type": 0
+  },
+  {
+    "surface": "Gen",
+    "pronunciation": "ジェン",
+    "accent_type": 0
+  },
+  {
+    "surface": "IF",
+    "pronunciation": "アイエフ",
+    "accent_type": 0
+  },
+  {
+    "surface": "EU",
+    "pronunciation": "イーユー",
+    "accent_type": 0
+  }
+]

@@ -1,0 +1,37 @@
+# YouTube概要欄：なぜキーボードはQWERTY配列なのか──「打ちにくくした」は都市伝説だった
+
+<!-- 以下をそのままYouTubeの概要欄にコピー＆ペーストして使う -->
+
+毎日触っているキーボード。なぜAの隣がSで、その隣がDなの？
+「タイプバーが絡まないように、わざと打ちにくくした」──よく聞くこの説、実は都市伝説かもしれません。
+京都大学の研究が明らかにした本当の起源、Dvorak配列の「圧倒的優位」に隠されたバイアス、そして「なぜ一度広まった配列は変えられないのか」──経済学の大問題「ロックイン効果」まで、150年の歴史を紐解きます。
+
+▼ もくじ（タイムスタンプ）
+00:00 オープニング──キーボードの「なぜ？」
+02:00 タイプライターと「打ちにくくした」説
+05:00 通説を覆した京都大学の研究
+09:00 Dvorak配列──"救世主"の正体
+13:00 ロックイン効果──なぜ変えられないのか
+17:00 まとめ──キーボードを見る目が変わる
+<!-- ※時間は推定値です。動画完成後に実際の時間に合わせて微調整してください -->
+
+▼ 参考文献・一次資料
+この動画の内容は以下の学術論文・公的資料等に基づいています。
+
+【学術論文】
+• Yasuoka, K. & Yasuoka, M. (2011). On the Prehistory of QWERTY. ZINBUN, 42, 161-174. Kyoto University.
+• David, P.A. (1985). Clio and the Economics of QWERTY. American Economic Review, 75(2), 332-337.
+• Liebowitz, S.J. & Margolis, S.E. (1990). The Fable of the Keys. Journal of Law & Economics, 33(1), 1-25.
+• Norman, D.A. & Rumelhart, D.E. (1983). Studies of typing from the LNR research group. In W.E. Cooper (Ed.), Cognitive Aspects of Skilled Typewriting. Springer.
+
+【参考記事・解説】
+• Smithsonian Magazine. The Surprising History Behind the QWERTY Keyboard.
+• CNET. Why we use QWERTY keyboards.
+
+---
+
+📘 このチャンネルについて
+一次情報と研究データに基づきながら、難しいテーマをずんだもんとめたんの対話で楽しくわかりやすく解説するチャンネルです。
+「わかりやすく親しみやすい。でも、ちゃんと本当のことを言っている。」を大切にしています。
+
+#QWERTY #キーボード #タイプライター #ロックイン効果 #経路依存性 #Dvorak #都市伝説

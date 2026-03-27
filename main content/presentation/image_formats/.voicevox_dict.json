@@ -1,0 +1,137 @@
+[
+  {
+    "surface": "JPEG",
+    "pronunciation": "ジェイペグ",
+    "accent_type": 0
+  },
+  {
+    "surface": "PNG",
+    "pronunciation": "ピング",
+    "accent_type": 0
+  },
+  {
+    "surface": "GIF",
+    "pronunciation": "ジフ",
+    "accent_type": 0
+  },
+  {
+    "surface": "GIFs",
+    "pronunciation": "ジフス",
+    "accent_type": 0
+  },
+  {
+    "surface": "WebP",
+    "pronunciation": "ウェッピー",
+    "accent_type": 0
+  },
+  {
+    "surface": "AVIF",
+    "pronunciation": "エイブイアイエフ",
+    "accent_type": 0
+  },
+  {
+    "surface": "BMP",
+    "pronunciation": "ビーエムピー",
+    "accent_type": 0
+  },
+  {
+    "surface": "HDR",
+    "pronunciation": "エイチディーアール",
+    "accent_type": 0
+  },
+  {
+    "surface": "LZW",
+    "pronunciation": "エルゼットダブリュー",
+    "accent_type": 0
+  },
+  {
+    "surface": "XL",
+    "pronunciation": "エックスエル",
+    "accent_type": 0
+  },
+  {
+    "surface": "AOM",
+    "pronunciation": "エーオーエム",
+    "accent_type": 0
+  },
+  {
+    "surface": "Chrome",
+    "pronunciation": "クローム",
+    "accent_type": 0
+  },
+  {
+    "surface": "Chromium",
+    "pronunciation": "クロミウム",
+    "accent_type": 0
+  },
+  {
+    "surface": "CompuServe",
+    "pronunciation": "コンピュサーブ",
+    "accent_type": 0
+  },
+  {
+    "surface": "Flash",
+    "pronunciation": "フラッシュ",
+    "accent_type": 0
+  },
+  {
+    "surface": "Unisys",
+    "pronunciation": "ユニシス",
+    "accent_type": 0
+  },
+  {
+    "surface": "iPhone",
+    "pronunciation": "アイフォン",
+    "accent_type": 0
+  },
+  {
+    "surface": "Instagram",
+    "pronunciation": "インスタグラム",
+    "accent_type": 0
+  },
+  {
+    "surface": "Web",
+    "pronunciation": "ウェブ",
+    "accent_type": 0
+  },
+  {
+    "surface": "Burn",
+    "pronunciation": "バーン",
+    "accent_type": 0
+  },
+  {
+    "surface": "All",
+    "pronunciation": "オール",
+    "accent_type": 0
+  },
+  {
+    "surface": "Portable",
+    "pronunciation": "ポータブル",
+    "accent_type": 0
+  },
+  {
+    "surface": "Network",
+    "pronunciation": "ネットワーク",
+    "accent_type": 0
+  },
+  {
+    "surface": "Graphics",
+    "pronunciation": "グラフィックス",
+    "accent_type": 0
+  },
+  {
+    "surface": "Not",
+    "pronunciation": "ノット",
+    "accent_type": 0
+  },
+  {
+    "surface": "is",
+    "pronunciation": "イズ",
+    "accent_type": 0
+  },
+  {
+    "surface": "Google",
+    "pronunciation": "グーグル",
+    "accent_type": 0
+  }
+]

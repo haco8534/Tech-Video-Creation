@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1920,height=1080">
+<title>プログラミング言語はなぜ700種類以上ある</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- ===== Scene 0: オープニング ===== -->
+<div class="scene scene-opening bg-dots" id="scene-0">
+    <div class="content center-layout">
+        <div style="margin-bottom:16px">
+            <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="#6366f1" stroke-width="2"><path d="M16 18l6-6-6-6"/><path d="M8 6l-6 6 6 6"/></svg>
+        </div>
+        <div class="title-large">プログラミング言語は<br>なぜ<span class="accent-primary">700種類以上</span>あるのか</div>
+    </div>
+</div>
+
+<!-- ===== Scene 1: 700以上の言語 ===== -->
+<div class="scene bg-grid" id="scene-1">
+    <div class="content center-layout">
+        <div class="scene-title">プログラミング言語の数</div>
+        <div class="metric-grid">
+            <div class="metric-card stagger-item"><div class="metric-value accent-primary">700+</div><div class="metric-label">Wikipedia掲載</div></div>
+            <div class="metric-card stagger-item"><div class="metric-value accent-orange">8,000+</div><div class="metric-label">歴史上の総数</div></div>
+            <div class="metric-card stagger-item"><div class="metric-value accent-emerald">50〜100</div><div class="metric-label">実用されている数</div></div>
+        </div>
+    </div>
+</div>
+
+<!-- ===== Scene 2: もし言語が1つなら ===== -->
+<div class="scene" id="scene-2">
+    <div class="content center-layout">
+        <div class="big-statement">もしプログラミング言語が<br><span class="accent-coral">世界に1つ</span>しかなかったら？</div>
+        <div style="margin-top:28px">
+            <div class="analogy-row">
+                <div class="analogy-card stagger-item">
+                    <div style="font-size:48px">🔨</div>
+                    <div class="card-title" style="margin-top:8px">ハンマー1本の<br>工具箱</div>
+                    <div class="card-note">ドライバーもノコギリもなし</div>
+                </div>
+                <div class="analogy-eq">=</div>
+                <div class="analogy-card stagger-item">
+                    <div style="font-size:48px">💻</div>
+                    <div class="card-title" style="margin-top:8px">言語が1つだけの<br>プログラミング</div>
+                    <div class="card-note">全領域を1つでカバー？</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ===== Scene 3: 機械語の0と1 ===== -->
+<div class="scene bg-grid" id="scene-3">
+    <div class="content center-layout">
+        <div class="scene-title">コンピュータの言葉 = 0と1</div>
+        <div class="two-col" style="margin-top:16px">
+            <div class="arch-card stagger-item" style="border-color:var(--coral)">
+                <div class="card-badge badge-coral">機械語</div>
+                <div style="font-family:monospace;font-size:18px;line-height:1.8;color:var(--coral)">
+                    00110000 00000101<br>
+                    00000100 00000011<br>
+                    11110100 00000000
+                </div>
+                <div class="card-note" style="margin-top:8px">人間には「暗号」</div>
+            </div>
+            <div class="col-arrow">→</div>
+            <div class="arch-card stagger-item" style="border-color:var(--primary)">
+                <div class="card-badge badge-indigo">高水準言語</div>
+                <div style="font-family:monospace;font-size:22px;font-weight:700;color:var(--primary);margin-top:12px">
+                    X = 5 + 3
+                </div>
+                <div class="card-note" style="margin-top:8px">人間の言葉に近い</div>
+            </div>
+        </div>
+        <div class="big-statement" style="font-size:22px;margin-top:20px">「機械との白兵戦」からの解放</div>
+    </div>
+</div>
+
+<!-- ===== Scene 4: FORTRAN誕生 ===== -->
+<div class="scene" id="scene-4">
+    <div class="content center-layout">
+        <div class="scene-title">世界初の高水準言語</div>
+        <div class="timeline" style="margin-top:20px">
+            <div class="tl-item stagger-item"><div class="tl-year">1950s</div><div class="tl-dot"></div><div class="tl-name">機械語</div><div class="tl-desc">0と1の白兵戦</div></div>
+            <div class="tl-item stagger-item"><div class="tl-year">1957</div><div class="tl-dot dot-hl"></div><div class="tl-name" style="color:var(--primary)">FORTRAN</div><div class="tl-desc">数式の翻訳</div></div>
+            <div class="tl-item stagger-item"><div class="tl-year">IBM</div><div class="tl-dot"></div><div class="tl-name">J.バッカス</div><div class="tl-desc">最適化コンパイラ</div></div>
+        </div>
+        <div class="quote-block stagger-item" style="margin-top:24px">
+            <div class="quote-mark">"</div>
+            <div class="quote-body">手書きの機械語とほぼ同じ速度で動く</div>
+            <div class="quote-attr">── 世界初の最適化コンパイラで証明</div>
+        </div>
+    </div>
+</div>
+
+<!-- ===== Scene 5: 科学 vs 事務処理 ===== -->
+<div class="scene bg-dots" id="scene-5">
+    <div class="content center-layout">
+        <div class="scene-title">たった5年で「1つじゃ足りない」</div>
+        <div class="two-col" style="margin-top:20px">
+            <div class="arch-card stagger-item" style="border-color:var(--primary)">
+                <div class="card-badge badge-indigo">FORTRAN (1957)</div>
+                <div class="card-title">科学技術計算</div>
+                <div style="font-size:40px;margin:8px 0">📐</div>
+                <div class="card-note">複雑な数式を<br>大量に処理する</div>
+            </div>
+            <div class="col-arrow">≠</div>
+            <div class="arch-card stagger-item" style="border-color:var(--orange)">
+                <div class="card-badge badge-orange">COBOL (1959)</div>
+                <div class="card-title">事務処理</div>
+                <div style="font-size:40px;margin:8px 0">📋</div>
+                <div class="card-note">給与計算・在庫管理<br>帳票出力</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ===== Scene 6: 工具箱の法則 ===== -->
+<div class="scene" id="scene-6">
+    <div class="content center-layout">
+        <div class="scene-title">工具箱の法則</div>
+        <div class="analogy-row" style="margin-top:20px">
+            <div class="analogy-card stagger-item">
+                <div style="font-size:44px">🔨🔩🪚</div>
+                <div class="card-title" style="margin-top:8px">工具の種類</div>
+                <div class="card-note">ハンマー / ドライバー / ノコギリ<br>やる作業が違う</div>
+            </div>
+            <div class="analogy-eq">=</div>
+            <div class="analogy-card stagger-item">
+                <div style="font-size:44px">💻</div>
+                <div class="card-title" style="margin-top:8px">言語の種類</div>
+                <div class="card-note">JS / Python / C / SQL<br>解く問題が違う</div>
+            </div>
+        </div>
+        <div class="big-statement" style="font-size:22px;margin-top:20px">万能工具では家は建てられない</div>
+    </div>
+</div>
+
+<!-- ===== Scene 7: 言語と得意領域 ===== -->
+<div class="scene bg-grid" id="scene-7">
+    <div class="content center-layout">
+        <div class="scene-title">適材適所のプログラミング言語</div>
+        <div class="num-list stagger-item" style="margin-top:16px">
+            <div class="num-item"><div class="num-circle" style="background:var(--amber)">Web</div><div><div class="num-title">JavaScript</div><div class="num-desc">インタラクティブなWebサイト</div></div></div>
+            <div class="num-item"><div class="num-circle" style="background:var(--purple)">AI</div><div><div class="num-title">Python</div><div class="num-desc">AI・機械学習のライブラリが充実</div></div></div>
+            <div class="num-item"><div class="num-circle" style="background:var(--coral)">制御</div><div><div class="num-title">C / Rust</div><div class="num-desc">ロケット制御・1ミリ秒のズレが命取り</div></div></div>
+            <div class="num-item"><div class="num-circle" style="background:var(--emerald)">金融</div><div><div class="num-title">COBOL</div><div class="num-desc">銀行基幹システム・50年安定稼働</div></div></div>
+        </div>
+    </div>
+</div>
+
+<!-- ===== Scene 8: DSLの世界 ===== -->
+<div class="scene" id="scene-8">
+    <div class="content center-layout">
+        <div class="scene-title">DSL ── 領域特化言語</div>
+        <div class="lesson-cards stagger-item" style="margin-top:20px">
+            <div class="lesson-card" style="border-top:3px solid var(--sky)"><div class="lesson-num" style="color:var(--sky)">SQL</div><div class="lesson-title">データベース</div><div class="lesson-desc">データの検索・操作だけ</div></div>
+            <div class="lesson-card" style="border-top:3px solid var(--orange)"><div class="lesson-num" style="color:var(--orange)">HTML</div><div class="lesson-title">Webの骨組み</div><div class="lesson-desc">ページ構造を定義するだけ</div></div>
+            <div class="lesson-card" style="border-top:3px solid var(--purple)"><div class="lesson-num" style="color:var(--purple)">CSS</div><div class="lesson-title">見た目</div><div class="lesson-desc">色やレイアウトを整えるだけ</div></div>
+            <div class="lesson-card" style="border-top:3px solid var(--emerald)"><div class="lesson-num" style="color:var(--emerald)">正規表現</div><div class="lesson-title">パターン検索</div><div class="lesson-desc">テキストの検索・置換だけ</div></div>
+        </div>
+        <div class="big-statement" style="font-size:20px;margin-top:20px">特化 → 圧倒的な生産性</div>
+    </div>
+</div>
+
+<!-- ===== Scene 9: 不満→新言語 ===== -->
+<div class="scene bg-dots" id="scene-9">
+    <div class="content center-layout">
+        <div class="scene-title">不満が新しい言語を生む</div>
+        <div class="flow-row stagger-item" style="margin-top:24px">
+            <div class="flow-chip chip-indigo">既存の言語を使う</div>
+            <div class="flow-connector">→</div>
+            <div class="flow-chip chip-coral">不満が溜まる</div>
+            <div class="flow-connector">→</div>
+            <div class="flow-chip chip-orange">新しい言語を作る</div>
+            <div class="flow-connector">→</div>
+            <div class="flow-chip chip-emerald">普及する</div>
+        </div>
+        <div class="big-statement" style="font-size:22px;margin-top:28px">このサイクルが<span class="accent-coral">永遠に</span>繰り返される</div>
+    </div>
+</div>
+
+<!-- ===== Scene 10: C→C++→Goの流れ ===== -->
+<div class="scene" id="scene-10">
+    <div class="content center-layout">
+        <div class="scene-title">不満の連鎖 ── 進化の歴史</div>
+        <div class="timeline" style="margin-top:20px">
+            <div class="tl-item stagger-item"><div class="tl-year">1972</div><div class="tl-dot dot-hl" style="background:var(--emerald)!important;border-color:var(--emerald-light)"></div><div class="tl-name">C</div><div class="tl-desc">UNIX開発用</div></div>
+            <div class="tl-item stagger-item"><div class="tl-year">不満</div><div class="tl-dot" style="background:var(--coral)"></div><div class="tl-name" style="font-size:11px;color:var(--coral)">構造化不足</div></div>
+            <div class="tl-item stagger-item"><div class="tl-year">1983</div><div class="tl-dot dot-hl" style="background:var(--primary)!important;border-color:var(--primary-light)"></div><div class="tl-name">C++</div><div class="tl-desc">OOP追加</div></div>
+            <div class="tl-item stagger-item"><div class="tl-year">不満</div><div class="tl-dot" style="background:var(--coral)"></div><div class="tl-name" style="font-size:11px;color:var(--coral)">複雑すぎる</div></div>
+            <div class="tl-item stagger-item"><div class="tl-year">2009</div><div class="tl-dot dot-hl" style="background:var(--sky)!important;border-color:var(--sky-light)"></div><div class="tl-name">Go</div><div class="tl-desc">シンプル＆高速</div></div>
+        </div>
+    </div>
+</div>
+
+<!-- ===== Scene 11: Go言語の誕生 ===== -->
+<div class="scene bg-grid" id="scene-11">
+    <div class="content center-layout">
+        <div class="scene-title">Go言語 ── コンパイル待ちの怒り</div>
+        <div class="two-col" style="margin-top:18px">
+            <div class="arch-card stagger-item" style="border-color:var(--coral)">
+                <div class="card-badge badge-coral">2007年 Google社内</div>
+                <div class="big-number accent-coral" style="font-size:56px">45分</div>
+                <div class="card-note" style="margin-top:8px">C++のコンパイル待ち時間</div>
+            </div>
+            <div class="col-arrow">→</div>
+            <div class="arch-card stagger-item" style="border-color:var(--sky)">
+                <div class="card-badge badge-sky">2009年 Go誕生</div>
+                <div style="font-size:20px;font-weight:700;margin-top:8px">Rob Pike &amp; Ken Thompson</div>
+                <div class="card-note" style="margin-top:8px">「もう自分たちで作ろう」</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ===== Scene 12: 不満→新言語の例 ===== -->
+<div class="scene" id="scene-12">
+    <div class="content center-layout">
+        <div class="scene-title">不満が生んだ言語たち</div>
+        <div class="num-list stagger-item" style="margin-top:16px">
+            <div class="num-item"><div class="num-circle" style="background:var(--orange)">1</div><div><div class="num-title">Objective-C → <span class="accent-orange">Swift</span> (2014)</div><div class="num-desc">Apple：古い構文を一新</div></div></div>
+            <div class="num-item"><div class="num-circle" style="background:var(--purple)">2</div><div><div class="num-title">Java → <span class="accent-purple">Kotlin</span> (2011)</div><div class="num-desc">JetBrains：冗長性を排除</div></div></div>
+            <div class="num-item"><div class="num-circle" style="background:var(--sky)">3</div><div><div class="num-title">JavaScript → <span class="accent-sky">TypeScript</span> (2012)</div><div class="num-desc">Microsoft：型安全性を追加</div></div></div>
+        </div>
+    </div>
+</div>
+
+<!-- ===== Scene 13: パラダイムとは ===== -->
+<div class="scene bg-dots" id="scene-13">
+    <div class="content center-layout">
+        <div class="big-statement">同じ問題でも<br><span class="accent-primary">考え方</span>が違えば<br>言葉も違う</div>
+        <div style="margin-top:20px;font-size:var(--fs-body);font-weight:700">パラダイム ＝ 問題への取り組み方のフレームワーク</div>
+    </div>
+</div>
+
+<!-- ===== Scene 14: 手続き型vs関数型 ===== -->
+<div class="scene bg-grid" id="scene-14">
+    <div class="content center-layout">
+        <div class="scene-title">同じ問題、違うアプローチ</div>
+        <div style="margin-bottom:8px;font-size:var(--fs-caption);font-weight:700">問題：1から10までの合計 = <span class="accent-primary">55</span></div>
+        <div class="two-col" style="margin-top:16px">
+            <div class="arch-card stagger-item" style="border-color:var(--orange)">
+                <div class="card-badge badge-orange">手続き型</div>
+                <div style="font-family:monospace;font-size:16px;text-align:left;line-height:1.8;margin-top:8px;color:var(--text)">
+                    sum = 0<br>
+                    for i = 1 to 10:<br>
+                    &nbsp;&nbsp;sum = sum + i<br>
+                    <span style="color:var(--text-light)"># 10ステップかかる</span>
+                </div>
+            </div>
+            <div class="col-arrow">vs</div>
+            <div class="arch-card stagger-item" style="border-color:var(--emerald)">
+                <div class="card-badge badge-emerald">関数型</div>
+                <div style="font-family:monospace;font-size:16px;text-align:left;line-height:1.8;margin-top:8px;color:var(--text)">
+                    sum([1..10])<br><br>
+                    <span style="color:var(--text-light)"># たった1行</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ===== Scene 15: 4大パラダイム ===== -->
+<div class="scene" id="scene-15">
+    <div class="content center-layout">
+        <div class="scene-title">4つのパラダイム ── 4つの哲学</div>
+        <div class="lesson-cards stagger-item" style="margin-top:18px">
+            <div class="lesson-card" style="border-top:3px solid var(--orange)"><div class="lesson-num" style="color:var(--orange)">📝</div><div class="lesson-title">手続き型</div><div class="lesson-desc">C / FORTRAN<br>レシピ通りに手順を書く</div></div>
+            <div class="lesson-card" style="border-top:3px solid var(--primary)"><div class="lesson-num" style="color:var(--primary)">📦</div><div class="lesson-title">オブジェクト指向</div><div class="lesson-desc">Java / C++<br>「モノ」で世界を表現</div></div>
+            <div class="lesson-card" style="border-top:3px solid var(--emerald)"><div class="lesson-num" style="color:var(--emerald)">🔗</div><div class="lesson-title">関数型</div><div class="lesson-desc">Haskell / Erlang<br>数学の関数を組み合わせる</div></div>
+            <div class="lesson-card" style="border-top:3px solid var(--purple)"><div class="lesson-num" style="color:var(--purple)">🧠</div><div class="lesson-title">論理型</div><div class="lesson-desc">Prolog<br>事実とルールから推論</div></div>
+        </div>
+    </div>
+</div>
+
+<!-- ===== Scene 16: 言語と思想 ===== -->
+<div class="scene bg-dots" id="scene-16">
+    <div class="content center-layout">
+        <div class="scene-title">言語の裏にある「人生哲学」</div>
+        <div class="num-list stagger-item" style="margin-top:16px">
+            <div class="num-item"><div class="num-circle" style="background:var(--sky)">Py</div><div><div class="num-title">Python ── 統一派</div><div class="num-desc">「やり方は1つだけであるべき」</div></div></div>
+            <div class="num-item"><div class="num-circle" style="background:var(--amber)">Pl</div><div><div class="num-title">Perl ── 自由派</div><div class="num-desc">「やり方は何通りもあっていい」</div></div></div>
+            <div class="num-item"><div class="num-circle" style="background:var(--coral)">Rb</div><div><div class="num-title">Ruby ── 幸福派 🇯🇵</div><div class="num-desc">「プログラマが幸せになる言語を作りたい」── まつもとゆきひろ</div></div></div>
+        </div>
+    </div>
+</div>
+
+<!-- ===== Scene 17: 10日の衝撃 ===== -->
+<div class="scene" id="scene-17">
+    <div class="content center-layout">
+        <div class="scene-title">世界を支配した言語は──</div>
+        <div class="two-col" style="margin-top:20px">
+            <div class="arch-card stagger-item" style="border-color:var(--amber);width:240px">
+                <div class="big-number accent-amber" style="font-size:64px">98%</div>
+                <div class="card-note" style="margin-top:8px">のWebサイトが使用</div>
+            </div>
+            <div class="arch-card stagger-item" style="border-color:var(--coral);width:240px">
+                <div class="big-number accent-coral" style="font-size:64px">10日</div>
+                <div class="card-note" style="margin-top:8px">で作られた</div>
+            </div>
+        </div>
+        <div class="big-statement" style="font-size:28px;margin-top:20px">その名は <span class="accent-amber">JavaScript</span></div>
+    </div>
+</div>
+
+<!-- ===== Scene 18: JS誕生1995年 ===== -->
+<div class="scene bg-grid" id="scene-18">
+    <div class="content center-layout">
+        <div class="scene-title">JavaScript ── 10日の突貫工事</div>
+        <div class="timeline" style="margin-top:20px">
+            <div class="tl-item stagger-item"><div class="tl-year">1995</div><div class="tl-dot dot-hl" style="background:var(--amber)!important;border-color:var(--amber-light)"></div><div class="tl-name">LiveScript</div><div class="tl-desc">元の名前</div></div>
+            <div class="tl-item stagger-item"><div class="tl-year">改名</div><div class="tl-dot" style="background:var(--coral)"></div><div class="tl-name" style="font-size:11px;color:var(--coral)">Java人気に便乗</div></div>
+            <div class="tl-item stagger-item"><div class="tl-year">→</div><div class="tl-dot dot-hl" style="background:var(--amber)!important;border-color:var(--amber-light)"></div><div class="tl-name">JavaScript</div><div class="tl-desc">Javaとは別物</div></div>
+        </div>
+        <div class="quote-block stagger-item" style="margin-top:20px;border-left-color:var(--coral)">
+            <div class="quote-body" style="font-size:20px"><code>typeof null === "object"</code></div>
+            <div class="quote-attr">── 10日で作ったバグ。互換性のため永遠に直せない</div>
+        </div>
+    </div>
+</div>
+
+<!-- ===== Scene 19: タイミングの力 ===== -->
+<div class="scene" id="scene-19">
+    <div class="content center-layout">
+        <div class="scene-title">「タイミング」が言語を決める</div>
+        <div class="flow-row stagger-item" style="margin-top:20px">
+            <div class="flow-chip chip-indigo">ブラウザに最初に搭載</div>
+            <div class="flow-connector">→</div>
+            <div class="flow-chip chip-orange">インフラに組み込まれる</div>
+            <div class="flow-connector">→</div>
+            <div class="flow-chip chip-coral">置き換え不可能に</div>
+        </div>
+        <div class="big-statement" style="font-size:22px;margin-top:24px">完璧でなくても<br>最初に<span class="accent-primary">場所を確保した者</span>が勝つ</div>
+    </div>
+</div>
+
+<!-- ===== Scene 20: 4つの理由 ===== -->
+<div class="scene bg-dots" id="scene-20">
+    <div class="content center-layout">
+        <div class="scene-title">なぜ700種類以上あるのか？</div>
+        <div class="lesson-cards stagger-item" style="margin-top:20px">
+            <div class="lesson-card" style="border-top:3px solid var(--primary)"><div class="lesson-num">①</div><div class="lesson-title">問題の多様性</div><div class="lesson-desc">ハンマー1本では<br>家は建たない</div></div>
+            <div class="lesson-card" style="border-top:3px solid var(--coral)"><div class="lesson-num" style="color:var(--coral)">②</div><div class="lesson-title">不満→改良</div><div class="lesson-desc">「もっと良い道具」<br>を求め続ける</div></div>
+            <div class="lesson-card" style="border-top:3px solid var(--emerald)"><div class="lesson-num" style="color:var(--emerald)">③</div><div class="lesson-title">パラダイム</div><div class="lesson-desc">問題の見方は<br>1つじゃない</div></div>
+            <div class="lesson-card" style="border-top:3px solid var(--amber)"><div class="lesson-num" style="color:var(--amber)">④</div><div class="lesson-title">タイミング</div><div class="lesson-desc">根付いた言語は<br>消えない</div></div>
+        </div>
+    </div>
+</div>
+
+<!-- ===== Scene 21: 多様性は強さ ===== -->
+<div class="scene" id="scene-21">
+    <div class="content center-layout">
+        <div class="big-statement">700種類は「混乱」ではない<br><span class="accent-primary">多様性</span>であり<br><span class="accent-emerald">進化の証</span>である</div>
+    </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,127 @@
+[
+  {
+    "surface": "Delete",
+    "pronunciation": "デリート",
+    "accent_type": 0
+  },
+  {
+    "surface": "PDF",
+    "pronunciation": "ピーディーエフ",
+    "accent_type": 0
+  },
+  {
+    "surface": "Shift",
+    "pronunciation": "シフト",
+    "accent_type": 0
+  },
+  {
+    "surface": "OS",
+    "pronunciation": "オーエス",
+    "accent_type": 0
+  },
+  {
+    "surface": "Windows",
+    "pronunciation": "ウィンドウズ",
+    "accent_type": 0
+  },
+  {
+    "surface": "Recycle",
+    "pronunciation": "リサイクル",
+    "accent_type": 0
+  },
+  {
+    "surface": "Bin",
+    "pronunciation": "ビン",
+    "accent_type": 0
+  },
+  {
+    "surface": "NTFS",
+    "pronunciation": "エヌティーエフエス",
+    "accent_type": 0
+  },
+  {
+    "surface": "MFT",
+    "pronunciation": "エムエフティー",
+    "accent_type": 0
+  },
+  {
+    "surface": "Linux",
+    "pronunciation": "リナックス",
+    "accent_type": 0
+  },
+  {
+    "surface": "ext",
+    "pronunciation": "イーエックスティー",
+    "accent_type": 0
+  },
+  {
+    "surface": "macOS",
+    "pronunciation": "マックオーエス",
+    "accent_type": 0
+  },
+  {
+    "surface": "APFS",
+    "pronunciation": "エーピーエフエス",
+    "accent_type": 0
+  },
+  {
+    "surface": "GB",
+    "pronunciation": "ギガバイト",
+    "accent_type": 0
+  },
+  {
+    "surface": "HDD",
+    "pronunciation": "エイチディーディー",
+    "accent_type": 0
+  },
+  {
+    "surface": "SSD",
+    "pronunciation": "エスエスディー",
+    "accent_type": 0
+  },
+  {
+    "surface": "NAND",
+    "pronunciation": "ナンド",
+    "accent_type": 0
+  },
+  {
+    "surface": "TRIM",
+    "pronunciation": "トリム",
+    "accent_type": 0
+  },
+  {
+    "surface": "DoD",
+    "pronunciation": "ディーオーディー",
+    "accent_type": 0
+  },
+  {
+    "surface": "NIST",
+    "pronunciation": "ニスト",
+    "accent_type": 0
+  },
+  {
+    "surface": "Apple",
+    "pronunciation": "アップル",
+    "accent_type": 0
+  },
+  {
+    "surface": "High",
+    "pronunciation": "ハイ",
+    "accent_type": 0
+  },
+  {
+    "surface": "Sierra",
+    "pronunciation": "シエラ",
+    "accent_type": 0
+  },
+  {
+    "surface": "Secure",
+    "pronunciation": "セキュア",
+    "accent_type": 0
+  },
+  {
+    "surface": "Erase",
+    "pronunciation": "イレース",
+    "accent_type": 0
+  }
+]

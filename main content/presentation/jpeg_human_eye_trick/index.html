@@ -1,0 +1,849 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JPEGは「人間の目を騙す」天才的な仕組み</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- ===== SCENE 0: タイトルカード ===== -->
+    <section class="scene title-bg-gradient" id="scene-0">
+        <canvas class="bg-canvas" id="canvas-title"></canvas>
+        <div class="scene-content title-card">
+            <div class="stagger-item label label--primary">JPEG COMPRESSION</div>
+            <h1 class="stagger-item title-huge">
+                JPEGは<br><span class="title-primary title-accent">「人間の目を騙す」</span><br>天才的な仕組み
+            </h1>
+            <p class="stagger-item title-sub">あなたの写真の90%は消されている──なのに、なぜ気づかないのか？</p>
+        </div>
+    </section>
+
+    <!-- ===== SCENE 1: 数値インパクト「90%以上」 ===== -->
+    <section class="scene" id="scene-1">
+        <div class="scene-content">
+            <div class="stagger-item label label--coral">SHOCKING FACT</div>
+            <h2 class="stagger-item scene-title"><span class="accent">90%以上</span>のデータが削除されている</h2>
+            <div class="impact-number-container stagger-item">
+                <span class="impact-number big-num">90</span><span class="impact-suffix">%+</span>
+                <div class="impact-label">元のデータから削除</div>
+            </div>
+            <div class="impact-detail stagger-item">
+                <div class="impact-detail-item">
+                    <div class="impact-detail-value">36<span style="font-size:24px">MB</span></div>
+                    <div class="impact-detail-label">非圧縮（1200万画素）</div>
+                </div>
+                <div class="impact-arrow">→</div>
+                <div class="impact-detail-item">
+                    <div class="impact-detail-value" style="color:var(--accent-teal)">3<span
+                            style="font-size:24px">MB</span></div>
+                    <div class="impact-detail-label">JPEG保存後</div>
+                </div>
+            </div>
+            <div class="stagger-item source-badge">1200万画素 × RGB 3ch × 8bit = 約36MB</div>
+        </div>
+    </section>
+
+    <!-- ===== SCENE 2: テキスト強調「なぜ気づかない？」 ===== -->
+    <section class="scene" id="scene-2">
+        <canvas class="bg-canvas" id="canvas-emphasis1"></canvas>
+        <div class="scene-content">
+            <div class="emphasis-box stagger-item pulse-glow">
+                <div class="emphasis-text">
+                    <span class="em-coral">90%も消している</span>のに<br>
+                    人間はほぼ<span class="em-primary">気づかない</span>。<br><br>
+                    これは「適当に捨てている」のではなく──<br>
+                    人間の目の<span class="em-teal">弱点</span>を、<span class="em-primary">天才的に</span>突いているからだ。
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== SCENE 3: 網膜の断面図（SVG図解） ===== -->
+    <section class="scene" id="scene-3">
+        <div class="scene-content">
+            <h2 class="stagger-item scene-title">網膜の<span class="accent">2種類のセンサー</span></h2>
+            <div class="retina-visual stagger-item">
+                <svg viewBox="0 0 600 280" width="600" height="280">
+                    <!-- 桿体細胞（多数・棒状） -->
+                    <text x="150" y="28" text-anchor="middle" fill="#555770" font-size="16"
+                        font-weight="700">桿体細胞（明るさ）</text>
+                    <!-- 桿体を多数描画 -->
+                    <g class="retina-rods">
+                        <rect class="retina-rod" x="30" y="40" width="8" height="40" rx="3" />
+                        <rect class="retina-rod" x="44" y="38" width="8" height="44" rx="3" />
+                        <rect class="retina-rod" x="58" y="42" width="8" height="38" rx="3" />
+                        <rect class="retina-rod" x="72" y="36" width="8" height="46" rx="3" />
+                        <rect class="retina-rod" x="86" y="40" width="8" height="40" rx="3" />
+                        <rect class="retina-rod" x="100" y="38" width="8" height="44" rx="3" />
+                        <rect class="retina-rod" x="114" y="41" width="8" height="39" rx="3" />
+                        <rect class="retina-rod" x="128" y="37" width="8" height="45" rx="3" />
+                        <rect class="retina-rod" x="142" y="40" width="8" height="40" rx="3" />
+                        <rect class="retina-rod" x="156" y="39" width="8" height="42" rx="3" />
+                        <rect class="retina-rod" x="170" y="36" width="8" height="46" rx="3" />
+                        <rect class="retina-rod" x="184" y="42" width="8" height="38" rx="3" />
+                        <rect class="retina-rod" x="198" y="38" width="8" height="44" rx="3" />
+                        <rect class="retina-rod" x="212" y="40" width="8" height="40" rx="3" />
+                        <rect class="retina-rod" x="226" y="37" width="8" height="45" rx="3" />
+                        <rect class="retina-rod" x="240" y="41" width="8" height="39" rx="3" />
+                        <rect class="retina-rod" x="254" y="39" width="8" height="42" rx="3" />
+                        <rect class="retina-rod" x="268" y="36" width="8" height="46" rx="3" />
+                    </g>
+                    <text x="150" y="108" text-anchor="middle" fill="#555770" font-size="14">×20</text>
+                    <!-- 錐体細胞（少数・三角） -->
+                    <text x="450" y="28" text-anchor="middle" fill="#1e88e5" font-size="16"
+                        font-weight="700">錐体細胞（色）</text>
+                    <polygon class="retina-cone-r" points="380,80 388,44 396,80" />
+                    <polygon class="retina-cone-g" points="420,80 428,44 436,80" />
+                    <polygon class="retina-cone-b" points="460,80 468,44 476,80" />
+                    <text x="450" y="108" text-anchor="middle" fill="#1e88e5" font-size="14">×1</text>
+                    <!-- ラベル -->
+                    <rect x="20" y="130" width="260" height="60" rx="12" fill="#f4f5f7" stroke="#555770"
+                        stroke-width="1" />
+                    <text x="150" y="158" text-anchor="middle" fill="#555770" font-size="16" font-weight="700">🔦
+                        明るさを感じる</text>
+                    <text x="150" y="180" text-anchor="middle" fill="#8e90a6" font-size="13">モノクロ・高感度</text>
+                    <rect x="320" y="130" width="260" height="60" rx="12" fill="#e3f2fd" stroke="#1e88e5"
+                        stroke-width="1" />
+                    <text x="450" y="158" text-anchor="middle" fill="#1e88e5" font-size="16" font-weight="700">🎨
+                        色を感じる</text>
+                    <text x="450" y="180" text-anchor="middle" fill="#8e90a6" font-size="13">カラー・低感度</text>
+                    <!-- カメラとの対比 -->
+                    <rect x="100" y="210" width="400" height="52" rx="12" fill="#fff8e1" stroke="#ffb84d"
+                        stroke-width="1" />
+                    <text x="300" y="236" text-anchor="middle" fill="#5d4037" font-size="14" font-weight="600">📷
+                        カメラは全ピクセル均等 → 人間の目は明暗優先・色は後回し</text>
+                    <text x="300" y="255" text-anchor="middle" fill="#8e90a6" font-size="11">出典: NIH – 網膜の光受容体研究</text>
+                </svg>
+            </div>
+            <div class="stagger-item source-badge">NIH: 人間の網膜の光受容体に関する研究</div>
+        </div>
+    </section>
+
+    <!-- ===== SCENE 4: 比較対照「桿体 vs 錐体」 ===== -->
+    <section class="scene" id="scene-4">
+        <div class="scene-content">
+            <h2 class="stagger-item scene-title">桿体 vs 錐体：<span class="accent">20倍</span>の数の差</h2>
+            <div class="vs-container stagger-item">
+                <div class="vs-side vs-side--left">
+                    <div class="vs-label label--coral">桿体細胞</div>
+                    <div class="vs-value" style="color:var(--accent-coral)">9,100<span style="font-size:20px">万個</span>
+                    </div>
+                    <div class="vs-desc">明暗を検知するセンサー<br>暗所でも高感度</div>
+                </div>
+                <div class="vs-center">VS</div>
+                <div class="vs-side vs-side--right">
+                    <div class="vs-label label--teal">錐体細胞</div>
+                    <div class="vs-value" style="color:var(--accent-teal)">450<span style="font-size:20px">万個</span>
+                    </div>
+                    <div class="vs-desc">色を検知するセンサー<br>赤・緑・青の3タイプ</div>
+                </div>
+            </div>
+            <p class="stagger-item scene-subtitle mt-24">明暗に敏感、色には<span
+                    style="color:var(--accent-coral);font-weight:700">鈍感</span></p>
+            <div class="stagger-item source-badge">出典: Curcio et al. (1990), NIH</div>
+        </div>
+    </section>
+
+    <!-- ===== SCENE 5: ビフォーアフター「明暗 vs 色の精度」 ===== -->
+    <section class="scene" id="scene-5">
+        <div class="scene-content">
+            <h2 class="stagger-item scene-title">思考実験：精度を<span class="accent">半分</span>にしたら？</h2>
+            <div class="before-after-container stagger-item">
+                <div class="before-after-item">
+                    <div class="before-after-label before-after-label--bad">明暗の精度を半分に</div>
+                    <div class="before-after-body">
+                        <svg viewBox="0 0 200 120" width="200" height="120">
+                            <defs>
+                                <linearGradient id="luma-degraded" x1="0" y1="0" x2="1" y2="0">
+                                    <stop offset="0%" stop-color="#000" />
+                                    <stop offset="20%" stop-color="#333" />
+                                    <stop offset="40%" stop-color="#888" />
+                                    <stop offset="50%" stop-color="#888" />
+                                    <stop offset="60%" stop-color="#ccc" />
+                                    <stop offset="100%" stop-color="#fff" />
+                                </linearGradient>
+                            </defs>
+                            <!-- ステップ状のグラデーション（明暗劣化） -->
+                            <rect x="0" y="0" width="25" height="120" fill="#000" />
+                            <rect x="25" y="0" width="25" height="120" fill="#222" />
+                            <rect x="50" y="0" width="25" height="120" fill="#555" />
+                            <rect x="75" y="0" width="25" height="120" fill="#777" />
+                            <rect x="100" y="0" width="25" height="120" fill="#999" />
+                            <rect x="125" y="0" width="25" height="120" fill="#bbb" />
+                            <rect x="150" y="0" width="25" height="120" fill="#ddd" />
+                            <rect x="175" y="0" width="25" height="120" fill="#fff" />
+                        </svg>
+                        <div class="ba-desc">⚠️ すぐに違和感に気づく</div>
+                    </div>
+                </div>
+                <div class="before-after-item">
+                    <div class="before-after-label before-after-label--good">色の精度を半分に</div>
+                    <div class="before-after-body">
+                        <svg viewBox="0 0 200 120" width="200" height="120">
+                            <defs>
+                                <linearGradient id="chroma-good" x1="0" y1="0" x2="1" y2="0">
+                                    <stop offset="0%" stop-color="#ff6b4a" />
+                                    <stop offset="25%" stop-color="#ff9c4a" />
+                                    <stop offset="50%" stop-color="#ffcc4a" />
+                                    <stop offset="75%" stop-color="#c8e64a" />
+                                    <stop offset="100%" stop-color="#4ae6b4" />
+                                </linearGradient>
+                            </defs>
+                            <rect x="0" y="0" width="200" height="120" fill="url(#chroma-good)" rx="4" />
+                        </svg>
+                        <div class="ba-desc">✅ ほとんど気づかない</div>
+                    </div>
+                </div>
+            </div>
+            <p class="stagger-item scene-subtitle mt-16">明暗の差は0.5%で気づく。色の差は数%ずれても気づかない。</p>
+            <div class="stagger-item source-badge">人間の視覚特性に関する研究</div>
+        </div>
+    </section>
+
+    <!-- ===== SCENE 6: テキスト強調「色を雑に扱ってもバレない」 ===== -->
+    <section class="scene" id="scene-6">
+        <canvas class="bg-canvas" id="canvas-emphasis2"></canvas>
+        <div class="scene-content">
+            <div class="emphasis-box stagger-item">
+                <div class="emphasis-text">
+                    <span class="em-teal">「色を雑に扱っても、バレない」</span><br><br>
+                    これがJPEG圧縮の<span class="em-primary">出発点</span>であり、<br>
+                    最初の騙しのテクニック。
+                </div>
+            </div>
+            <p class="stagger-item scene-subtitle mt-24">目の弱点 その1：色の変化に鈍感</p>
+        </div>
+    </section>
+
+    <!-- ===== SCENE 7: 変換フロー「RGB → YCbCr」 ===== -->
+    <section class="scene" id="scene-7">
+        <div class="scene-content">
+            <h2 class="stagger-item scene-title">Step 1：<span class="accent">色の分離</span></h2>
+            <div class="flow-container stagger-item">
+                <div class="flow-node">
+                    <div class="flow-node-title" style="color:#e53935">R</div>
+                    <div class="flow-node-desc">赤</div>
+                </div>
+                <div class="flow-node">
+                    <div class="flow-node-title" style="color:#43a047">G</div>
+                    <div class="flow-node-desc">緑</div>
+                </div>
+                <div class="flow-node">
+                    <div class="flow-node-title" style="color:#1e88e5">B</div>
+                    <div class="flow-node-desc">青</div>
+                </div>
+                <div class="flow-arrow">→</div>
+                <div class="flow-node flow-node--active">
+                    <div class="flow-node-title">Y</div>
+                    <div class="flow-node-desc">明るさ</div>
+                </div>
+                <div class="flow-node">
+                    <div class="flow-node-title" style="color:var(--accent-blue)">Cb</div>
+                    <div class="flow-node-desc">青み</div>
+                </div>
+                <div class="flow-node">
+                    <div class="flow-node-title" style="color:var(--accent-coral)">Cr</div>
+                    <div class="flow-node-desc">赤み</div>
+                </div>
+            </div>
+            <div class="formula-visual stagger-item mt-24">
+                <div class="formula-text">
+                    <span class="f-y">Y</span> = 0.299<span class="f-r">R</span> + 0.587<span class="f-g">G</span> +
+                    0.114<span class="f-b">B</span>
+                </div>
+                <div class="formula-note">緑が58.7% — 人間の目は緑に最も敏感</div>
+            </div>
+            <div class="stagger-item source-badge">ITU-R BT.601 規格</div>
+        </div>
+    </section>
+
+    <!-- ===== SCENE 8: Y/Cb/Cr分離表示（SVG図解） ===== -->
+    <section class="scene" id="scene-8">
+        <div class="scene-content">
+            <h2 class="stagger-item scene-title">分離結果：<span class="accent">明るさ</span>と<span
+                    style="color:var(--accent-blue)">色</span>に分かれる</h2>
+            <div class="card-grid card-grid--3 stagger-item">
+                <div class="card text-center">
+                    <div class="card-title">Y（明るさ）</div>
+                    <svg viewBox="0 0 120 80" width="120" height="80">
+                        <defs>
+                            <linearGradient id="ygr" x1="0" y1="0" x2="1" y2="1">
+                                <stop offset="0%" stop-color="#333" />
+                                <stop offset="50%" stop-color="#999" />
+                                <stop offset="100%" stop-color="#eee" />
+                            </linearGradient>
+                        </defs>
+                        <rect x="0" y="0" width="120" height="80" rx="6" fill="url(#ygr)" />
+                    </svg>
+                    <div class="card-text mt-16">白黒写真のように見える</div>
+                </div>
+                <div class="card text-center">
+                    <div class="card-title" style="color:var(--accent-blue)">Cb（青み）</div>
+                    <svg viewBox="0 0 120 80" width="120" height="80">
+                        <defs>
+                            <linearGradient id="cbgr" x1="0" y1="0" x2="1" y2="1">
+                                <stop offset="0%" stop-color="#90caf9" />
+                                <stop offset="100%" stop-color="#1565c0" />
+                            </linearGradient>
+                        </defs>
+                        <rect x="0" y="0" width="120" height="80" rx="6" fill="url(#cbgr)" opacity="0.6" />
+                    </svg>
+                    <div class="card-text mt-16">ぼんやりした青の成分</div>
+                </div>
+                <div class="card text-center">
+                    <div class="card-title" style="color:var(--accent-coral)">Cr（赤み）</div>
+                    <svg viewBox="0 0 120 80" width="120" height="80">
+                        <defs>
+                            <linearGradient id="crgr" x1="0" y1="0" x2="1" y2="1">
+                                <stop offset="0%" stop-color="#ef9a9a" />
+                                <stop offset="100%" stop-color="#c62828" />
+                            </linearGradient>
+                        </defs>
+                        <rect x="0" y="0" width="120" height="80" rx="6" fill="url(#crgr)" opacity="0.6" />
+                    </svg>
+                    <div class="card-text mt-16">ぼんやりした赤の成分</div>
+                </div>
+            </div>
+            <p class="stagger-item scene-subtitle mt-16">明るさは高精度で残し、色は「雑に」扱える状態に</p>
+        </div>
+    </section>
+
+    <!-- ===== SCENE 9: アナロジー「音楽ミックス」 ===== -->
+    <section class="scene" id="scene-9">
+        <div class="scene-content">
+            <h2 class="stagger-item scene-title">なぜ分けるのか？ <span class="accent">音楽のミックス</span>で考える</h2>
+            <div class="analogy-box stagger-item">
+                <div class="analogy-icon">🎵</div>
+                <div class="analogy-title">音楽ミックスのアナロジー</div>
+                <div class="analogy-text">曲全体をまとめて音質を下げると、ボーカルまで劣化する。<br>でも分離すれば、ボーカルは高音質のまま、伴奏だけ下げられる。</div>
+                <div class="analogy-mapping">
+                    <div class="analogy-map-item">
+                        <div class="analogy-map-label">🎤 ボーカル</div>
+                        <div class="analogy-map-value">= Y（明るさ）</div>
+                    </div>
+                    <div class="analogy-map-item">
+                        <div class="analogy-map-label">🎸 伴奏</div>
+                        <div class="analogy-map-value">= Cb/Cr（色）</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== SCENE 10: クロマサブサンプリング 4:2:0 ===== -->
+    <section class="scene" id="scene-10">
+        <div class="scene-content">
+            <h2 class="stagger-item scene-title">Step 2：<span class="accent">クロマサブサンプリング</span> 4:2:0</h2>
+            <div class="chroma-visual stagger-item">
+                <div class="chroma-channel">
+                    <div class="chroma-channel-label chroma-channel-label--y">Y（明るさ）</div>
+                    <div class="chroma-grid chroma-grid--full" id="chroma-y-grid"></div>
+                    <div class="chroma-percent chroma-percent--full">100%</div>
+                </div>
+                <div class="chroma-channel">
+                    <div class="chroma-channel-label chroma-channel-label--cb">Cb（青み）</div>
+                    <div class="chroma-grid chroma-grid--half" id="chroma-cb-grid"></div>
+                    <div class="chroma-percent chroma-percent--half">25%</div>
+                </div>
+                <div class="chroma-channel">
+                    <div class="chroma-channel-label chroma-channel-label--cr">Cr（赤み）</div>
+                    <div class="chroma-grid chroma-grid--half" id="chroma-cr-grid"></div>
+                    <div class="chroma-percent chroma-percent--half">25%</div>
+                </div>
+            </div>
+            <p class="stagger-item scene-subtitle mt-16">色のデータ量を<span
+                    style="color:var(--accent-coral);font-weight:700">50%削減</span>。でも人間はほぼ気づかない。</p>
+            <div class="stagger-item source-badge">JPEG標準仕様 (ISO/IEC 10918)</div>
+        </div>
+    </section>
+
+    <!-- ===== SCENE 11: タイムライン「NTSC → JPEG」 ===== -->
+    <section class="scene" id="scene-11">
+        <div class="scene-content">
+            <h2 class="stagger-item scene-title">テレビの技術が<span class="accent">40年後</span>に再利用された</h2>
+            <div class="timeline-container stagger-item">
+                <div class="timeline-item">
+                    <div class="timeline-year">1953</div>
+                    <div class="timeline-event">NTSCカラーテレビ</div>
+                    <div class="timeline-desc">白黒TVとの互換性のため<br>明るさと色を分離</div>
+                </div>
+                <div class="timeline-arrow">→→→</div>
+                <div class="timeline-item">
+                    <div class="timeline-year">1992</div>
+                    <div class="timeline-event">JPEG標準化</div>
+                    <div class="timeline-desc">同じ原理を画像圧縮に応用<br>YCbCr + クロマサブサンプリング</div>
+                </div>
+            </div>
+            <p class="stagger-item scene-subtitle mt-24">「人間の目は色に鈍感」── この原理は70年前から使われている</p>
+            <div class="stagger-item source-badge">NTSC標準 / JPEG ISO/IEC 10918</div>
+        </div>
+    </section>
+
+    <!-- ===== SCENE 12: 8x8ブロック分割（SVG図解） ===== -->
+    <section class="scene" id="scene-12">
+        <div class="scene-content">
+            <h2 class="stagger-item scene-title">Step 3：<span class="accent">8×8ブロック</span>に分割する</h2>
+            <div class="stagger-item text-center">
+                <svg viewBox="0 0 520 340" width="520" height="340">
+                    <!-- 大きな画像 -->
+                    <rect x="0" y="0" width="240" height="180" rx="8" fill="#e8e8ee" stroke="#ccc" stroke-width="1" />
+                    <!-- グリッド線 -->
+                    <g stroke="#aaa" stroke-width="0.5" opacity="0.5">
+                        <line x1="30" y1="0" x2="30" y2="180" />
+                        <line x1="60" y1="0" x2="60" y2="180" />
+                        <line x1="90" y1="0" x2="90" y2="180" />
+                        <line x1="120" y1="0" x2="120" y2="180" />
+                        <line x1="150" y1="0" x2="150" y2="180" />
+                        <line x1="180" y1="0" x2="180" y2="180" />
+                        <line x1="210" y1="0" x2="210" y2="180" />
+                        <line x1="0" y1="22.5" x2="240" y2="22.5" />
+                        <line x1="0" y1="45" x2="240" y2="45" />
+                        <line x1="0" y1="67.5" x2="240" y2="67.5" />
+                        <line x1="0" y1="90" x2="240" y2="90" />
+                        <line x1="0" y1="112.5" x2="240" y2="112.5" />
+                        <line x1="0" y1="135" x2="240" y2="135" />
+                        <line x1="0" y1="157.5" x2="240" y2="157.5" />
+                    </g>
+                    <!-- ハイライトブロック -->
+                    <rect x="90" y="67.5" width="30" height="22.5" fill="rgba(91,76,219,0.3)" stroke="var(--primary)"
+                        stroke-width="2" />
+                    <text x="120" y="95" text-anchor="middle" fill="#1a1a2e" font-size="12"
+                        font-weight="700">IMAGE</text>
+                    <!-- 矢印 -->
+                    <text x="280" y="95" fill="var(--primary)" font-size="32" font-weight="700">→</text>
+                    <!-- ズームブロック -->
+                    <rect x="320" y="20" width="192" height="192" rx="8" fill="#f0eeff" stroke="var(--primary)"
+                        stroke-width="2" />
+                    <g stroke="var(--primary)" stroke-width="0.8" opacity="0.3">
+                        <line x1="344" y1="20" x2="344" y2="212" />
+                        <line x1="368" y1="20" x2="368" y2="212" />
+                        <line x1="392" y1="20" x2="392" y2="212" />
+                        <line x1="416" y1="20" x2="416" y2="212" />
+                        <line x1="440" y1="20" x2="440" y2="212" />
+                        <line x1="464" y1="20" x2="464" y2="212" />
+                        <line x1="488" y1="20" x2="488" y2="212" />
+                        <line x1="320" y1="44" x2="512" y2="44" />
+                        <line x1="320" y1="68" x2="512" y2="68" />
+                        <line x1="320" y1="92" x2="512" y2="92" />
+                        <line x1="320" y1="116" x2="512" y2="116" />
+                        <line x1="320" y1="140" x2="512" y2="140" />
+                        <line x1="320" y1="164" x2="512" y2="164" />
+                        <line x1="320" y1="188" x2="512" y2="188" />
+                    </g>
+                    <text x="416" y="124" text-anchor="middle" fill="var(--primary)" font-size="18" font-weight="800">8
+                        × 8</text>
+                    <text x="416" y="145" text-anchor="middle" fill="var(--text-secondary)" font-size="12">=
+                        64ピクセル</text>
+                    <!-- ラベル -->
+                    <text x="120" y="210" text-anchor="middle" fill="var(--text-secondary)" font-size="13">画像全体</text>
+                    <text x="416" y="232" text-anchor="middle" fill="var(--primary)" font-size="14"
+                        font-weight="700">1ブロック</text>
+                    <!-- 補足 -->
+                    <rect x="80" y="260" width="360" height="60" rx="12" fill="#fff8e1" stroke="#ffb84d"
+                        stroke-width="1" />
+                    <text x="260" y="286" text-anchor="middle" fill="#5d4037" font-size="14"
+                        font-weight="600">この小さなブロックひとつひとつに「魔法」をかける</text>
+                    <text x="260" y="306" text-anchor="middle" fill="#8e90a6" font-size="11">DCT（離散コサイン変換）の処理単位</text>
+                </svg>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== SCENE 13: 思考実験「波の重ね合わせ」 ===== -->
+    <section class="scene" id="scene-13">
+        <div class="scene-content">
+            <div class="thought-box stagger-item">
+                <div class="thought-icon">🤔</div>
+                <div class="thought-question">もし画像を<span
+                        style="color:var(--primary)">「波の重ね合わせ」</span>として<br>表現できたら、何がうれしい？</div>
+                <div class="thought-sub">ゆっくりした波 = 大まかな明暗の変化<br>細かい波 = 髪の毛1本、布の模様などの細部</div>
+            </div>
+            <p class="stagger-item scene-subtitle mt-24">細かい波を消しても、見た目はあまり変わらない……？</p>
+        </div>
+    </section>
+
+    <!-- ===== SCENE 14: 低周波 vs 高周波（チャート） ===== -->
+    <section class="scene" id="scene-14">
+        <div class="scene-content">
+            <h2 class="stagger-item scene-title"><span class="accent">ゆるやかな変化</span> vs <span
+                    style="color:var(--accent-coral)">細かい変化</span></h2>
+            <div class="freq-compare stagger-item">
+                <div class="freq-item">
+                    <div class="label label--teal">低周波（ゆるやか）</div>
+                    <svg viewBox="0 0 220 80" width="220" height="80">
+                        <path d="M0,40 Q55,10 110,40 Q165,70 220,40" fill="none" stroke="var(--accent-teal)"
+                            stroke-width="3" class="draw-path" />
+                    </svg>
+                    <div class="freq-label" style="color:var(--accent-teal)">大まかな形・色</div>
+                    <div class="freq-desc">人間の目が敏感に反応 → 残す</div>
+                </div>
+                <div class="freq-item">
+                    <div class="label label--coral">高周波（細かい）</div>
+                    <svg viewBox="0 0 220 80" width="220" height="80">
+                        <path
+                            d="M0,40 Q7,15 14,40 Q21,65 28,40 Q35,15 42,40 Q49,65 56,40 Q63,15 70,40 Q77,65 84,40 Q91,15 98,40 Q105,65 112,40 Q119,15 126,40 Q133,65 140,40 Q147,15 154,40 Q161,65 168,40 Q175,15 182,40 Q189,65 196,40 Q203,15 210,40 Q217,65 220,40"
+                            fill="none" stroke="var(--accent-coral)" stroke-width="2" class="draw-path" />
+                    </svg>
+                    <div class="freq-label" style="color:var(--accent-coral)">細かい模様・ノイズ</div>
+                    <div class="freq-desc">人間の目が知覚できない → 消す</div>
+                </div>
+            </div>
+            <p class="stagger-item scene-subtitle mt-16">目の弱点 その2：<span
+                    style="color:var(--accent-coral);font-weight:700">細かすぎるパターンは知覚できない</span></p>
+        </div>
+    </section>
+
+    <!-- ===== SCENE 15: DCT基底関数（SVG図解） ===== -->
+    <section class="scene" id="scene-15">
+        <div class="scene-content">
+            <h2 class="stagger-item scene-title"><span class="accent">DCT</span>：64種類の波パターン</h2>
+            <p class="stagger-item scene-subtitle">離散コサイン変換（Discrete Cosine Transform）</p>
+            <div class="stagger-item">
+                <div class="dct-basis-grid" id="dct-grid"></div>
+                <div class="dct-label-row">
+                    <span>← 低周波（ゆるやか）</span>
+                    <span>高周波（細かい） →</span>
+                </div>
+            </div>
+            <p class="stagger-item scene-subtitle mt-16">左上 = 平均の明るさ（DC成分）、右下ほど細かい波</p>
+            <div class="stagger-item source-badge">DCT: Ahmed, Natarajan, Rao (1974)</div>
+        </div>
+    </section>
+
+    <!-- ===== SCENE 16: 変換フロー「ピクセル → DCT係数」 ===== -->
+    <section class="scene" id="scene-16">
+        <div class="scene-content">
+            <h2 class="stagger-item scene-title">DCT変換の結果：<span class="accent">エネルギーが左上に集中</span></h2>
+            <div class="zigzag-visual stagger-item">
+                <div>
+                    <div class="label label--primary mb-16">元の8x8ピクセル</div>
+                    <div class="block-grid-visual block-grid-visual--small" id="pixel-block"></div>
+                </div>
+                <div class="zigzag-arrow-container">→<br>DCT<br>→</div>
+                <div>
+                    <div class="label label--teal mb-16">DCT係数マトリクス</div>
+                    <div class="block-grid-visual block-grid-visual--small" id="dct-coeff-block"></div>
+                </div>
+            </div>
+            <p class="stagger-item scene-subtitle mt-16">自然な画像では左上（低周波）に大きな値、右下（高周波）はほぼゼロ</p>
+        </div>
+    </section>
+
+    <!-- ===== SCENE 17: 量子化テーブル（比較対照） ===== -->
+    <section class="scene" id="scene-17">
+        <div class="scene-content">
+            <h2 class="stagger-item scene-title">Step 4：<span class="accent">量子化</span> ── JPEGの核心</h2>
+            <div class="stagger-item">
+                <div class="quant-table-visual" id="quant-table"></div>
+                <div class="quant-legend mt-16">
+                    <div class="quant-legend-item">
+                        <div class="quant-legend-swatch" style="background:var(--accent-teal)"></div>
+                        <span>小さい値 → 精度を保つ</span>
+                    </div>
+                    <div class="quant-legend-item">
+                        <div class="quant-legend-swatch" style="background:var(--accent-coral)"></div>
+                        <span>大きい値 → ゼロに消える</span>
+                    </div>
+                </div>
+            </div>
+            <p class="stagger-item scene-subtitle mt-16">割り算＋四捨五入で、高周波の大半がゼロに。ここが唯一データが失われるステップ。</p>
+            <div class="stagger-item source-badge">JPEG標準量子化テーブル（IJG Q=50）</div>
+        </div>
+    </section>
+
+    <!-- ===== SCENE 18: テキスト強調「量子化の正体」 ===== -->
+    <section class="scene" id="scene-18">
+        <canvas class="bg-canvas" id="canvas-emphasis3"></canvas>
+        <div class="scene-content">
+            <div class="emphasis-box stagger-item pulse-glow">
+                <div class="emphasis-text">
+                    人間に<span class="em-coral">見えない波だけ</span>を<br>
+                    選んで消す──<br><br>
+                    これが<span class="em-primary">量子化</span>の正体。
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== SCENE 19: ジグザグ走査 + 1D列 ===== -->
+    <section class="scene" id="scene-19">
+        <div class="scene-content">
+            <h2 class="stagger-item scene-title">Step 5a：<span class="accent">ジグザグ走査</span></h2>
+            <div class="zigzag-visual stagger-item">
+                <div>
+                    <div class="label label--primary mb-16">量子化後のマトリクス</div>
+                    <div class="zigzag-matrix" id="zigzag-matrix"></div>
+                </div>
+                <div class="zigzag-arrow-container">→<br>ジグザグ<br>→</div>
+                <div>
+                    <div class="label label--teal mb-16">1次元列</div>
+                    <div class="zigzag-result" id="zigzag-result"></div>
+                </div>
+            </div>
+            <p class="stagger-item scene-subtitle mt-16">低周波→高周波の順に並べると、後半がゼロの連続になる</p>
+        </div>
+    </section>
+
+    <!-- ===== SCENE 20: ランレングス + ハフマン（アナロジー） ===== -->
+    <section class="scene" id="scene-20">
+        <div class="scene-content">
+            <h2 class="stagger-item scene-title">Step 5b：<span class="accent">エントロピー符号化</span></h2>
+            <div class="card-grid card-grid--2 stagger-item">
+                <div class="card">
+                    <div class="card-title">ランレングス符号化</div>
+                    <div class="card-text">
+                        「0, 0, 0, …, 0」（15個）<br>→ 「0 × 15」<br><br>
+                        ゼロの連続を1つの記号で表現
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-title">ハフマン符号化</div>
+                    <div class="card-text">
+                        よく出る値 → 短いコード<br>
+                        まれな値 → 長いコード<br><br>
+                        モールス信号と同じ発想
+                    </div>
+                </div>
+            </div>
+            <div class="huffman-visual stagger-item mt-24">
+                <div class="huffman-item">
+                    <div class="huffman-symbol">高頻度</div>
+                    <div class="huffman-code">01</div>
+                    <div class="huffman-freq">短い</div>
+                </div>
+                <div class="huffman-item">
+                    <div class="huffman-symbol">中頻度</div>
+                    <div class="huffman-code">0011</div>
+                    <div class="huffman-freq">中くらい</div>
+                </div>
+                <div class="huffman-item">
+                    <div class="huffman-symbol">低頻度</div>
+                    <div class="huffman-code">001101</div>
+                    <div class="huffman-freq">長い</div>
+                </div>
+            </div>
+            <div class="stagger-item source-badge">Huffman (1952), MIT</div>
+        </div>
+    </section>
+
+    <!-- ===== SCENE 21: パイプライン5ステップ総まとめ ===== -->
+    <section class="scene" id="scene-21">
+        <div class="scene-content">
+            <h2 class="stagger-item scene-title">JPEG圧縮パイプライン<span class="accent">全5ステップ</span></h2>
+            <div class="pipeline-list stagger-item">
+                <div class="pipeline-step">
+                    <div class="pipeline-num">1</div>
+                    <div class="pipeline-info">
+                        <div class="pipeline-name">YCbCr変換</div>
+                        <div class="pipeline-desc">色と明るさを分離する</div>
+                    </div>
+                    <div class="pipeline-badge pipeline-badge--prep">準備</div>
+                </div>
+                <div class="pipeline-step">
+                    <div class="pipeline-num pipeline-num--exploit">2</div>
+                    <div class="pipeline-info">
+                        <div class="pipeline-name">クロマサブサンプリング</div>
+                        <div class="pipeline-desc">色データを50%カット</div>
+                    </div>
+                    <div class="pipeline-badge pipeline-badge--exploit">弱点①</div>
+                </div>
+                <div class="pipeline-step">
+                    <div class="pipeline-num">3</div>
+                    <div class="pipeline-info">
+                        <div class="pipeline-name">DCT変換</div>
+                        <div class="pipeline-desc">画像を波に分解する</div>
+                    </div>
+                    <div class="pipeline-badge pipeline-badge--prep">準備</div>
+                </div>
+                <div class="pipeline-step">
+                    <div class="pipeline-num pipeline-num--exploit">4</div>
+                    <div class="pipeline-info">
+                        <div class="pipeline-name">量子化</div>
+                        <div class="pipeline-desc">見えない高周波を消す</div>
+                    </div>
+                    <div class="pipeline-badge pipeline-badge--exploit">弱点②</div>
+                </div>
+                <div class="pipeline-step">
+                    <div class="pipeline-num">5</div>
+                    <div class="pipeline-info">
+                        <div class="pipeline-name">エントロピー符号化</div>
+                        <div class="pipeline-desc">残りを効率よく詰める</div>
+                    </div>
+                    <div class="pipeline-badge pipeline-badge--prep">仕上げ</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== SCENE 22: 品質比較（Q=95/50/10） ===== -->
+    <section class="scene" id="scene-22">
+        <div class="scene-content">
+            <h2 class="stagger-item scene-title">圧縮しすぎると<span style="color:var(--accent-coral)">秘密がバレる</span></h2>
+            <div class="quality-compare stagger-item">
+                <div class="quality-item">
+                    <div class="quality-header quality-header--good">品質 95</div>
+                    <div class="quality-body">
+                        <div class="quality-img-placeholder quality-img--good">ほぼ原画質</div>
+                        <div class="quality-size" style="color:var(--accent-teal)">800KB</div>
+                        <div class="quality-desc">ほぼ気づかない</div>
+                    </div>
+                </div>
+                <div class="quality-item">
+                    <div class="quality-header quality-header--mid">品質 50</div>
+                    <div class="quality-body">
+                        <div class="quality-img-placeholder quality-img--mid">十分きれい</div>
+                        <div class="quality-size" style="color:var(--accent-amber)">120KB</div>
+                        <div class="quality-desc">Web表示に最適</div>
+                    </div>
+                </div>
+                <div class="quality-item">
+                    <div class="quality-header quality-header--bad">品質 10</div>
+                    <div class="quality-body">
+                        <div class="quality-img-placeholder quality-img--bad">ブロッキング</div>
+                        <div class="quality-size" style="color:var(--accent-coral)">25KB</div>
+                        <div class="quality-desc">8×8ブロック境界が見える</div>
+                    </div>
+                </div>
+            </div>
+            <p class="stagger-item scene-subtitle mt-16">品質設定が低いほど量子化テーブルの値が大きくなり、より多くの情報が消える</p>
+        </div>
+    </section>
+
+    <!-- ===== SCENE 23: 思考実験「ブロックなしなら？」 ===== -->
+    <section class="scene" id="scene-23">
+        <div class="scene-content">
+            <div class="thought-box stagger-item">
+                <div class="thought-icon">💡</div>
+                <div class="thought-question">もし8×8ブロックに分けずに<br><span
+                        style="color:var(--primary)">画像全体を一度に処理</span>できたら？</div>
+                <div class="thought-sub">ブロック境界の問題は解決する → それがJPEG 2000</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== SCENE 24: JPEG vs JPEG 2000（比較対照） ===== -->
+    <section class="scene" id="scene-24">
+        <div class="scene-content">
+            <h2 class="stagger-item scene-title"><span class="accent">JPEG</span> vs <span
+                    style="color:var(--accent-teal)">JPEG 2000</span></h2>
+            <div class="jp2-compare stagger-item">
+                <div class="jp2-card">
+                    <div class="jp2-card-header jp2-card-header--jpeg">JPEG (1992)</div>
+                    <div class="jp2-card-body">
+                        <div class="jp2-spec"><span class="jp2-spec-label">変換方式</span><span
+                                class="jp2-spec-value">DCT（ブロック単位）</span></div>
+                        <div class="jp2-spec"><span class="jp2-spec-label">アーティファクト</span><span
+                                class="jp2-spec-value">ブロッキング</span></div>
+                        <div class="jp2-spec"><span class="jp2-spec-label">処理負荷</span><span
+                                class="jp2-spec-value">軽い</span></div>
+                        <div class="jp2-spec"><span class="jp2-spec-label">ブラウザ対応</span><span
+                                class="jp2-spec-value">全ブラウザ</span></div>
+                        <div class="jp2-spec"><span class="jp2-spec-label">ライセンス</span><span
+                                class="jp2-spec-value">ロイヤリティフリー</span></div>
+                        <div class="jp2-verdict jp2-verdict--win">✅ 世界中で普及</div>
+                    </div>
+                </div>
+                <div class="jp2-card">
+                    <div class="jp2-card-header jp2-card-header--jp2k">JPEG 2000</div>
+                    <div class="jp2-card-body">
+                        <div class="jp2-spec"><span class="jp2-spec-label">変換方式</span><span
+                                class="jp2-spec-value">ウェーブレット（画像全体）</span></div>
+                        <div class="jp2-spec"><span class="jp2-spec-label">アーティファクト</span><span
+                                class="jp2-spec-value">なし（滑らか）</span></div>
+                        <div class="jp2-spec"><span class="jp2-spec-label">処理負荷</span><span
+                                class="jp2-spec-value">重い</span></div>
+                        <div class="jp2-spec"><span class="jp2-spec-label">ブラウザ対応</span><span
+                                class="jp2-spec-value">Safariのみ</span></div>
+                        <div class="jp2-spec"><span class="jp2-spec-label">ライセンス</span><span
+                                class="jp2-spec-value">特許懸念あり</span></div>
+                        <div class="jp2-verdict jp2-verdict--lose">❌ ほぼ普及せず</div>
+                    </div>
+                </div>
+            </div>
+            <p class="stagger-item scene-subtitle mt-16">技術的に優れていることと、世界に広まることは別問題</p>
+        </div>
+    </section>
+
+    <!-- ===== SCENE 25: テキスト強調「十分に良い技術」 ===== -->
+    <section class="scene" id="scene-25">
+        <canvas class="bg-canvas" id="canvas-emphasis4"></canvas>
+        <div class="scene-content">
+            <div class="emphasis-box stagger-item">
+                <div class="emphasis-text">
+                    JPEGは<span class="em-coral">完璧ではない</span>。<br>
+                    でも<span class="em-primary">「十分に良い」</span>技術だった。<br><br>
+                    だから<span class="em-teal">30年</span>続いた。
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== SCENE 26: 数値インパクト「毎日100億枚」 ===== -->
+    <section class="scene" id="scene-26">
+        <div class="scene-content">
+            <div class="stagger-item label label--primary">GLOBAL IMPACT</div>
+            <h2 class="stagger-item scene-title">毎日<span class="accent">100億枚以上</span>のJPEG画像</h2>
+            <div class="impact-number-container stagger-item">
+                <span class="impact-number big-num">100</span><span class="impact-suffix">億+/日</span>
+                <div class="impact-label">世界中で共有されるJPEG画像</div>
+            </div>
+            <div class="stagger-item text-center mt-24">
+                <div class="award-badge">🏆 2019年 プライムタイム エミー賞 受賞</div>
+            </div>
+            <div class="stagger-item source-badge">ITU-T / JPEG.org</div>
+        </div>
+    </section>
+
+    <!-- ===== SCENE 27: まとめカード ===== -->
+    <section class="scene" id="scene-27">
+        <div class="scene-content">
+            <h2 class="stagger-item scene-title">なぜ90%消しても<span class="accent">気づかない</span>のか</h2>
+            <div class="summary-card stagger-item">
+                <div class="summary-title">答え：3つの弱点</div>
+                <div class="summary-points">
+                    <div class="summary-point">
+                        <div class="summary-point-num">1</div>
+                        <div class="summary-point-text"><strong>色の変化に鈍感</strong><br>色を半分捨てても気づかない（クロマサブサンプリング）</div>
+                    </div>
+                    <div class="summary-point">
+                        <div class="summary-point-num">2</div>
+                        <div class="summary-point-text"><strong>細かい模様は知覚できない</strong><br>高周波を消しても気づかない（DCT + 量子化）</div>
+                    </div>
+                    <div class="summary-point">
+                        <div class="summary-point-num">3</div>
+                        <div class="summary-point-text"><strong>残りは可逆圧縮</strong><br>ここでは何も失われない（ジグザグ + ハフマン）</div>
+                    </div>
+                </div>
+            </div>
+            <p class="stagger-item scene-subtitle mt-16">JPEGは「消してはいけないもの」に手を出していない</p>
+        </div>
+    </section>
+
+    <!-- ===== SCENE 28: エンディング ===== -->
+    <section class="scene title-bg-gradient" id="scene-28">
+        <canvas class="bg-canvas" id="canvas-ending"></canvas>
+        <div class="scene-content ending-container">
+            <div class="stagger-item ending-message">
+                <span class="end-teal">不完全な目</span>が、<br>
+                デジタル画像の<span class="end-primary">文明</span>を<br>
+                可能にした。
+            </div>
+            <p class="stagger-item ending-sub">
+                JPEGを作った人たちは、<br>
+                その不完全さを誰よりも深く理解していた天才だった。
+            </p>
+        </div>
+    </section>
+
+    <script src="script.js"></script>
+</body>
+
+</html>

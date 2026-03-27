@@ -2,7 +2,11 @@
  * generate-subtitle-data.js
  *
  * main content の scene_map.json + scene_durations.json を読み込んで、
- * Remotion で使用する字幕タイミングデータ (TypeScript) を生成する。
+ * Remotion で使用する字幕タイミング + 個別音声パスデータ (TypeScript) を生成する。
+ *
+ * 各エントリに audioFile フィールドを含み、VideoWithSlides.tsx が
+ * <Sequence from={startFrame}> + <Audio src={audioFile}> で個別配置する。
+ * full_audio.wav への結合は不要。
  *
  * 使い方:
  *   node scripts/generate-subtitle-data.js <main_content_dir> <project_id>
@@ -67,8 +71,22 @@ for (const sceneDur of sceneDurations) {
     }
 
     if (sceneMapEntry.lines.length === 0) {
-        // セリフなしシーン (タイトルなど)
-        absoluteTimeSec += sceneDur.duration;
+        // セリフなしシーン (タイトルなど) — hold_sec分のエントリを生成
+        const holdSec = sceneMapEntry.hold_sec || 3;
+        const holdFrames = Math.round(holdSec * FPS);
+        subtitleEntries.push({
+            startTimeSec: absoluteTimeSec,
+            startFrame: Math.round(absoluteTimeSec * FPS),
+            durationSec: holdSec,
+            durationFrames: holdFrames,
+            speaker: '',
+            text: '',
+            speakerColor: '#FFFFFF',
+            sceneId: sceneDur.id,
+            sceneTitle: sceneMapEntry.title || sceneDur.title,
+            audioFile: null,
+        });
+        absoluteTimeSec += holdSec;
         continue;
     }
 
@@ -92,16 +110,18 @@ for (const sceneDur of sceneDurations) {
             speakerColor: SPEAKER_COLORS[line.speaker] || '#888888',
             sceneId: sceneDur.id,
             sceneTitle: sceneMapEntry.title || sceneDur.title,
+            audioFile: audioInfo ? `audio/${projectId}/${audioInfo.file}` : null,
         });
 
         lineTime += lineDuration + interLineSilence;
     }
 
-    absoluteTimeSec += sceneDur.duration;
+    // シーン末尾パディング
+    absoluteTimeSec = lineTime + sceneEndPadding - interLineSilence;
 }
 
-// 動画の総時間（秒）
-const totalDurationSec = sceneDurations.reduce((sum, s) => sum + s.duration, 0);
+// 動画の総時間（累積値ベース — 個別配置方式と完全一致させる）
+const totalDurationSec = absoluteTimeSec;
 const totalFrames = Math.round(totalDurationSec * FPS);
 
 // TypeScript ファイルとして出力
@@ -126,10 +146,11 @@ export interface SubtitleEntry {
     speakerColor: string;
     sceneId: number;
     sceneTitle: string;
+    audioFile: string | null;
 }
 
 export const FPS = ${FPS};
-export const TOTAL_DURATION_SEC = ${totalDurationSec};
+export const TOTAL_DURATION_SEC = ${totalDurationSec.toFixed(2)};
 export const TOTAL_FRAMES = ${totalFrames};
 
 export const SUBTITLE_DATA: SubtitleEntry[] = ${JSON.stringify(subtitleEntries, null, 2)};

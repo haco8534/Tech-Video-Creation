@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>URLを打ち込んだ瞬間、何が起きるのか</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- Scene 0: タイトルカード -->
+<section class="scene active" id="scene-0">
+    <div class="scene-content">
+        <div class="title-card">
+            <h1>URLを打ち込んだ瞬間<br>何が起きるのか</h1>
+            <p class="subtitle">── 0.3秒の連鎖反応を丸裸にする ──</p>
+        </div>
+        <div style="margin-top:24px;font-size:3rem;">🌐</div>
+    </div>
+</section>
+
+<!-- Scene 1: ブラウザのURLバー（思考実験） -->
+<section class="scene" id="scene-1">
+    <span class="scene-header">Block 1 — 導入</span>
+    <div class="scene-content">
+        <div class="text-emphasis">
+            <h2>Enter…押した。<br>さて、<span class="accent">何が起きる？</span></h2>
+        </div>
+        <div style="margin-top:24px;background:var(--bg-card);border-radius:16px;padding:24px 40px;box-shadow:0 4px 20px rgba(0,0,0,0.06);display:flex;align-items:center;gap:12px;max-width:600px;">
+            <div style="width:12px;height:12px;border-radius:50%;background:#dc2626;"></div>
+            <div style="width:12px;height:12px;border-radius:50%;background:#d97706;"></div>
+            <div style="width:12px;height:12px;border-radius:50%;background:#059669;"></div>
+            <div style="flex:1;background:#f1f5f9;border-radius:8px;padding:12px 16px;font-size:0.95rem;color:var(--text-muted);font-weight:500;">https://www.example.com<span style="animation:blink 1s infinite;">|</span></div>
+        </div>
+        <style>@keyframes blink { 0%,50%{opacity:1} 51%,100%{opacity:0} }</style>
+    </div>
+</section>
+
+<!-- Scene 2: 5段階連鎖フロー -->
+<section class="scene" id="scene-2">
+    <span class="scene-header">Block 1 — 5ステップ概要</span>
+    <div class="scene-content">
+        <div class="text-emphasis"><h2><span class="accent">5つ</span>のステップが<br>0.3秒で連鎖する</h2></div>
+        <div class="flow-diagram" style="margin-top:32px;">
+            <div class="flow-step dns">🔍 DNS<br><span style="font-size:0.75rem;font-weight:400;">名前→住所</span></div>
+            <div class="flow-arrow">→</div>
+            <div class="flow-step tcp">🤝 TCP<br><span style="font-size:0.75rem;font-weight:400;">回線接続</span></div>
+            <div class="flow-arrow">→</div>
+            <div class="flow-step tls">🔒 TLS<br><span style="font-size:0.75rem;font-weight:400;">暗号化</span></div>
+            <div class="flow-arrow">→</div>
+            <div class="flow-step http">📦 HTTP<br><span style="font-size:0.75rem;font-weight:400;">データ取得</span></div>
+            <div class="flow-arrow">→</div>
+            <div class="flow-step render">🎨 Render<br><span style="font-size:0.75rem;font-weight:400;">画面描画</span></div>
+        </div>
+    </div>
+</section>
+
+<!-- Scene 3: 思考実験「DNSのない世界」 -->
+<section class="scene" id="scene-3">
+    <span class="scene-header">Block 2 — 思考実験</span>
+    <div class="scene-content">
+        <div class="text-emphasis">
+            <h2>もし<span class="red">DNS</span>がなかったら<br>どうなるか？</h2>
+        </div>
+        <div style="margin-top:24px;background:#fef2f2;border-radius:16px;padding:24px 40px;max-width:500px;text-align:center;">
+            <p style="font-size:1.5rem;">❌ www.google.com</p>
+            <p style="font-size:1.1rem;color:var(--text-muted);margin-top:12px;">コンピュータは文字列を理解できない</p>
+            <p style="font-size:1.5rem;margin-top:16px;">✅ 142.250.196.142</p>
+            <p style="font-size:1.1rem;color:var(--text-muted);margin-top:12px;">IPアドレスなら理解できる</p>
+        </div>
+    </div>
+</section>
+
+<!-- Scene 4: hosts.txt時代 -->
+<section class="scene" id="scene-4">
+    <span class="scene-header">Block 2 — hosts.txt</span>
+    <div class="scene-content">
+        <div class="analogy-visual">
+            <div class="analogy-icon">📋</div>
+            <h3>「全世界の住所録を1冊の手帳で管理」</h3>
+            <p>1980年代のARPANET時代<br>すべてのコンピュータの名前とIPアドレスが<br><strong style="color:var(--red);">たった1つのテキストファイル</strong>に書かれていた</p>
+        </div>
+        <div style="margin-top:24px;background:var(--bg-card);border-radius:12px;padding:20px 32px;box-shadow:0 4px 16px rgba(0,0,0,0.05);font-family:monospace;font-size:0.9rem;max-width:500px;">
+            <p style="color:var(--text-muted);"># hosts.txt</p>
+            <p>10.0.0.1   &nbsp; host-alpha</p>
+            <p>10.0.0.2   &nbsp; host-bravo</p>
+            <p>10.0.0.3   &nbsp; host-charlie</p>
+            <p style="color:var(--text-muted);">... (700台分)</p>
+        </div>
+    </div>
+</section>
+
+<!-- Scene 5: SRI-NIC / 営業時間内に電話 -->
+<section class="scene" id="scene-5">
+    <span class="scene-header">Block 2 — SRI-NICの管理</span>
+    <div class="scene-content">
+        <div class="text-emphasis">
+            <h2>管理者は世界で<span class="red">たった1か所</span></h2>
+        </div>
+        <div class="quote-card" style="margin-top:24px;border-left-color:var(--red);">
+            <p class="quote-text">新しいコンピュータを追加したいなら<br><strong style="color:var(--red);">営業時間内にSRIに電話</strong>して更新を依頼する</p>
+            <p class="quote-source">── スタンフォード研究所 SRI-NIC</p>
+        </div>
+    </div>
+</section>
+
+<!-- Scene 6: 700台 → 数十億台 -->
+<section class="scene" id="scene-6">
+    <span class="scene-header">Block 2 — DNSの誕生</span>
+    <div class="scene-content">
+        <div style="display:flex;gap:40px;align-items:center;">
+            <div class="big-number"><div class="number" style="font-size:4rem;background:linear-gradient(135deg,var(--text-muted),var(--text));-webkit-background-clip:text;-webkit-text-fill-color:transparent;">700台</div><div class="label">1980年代</div></div>
+            <div style="font-size:3rem;color:var(--accent);">→</div>
+            <div class="big-number"><div class="number" style="font-size:4rem;">数十億台</div><div class="label">現在</div></div>
+        </div>
+        <div style="margin-top:32px;background:var(--bg-card);border-radius:12px;padding:20px 32px;box-shadow:0 4px 16px rgba(0,0,0,0.05);text-align:center;max-width:600px;">
+            <p style="font-weight:700;font-size:1.1rem;">1983年 ポール・モカペトリス</p>
+            <p style="color:var(--text-muted);margin-top:8px;">DNS ── ドメインネームシステムを発明<br>RFC 882として標準化</p>
+        </div>
+    </div>
+</section>
+
+<!-- Scene 7: 紹介リレー（アナロジー） -->
+<section class="scene" id="scene-7">
+    <span class="scene-header">Block 3 — DNS「紹介リレー」</span>
+    <div class="scene-content">
+        <div class="analogy-visual">
+            <div class="analogy-icon">🔄</div>
+            <h3>DNSの「紹介リレー」</h3>
+            <p>答えを知っている人を<strong style="color:var(--accent);">紹介してもらう</strong><br>多段階の仕組み</p>
+        </div>
+    </div>
+</section>
+
+<!-- Scene 8: ブラウザキャッシュ → OS → ISP → ルート -->
+<section class="scene" id="scene-8">
+    <span class="scene-header">Block 3 — キャッシュと問い合わせ</span>
+    <div class="scene-content">
+        <div class="text-emphasis"><h2>まずは<span class="accent">記憶</span>を調べる</h2></div>
+        <div class="flow-diagram" style="margin-top:24px;">
+            <div class="flow-step" style="border-color:var(--green);background:#ecfdf5;">💻 ブラウザ<br>キャッシュ</div>
+            <div class="flow-arrow">→</div>
+            <div class="flow-step">🖥️ OS<br>キャッシュ</div>
+            <div class="flow-arrow">→</div>
+            <div class="flow-step">🌐 ISP<br>DNSサーバー</div>
+            <div class="flow-arrow">→</div>
+            <div class="flow-step active-step">🏛️ ルート<br>サーバー</div>
+        </div>
+        <p style="margin-top:16px;font-size:0.95rem;color:var(--text-muted);">キャッシュヒットなら0.数ミリ秒で解決</p>
+    </div>
+</section>
+
+<!-- Scene 9: ルート → TLD → 権威サーバー -->
+<section class="scene" id="scene-9">
+    <span class="scene-header">Block 3 — 3段階の紹介</span>
+    <div class="scene-content">
+        <div class="text-emphasis"><h2>3段階の<span class="accent">紹介リレー</span></h2></div>
+        <div class="step-list" style="margin-top:24px;">
+            <div class="step-item"><div class="step-num" style="background:var(--green);">1</div><div class="step-text"><strong>ルートサーバー</strong>「.comの担当サーバーならこちらだよ」</div></div>
+            <div class="step-item"><div class="step-num" style="background:var(--accent);">2</div><div class="step-text"><strong>TLDサーバー</strong>「example.comの担当はこちらだよ」</div></div>
+            <div class="step-item"><div class="step-num" style="background:var(--purple);">3</div><div class="step-text"><strong>権威サーバー</strong>「IPアドレスは<span style="color:var(--accent);font-weight:700;">93.184.216.34</span>だよ」</div></div>
+        </div>
+    </div>
+</section>
+
+<!-- Scene 10: 13台 → 1,954台 -->
+<section class="scene" id="scene-10">
+    <span class="scene-header">Block 3 — ルートサーバーの真実</span>
+    <div class="scene-content">
+        <div class="text-emphasis"><h2>ルートサーバーは<br><span class="red">13台</span>……ではなく<br><span class="accent">約1,954台</span></h2></div>
+        <div class="comparison" style="margin-top:24px;max-width:700px;">
+            <div class="comp-card left"><h3>論理的</h3><p style="font-size:2.5rem;font-weight:900;">13台</p><p style="font-size:0.8rem;">A〜Mの名前</p></div>
+            <div class="comp-vs">→</div>
+            <div class="comp-card right"><h3>物理的</h3><p style="font-size:2.5rem;font-weight:900;color:var(--green);">≈1,954台</p><p style="font-size:0.8rem;">130か国以上に分散<br>（エニーキャスト技術）</p></div>
+        </div>
+    </div>
+</section>
+
+<!-- Scene 11: DNS全体で20〜120ミリ秒 -->
+<section class="scene" id="scene-11">
+    <span class="scene-header">Block 3 — DNSの速さ</span>
+    <div class="scene-content">
+        <div class="big-number">
+            <div class="number" style="font-size:4rem;">20〜120ms</div>
+            <div class="label">DNS名前解決の所要時間</div>
+        </div>
+        <div class="comparison" style="margin-top:32px;max-width:600px;">
+            <div class="comp-card blue-top"><h3>DNS</h3><p style="font-size:1.8rem;font-weight:800;">20〜120ms</p></div>
+            <div class="comp-vs">vs</div>
+            <div class="comp-card purple-top"><h3>まばたき1回</h3><p style="font-size:1.8rem;font-weight:800;">≈300ms</p></div>
+        </div>
+        <p style="margin-top:16px;color:var(--accent);font-weight:600;">まばたきより速い</p>
+    </div>
+</section>
+
+<!-- Scene 12: TCP 3ウェイハンドシェイク（アナロジー） -->
+<section class="scene" id="scene-12">
+    <span class="scene-header">Block 4 — TCP</span>
+    <div class="scene-content">
+        <div class="analogy-visual">
+            <div class="analogy-icon">📞</div>
+            <h3>電話の「もしもし」と同じ</h3>
+            <p>TCPは3回のやりとりで<br>相手がちゃんといるか確認する</p>
+        </div>
+    </div>
+</section>
+
+<!-- Scene 13: SYN → SYN-ACK → ACK -->
+<section class="scene" id="scene-13">
+    <span class="scene-header">Block 4 — 3ウェイハンドシェイク</span>
+    <div class="scene-content">
+        <div class="text-emphasis"><h2>3ウェイ<span class="accent">ハンドシェイク</span></h2></div>
+        <div style="margin-top:24px;max-width:600px;width:100%;">
+            <svg width="100%" viewBox="0 0 600 250">
+                <rect x="60" y="20" width="100" height="40" rx="8" fill="#eff6ff" stroke="#3b82f6" stroke-width="2"/>
+                <text x="110" y="45" text-anchor="middle" font-size="14" font-weight="700" fill="#1d4ed8">クライアント</text>
+                <rect x="440" y="20" width="100" height="40" rx="8" fill="#ecfdf5" stroke="#059669" stroke-width="2"/>
+                <text x="490" y="45" text-anchor="middle" font-size="14" font-weight="700" fill="#059669">サーバー</text>
+                <line x1="110" y1="60" x2="110" y2="230" stroke="#93c5fd" stroke-width="2" stroke-dasharray="4"/>
+                <line x1="490" y1="60" x2="490" y2="230" stroke="#a7f3d0" stroke-width="2" stroke-dasharray="4"/>
+                <line x1="110" y1="90" x2="490" y2="120" stroke="#3b82f6" stroke-width="2.5" marker-end="url(#arrowBlue)"/>
+                <text x="300" y="95" text-anchor="middle" font-size="13" font-weight="600" fill="#3b82f6">SYN「接続したい」</text>
+                <line x1="490" y1="140" x2="110" y2="170" stroke="#059669" stroke-width="2.5" marker-end="url(#arrowGreen)"/>
+                <text x="300" y="152" text-anchor="middle" font-size="13" font-weight="600" fill="#059669">SYN-ACK「了解、こちらもOK」</text>
+                <line x1="110" y1="190" x2="490" y2="220" stroke="#7c3aed" stroke-width="2.5" marker-end="url(#arrowPurple)"/>
+                <text x="300" y="205" text-anchor="middle" font-size="13" font-weight="600" fill="#7c3aed">ACK「聞こえた」</text>
+                <defs>
+                    <marker id="arrowBlue" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" fill="#3b82f6"/></marker>
+                    <marker id="arrowGreen" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" fill="#059669"/></marker>
+                    <marker id="arrowPurple" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" fill="#7c3aed"/></marker>
+                </defs>
+            </svg>
+        </div>
+    </div>
+</section>
+
+<!-- Scene 14: 思考実験「確認なしにデータを送ったら？」 -->
+<section class="scene" id="scene-14">
+    <span class="scene-header">Block 4 — 思考実験</span>
+    <div class="scene-content">
+        <div class="text-emphasis">
+            <h2>もし<span class="red">確認なし</span>に<br>データを送ったら？</h2>
+        </div>
+        <div style="display:flex;gap:24px;margin-top:24px;flex-wrap:wrap;justify-content:center;">
+            <div style="background:#fef2f2;border-radius:12px;padding:20px;text-align:center;min-width:140px;">
+                <div style="font-size:2rem;">👻</div>
+                <p style="font-weight:700;margin-top:8px;color:var(--red);">相手がいない</p>
+            </div>
+            <div style="background:#fef2f2;border-radius:12px;padding:20px;text-align:center;min-width:140px;">
+                <div style="font-size:2rem;">🔀</div>
+                <p style="font-weight:700;margin-top:8px;color:var(--red);">順番バラバラ</p>
+            </div>
+            <div style="background:#fef2f2;border-radius:12px;padding:20px;text-align:center;min-width:140px;">
+                <div style="font-size:2rem;">❓</div>
+                <p style="font-weight:700;margin-top:8px;color:var(--red);">届いたか不明</p>
+            </div>
+        </div>
+        <p style="margin-top:20px;font-size:1.1rem;font-weight:600;color:var(--green);">→ TCPがすべて解決する</p>
+    </div>
+</section>
+
+<!-- Scene 15: TLSハンドシェイク -->
+<section class="scene" id="scene-15">
+    <span class="scene-header">Block 4 — TLS</span>
+    <div class="scene-content">
+        <div class="text-emphasis"><h2>TLS ── <span class="purple">暗号化</span>の交渉</h2></div>
+        <div class="step-list" style="margin-top:24px;">
+            <div class="step-item"><div class="step-num" style="background:var(--purple);">1</div><div class="step-text"><strong>証明書を提示</strong>：「自分は確かにexample.comだよ」</div></div>
+            <div class="step-item"><div class="step-num" style="background:var(--purple);">2</div><div class="step-text"><strong>暗号方式の合意</strong>：どの暗号アルゴリズムを使うか決定</div></div>
+            <div class="step-item"><div class="step-num" style="background:var(--purple);">3</div><div class="step-text"><strong>秘密の鍵を共有</strong>：以降の通信はすべて暗号化</div></div>
+        </div>
+    </div>
+</section>
+
+<!-- Scene 16: httpsは「安全」？ -->
+<section class="scene" id="scene-16">
+    <span class="scene-header">Block 4 — 誤解を正す</span>
+    <div class="scene-content">
+        <div class="text-emphasis">
+            <h2>httpsは「<span class="green">安全</span>」？</h2>
+        </div>
+        <div class="comparison" style="margin-top:24px;max-width:700px;">
+            <div class="comp-card left">
+                <h3>❌ よくある誤解</h3>
+                <p>httpsなら<br><strong>サイト自体が安全</strong></p>
+            </div>
+            <div class="comp-vs">≠</div>
+            <div class="comp-card right">
+                <h3>✅ 正しい理解</h3>
+                <p><strong>通信路</strong>が暗号化<br>されているだけ</p>
+            </div>
+        </div>
+        <p style="margin-top:20px;font-size:1rem;color:var(--red);font-weight:600;">フィッシングサイトもhttpsを使える</p>
+    </div>
+</section>
+
+<!-- Scene 17: TLS 1.2 vs TLS 1.3 -->
+<section class="scene" id="scene-17">
+    <span class="scene-header">Block 4 — TLSの進化</span>
+    <div class="scene-content">
+        <div class="text-emphasis"><h2>TLSの<span class="accent">進化</span></h2></div>
+        <div style="display:flex;gap:32px;margin-top:24px;align-items:flex-end;flex-wrap:wrap;justify-content:center;">
+            <div style="text-align:center;">
+                <div style="background:var(--bg-card);border-radius:12px;padding:20px;box-shadow:0 2px 12px rgba(0,0,0,0.05);min-width:140px;">
+                    <p style="font-weight:700;">TLS 1.2</p>
+                    <p style="font-size:2.5rem;font-weight:900;color:var(--red);margin-top:8px;">2往復</p>
+                </div>
+            </div>
+            <div style="font-size:2rem;color:var(--accent);">→</div>
+            <div style="text-align:center;">
+                <div style="background:var(--bg-card);border-radius:12px;padding:20px;box-shadow:0 2px 12px rgba(0,0,0,0.05);min-width:140px;">
+                    <p style="font-weight:700;">TLS 1.3</p>
+                    <p style="font-size:2.5rem;font-weight:900;color:var(--accent);margin-top:8px;">1往復</p>
+                </div>
+            </div>
+            <div style="font-size:2rem;color:var(--accent);">→</div>
+            <div style="text-align:center;">
+                <div style="background:var(--bg-card);border-radius:12px;padding:20px;box-shadow:0 2px 12px rgba(0,0,0,0.05);min-width:140px;">
+                    <p style="font-weight:700;">再接続</p>
+                    <p style="font-size:2.5rem;font-weight:900;color:var(--green);margin-top:8px;">0往復</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Scene 18: HTTPリクエスト/レスポンス -->
+<section class="scene" id="scene-18">
+    <span class="scene-header">Block 5 — HTTP</span>
+    <div class="scene-content">
+        <div class="text-emphasis"><h2>HTTP ── <span class="accent">データの受け渡し</span></h2></div>
+        <div style="margin-top:24px;">
+            <svg width="500" viewBox="0 0 500 200">
+                <rect x="30" y="60" width="120" height="80" rx="12" fill="#eff6ff" stroke="#3b82f6" stroke-width="2"/>
+                <text x="90" y="95" text-anchor="middle" font-size="13" font-weight="700" fill="#1d4ed8">ブラウザ</text>
+                <text x="90" y="115" text-anchor="middle" font-size="10" fill="#6b7280">GET /index.html</text>
+                <rect x="350" y="60" width="120" height="80" rx="12" fill="#ecfdf5" stroke="#059669" stroke-width="2"/>
+                <text x="410" y="95" text-anchor="middle" font-size="13" font-weight="700" fill="#059669">サーバー</text>
+                <text x="410" y="115" text-anchor="middle" font-size="10" fill="#6b7280">200 OK</text>
+                <line x1="150" y1="85" x2="350" y2="85" stroke="#3b82f6" stroke-width="2" marker-end="url(#arrowBlue)"/>
+                <text x="250" y="78" text-anchor="middle" font-size="11" fill="#3b82f6" font-weight="600">HTTPリクエスト</text>
+                <line x1="350" y1="115" x2="150" y2="115" stroke="#059669" stroke-width="2" marker-end="url(#arrowGreen)"/>
+                <text x="250" y="135" text-anchor="middle" font-size="11" fill="#059669" font-weight="600">HTTPレスポンス (HTML)</text>
+            </svg>
+        </div>
+    </div>
+</section>
+
+<!-- Scene 19: 1ページ ≒ 70リクエスト -->
+<section class="scene" id="scene-19">
+    <span class="scene-header">Block 5 — 驚きの回数</span>
+    <div class="scene-content">
+        <div class="big-number">
+            <div class="number" style="font-size:5rem;">≈70回</div>
+            <div class="label">1ページ表示に必要なHTTPリクエスト数</div>
+        </div>
+        <div class="data-grid" style="margin-top:32px;">
+            <div class="data-card"><div class="data-icon">📄</div><div class="data-value">HTML</div><div class="data-label">骨組み</div></div>
+            <div class="data-card"><div class="data-icon">🎨</div><div class="data-value">CSS</div><div class="data-label">見た目</div></div>
+            <div class="data-card"><div class="data-icon">⚡</div><div class="data-value">JS</div><div class="data-label">動作</div></div>
+            <div class="data-card"><div class="data-icon">🖼️</div><div class="data-value">画像</div><div class="data-label">写真・アイコン</div></div>
+            <div class="data-card"><div class="data-icon">🔤</div><div class="data-value">フォント</div><div class="data-label">書体</div></div>
+            <div class="data-card"><div class="data-icon">📊</div><div class="data-value">API</div><div class="data-label">データ取得</div></div>
+        </div>
+    </div>
+</section>
+
+<!-- Scene 20: 海底ケーブル -->
+<section class="scene" id="scene-20">
+    <span class="scene-header">Block 5 — 海底ケーブル</span>
+    <div class="scene-content">
+        <div class="text-emphasis"><h2>データは<span class="cyan">海底ケーブル</span>を通る</h2></div>
+        <div class="data-grid" style="margin-top:24px;">
+            <div class="data-card"><div class="data-icon">🌊</div><div class="data-value">≈600本</div><div class="data-label">世界の海底ケーブル</div></div>
+            <div class="data-card"><div class="data-icon">📏</div><div class="data-value">140万km</div><div class="data-label">総延長（地球35周分）</div></div>
+            <div class="data-card"><div class="data-icon">📡</div><div class="data-value">99%</div><div class="data-label">大陸間トラフィック</div></div>
+        </div>
+        <p style="margin-top:20px;font-size:0.95rem;color:var(--text-muted);">年間≈200件の故障。86%は漁業の網や船の錨が原因</p>
+    </div>
+</section>
+
+<!-- Scene 21: 設計図から建物を建てる（アナロジー） -->
+<section class="scene" id="scene-21">
+    <span class="scene-header">Block 5 — レンダリング</span>
+    <div class="scene-content">
+        <div class="analogy-visual">
+            <div class="analogy-icon">🏗️</div>
+            <h3>「設計図から建物を建てる」</h3>
+            <div style="display:flex;gap:32px;margin-top:24px;justify-content:center;flex-wrap:wrap;">
+                <div style="text-align:center;"><div style="font-size:2rem;">🦴</div><p style="font-weight:700;margin-top:4px;">HTML</p><p style="font-size:0.8rem;color:var(--text-muted);">骨組み</p></div>
+                <div style="text-align:center;"><div style="font-size:2rem;">🎨</div><p style="font-weight:700;margin-top:4px;">CSS</p><p style="font-size:0.8rem;color:var(--text-muted);">内装・外装</p></div>
+                <div style="text-align:center;"><div style="font-size:2rem;">⚡</div><p style="font-weight:700;margin-top:4px;">JavaScript</p><p style="font-size:0.8rem;color:var(--text-muted);">電気・水道</p></div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Scene 22: レンダリングパイプライン -->
+<section class="scene" id="scene-22">
+    <span class="scene-header">Block 5 — レンダリングパス</span>
+    <div class="scene-content">
+        <div class="text-emphasis"><h2>クリティカル<span class="accent">レンダリングパス</span></h2></div>
+        <div class="pipeline" style="margin-top:24px;">
+            <div class="pipe-step" style="border-color:var(--accent);">HTML<br>解析</div>
+            <div class="pipe-arrow">→</div>
+            <div class="pipe-step" style="border-color:var(--accent);">DOM<br>構築</div>
+            <div class="pipe-arrow">→</div>
+            <div class="pipe-step" style="border-color:var(--purple);">CSS<br>解析</div>
+            <div class="pipe-arrow">→</div>
+            <div class="pipe-step" style="border-color:var(--purple);">CSSOM<br>構築</div>
+            <div class="pipe-arrow">→</div>
+            <div class="pipe-step" style="border-color:var(--green);">レンダー<br>ツリー</div>
+            <div class="pipe-arrow">→</div>
+            <div class="pipe-step" style="border-color:var(--orange);">レイア<br>ウト</div>
+            <div class="pipe-arrow">→</div>
+            <div class="pipe-step" style="border-color:var(--cyan);">ペイント</div>
+        </div>
+        <p style="margin-top:20px;font-size:1rem;color:var(--accent);font-weight:600;">ブラウザ ＝ 超高速の建設現場</p>
+    </div>
+</section>
+
+<!-- Scene 23: 5ステップ全体の俯瞰図 -->
+<section class="scene" id="scene-23">
+    <span class="scene-header">Block 6 — まとめ</span>
+    <div class="scene-content">
+        <div class="text-emphasis"><h2>0.3秒の<span class="accent">連鎖反応</span></h2></div>
+        <div class="step-list" style="margin-top:24px;">
+            <div class="step-item"><div class="step-num" style="background:var(--green);">1</div><div class="step-text"><strong>DNS</strong>：名前→住所 <span style="color:var(--text-muted);font-size:0.85rem;">（20〜120ms）</span></div></div>
+            <div class="step-item"><div class="step-num" style="background:var(--accent);">2</div><div class="step-text"><strong>TCP</strong>：3回の確認で回線接続 <span style="color:var(--text-muted);font-size:0.85rem;">（20〜120ms）</span></div></div>
+            <div class="step-item"><div class="step-num" style="background:var(--purple);">3</div><div class="step-text"><strong>TLS</strong>：暗号化の交渉 <span style="color:var(--text-muted);font-size:0.85rem;">（数十ms）</span></div></div>
+            <div class="step-item"><div class="step-num" style="background:var(--orange);">4</div><div class="step-text"><strong>HTTP</strong>：データを≈70回やりとり</div></div>
+            <div class="step-item"><div class="step-num" style="background:var(--cyan);">5</div><div class="step-text"><strong>レンダリング</strong>：設計図から画面を建設</div></div>
+        </div>
+    </div>
+</section>
+
+<!-- Scene 24: Before → After 対比 -->
+<section class="scene" id="scene-24">
+    <span class="scene-header">Block 6 — 問いかけの回収</span>
+    <div class="scene-content">
+        <div class="comparison" style="max-width:700px;">
+            <div class="comp-card left">
+                <h3>Before</h3>
+                <p style="font-size:1.1rem;">「サーバーにつながって<br>ページが返ってくる」</p>
+            </div>
+            <div class="comp-vs">→</div>
+            <div class="comp-card right">
+                <h3>After</h3>
+                <p style="font-size:1.1rem;"><strong style="color:var(--green);">5段階の精密な<br>連鎖反応</strong></p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Scene 25: まとめカード -->
+<section class="scene" id="scene-25">
+    <span class="scene-header">Block 6 — 結論</span>
+    <div class="scene-content">
+        <div class="summary-card">
+            <h2>URLを打ち込むたびに<br>思い出してほしいこと</h2>
+            <div style="display:flex;gap:20px;margin-top:20px;justify-content:center;flex-wrap:wrap;">
+                <div style="text-align:center;"><div style="font-size:1.8rem;">🔍</div><p style="font-size:0.85rem;font-weight:600;margin-top:4px;">DNS<br>紹介リレー</p></div>
+                <div style="text-align:center;"><div style="font-size:1.8rem;">🤝</div><p style="font-size:0.85rem;font-weight:600;margin-top:4px;">TCP+TLS<br>信頼構築</p></div>
+                <div style="text-align:center;"><div style="font-size:1.8rem;">🏗️</div><p style="font-size:0.85rem;font-weight:600;margin-top:4px;">ブラウザ<br>超高速建設</p></div>
+            </div>
+            <div style="margin-top:20px;padding-top:16px;border-top:1px solid #e2e8f0;">
+                <p style="font-size:1.1rem;color:var(--accent-dark);font-weight:700;">インターネットは魔法じゃない。<br>精密な連携プレーだ。</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div id="progress-bar-container"><div id="progress-bar"></div></div>
+<script src="script.js"></script>
+</body>
+</html>

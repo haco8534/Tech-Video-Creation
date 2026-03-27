@@ -15,6 +15,7 @@
   },
   "exclude": [
     "remotion.config.ts",
-    "src/projects/_archived"
+    "src/projects/_archived",
+    "src/projects/_archive"
   ]
 }
