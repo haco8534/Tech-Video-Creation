@@ -1,6 +1,8 @@
 const fs = require('fs');
-const htmlPaths = 'main content/presentation/why_700_programming_languages/index.html';
-const outPath = 'Remotion/src/projects/why_700_programming_languages/scenes/SlideScenes.tsx';
+// 使い方: PROJECT_ID環境変数 or 引数で指定
+const PROJECT_ID = process.argv[2] || 'why_700_programming_languages';
+const htmlPaths = `projects/${PROJECT_ID}/slides/index.html`;
+const outPath = `projects/${PROJECT_ID}/remotion/scenes/SlideScenes.tsx`;
 
 let html = fs.readFileSync(htmlPaths, 'utf8');
 

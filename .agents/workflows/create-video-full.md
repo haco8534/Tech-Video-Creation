@@ -1,15 +1,15 @@
 ---
-description: テーマ入力→台本→メインコンテンツ動画→Remotionプロジェクト作成までの全自動動画生成ワークフロー
+description: テーマ入力→台本→スライド+音声→Remotion→完成までの全自動動画生成ワークフロー
 ---
 
-# 🎬 動画自動生成 マスターワークフロー
+# 動画自動生成 マスターワークフロー
 
 ## 概要
 
 ユーザーからの**テーマ入力のみ**で、YouTube解説動画のRemotionプロジェクトを自動生成する。レンダリング（mp4出力）はユーザーが手動で行う。
 
 ```
-テーマ入力 → Phase A: 台本 → Phase B: HTML+音声 → Phase C: Remotion → Phase D: 整理 → ✅
+テーマ入力 → Phase A: 台本 → Phase B: スライド+音声 → Phase C: Remotion → Phase D: 整理 → ✅
 ```
 
 ---
@@ -20,25 +20,30 @@ description: テーマ入力→台本→メインコンテンツ動画→Remotio
 |------|-----|
 | `{テーマ名}` | ユーザー入力（日本語） |
 | `{project_id}` | テーマの英語スネークケースID |
-| `{台本DIR}` | `d:\myfolder\動画生成\技術解説\台本作成\{テーマ名}` |
-| `{MC_DIR}` | `d:\myfolder\動画生成\技術解説\main content\presentation\{project_id}` |
-| `{REMOTION_DIR}` | `d:\myfolder\動画生成\技術解説\Remotion` |
-| `{完成品DIR}` | `d:\myfolder\動画生成\技術解説\完成品\{テーマ名}` |
+| `{ROOT}` | `d:\myfolder\動画生成\技術解説` |
+| `{PROJECT_DIR}` | `{ROOT}\projects\{project_id}` |
+| `{SCRIPT_DIR}` | `{PROJECT_DIR}\script` |
+| `{SLIDES_DIR}` | `{PROJECT_DIR}\slides` |
+| `{AUDIO_DIR}` | `{PROJECT_DIR}\audio` |
+| `{REMOTION_DIR}` | `{PROJECT_DIR}\remotion` |
+| `{DELIVERABLES_DIR}` | `{PROJECT_DIR}\deliverables` |
+| `{ENGINE_DIR}` | `{ROOT}\engine` |
 
 ---
 
 # Phase A: 台本作成
 
-**作業ディレクトリ**: `d:\myfolder\動画生成\技術解説\台本作成`
+**作業ディレクトリ**: `{PROJECT_DIR}`
 
 ### 実行手順
-1. `{台本DIR}` を作成
-2. テーマ設定＆核心メッセージ確定
-3. マルチ視点リサーチ → `research.md`
-4. 構成設計 → セクション別台本執筆
-5. 推敲・最終チェック → `script.md`
+1. `{PROJECT_DIR}` とサブフォルダ(`script`, `slides`, `audio`, `remotion/scenes`, `deliverables`)を作成
+2. `meta.json` を作成: `{"id": "{project_id}", "title": "{テーマ名}", "status": "scripting"}`
+3. テーマ設定＆核心メッセージ確定
+4. マルチ視点リサーチ → `{SCRIPT_DIR}/research.md`
+5. 構成設計 → セクション別台本執筆
+6. 推敲・最終チェック → `{SCRIPT_DIR}/script.md`
 
-### 🎭 キャラクター設定（全フェーズ共通・厳守）
+### キャラクター設定（全フェーズ共通・厳守）
 
 | 項目 | ずんだもん | めたん |
 |------|-----------|--------|
@@ -47,11 +52,11 @@ description: テーマ入力→台本→メインコンテンツ動画→Remotio
 | **語尾** | 〜なのだ、〜のだ | 〜ですわ、〜ですの |
 | **役割** | 聞き手・素朴な疑問 | 解説役・丁寧に教える |
 
-> 🚨 **絶対禁止**: ずんだもんが「私」「わたし」「俺」を使う / めたんが「私」「僕」を使う / 敬称付き呼称（「ずんだもんさん」等）
+> 絶対禁止: ずんだもんが「私」「わたし」「俺」を使う / めたんが「私」「僕」を使う / 敬称付き呼称（「ずんだもんさん」等）
 
 ### セリフルール
 
-> 🚨 **セリフ総文字数: 5,000〜6,000文字**（全セリフの「：」以降の文字数合計。これを下回る台本は内容が薄すぎるため不可）
+> セリフ総文字数: 5,000〜6,000文字（全セリフの「：」以降の文字数合計。これを下回る台本は内容が薄すぎるため不可）
 
 | ルール | 詳細 |
 |--------|------|
@@ -64,31 +69,30 @@ description: テーマ入力→台本→メインコンテンツ動画→Remotio
 ### 完了条件
 - `script.md` と `research.md` が存在、SCENE マーカーあり
 - 最初のSCENE がオープニング用、全セリフ74文字以内、全タイトル15文字以内
-- **セリフ総文字数が5,000〜6,000文字の範囲内である**
+- セリフ総文字数が5,000〜6,000文字の範囲内である
 
 ---
 
-# Phase B: メインコンテンツ生成
+# Phase B: スライド+音声生成
 
-**作業ディレクトリ**: `d:\myfolder\動画生成\技術解説\main content`
 **前提**: VOICEVOX起動中（`http://localhost:50021`）、ffmpegがPATH
 
 ### B0.5. デザインガイド定義（必須・B1の前に）
 
-`{MC_DIR}/design_guide.md` を作成し、カラーパレット・タイポグラフィ・SVGアイコン計画を定義する。SKILL.mdのカラートークン設計に従い、テーマに合わせたCSS変数を決定する。
+`{SLIDES_DIR}/design_guide.md` を作成し、カラーパレット・タイポグラフィ・SVGアイコン計画を定義する。SKILL.mdのカラートークン設計に従い、テーマに合わせたCSS変数を決定する。
 
 ### B1. Webプレゼンテーション生成
 
 **SKILL.md（`.agents/skills/presentation_generator/SKILL.md`）を参照して実行する。**
 
-`{台本DIR}/script.md` を読み込み、`{MC_DIR}` に `index.html`, `style.css`, `script.js` を生成する。
+`{SCRIPT_DIR}/script.md` を読み込み、`{SLIDES_DIR}` に `index.html`, `style.css`, `script.js` を生成する。
 
 ### B1.5. プレゼン推敲（必須）
 
 // turbo
 **シーン対応検証**（MISMATCHがあればB2に進まない）:
 ```powershell
-node -e "const fs=require('fs');const script=fs.readFileSync('{台本DIR}/script.md','utf8');const html=fs.readFileSync('{MC_DIR}/index.html','utf8');const scriptScenes=[];let cur=null;script.split('\n').forEach(l=>{if(/^\s*```/.test(l)&&l.includes('SCENE:'))return;const m=l.match(/<!-- SCENE: (.+?) -->/);if(m){if(cur)scriptScenes.push(cur);cur={title:m[1]};return;}});if(cur)scriptScenes.push(cur);const htmlCount=((html.match(/id=\"scene-\d+\"/g))||[]).length;console.log('台本:'+scriptScenes.length+' HTML:'+htmlCount);if(scriptScenes.length!==htmlCount){console.log('🚨 不一致!');process.exit(1);}console.log('✅ OK');"
+node -e "const fs=require('fs');const script=fs.readFileSync('{SCRIPT_DIR}/script.md','utf8');const html=fs.readFileSync('{SLIDES_DIR}/index.html','utf8');const scriptScenes=[];let cur=null;script.split('\n').forEach(l=>{if(/^\s*```/.test(l)&&l.includes('SCENE:'))return;const m=l.match(/<!-- SCENE: (.+?) -->/);if(m){if(cur)scriptScenes.push(cur);cur={title:m[1]};return;}});if(cur)scriptScenes.push(cur);const htmlCount=((html.match(/id=\"scene-\d+\"/g))||[]).length;console.log('台本:'+scriptScenes.length+' HTML:'+htmlCount);if(scriptScenes.length!==htmlCount){console.log('🚨 不一致!');process.exit(1);}console.log('✅ OK');"
 ```
 
 追加チェック:
@@ -106,46 +110,51 @@ node -e "const fs=require('fs');const script=fs.readFileSync('{台本DIR}/script
 // turbo
 1. scene_map.json を自動生成:
 ```powershell
-node -e "const fs=require('fs'),path=require('path');const SCRIPT_PATH=path.resolve('{台本DIR}/script.md');const PROJECT_DIR=path.resolve('{MC_DIR}');const HTML_PATH=path.join(PROJECT_DIR,'index.html');const OUT_PATH=path.join(PROJECT_DIR,'scene_map.json');const script=fs.readFileSync(SCRIPT_PATH,'utf8');const lines=script.split('\n');const allDialogue=lines.filter(l=>/^(ずんだもん|めたん)：/.test(l)).map(l=>{const [name,...rest]=l.split('：');return{speaker:name,text:rest.join('：')};});const sceneMarkers=[];let dialogueIdx=0,currentTitle=null,currentLines=[];lines.forEach(l=>{if(/^\s*```/.test(l)&&l.includes('SCENE:'))return;const sm=l.match(/<!-- SCENE: (.+?) -->/);if(sm){if(currentTitle!==null)sceneMarkers.push({title:currentTitle,lines:[...currentLines]});currentTitle=sm[1];currentLines=[];return;}if(/^(ずんだもん|めたん)：/.test(l)){dialogueIdx++;currentLines.push(dialogueIdx);}});if(currentTitle!==null)sceneMarkers.push({title:currentTitle,lines:[...currentLines]});const html=fs.readFileSync(HTML_PATH,'utf8');const htmlSceneCount=(html.match(/id=\"scene-\d+\"/g)||[]).length;function extractTitle(t){if(t.includes('|'))return t.split('|').slice(1).join('|').trim();const m=t.match(/[「](.+?)[」]/);return m?m[1]:t;}const scenes=sceneMarkers.map((s,i)=>({id:i,title:extractTitle(s.title),lines:s.lines.map(ln=>allDialogue[ln-1]).filter(Boolean)}));while(scenes.length<htmlSceneCount){scenes.push({id:scenes.length,title:'エンディング',hold_sec:3,lines:[]});}scenes.forEach(s=>{if(s.lines.length===0&&!s.hold_sec){s.hold_sec=3;console.log('⚠️ Scene '+s.id+' ('+s.title+'): hold_sec=3 自動付与');}});const map={voicevox_url:'http://localhost:50021',speakers:{'ずんだもん':3,'めたん':2},speed_scale:1.14,inter_line_silence:0.3,scene_end_padding:0.5,scenes};fs.writeFileSync(OUT_PATH,JSON.stringify(map,null,2),'utf8');console.log('scene_map: '+scenes.length+' scenes, '+dialogueIdx+' lines, HTML: '+htmlSceneCount);if(scenes.length!==htmlSceneCount)console.log('WARNING: mismatch!');"
+node -e "const fs=require('fs'),path=require('path');const SCRIPT_PATH=path.resolve('{SCRIPT_DIR}/script.md');const PROJECT_DIR=path.resolve('{SLIDES_DIR}');const HTML_PATH=path.join(PROJECT_DIR,'index.html');const OUT_PATH=path.join(PROJECT_DIR,'scene_map.json');const script=fs.readFileSync(SCRIPT_PATH,'utf8');const lines=script.split('\n');const allDialogue=lines.filter(l=>/^(ずんだもん|めたん)：/.test(l)).map(l=>{const [name,...rest]=l.split('：');return{speaker:name,text:rest.join('：')};});const sceneMarkers=[];let dialogueIdx=0,currentTitle=null,currentLines=[];lines.forEach(l=>{if(/^\s*```/.test(l)&&l.includes('SCENE:'))return;const sm=l.match(/<!-- SCENE: (.+?) -->/);if(sm){if(currentTitle!==null)sceneMarkers.push({title:currentTitle,lines:[...currentLines]});currentTitle=sm[1];currentLines=[];return;}if(/^(ずんだもん|めたん)：/.test(l)){dialogueIdx++;currentLines.push(dialogueIdx);}});if(currentTitle!==null)sceneMarkers.push({title:currentTitle,lines:[...currentLines]});const html=fs.readFileSync(HTML_PATH,'utf8');const htmlSceneCount=(html.match(/id=\"scene-\d+\"/g)||[]).length;function extractTitle(t){if(t.includes('|'))return t.split('|').slice(1).join('|').trim();const m=t.match(/[「](.+?)[」]/);return m?m[1]:t;}const scenes=sceneMarkers.map((s,i)=>({id:i,title:extractTitle(s.title),lines:s.lines.map(ln=>allDialogue[ln-1]).filter(Boolean)}));while(scenes.length<htmlSceneCount){scenes.push({id:scenes.length,title:'エンディング',hold_sec:3,lines:[]});}scenes.forEach(s=>{if(s.lines.length===0&&!s.hold_sec){s.hold_sec=3;console.log('⚠️ Scene '+s.id+' ('+s.title+'): hold_sec=3 自動付与');}});const map={voicevox_url:'http://localhost:50021',speakers:{'ずんだもん':3,'めたん':2},speed_scale:1.14,inter_line_silence:0.3,scene_end_padding:0.5,scenes};fs.writeFileSync(OUT_PATH,JSON.stringify(map,null,2),'utf8');console.log('scene_map: '+scenes.length+' scenes, '+dialogueIdx+' lines, HTML: '+htmlSceneCount);if(scenes.length!==htmlSceneCount)console.log('WARNING: mismatch!');"
 ```
 
 // turbo
 2. title検証:
 ```powershell
-node -e "const fs=require('fs');const p='{MC_DIR}/scene_map.json';const d=JSON.parse(fs.readFileSync(p,'utf8'));const bad=['タイトルカード','数値インパクト','フロー図','テキスト強調','比較対照','段階的リスト','引用カード','タイムライン','まとめ3ポイント','エンディング','SVG図解','コードビジュアル','まとめカード','アナロジー','思考実験','ビフォーアフター'];let errors=0;let truncated=0;d.scenes.forEach(s=>{const found=bad.filter(b=>s.title.startsWith(b));if(found.length>0){console.log('❌ Scene '+s.id+': \"'+s.title+'\" ← パターン名混入');errors++;}if(s.title.length>15){console.log('⚠️ Scene '+s.id+': \"'+s.title+'\" ('+s.title.length+'文字→15文字に切り詰め)');s.title=s.title.substring(0,15);truncated++;}else{console.log('✅ Scene '+s.id+': \"'+s.title+'\"');}});if(truncated>0){fs.writeFileSync(p,JSON.stringify(d,null,2),'utf8');console.log('\n✂️ '+truncated+'件自動切り詰め');}if(errors>0){console.log('\n🚨 '+errors+'件修正必要');process.exit(1);}else{console.log('\n✅ OK');}"
+node -e "const fs=require('fs');const p='{SLIDES_DIR}/scene_map.json';const d=JSON.parse(fs.readFileSync(p,'utf8'));const bad=['タイトルカード','数値インパクト','フロー図','テキスト強調','比較対照','段階的リスト','引用カード','タイムライン','まとめ3ポイント','エンディング','SVG図解','コードビジュアル','まとめカード','アナロジー','思考実験','ビフォーアフター'];let errors=0;let truncated=0;d.scenes.forEach(s=>{const found=bad.filter(b=>s.title.startsWith(b));if(found.length>0){console.log('❌ Scene '+s.id+': \"'+s.title+'\" ← パターン名混入');errors++;}if(s.title.length>15){console.log('⚠️ Scene '+s.id+': \"'+s.title+'\" ('+s.title.length+'文字→15文字に切り詰め)');s.title=s.title.substring(0,15);truncated++;}else{console.log('✅ Scene '+s.id+': \"'+s.title+'\"');}});if(truncated>0){fs.writeFileSync(p,JSON.stringify(d,null,2),'utf8');console.log('\n✂️ '+truncated+'件自動切り詰め');}if(errors>0){console.log('\n🚨 '+errors+'件修正必要');process.exit(1);}else{console.log('\n✅ OK');}"
 ```
 
 // turbo
 3. VOICEVOX辞書登録:
 ```powershell
-node presentation/tools/register_dict.js {project_id}
+node {ROOT}/tools/presentation/register_dict.js {project_id}
 ```
 
 // turbo
 4. 読み付与（scene_map.jsonにreadingフィールド追加）:
 ```powershell
-node presentation/tools/add_readings.js {project_id}
+node {ROOT}/tools/presentation/add_readings.js {project_id}
 ```
 
-> ℹ️ `add_readings.js` は台本内の全英語単語をカタカナ読みに変換して `reading` フィールドに設定。`generate_audio.js` は `line.reading || line.text` をVOICEVOXに送信するため、字幕表示は元のtext、音声はreadingで制御される。
-> ❗ 新しいプロジェクトで未登録の英単語があれば `add_readings.js` のDICTに追加すること。
+> `add_readings.js` は台本内の全英語単語をカタカナ読みに変換して `reading` フィールドに設定。`generate_audio.js` は `line.reading || line.text` をVOICEVOXに送信するため、字幕表示は元のtext、音声はreadingで制御される。
+> 新しいプロジェクトで未登録の英単語があれば `add_readings.js` のDICTに追加すること。
 
 // turbo
 5. 音声生成:
 ```powershell
-node presentation/tools/generate_audio.js {project_id}
+node {ROOT}/tools/presentation/generate_audio.js {project_id}
+```
+
+6. 音声ファイルをaudio/にコピー:
+```powershell
+Copy-Item "{SLIDES_DIR}/audio/scene_*.wav" "{AUDIO_DIR}/"
 ```
 
 ### 完了条件
-- `index.html`, `style.css`, `script.js`, `scene_map.json` が存在
-- `audio/` に `scene_XX_YY.wav` が存在
+- `index.html`, `style.css`, `script.js`, `scene_map.json` が `{SLIDES_DIR}` に存在
+- `{AUDIO_DIR}/` に `scene_XX_YY.wav` が存在
 - `scene_durations.json` が存在
 
 ---
 
 # Phase C: Remotion仕上げ
 
-**作業ディレクトリ**: `{REMOTION_DIR}`
+**作業ディレクトリ**: `{ENGINE_DIR}`
 **前提**: キャラ画像（`public/characters/`）、BGM（`public/bgm/Mineral.mp3`）、ffmpeg
 
 ### C1. HTML→TSX変換
@@ -153,8 +162,8 @@ node presentation/tools/generate_audio.js {project_id}
 // turbo
 1. CSSコピー:
 ```powershell
-New-Item -ItemType Directory -Force -Path "src/projects/{project_id}/scenes"
-Copy-Item "{MC_DIR}/style.css" "src/projects/{project_id}/scenes/slides.css"
+New-Item -ItemType Directory -Force -Path "{REMOTION_DIR}/scenes"
+Copy-Item "{SLIDES_DIR}/style.css" "{REMOTION_DIR}/scenes/slides.css"
 ```
 
 2. **slides.css をRemotion用に調整**:
@@ -163,12 +172,12 @@ Copy-Item "{MC_DIR}/style.css" "src/projects/{project_id}/scenes/slides.css"
 - **staggerInアニメーションはそのまま残す**
 - `.bar-fill` 等の `width: 0` → `width: var(--w)`、`transition` → 削除
 - `.scene` に `width: 960px; height: 440px; transform: scale(2); transform-origin: top left;` を設定
-- **`.timeline` クラスが使用されていたら、`.timeline` `.tl-item` `.tl-dot` に対して `border: none !important`, `content: none !important` 等のリーク防止ルールを追加**（他プロジェクトの `.timeline` CSSがグローバルにリークするため）
+- **`.timeline` クラスが使用されていたら、`.timeline` `.tl-item` `.tl-dot` に対して `border: none !important`, `content: none !important` 等のリーク防止ルールを追加**
 
 3. **HTML→TSX変換実行**:
 // turbo
 ```powershell
-node -e "const fs=require('fs'),path=require('path');const htmlPath=path.join('d:','myfolder','動画生成','技術解説','main content','presentation','{project_id}','index.html');const outputPath=path.join('d:','myfolder','動画生成','技術解説','Remotion','src','projects','{project_id}','scenes','SlideScenes.tsx');const html=fs.readFileSync(htmlPath,'utf-8');const sceneRegex=/<!-- ===== Scene (\d+):.*?=====\s*-->\s*([\s\S]*?)(?=<!-- ===== Scene \d+:|<script|$)/g;const scenes=[];let match;while((match=sceneRegex.exec(html))!==null)scenes.push({id:parseInt(match[1]),html:match[2].trim()});console.log('Found '+scenes.length+' scenes');function htmlToJsx(h){let j=h;j=j.replace(/<canvas[^>]*><\/canvas>/g,'');j=j.replace(/<!--\s*(.*?)\s*-->/g,'{/* \$1 */}');j=j.replace(/\bclass=\"/g,'className=\"');j=j.replace(/<br\s*>/g,'<br />');j=j.replace(/<br\/>/g,'<br />');j=j.replace(/<img([^>]*)(?<!\/)>/g,'<img\$1 />');j=j.replace(/&rarr;/g,'→');j=j.replace(/&larr;/g,'←');j=j.replace(/&darr;/g,'↓');j=j.replace(/&uarr;/g,'↑');j=j.replace(/&times;/g,'×');j=j.replace(/&#10084;/g,'❤');j=j.replace(/&amp;/g,'&');j=j.replace(/style=\"--w:(\d+%)\"/g,\"style={{ '--w': '\$1' } as React.CSSProperties}\");j=j.replace(/style=\"margin-top:\s*([^\";]+);?\"/g,\"style={{ marginTop: '\$1' }}\");j=j.replace(/style=\"color:\s*var\(([^)]+)\);?\"/g,\"style={{ color: 'var(\$1)' }}\");j=j.replace(/stroke-width=\"/g,'strokeWidth=\"');j=j.replace(/stroke-dasharray=\"/g,'strokeDasharray=\"');j=j.replace(/stroke-dashoffset=\"/g,'strokeDashoffset=\"');j=j.replace(/stroke-linecap=\"/g,'strokeLinecap=\"');j=j.replace(/text-anchor=\"/g,'textAnchor=\"');j=j.replace(/font-weight=\"/g,'fontWeight=\"');j=j.replace(/font-size=\"/g,'fontSize=\"');j=j.replace(/fill-rule=\"/g,'fillRule=\"');j=j.replace(/clip-rule=\"/g,'clipRule=\"');j=j.replace(/^\s*\n/gm,'');return j;}let tsx=\`import React from 'react';\nimport { AbsoluteFill } from 'remotion';\nimport './slides.css';\n\n\`;for(const s of scenes){tsx+=\`export const Scene\${s.id}: React.FC = () => (\n    <AbsoluteFill>\n        \${htmlToJsx(s.html)}\n    </AbsoluteFill>\n);\n\n\`;}tsx+=\`export const SCENE_COMPONENTS: Record<number, React.FC> = {\n\${scenes.map(s=>'    '+s.id+': Scene'+s.id+',').join('\n')}\n};\n\nexport const TOTAL_SCENE_COUNT = \${scenes.length};\n\`;fs.writeFileSync(outputPath,tsx,'utf-8');console.log('Generated '+outputPath+' ('+scenes.length+' scenes)');"
+node -e "const fs=require('fs'),path=require('path');const htmlPath=path.resolve('{SLIDES_DIR}/index.html');const outputPath=path.resolve('{REMOTION_DIR}/scenes/SlideScenes.tsx');const html=fs.readFileSync(htmlPath,'utf-8');const sceneRegex=/<!-- ===== Scene (\d+):.*?=====\s*-->\s*([\s\S]*?)(?=<!-- ===== Scene \d+:|<script|$)/g;const scenes=[];let match;while((match=sceneRegex.exec(html))!==null)scenes.push({id:parseInt(match[1]),html:match[2].trim()});console.log('Found '+scenes.length+' scenes');function htmlToJsx(h){let j=h;j=j.replace(/<canvas[^>]*><\/canvas>/g,'');j=j.replace(/<!--\s*(.*?)\s*-->/g,'{/* \$1 */}');j=j.replace(/\bclass=\"/g,'className=\"');j=j.replace(/<br\s*>/g,'<br />');j=j.replace(/<br\/>/g,'<br />');j=j.replace(/<img([^>]*)(?<!\/)>/g,'<img\$1 />');j=j.replace(/&rarr;/g,'→');j=j.replace(/&larr;/g,'←');j=j.replace(/&darr;/g,'↓');j=j.replace(/&uarr;/g,'↑');j=j.replace(/&times;/g,'×');j=j.replace(/&#10084;/g,'❤');j=j.replace(/&amp;/g,'&');j=j.replace(/style=\"--w:(\d+%)\"/g,\"style={{ '--w': '\$1' } as React.CSSProperties}\");j=j.replace(/style=\"margin-top:\s*([^\";]+);?\"/g,\"style={{ marginTop: '\$1' }}\");j=j.replace(/style=\"color:\s*var\(([^)]+)\);?\"/g,\"style={{ color: 'var(\$1)' }}\");j=j.replace(/stroke-width=\"/g,'strokeWidth=\"');j=j.replace(/stroke-dasharray=\"/g,'strokeDasharray=\"');j=j.replace(/stroke-dashoffset=\"/g,'strokeDashoffset=\"');j=j.replace(/stroke-linecap=\"/g,'strokeLinecap=\"');j=j.replace(/text-anchor=\"/g,'textAnchor=\"');j=j.replace(/font-weight=\"/g,'fontWeight=\"');j=j.replace(/font-size=\"/g,'fontSize=\"');j=j.replace(/fill-rule=\"/g,'fillRule=\"');j=j.replace(/clip-rule=\"/g,'clipRule=\"');j=j.replace(/^\s*\n/gm,'');return j;}let tsx=\`import React from 'react';\nimport { AbsoluteFill } from 'remotion';\nimport './slides.css';\n\n\`;for(const s of scenes){tsx+=\`export const Scene\${s.id}: React.FC = () => (\n    <AbsoluteFill>\n        \${htmlToJsx(s.html)}\n    </AbsoluteFill>\n);\n\n\`;}tsx+=\`export const SCENE_COMPONENTS: Record<number, React.FC> = {\n\${scenes.map(s=>'    '+s.id+': Scene'+s.id+',').join('\n')}\n};\n\nexport const TOTAL_SCENE_COUNT = \${scenes.length};\n\`;fs.writeFileSync(outputPath,tsx,'utf-8');console.log('Generated '+outputPath+' ('+scenes.length+' scenes)');"
 ```
 
 // turbo
@@ -182,16 +191,16 @@ npx tsc --noEmit
 ### C2. 音声コピー + データ生成
 
 // turbo
-1. 音声コピー:
+1. 音声をengine/publicにコピー:
 ```powershell
-New-Item -ItemType Directory -Force -Path "public/audio/{project_id}"
-Copy-Item "{MC_DIR}/audio/scene_*.wav" "public/audio/{project_id}/"
+New-Item -ItemType Directory -Force -Path "{ENGINE_DIR}/public/audio/{project_id}"
+Copy-Item "{AUDIO_DIR}/scene_*.wav" "{ENGINE_DIR}/public/audio/{project_id}/"
 ```
 
 // turbo
 2. 字幕データ生成:
 ```powershell
-node scripts/generate-subtitle-data.js "{MC_DIR}" {project_id}
+node scripts/generate-subtitle-data.js "{SLIDES_DIR}" {project_id}
 ```
 
 // turbo
@@ -202,11 +211,16 @@ node scripts/generate-lip-sync.js {project_id}
 
 ### C3. VideoWithSlides.tsx を作成
 
-`docker_popularity/VideoWithSlides.tsx` をテンプレートとして `src/projects/{project_id}/VideoWithSlides.tsx` を作成する。
+既存プロジェクトの `VideoWithSlides.tsx` をテンプレートとして `{REMOTION_DIR}/VideoWithSlides.tsx` を作成する。
 
 **変更箇所**:
 1. `import` パスの `{project_id}` を実際の値に
 2. `headerTitle` のデフォルト値をテーマの日本語タイトルに
+3. コンポーネントのimportは `@components/` エイリアスを使用:
+   ```tsx
+   import { MathLayout } from '@components/layouts/MathLayout';
+   import { Subtitle } from '@components/ui/Subtitle';
+   ```
 
 **テンプレートに含まれる機能:**
 - `SCENE_COMPONENTS` マップによるシーン切替 + `key={scene-${id}}` でCSS staggerInリトリガー
@@ -218,9 +232,9 @@ node scripts/generate-lip-sync.js {project_id}
 
 ### C4. Root.tsx 登録 + コンパイル確認
 
-`src/Root.tsx` に Composition を追加:
+`{ENGINE_DIR}/src/Root.tsx` に Composition を追加:
 ```tsx
-import { VideoWithSlides as XxxVideo, TOTAL_FRAMES as XXX_TOTAL_FRAMES } from "./projects/{project_id}/VideoWithSlides";
+import { VideoWithSlides as XxxVideo, TOTAL_FRAMES as XXX_TOTAL_FRAMES } from "@projects/{project_id}/VideoWithSlides";
 
 // <> 内に追加:
 <Composition id="{project_id}-slides" component={XxxVideo}
@@ -233,8 +247,8 @@ npx tsc --noEmit
 ```
 
 ### 完了条件
-- `scenes/slides.css`, `scenes/SlideScenes.tsx`, `subtitleData.ts`, `lipSyncData.ts`, `VideoWithSlides.tsx` が存在
-- `public/audio/{project_id}/` に音声ファイルが存在
+- `scenes/slides.css`, `scenes/SlideScenes.tsx`, `subtitleData.ts`, `lipSyncData.ts`, `VideoWithSlides.tsx` が `{REMOTION_DIR}` に存在
+- `{ENGINE_DIR}/public/audio/{project_id}/` に音声ファイルが存在
 - Root.tsx に Composition 登録済み、`npx tsc --noEmit` 正常終了
 
 ---
@@ -242,24 +256,24 @@ npx tsc --noEmit
 # Phase D: 完成品整理
 
 // turbo
-1. フォルダ作成:
+1. 台本コピー:
 ```powershell
-New-Item -ItemType Directory -Force -Path "{完成品DIR}"
+Copy-Item "{SCRIPT_DIR}/script.md" "{DELIVERABLES_DIR}/台本.md"
 ```
 
 // turbo
-2. 台本コピー:
+2. 概要欄コピー:
 ```powershell
-Copy-Item "{台本DIR}/script.md" "{完成品DIR}/台本.md"
+Copy-Item "{SCRIPT_DIR}/description.md" "{DELIVERABLES_DIR}/概要欄.md"
 ```
 
 // turbo
-3. 概要欄コピー:
+3. meta.json更新:
 ```powershell
-Copy-Item "{台本DIR}/description.md" "{完成品DIR}/概要欄.md"
+node -e "const fs=require('fs');const p='{PROJECT_DIR}/meta.json';const m=JSON.parse(fs.readFileSync(p,'utf8'));m.status='rendering';fs.writeFileSync(p,JSON.stringify(m,null,2),'utf8');"
 ```
 
-> レンダリングはユーザーが手動実行: `npx remotion render {project_id}-slides output/{project_id}.mp4 --codec h264`
+> レンダリングはユーザーが手動実行: `cd {ENGINE_DIR} && npx remotion render {project_id}-slides output/{project_id}.mp4 --codec h264`
 
 ---
 

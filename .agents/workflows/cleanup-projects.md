@@ -1,26 +1,23 @@
 ---
-description: プロジェクトの整理（AIによる手動マッチング版）
+description: プロジェクトの整理・アーカイブワークフロー
 ---
 # プロジェクト整理ワークフロー
 
-Remotionや完成品フォルダのパス名が完全に一致しない場合があるため、自動プログラムに任せるのではなく、AI自身で各フォルダを確認し、自己判断（推論）でマッチングして整理を行うワークフローです。
+完成・投稿済みのプロジェクトをアーカイブに移動し、engine/src/Root.tsxをクリーンアップするワークフローです。
 
-以下の手順に沿って、各種ツール（`list_dir`, `find_by_name`, `run_command`など）を駆使し、整理を実行してください。
+## Step 1: プロジェクト状態の確認
+1. `projects/` 内の各プロジェクトの `meta.json` を確認し、`status` が `published` または `rendering` のものをリストアップ
+2. `engine/src/Root.tsx` に登録されているアクティブなCompositionを確認
 
-## Step 1: レンダリング済み動画の所在確認
-1. `d:\myfolder\動画生成\技術解説\完成品` （およびその中の `投稿済み` フォルダ等）をスキャンし、`.mp4` ファイルの一覧を取得してください。これらが「レンダリングが完了し、最終的に出力された成果物」です。
-2. もし `d:\myfolder\動画生成\技術解説\remotion\out` や `output` ディレクトリ内にレンダリング直後の `.mp4` ファイルが残っている場合は、その動画のテーマ（タイトル）を推測し、`完成品` フォルダ内の適切なディレクトリに移動してください。もし対応するフォルダがなければ新規作成するか、ユーザーに確認してください。
-
-## Step 2: Remotionプロジェクトのアーカイブ
-1. Step 1で得られた「レンダリング済みの動画名・テーマ名」の一覧と、現在 `d:\myfolder\動画生成\技術解説\remotion\src\projects` にあるアクティブなプロジェクト一覧を比較検討してください。
-2. ディレクトリ名が多少違っていても、前後の文脈や単語（例: `delete_key_file_fate` と `Deleteキーを押すとファイルはどうなる？`）から同一プロジェクトであるかを自己判断でマッチングしてください。
-3. すでに動画が完成していると判断できたプロジェクトフォルダ（例: `remotion\src\projects\delete_key_file_fate` など）を、同階層の `_archive` フォルダ内へ移動してください。
+## Step 2: プロジェクトのアーカイブ
+完成済みプロジェクトについて:
+1. `projects/{project_id}/` を `projects/_archived/{project_id}/` に移動
+2. `meta.json` の `status` を `archived` に更新
+3. `engine/public/audio/{project_id}/` を削除（音声は `projects/_archived/{id}/audio/` に残る）
 
 ## Step 3: Root.tsxのクリーンアップ
-1. アーカイブしたプロジェクトについて、`d:\myfolder\動画生成\技術解説\remotion\src\Root.tsx` から不要になった以下のコードを削除してください。
-   - 該当プロジェクトの `import` 文
-   - `export const RemotionRoot` 内の該当 `<Composition />` コンポーネント
-2. TypeScriptのコンパイルエラーが出ないよう、綺麗に整形してください。
+1. アーカイブしたプロジェクトの `import` 文と `<Composition />` を `engine/src/Root.tsx` から削除
+2. TypeScriptコンパイル確認: `cd engine && npx tsc --noEmit`
 
 ## Step 4: 完了報告
-1. 今回アーカイブに回したプロジェクトの数と、対応づけたフォルダ名のリストをユーザーに報告して整理完了とします。
+アーカイブしたプロジェクトの数とリストをユーザーに報告
