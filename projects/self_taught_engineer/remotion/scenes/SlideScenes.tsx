@@ -5,34 +5,31 @@ import './slides.css';
 export const Scene0: React.FC = () => (
     <AbsoluteFill>
         <div className="scene" id="scene-0">
-  <div className="content center-layout">
-    <div className="title-card">
-      <div style={{ marginBottom: '8px' }}>
-        <svg viewBox="0 0 80 80" width="64" height="64">
-          <rect x="8" y="8" width="64" height="64" rx="12" fill="#4338ca" opacity=".08"/>
-          <path d="M40 18v10M40 52v10M18 40h10M52 40h10" stroke="#4338ca" strokeWidth="3" strokeLinecap="round"/>
-          <circle cx="40" cy="40" r="12" fill="none" stroke="#4338ca" strokeWidth="3"/>
-          <circle cx="40" cy="40" r="4" fill="#4338ca"/>
-          <path d="M28 28l6 6M52 28l-6 6M28 52l6-6M52 52l-6-6" stroke="#4338ca" strokeWidth="2" strokeLinecap="round"/>
+    <div className="content center-layout">
+        <svg viewBox="0 0 64 64" width="56" height="56" style={{ marginBottom: '12px' }}>
+            <rect x="6" y="6" width="52" height="52" rx="10" fill="#4338ca" opacity=".08"/>
+            <path d="M22 20v24M42 20v24M18 32h28" stroke="#4338ca" strokeWidth="3" strokeLinecap="round"/>
+            <circle cx="32" cy="32" r="6" fill="#4338ca" opacity=".3"/>
         </svg>
-      </div>
-      <div className="title-main">「独学エンジニア」は<br />本当に通用するのか？</div>
-      <div className="title-sub">データで検証する、独学の真実</div>
+        <div className="title-large">「独学エンジニア」は<br />本当に<span className="accent-primary">通用する</span>のか？</div>
+        <div className="title-sub">データで検証する、独学の真実</div>
     </div>
-  </div>
 </div>
     </AbsoluteFill>
 );
 
 export const Scene1: React.FC = () => (
     <AbsoluteFill>
-        <div className="scene" id="scene-1">
-  <div className="content center-layout">
-    <div className="caption mb-8">独学プログラミング学習者</div>
-    <div className="hero-number" style={{ color: 'var(--color-danger)' }}>90<span style={{ fontSize: '48px' }}>%</span></div>
-    <div className="heading mt-8" style={{ color: 'var(--color-danger)' }}>が挫折する</div>
-    <div className="body-text mt-12" style={{ maxWidth: '600px' }}>スクールの挫折率は約30%。独学はその<span className="fw-900 text-danger">3倍</span>の厳しさ。</div>
-  </div>
+        <div className="scene bg-dots" id="scene-1">
+    <div className="content center-layout">
+        <div className="scene-title">独学プログラミング学習者</div>
+        <div className="hero-number accent-coral">90%</div>
+        <div className="big-statement accent-coral">が挫折する</div>
+        <div className="bar-chart">
+            <div className="bar-row"><div className="bar-label">独学</div><div className="bar-track"><div className="bar-fill bf-coral" style={{ '--w': '90%' } as React.CSSProperties}></div></div><div className="bar-val">90%</div></div>
+            <div className="bar-row"><div className="bar-label">スクール</div><div className="bar-track"><div className="bar-fill bf-gray" style={{ '--w': '30%' } as React.CSSProperties}></div></div><div className="bar-val">30%</div></div>
+        </div>
+    </div>
 </div>
     </AbsoluteFill>
 );
@@ -40,66 +37,44 @@ export const Scene1: React.FC = () => (
 export const Scene2: React.FC = () => (
     <AbsoluteFill>
         <div className="scene" id="scene-2">
-  <div className="content center-layout">
-    <div className="heading mb-16">しかし、生き残った独学者は——</div>
-    <div className="compare-grid" style={{ maxWidth: '640px' }}>
-      <div className="compare-item compare-success" style={{ textAlign: 'center' }}>
-        <svg viewBox="0 0 40 40" width="36" height="36" style={{ display: 'block', margin: '0 auto 4px' }}>
-          <circle cx="20" cy="20" r="15" fill="#059669" opacity=".15"/>
-          <path d="M12 20l6 6 12-12" stroke="#059669" strokeWidth="3" fill="none" strokeLinecap="round"/>
-        </svg>
-        <div className="metric-value" style={{ color: 'var(--color-accent)' }}>+26%</div>
-        <div className="metric-label">年収がCS学位より高い</div>
-        <div className="caption mt-4">16年以上のキャリア</div>
-      </div>
-      <div className="compare-item compare-success" style={{ textAlign: 'center' }}>
-        <svg viewBox="0 0 40 40" width="36" height="36" style={{ display: 'block', margin: '0 auto 4px' }}>
-          <circle cx="20" cy="20" r="15" fill="#059669" opacity=".15"/>
-          <path d="M20 28V14M14 20l6-6 6 6" stroke="#059669" strokeWidth="3" fill="none" strokeLinecap="round" strokeLinejoin="round"/>
-        </svg>
-        <div className="metric-value" style={{ color: 'var(--color-accent)' }}>14ヶ月</div>
-        <div className="metric-label">早くシニアに到達</div>
-        <div className="caption mt-4">平均との比較</div>
-      </div>
+    <div className="content center-layout">
+        <div className="scene-title">しかし、生き残った独学者は——</div>
+        <div className="metric-grid">
+            <div className="metric-card" style={{ borderTop: '4px solid var(--teal)' }}>
+                <div className="metric-value accent-teal">+26%</div>
+                <div className="metric-label">長期キャリアでの年収<br />（CS学位保有者比）</div>
+            </div>
+            <div className="metric-card" style={{ borderTop: '4px solid var(--teal)' }}>
+                <div className="metric-value accent-teal">14ヶ月</div>
+                <div className="metric-label">シニア到達が早い<br />（平均比）</div>
+            </div>
+        </div>
+        <div className="source-badge">「独学は通用しない」——この常識が、データで覆されている</div>
     </div>
-  </div>
 </div>
     </AbsoluteFill>
 );
 
 export const Scene3: React.FC = () => (
     <AbsoluteFill>
-        <div className="scene" id="scene-3">
-  <div className="content center-layout">
-    <div className="heading" style={{ marginBottom: '12px' }}>独学者が陥る3つの罠</div>
-    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '12px', maxWidth: '820px' }}>
-      <div className="card card-danger" style={{ padding: '16px', textAlign: 'center' }}>
-        <svg viewBox="0 0 40 40" width="32" height="32" style={{ display: 'block', margin: '0 auto 6px' }}>
-          <rect x="4" y="10" width="32" height="22" rx="3" fill="none" stroke="var(--color-danger)" strokeWidth="2.5"/>
-          <path d="M14 18h12M14 24h8" stroke="var(--color-danger)" strokeWidth="2" strokeLinecap="round"/>
-          <path d="M11 10V7h18v3" stroke="var(--color-danger)" strokeWidth="2" fill="none"/>
-        </svg>
-        <div className="text-danger fw-800" style={{ fontSize: '20px' }}>①</div>
-        <div style={{ fontSize: '17px', marginTop: '4px' }}>チュートリアル地獄<br /><span className="fw-800">見るだけ</span>で終わる</div>
-      </div>
-      <div className="card card-danger" style={{ padding: '16px', textAlign: 'center' }}>
-        <svg viewBox="0 0 40 40" width="32" height="32" style={{ display: 'block', margin: '0 auto 6px' }}>
-          <circle cx="20" cy="20" r="14" fill="none" stroke="var(--color-danger)" strokeWidth="2.5"/>
-          <path d="M20 12v8l5 5" stroke="var(--color-danger)" strokeWidth="2.5" strokeLinecap="round"/>
-        </svg>
-        <div className="text-danger fw-800" style={{ fontSize: '20px' }}>②</div>
-        <div style={{ fontSize: '17px', marginTop: '4px' }}>ロードマップ迷子<br /><span className="fw-800">どれも中途半端</span></div>
-      </div>
-      <div className="card card-danger" style={{ padding: '16px', textAlign: 'center' }}>
-        <svg viewBox="0 0 40 40" width="32" height="32" style={{ display: 'block', margin: '0 auto 6px' }}>
-          <path d="M20 4L36 34H4Z" fill="none" stroke="var(--color-danger)" strokeWidth="2.5" strokeLinejoin="round"/>
-          <text x="20" y="28" textAnchor="middle" fill="var(--color-danger)" fontSize="16" fontWeight="900">!</text>
-        </svg>
-        <div className="text-danger fw-800" style={{ fontSize: '20px' }}>③</div>
-        <div style={{ fontSize: '17px', marginTop: '4px' }}>環境構築の壁<br /><span className="fw-800">動かすだけ</span>で挫折</div>
-      </div>
+        <div className="scene bg-grid" id="scene-3">
+    <div className="content center-layout">
+        <div className="scene-title">独学者が陥る<span className="accent-coral">3つの挫折</span></div>
+        <div className="num-list">
+            <div className="num-item">
+                <div className="num-circle num-circle--coral">1</div>
+                <div><div className="num-title">チュートリアル地獄</div><div className="num-desc">動画やテキストを消費するだけで、自分では何も作れない</div></div>
+            </div>
+            <div className="num-item">
+                <div className="num-circle num-circle--coral">2</div>
+                <div><div className="num-title">ロードマップ迷子</div><div className="num-desc">あちこち手を出して、どれも中途半端に</div></div>
+            </div>
+            <div className="num-item">
+                <div className="num-circle num-circle--coral">3</div>
+                <div><div className="num-title">環境構築の壁</div><div className="num-desc">コードを書く以前に、開発環境が動かず心が折れる</div></div>
+            </div>
+        </div>
     </div>
-  </div>
 </div>
     </AbsoluteFill>
 );
@@ -107,45 +82,48 @@ export const Scene3: React.FC = () => (
 export const Scene4: React.FC = () => (
     <AbsoluteFill>
         <div className="scene" id="scene-4">
-  <div className="content center-layout">
-    <div className="heading mb-16">独学 vs スクール</div>
-    <div className="compare-grid" style={{ maxWidth: '640px' }}>
-      <div className="compare-item compare-left" style={{ textAlign: 'center' }}>
-        <svg viewBox="0 0 40 40" width="36" height="36" style={{ display: 'block', margin: '0 auto 4px' }}>
-          <circle cx="20" cy="16" r="8" fill="none" stroke="var(--color-primary)" strokeWidth="2.5"/>
-          <path d="M8 36c0-8 5-12 12-12s12 4 12 12" stroke="var(--color-primary)" strokeWidth="2.5" fill="none"/>
-        </svg>
-        <div className="fw-800" style={{ fontSize: '20px' }}>独学</div>
-        <div className="mt-4" style={{ fontSize: '17px' }}>挫折率 <span className="text-danger fw-900">90%</span></div>
-        <div className="mt-4 caption">自走力が身につく</div>
-      </div>
-      <div className="compare-item compare-right" style={{ textAlign: 'center' }}>
-        <svg viewBox="0 0 40 40" width="36" height="36" style={{ display: 'block', margin: '0 auto 4px' }}>
-          <rect x="6" y="8" width="28" height="20" rx="3" fill="none" stroke="var(--color-secondary)" strokeWidth="2.5"/>
-          <path d="M6 14h28" stroke="var(--color-secondary)" strokeWidth="2"/>
-          <circle cx="12" cy="11" r="1.5" fill="var(--color-secondary)"/>
-        </svg>
-        <div className="fw-800" style={{ fontSize: '20px' }}>スクール</div>
-        <div className="mt-4" style={{ fontSize: '17px' }}>挫折率 <span className="text-accent fw-900">30%</span></div>
-        <div className="mt-4 caption">実務スキルが不足しがち</div>
-      </div>
+    <div className="content center-layout">
+        <div className="scene-title">独学 vs スクール</div>
+        <div className="two-col">
+            <div className="compare-card border-primary">
+                <h3 className="accent-primary">独学</h3>
+                <div className="check-item"><span className="check-coral">✗</span> 挫折率90%</div>
+                <div className="check-item"><span className="check-teal">✓</span> 自走力が鍛えられる</div>
+                <div className="check-item"><span className="check-teal">✓</span> 長期キャリアで優位</div>
+            </div>
+            <div className="compare-card">
+                <h3>スクール</h3>
+                <div className="check-item"><span className="check-teal">✓</span> 挫折率30%</div>
+                <div className="check-item"><span className="check-coral">✗</span> 実務スキル不足の傾向</div>
+                <div className="check-item"><span className="check-coral">✗</span> 修了証だけでは不十分</div>
+            </div>
+        </div>
+        <div className="source-badge">企業が求めるのは「自分で課題を見つけ、自分で解決できる力」</div>
     </div>
-  </div>
 </div>
     </AbsoluteFill>
 );
 
 export const Scene5: React.FC = () => (
     <AbsoluteFill>
-        <div className="scene" id="scene-5">
-  <div className="content center-layout">
-    <div className="heading">独学の真の武器</div>
-    <div className="mt-16" style={{ fontSize: '52px', fontWeight: '900', color: 'var(--color-primary)', lineHeight: '1.3' }}>自走力</div>
-    <div className="mt-12 body-text" style={{ maxWidth: '560px' }}>
-      自分で問題を見つけ<br />自分で調べ<br />自分で解決する力
+        <div className="scene bg-dots" id="scene-5">
+    <div className="content center-layout">
+        <div className="scene-title">独学の「つらさ」が武器になる</div>
+        <svg viewBox="0 0 400 120" width="400" height="120">
+            <rect x="10" y="30" width="110" height="60" rx="8" fill="#fee2e2" stroke="#dc2626" strokeWidth="2"/>
+            <text x="65" y="65" textAnchor="middle" fontSize="14" fontWeight="700" fill="#dc2626">エラーと格闘</text>
+            <path d="M125 60 L165 60" stroke="#4338ca" strokeWidth="2.5" fill="none"/>
+            <polygon points="163,54 175,60 163,66" fill="#4338ca"/>
+            <rect x="180" y="30" width="110" height="60" rx="8" fill="#e0e7ff" stroke="#4338ca" strokeWidth="2"/>
+            <text x="235" y="65" textAnchor="middle" fontSize="14" fontWeight="700" fill="#4338ca">自力で解決</text>
+            <path d="M295 60 L335 60" stroke="#059669" strokeWidth="2.5" fill="none"/>
+            <polygon points="333,54 345,60 333,66" fill="#059669"/>
+            <rect x="350" y="20" width="40" height="80" rx="8" fill="#d1fae5" stroke="#059669" strokeWidth="2"/>
+            <text x="370" y="55" textAnchor="middle" fontSize="11" fontWeight="900" fill="#059669">自走</text>
+            <text x="370" y="70" textAnchor="middle" fontSize="11" fontWeight="900" fill="#059669">力</text>
+        </svg>
+        <div className="big-statement">現場のエンジニアが毎日やっていることそのもの</div>
     </div>
-    <div className="mt-12 caption">= 現場でエンジニアに最も求められる能力</div>
-  </div>
 </div>
     </AbsoluteFill>
 );
@@ -153,65 +131,55 @@ export const Scene5: React.FC = () => (
 export const Scene6: React.FC = () => (
     <AbsoluteFill>
         <div className="scene" id="scene-6">
-  <div className="content center-layout">
-    <div className="tag tag-primary mb-8">Stack Overflow Developer Survey 2024</div>
-    <div className="heading">開発者はどこで学んだか？</div>
-    <div className="bar-row">
-      <div className="bar-label" style={{ minWidth: '120px' }}>学位保有者</div>
-      <div className="bar-track"><div className="bar-fill bar-fill-primary" style={{ '--w': '66%' } as React.CSSProperties}></div></div>
-      <div className="bar-value text-primary">66%</div>
+    <div className="content center-layout">
+        <div className="scene-title">Stack Overflow 2024 調査</div>
+        <div className="metric-grid">
+            <div className="metric-card" style={{ borderTop: '4px solid var(--primary)' }}>
+                <div className="metric-value accent-primary">66%</div>
+                <div className="metric-label">学士・修士を保有</div>
+            </div>
+            <div className="metric-card" style={{ borderTop: '4px solid var(--amber)' }}>
+                <div className="metric-value accent-amber">49%</div>
+                <div className="metric-label">学校でコーディングを<br />学んだ割合</div>
+            </div>
+        </div>
+        <div className="big-statement" style={{ marginTop: '16px' }}>学位を持っていても、<span className="accent-primary">半分近くは独学</span>で覚えている</div>
+        <div className="source-badge">出典: Stack Overflow Developer Survey 2024</div>
     </div>
-    <div className="bar-row">
-      <div className="bar-label" style={{ minWidth: '120px' }}>学校でコーディング</div>
-      <div className="bar-track"><div className="bar-fill bar-fill-secondary" style={{ '--w': '49%' } as React.CSSProperties}></div></div>
-      <div className="bar-value text-secondary">49%</div>
-    </div>
-    <div className="bar-row">
-      <div className="bar-label" style={{ minWidth: '120px' }}>完全独学</div>
-      <div className="bar-track"><div className="bar-fill bar-fill-accent" style={{ '--w': '27%' } as React.CSSProperties}></div></div>
-      <div className="bar-value text-accent">27%+</div>
-    </div>
-    <div className="mt-8 caption">半数近くが独学でコーディングを習得</div>
-  </div>
 </div>
     </AbsoluteFill>
 );
 
 export const Scene7: React.FC = () => (
     <AbsoluteFill>
-        <div className="scene" id="scene-7">
-  <div className="content center-layout">
-    <div className="heading mb-8">年収推移：独学 vs CS学位</div>
-    <svg viewBox="0 0 720 240" width="700" height="230">
-      {/* Grid */}
-      <line x1="60" y1="30" x2="60" y2="200" stroke="#d1d5db" strokeWidth="1"/>
-      <line x1="60" y1="200" x2="700" y2="200" stroke="#d1d5db" strokeWidth="1"/>
-      <line x1="60" y1="100" x2="700" y2="100" stroke="#d1d5db" strokeWidth="0.5" strokeDasharray="4"/>
-      <line x1="60" y1="150" x2="700" y2="150" stroke="#d1d5db" strokeWidth="0.5" strokeDasharray="4"/>
-      {/* X labels */}
-      <text x="140" y="220" textAnchor="middle" fill="#1a1d23" fontSize="13" fontWeight="600">0-1年</text>
-      <text x="280" y="220" textAnchor="middle" fill="#1a1d23" fontSize="13" fontWeight="600">2-3年</text>
-      <text x="420" y="220" textAnchor="middle" fill="#1a1d23" fontSize="13" fontWeight="600">4-5年</text>
-      <text x="600" y="220" textAnchor="middle" fill="#1a1d23" fontSize="13" fontWeight="600">16年+</text>
-      {/* CS degree line */}
-      <polyline points="140,130 280,135 420,120 600,110" fill="none" stroke="#d97706" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/>
-      <circle cx="140" cy="130" r="5" fill="#d97706"/>
-      <circle cx="280" cy="135" r="5" fill="#d97706"/>
-      <circle cx="420" cy="120" r="5" fill="#d97706"/>
-      <circle cx="600" cy="110" r="5" fill="#d97706"/>
-      {/* Self-taught line */}
-      <polyline points="140,170 280,138 420,117 600,75" fill="none" stroke="#4338ca" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/>
-      <circle cx="140" cy="170" r="5" fill="#4338ca"/>
-      <circle cx="280" cy="138" r="5" fill="#4338ca"/>
-      <circle cx="420" cy="117" r="5" fill="#4338ca"/>
-      <circle cx="600" cy="75" r="6" fill="#4338ca"/>
-      {/* Labels */}
-      <text x="620" y="108" fill="#d97706" fontSize="14" fontWeight="700">CS学位</text>
-      <text x="620" y="73" fill="#4338ca" fontSize="14" fontWeight="700">独学 +26%</text>
-      {/* Crossover arrow */}
-      <text x="400" y="105" fill="#4338ca" fontSize="12" fontWeight="700">逆転!</text>
-    </svg>
-  </div>
+        <div className="scene bg-grid" id="scene-7">
+    <div className="content center-layout">
+        <div className="scene-title">キャリア年数と年収差</div>
+        <svg viewBox="0 0 520 200" width="520" height="200">
+            <line x1="60" y1="10" x2="60" y2="180" stroke="#d1d5db" strokeWidth="1.5"/>
+            <line x1="60" y1="180" x2="500" y2="180" stroke="#d1d5db" strokeWidth="1.5"/>
+            <text x="55" y="185" textAnchor="end" fontSize="11" fill="#1a1d23">0</text>
+            <text x="140" y="195" textAnchor="middle" fontSize="11" fill="#1a1d23">1年</text>
+            <text x="230" y="195" textAnchor="middle" fontSize="11" fill="#1a1d23">2-3年</text>
+            <text x="330" y="195" textAnchor="middle" fontSize="11" fill="#1a1d23">4-5年</text>
+            <text x="450" y="195" textAnchor="middle" fontSize="11" fill="#1a1d23">16年+</text>
+            <polyline points="140,60 230,80 330,90 450,100" fill="none" stroke="#4338ca" strokeWidth="2.5" strokeDasharray="6"/>
+            <polyline points="140,120 230,84 330,86 450,60" fill="none" stroke="#059669" strokeWidth="2.5"/>
+            <circle cx="140" cy="120" r="5" fill="#059669"/>
+            <circle cx="230" cy="84" r="5" fill="#059669"/>
+            <circle cx="330" cy="86" r="5" fill="#059669"/>
+            <circle cx="450" cy="60" r="5" fill="#059669"/>
+            <text x="140" y="140" textAnchor="middle" fontSize="11" fontWeight="700" fill="#dc2626">-31%</text>
+            <text x="230" y="74" textAnchor="middle" fontSize="11" fontWeight="700" fill="#1a1d23">-3%</text>
+            <text x="330" y="106" textAnchor="middle" fontSize="11" fontWeight="700" fill="#059669">+3%</text>
+            <text x="450" y="50" textAnchor="middle" fontSize="13" fontWeight="900" fill="#059669">+26%</text>
+            <rect x="100" y="4" width="12" height="12" rx="2" fill="#4338ca"/>
+            <text x="118" y="14" fontSize="11" fontWeight="700" fill="#1a1d23">CS学位</text>
+            <rect x="180" y="4" width="12" height="12" rx="2" fill="#059669"/>
+            <text x="198" y="14" fontSize="11" fontWeight="700" fill="#1a1d23">独学</text>
+        </svg>
+        <div className="source-badge">長期キャリアで独学者がCS卒を逆転する</div>
+    </div>
 </div>
     </AbsoluteFill>
 );
@@ -219,73 +187,38 @@ export const Scene7: React.FC = () => (
 export const Scene8: React.FC = () => (
     <AbsoluteFill>
         <div className="scene" id="scene-8">
-  <div className="content center-layout">
-    <div className="heading" style={{ marginBottom: '8px' }}>独学出身エンジニアの社内評価</div>
-    <div className="metric-grid">
-      <div className="metric-card">
-        <svg viewBox="0 0 40 40" width="28" height="28" style={{ display: 'block', margin: '0 auto 4px' }}>
-          <path d="M16 4l3.5 7 7.5 1-5.5 5.3 1.3 7.7L16 21.5 9.2 25l1.3-7.7L5 12l7.5-1z" fill="var(--color-accent)" opacity=".8" transform="translate(4,2)"/>
-        </svg>
-        <div className="metric-value" style={{ color: 'var(--color-accent)' }}>+37%</div>
-        <div className="metric-label">「期待以上」評価</div>
-      </div>
-      <div className="metric-card">
-        <svg viewBox="0 0 40 40" width="28" height="28" style={{ display: 'block', margin: '0 auto 4px' }}>
-          <circle cx="20" cy="20" r="15" fill="var(--color-accent)" opacity=".15"/>
-          <path d="M20 28V14M14 20l6-6 6 6" stroke="var(--color-accent)" strokeWidth="3" fill="none" strokeLinecap="round" strokeLinejoin="round"/>
-        </svg>
-        <div className="metric-value" style={{ color: 'var(--color-accent)' }}>+16%</div>
-        <div className="metric-label">昇進スピード</div>
-      </div>
-      <div className="metric-card">
-        <svg viewBox="0 0 40 40" width="28" height="28" style={{ display: 'block', margin: '0 auto 4px' }}>
-          <polyline points="8,28 16,20 24,24 32,12" stroke="var(--color-primary)" strokeWidth="2.5" fill="none" strokeLinecap="round" strokeLinejoin="round"/>
-          <circle cx="32" cy="12" r="3" fill="var(--color-primary)"/>
-        </svg>
-        <div className="metric-value">-29%</div>
-        <div className="metric-label">コード修正回数</div>
-      </div>
-      <div className="metric-card">
-        <svg viewBox="0 0 40 40" width="28" height="28" style={{ display: 'block', margin: '0 auto 4px' }}>
-          <rect x="6" y="6" width="28" height="28" rx="6" fill="var(--color-primary)" opacity=".1"/>
-          <path d="M14 20h12M20 14v12" stroke="var(--color-primary)" strokeWidth="2.5" strokeLinecap="round"/>
-        </svg>
-        <div className="metric-value">+40%</div>
-        <div className="metric-label">新技術への適応速度</div>
-      </div>
+    <div className="content center-layout">
+        <div className="scene-title">独学出身エンジニアの<span className="accent-teal">人事評価</span></div>
+        <div className="bar-chart">
+            <div className="bar-row"><div className="bar-label">「期待以上」評価</div><div className="bar-track"><div className="bar-fill bf-teal" style={{ '--w': '74%' } as React.CSSProperties}></div></div><div className="bar-val">+37%</div></div>
+            <div className="bar-row"><div className="bar-label">昇進スピード</div><div className="bar-track"><div className="bar-fill bf-teal" style={{ '--w': '52%' } as React.CSSProperties}></div></div><div className="bar-val">+16%</div></div>
+            <div className="bar-row"><div className="bar-label">コード修正回数</div><div className="bar-track"><div className="bar-fill bf-primary" style={{ '--w': '58%' } as React.CSSProperties}></div></div><div className="bar-val">-29%</div></div>
+            <div className="bar-row"><div className="bar-label">新技術への適応</div><div className="bar-track"><div className="bar-fill bf-teal" style={{ '--w': '70%' } as React.CSSProperties}></div></div><div className="bar-val">+30-40%</div></div>
+        </div>
+        <div className="source-badge">「自走サイクル」が長期的に巨大な差を生む</div>
     </div>
-  </div>
 </div>
     </AbsoluteFill>
 );
 
 export const Scene9: React.FC = () => (
     <AbsoluteFill>
-        <div className="scene" id="scene-9">
-  <div className="content center-layout">
-    <div className="heading mb-16">ブラインド技術評価の結果</div>
-    <div className="compare-grid" style={{ maxWidth: '640px' }}>
-      <div className="compare-item compare-left" style={{ textAlign: 'center' }}>
-        <svg viewBox="0 0 40 40" width="36" height="36" style={{ display: 'block', margin: '0 auto 4px' }}>
-          <circle cx="20" cy="16" r="8" fill="none" stroke="var(--color-primary)" strokeWidth="2.5"/>
-          <path d="M8 36c0-8 5-12 12-12s12 4 12 12" stroke="var(--color-primary)" strokeWidth="2.5" fill="none"/>
-        </svg>
-        <div className="fw-800" style={{ fontSize: '20px' }}>独学者</div>
-        <div className="hero-number mt-4" style={{ fontSize: '52px', color: 'var(--color-primary)' }}>+43%</div>
-        <div className="caption mt-4">合格率の増加</div>
-      </div>
-      <div className="compare-item compare-right" style={{ textAlign: 'center' }}>
-        <svg viewBox="0 0 40 40" width="36" height="36" style={{ display: 'block', margin: '0 auto 4px' }}>
-          <path d="M12 8l16 6-16 6z" fill="none" stroke="var(--color-secondary)" strokeWidth="2.5" strokeLinejoin="round"/>
-          <line x1="12" y1="14" x2="12" y2="32" stroke="var(--color-secondary)" strokeWidth="2.5"/>
-        </svg>
-        <div className="fw-800" style={{ fontSize: '20px' }}>CS学位</div>
-        <div className="hero-number mt-4" style={{ fontSize: '52px', color: 'var(--color-secondary)' }}>+8%</div>
-        <div className="caption mt-4">合格率の増加</div>
-      </div>
+        <div className="scene bg-dots" id="scene-9">
+    <div className="content center-layout">
+        <div className="scene-title">採用市場の変化</div>
+        <div className="metric-grid">
+            <div className="metric-card" style={{ borderTop: '4px solid var(--primary)' }}>
+                <div className="metric-value accent-primary">72%</div>
+                <div className="metric-label">雇用主がブートキャンプ卒を<br />学位と同等に評価</div>
+            </div>
+            <div className="metric-card" style={{ borderTop: '4px solid var(--teal)' }}>
+                <div className="metric-value accent-teal">+43%</div>
+                <div className="metric-label">ブラインド審査での<br />独学者の合格率増加</div>
+            </div>
+        </div>
+        <div className="big-statement" style={{ marginTop: '16px' }}>学歴を隠すと、<span className="accent-teal">独学者の方が受かる</span></div>
+        <div className="source-badge">出典: Indeed 2025 / CS卒はわずか+8%</div>
     </div>
-    <div className="mt-8 caption">学歴を隠すと、独学者の実力が浮き彫りになる</div>
-  </div>
 </div>
     </AbsoluteFill>
 );
@@ -293,86 +226,40 @@ export const Scene9: React.FC = () => (
 export const Scene10: React.FC = () => (
     <AbsoluteFill>
         <div className="scene" id="scene-10">
-  <div className="content center-layout">
-    <div className="heading mb-8">独学者の弱点：知識の穴</div>
-    <div className="quote-block" style={{ maxWidth: '640px' }}>
-      <div style={{ fontSize: '28px', fontWeight: '700', fontStyle: 'normal' }}>CS学部で4年かけて体系的に学ぶ内容を<br /><span className="text-danger fw-900">スキップしがち</span></div>
+    <div className="content center-layout">
+        <div className="scene-title">独学者の弱点</div>
+        <div className="quote-block">
+            <div className="quote-body">「動くものは作れる。<br />でも<span className="accent-coral">基礎がない</span>。」</div>
+            <div className="quote-source">データ構造、アルゴリズム、OS、ネットワーク<br />CS学部で4年かけて学ぶ内容をスキップしがち</div>
+        </div>
     </div>
-    <div className="mt-12 flow-chain">
-      <div className="fc-node">
-        <svg viewBox="0 0 40 40" width="28" height="28" style={{ display: 'block', margin: '0 auto 4px' }}>
-          <rect x="6" y="6" width="28" height="28" rx="4" fill="#4338ca"/>
-          <text x="20" y="25" textAnchor="middle" fill="#fff" fontSize="11" fontWeight="900">DS</text>
-        </svg>
-        データ構造
-      </div>
-      <div className="fc-node">
-        <svg viewBox="0 0 40 40" width="28" height="28" style={{ display: 'block', margin: '0 auto 4px' }}>
-          <rect x="6" y="6" width="28" height="28" rx="4" fill="#4338ca"/>
-          <text x="20" y="25" textAnchor="middle" fill="#fff" fontSize="10" fontWeight="900">Algo</text>
-        </svg>
-        アルゴリズム
-      </div>
-      <div className="fc-node">
-        <svg viewBox="0 0 40 40" width="28" height="28" style={{ display: 'block', margin: '0 auto 4px' }}>
-          <rect x="6" y="6" width="28" height="28" rx="4" fill="#4338ca"/>
-          <text x="20" y="25" textAnchor="middle" fill="#fff" fontSize="12" fontWeight="900">OS</text>
-        </svg>
-        OS基礎
-      </div>
-      <div className="fc-node">
-        <svg viewBox="0 0 40 40" width="28" height="28" style={{ display: 'block', margin: '0 auto 4px' }}>
-          <rect x="6" y="6" width="28" height="28" rx="4" fill="#4338ca"/>
-          <text x="20" y="25" textAnchor="middle" fill="#fff" fontSize="10" fontWeight="900">Net</text>
-        </svg>
-        ネットワーク
-      </div>
-    </div>
-  </div>
 </div>
     </AbsoluteFill>
 );
 
 export const Scene11: React.FC = () => (
     <AbsoluteFill>
-        <div className="scene" id="scene-11">
-  <div className="content center-layout">
-    <div className="heading mb-8">知識の穴が生む負債</div>
-    <div className="flow-chain">
-      <div className="fc-node">
-        <svg viewBox="0 0 40 40" width="28" height="28" style={{ display: 'block', margin: '0 auto 4px' }}>
-          <path d="M20 4L36 34H4Z" fill="none" stroke="var(--color-danger)" strokeWidth="2.5" strokeLinejoin="round"/>
-          <text x="20" y="28" textAnchor="middle" fill="var(--color-danger)" fontSize="16" fontWeight="900">!</text>
-        </svg>
-        基礎の欠如
-      </div>
-      <div className="fc-arr">→</div>
-      <div className="fc-node">
-        <svg viewBox="0 0 40 40" width="28" height="28" style={{ display: 'block', margin: '0 auto 4px' }}>
-          <polyline points="8,28 16,20 24,24 32,12" stroke="var(--color-danger)" strokeWidth="2.5" fill="none" strokeLinecap="round"/>
-        </svg>
-        非効率な設計
-      </div>
-      <div className="fc-arr">→</div>
-      <div className="fc-node fc-node-highlight" style={{ borderColor: 'var(--color-danger)', color: 'var(--color-danger)', background: 'rgba(220,38,38,0.08)' }}>
-        <svg viewBox="0 0 40 40" width="28" height="28" style={{ display: 'block', margin: '0 auto 4px' }}>
-          <circle cx="20" cy="20" r="15" fill="none" stroke="var(--color-danger)" strokeWidth="2.5"/>
-          <line x1="10" y1="10" x2="30" y2="30" stroke="var(--color-danger)" strokeWidth="2.5"/>
-        </svg>
-        技術的負債
-      </div>
+        <div className="scene bg-grid" id="scene-11">
+    <div className="content center-layout">
+        <div className="scene-title">知識の穴が生む<span className="accent-coral">技術的負債</span></div>
+        <div className="flow-chain">
+            <div className="fc-node border-coral">
+                <div className="fc-node-title">基礎の欠如</div>
+                <div className="fc-node-desc">体系的学習なし</div>
+            </div>
+            <span className="fc-arr">→</span>
+            <div className="fc-node border-amber">
+                <div className="fc-node-title">非効率な設計</div>
+                <div className="fc-node-desc">動くけど最適でない</div>
+            </div>
+            <span className="fc-arr">→</span>
+            <div className="fc-node border-coral">
+                <div className="fc-node-title">技術的負債</div>
+                <div className="fc-node-desc">作業時間の23%を浪費</div>
+            </div>
+        </div>
+        <div className="source-badge">25%のケースで既存負債が新しい負債を生む「伝染性負債」が発生</div>
     </div>
-    <div className="mt-12 compare-grid" style={{ maxWidth: '540px' }}>
-      <div className="compare-item compare-danger" style={{ textAlign: 'center' }}>
-        <div className="metric-value" style={{ color: 'var(--color-danger)' }}>23%</div>
-        <div className="caption">作業時間を負債処理に消費</div>
-      </div>
-      <div className="compare-item compare-danger" style={{ textAlign: 'center' }}>
-        <div className="metric-value" style={{ color: 'var(--color-danger)' }}>25%</div>
-        <div className="caption">既存の負債が新しい負債を生む</div>
-      </div>
-    </div>
-  </div>
 </div>
     </AbsoluteFill>
 );
@@ -380,46 +267,44 @@ export const Scene11: React.FC = () => (
 export const Scene12: React.FC = () => (
     <AbsoluteFill>
         <div className="scene" id="scene-12">
-  <div className="content center-layout">
-    <div className="heading mb-16">インポスター症候群</div>
-    <svg viewBox="0 0 600 200" width="580" height="190">
-      {/* Person icon */}
-      <circle cx="300" cy="70" r="24" fill="none" stroke="#4338ca" strokeWidth="3"/>
-      <path d="M270 130c0-18 13-30 30-30s30 12 30 30" stroke="#4338ca" strokeWidth="3" fill="none"/>
-      {/* Thought bubbles */}
-      <rect x="40" y="30" width="160" height="50" rx="10" fill="rgba(220,38,38,0.08)" stroke="var(--color-danger)" strokeWidth="2"/>
-      <text x="120" y="62" textAnchor="middle" fill="var(--color-danger)" fontSize="15" fontWeight="700">「基礎が足りない」</text>
-      <rect x="400" y="30" width="160" height="50" rx="10" fill="rgba(220,38,38,0.08)" stroke="var(--color-danger)" strokeWidth="2"/>
-      <text x="480" y="62" textAnchor="middle" fill="var(--color-danger)" fontSize="15" fontWeight="700">「いつかバレる」</text>
-      <rect x="170" y="140" width="260" height="50" rx="10" fill="rgba(220,38,38,0.08)" stroke="var(--color-danger)" strokeWidth="2"/>
-      <text x="300" y="172" textAnchor="middle" fill="var(--color-danger)" fontSize="15" fontWeight="700">「自分は偽物なのでは？」</text>
-    </svg>
-    <div className="caption">独学者は正規教育出身者より顕著に出る傾向あり</div>
-  </div>
+    <div className="content center-layout">
+        <div className="scene-title">インポスター症候群</div>
+        <svg viewBox="0 0 400 140" width="400" height="140">
+            <rect x="20" y="20" width="160" height="100" rx="10" fill="#e0e7ff" stroke="#4338ca" strokeWidth="2"/>
+            <text x="100" y="55" textAnchor="middle" fontSize="13" fontWeight="700" fill="#4338ca">実際の能力</text>
+            <rect x="50" y="65" width="100" height="40" rx="6" fill="#4338ca" opacity=".15"/>
+            <text x="100" y="90" textAnchor="middle" fontSize="12" fontWeight="900" fill="#4338ca">高い</text>
+            <rect x="220" y="20" width="160" height="100" rx="10" fill="#fee2e2" stroke="#dc2626" strokeWidth="2"/>
+            <text x="300" y="55" textAnchor="middle" fontSize="13" fontWeight="700" fill="#dc2626">自己認識</text>
+            <rect x="250" y="65" width="100" height="40" rx="6" fill="#dc2626" opacity=".15"/>
+            <text x="300" y="90" textAnchor="middle" fontSize="12" fontWeight="900" fill="#dc2626">「自分は偽物」</text>
+        </svg>
+        <div className="big-statement">能力はあるのに、<span className="accent-coral">自分を信じられない</span></div>
+    </div>
 </div>
     </AbsoluteFill>
 );
 
 export const Scene13: React.FC = () => (
     <AbsoluteFill>
-        <div className="scene" id="scene-13">
-  <div className="content center-layout">
-    <div className="heading" style={{ marginBottom: '8px' }}>独学に向いている人</div>
-    <div className="num-list">
-      <div className="num-item">
-        <div className="num-circle" style={{ background: 'var(--color-accent)' }}>1</div>
-        <div className="num-text">「わからない」に耐えられる人</div>
-      </div>
-      <div className="num-item">
-        <div className="num-circle" style={{ background: 'var(--color-accent)' }}>2</div>
-        <div className="num-text">自分の弱点を認められる人</div>
-      </div>
-      <div className="num-item">
-        <div className="num-circle" style={{ background: 'var(--color-accent)' }}>3</div>
-        <div className="num-text">学ぶこと自体を楽しめる人</div>
-      </div>
+        <div className="scene bg-dots" id="scene-13">
+    <div className="content center-layout">
+        <div className="scene-title">独学に向いている人</div>
+        <div className="two-col">
+            <div className="compare-card border-teal">
+                <h3 className="accent-teal">向いている</h3>
+                <div className="check-item"><span className="check-teal">✓</span> 「わからない」に耐えられる</div>
+                <div className="check-item"><span className="check-teal">✓</span> 弱点を認められる</div>
+                <div className="check-item"><span className="check-teal">✓</span> 学ぶこと自体を楽しめる</div>
+            </div>
+            <div className="compare-card border-coral">
+                <h3 className="accent-coral">向いていない</h3>
+                <div className="check-item"><span className="check-coral">✗</span> 正解を教えてほしい</div>
+                <div className="check-item"><span className="check-coral">✗</span> 一人だとモチベが続かない</div>
+                <div className="check-item"><span className="check-coral">✗</span> エラーで心が折れる</div>
+            </div>
+        </div>
     </div>
-  </div>
 </div>
     </AbsoluteFill>
 );
@@ -427,56 +312,49 @@ export const Scene13: React.FC = () => (
 export const Scene14: React.FC = () => (
     <AbsoluteFill>
         <div className="scene" id="scene-14">
-  <div className="content center-layout">
-    <div className="tag tag-danger mb-8">経済産業省 予測</div>
-    <div className="heading">2030年のIT人材不足</div>
-    <div className="hero-number" style={{ color: 'var(--color-danger)' }}>79<span style={{ fontSize: '42px' }}>万人</span></div>
-    <div className="mt-12 bar-row">
-      <div className="bar-label" style={{ minWidth: '130px' }}>未経験者を採用</div>
-      <div className="bar-track"><div className="bar-fill bar-fill-accent" style={{ '--w': '40%' } as React.CSSProperties}></div></div>
-      <div className="bar-value text-accent">40%</div>
+    <div className="content center-layout">
+        <div className="scene-title">日本のIT人材不足</div>
+        <div className="hero-number accent-coral">79万人</div>
+        <div className="big-statement">2030年に不足すると予測</div>
+        <div className="metric-grid">
+            <div className="metric-card" style={{ borderTop: '4px solid var(--teal)' }}>
+                <div className="metric-value accent-teal">4割</div>
+                <div className="metric-label">すでに未経験者を採用</div>
+            </div>
+            <div className="metric-card" style={{ borderTop: '4px solid var(--teal)' }}>
+                <div className="metric-value accent-teal">7割+</div>
+                <div className="metric-label">検討中を含む</div>
+            </div>
+        </div>
     </div>
-    <div className="bar-row">
-      <div className="bar-label" style={{ minWidth: '130px' }}>検討中を含む</div>
-      <div className="bar-track"><div className="bar-fill bar-fill-accent" style={{ '--w': '70%' } as React.CSSProperties}></div></div>
-      <div className="bar-value text-accent">70%+</div>
-    </div>
-  </div>
 </div>
     </AbsoluteFill>
 );
 
 export const Scene15: React.FC = () => (
     <AbsoluteFill>
-        <div className="scene" id="scene-15">
-  <div className="content center-layout">
-    <div className="heading mb-8">独学者の転職成功データ</div>
-    <div className="flow-chain">
-      <div className="fc-node">
-        <svg viewBox="0 0 40 40" width="28" height="28" style={{ display: 'block', margin: '0 auto 4px' }}>
-          <circle cx="20" cy="16" r="8" fill="none" stroke="var(--color-primary)" strokeWidth="2"/>
-          <path d="M8 36c0-8 5-12 12-12s12 4 12 12" stroke="var(--color-primary)" strokeWidth="2" fill="none"/>
-        </svg>
-        独学開始
-      </div>
-      <div className="fc-arr">→</div>
-      <div className="fc-node">
-        <svg viewBox="0 0 40 40" width="28" height="28" style={{ display: 'block', margin: '0 auto 4px' }}>
-          <polyline points="8,28 20,12 32,28" stroke="var(--color-accent)" strokeWidth="2.5" fill="none" strokeLinecap="round"/>
-        </svg>
-        半年以内<br /><span style={{ fontSize: '14px' }}>40%が目標達成</span>
-      </div>
-      <div className="fc-arr">→</div>
-      <div className="fc-node fc-node-highlight">
-        <svg viewBox="0 0 40 40" width="28" height="28" style={{ display: 'block', margin: '0 auto 4px' }}>
-          <circle cx="20" cy="20" r="15" fill="var(--color-accent)" opacity=".15"/>
-          <path d="M12 20l6 6 12-12" stroke="var(--color-accent)" strokeWidth="3" fill="none" strokeLinecap="round"/>
-        </svg>
-        目標の半分以上を達成<br /><span style={{ fontSize: '14px' }}>成功者の<span className="fw-900">90%</span></span>
-      </div>
+        <div className="scene bg-grid" id="scene-15">
+    <div className="content center-layout">
+        <div className="scene-title">独学→転職のリアル</div>
+        <div className="flow-chain">
+            <div className="fc-node border-primary">
+                <div className="fc-node-title">独学開始</div>
+            </div>
+            <span className="fc-arr">→</span>
+            <div className="fc-node border-amber">
+                <div className="fc-node-title">90%が脱落</div>
+            </div>
+            <span className="fc-arr">→</span>
+            <div className="fc-node border-teal">
+                <div className="fc-node-title">生存者の9割</div>
+                <div className="fc-node-desc">目標の半分以上を達成</div>
+            </div>
+        </div>
+        <div className="bar-chart">
+            <div className="bar-row"><div className="bar-label">年収アップ実感</div><div className="bar-track"><div className="bar-fill bf-teal" style={{ '--w': '50%' } as React.CSSProperties}></div></div><div className="bar-val">約50%</div></div>
+        </div>
+        <div className="source-badge">2024年上半期: 非IT→IT転職 約3万人</div>
     </div>
-    <div className="mt-8 caption" style={{ color: 'var(--color-secondary)' }}>※ この成功率は挫折しなかった10%の中での割合</div>
-  </div>
 </div>
     </AbsoluteFill>
 );
@@ -484,66 +362,44 @@ export const Scene15: React.FC = () => (
 export const Scene16: React.FC = () => (
     <AbsoluteFill>
         <div className="scene" id="scene-16">
-  <div className="content center-layout">
-    <div className="heading mb-16">最強の武器 = ポートフォリオ</div>
-    <div className="flow-chain">
-      <div className="fc-node">
-        <svg viewBox="0 0 40 40" width="28" height="28" style={{ display: 'block', margin: '0 auto 4px' }}>
-          <polyline points="8,6 20,6 20,18 8,18 8,6" stroke="var(--color-primary)" strokeWidth="2" fill="none"/>
-          <polyline points="12,18 12,34 28,34 28,18 20,18" stroke="var(--color-primary)" strokeWidth="2" fill="none"/>
-        </svg>
-        自分でアプリを<br />作る
-      </div>
-      <div className="fc-arr">→</div>
-      <div className="fc-node">
-        <svg viewBox="0 0 40 40" width="28" height="28" style={{ display: 'block', margin: '0 auto 4px' }}>
-          <circle cx="20" cy="20" r="14" fill="#24292e"/>
-          <path d="M20 10c-6 0-10 5-10 10 0 4.4 2.8 8.2 6.8 9.5.5.1.7-.2.7-.5v-1.7c-2.8.6-3.4-1.4-3.4-1.4-.5-1.2-1.1-1.5-1.1-1.5-.9-.6.1-.6.1-.6 1 .1 1.5 1 1.5 1 .9 1.5 2.3 1.1 2.8.8.1-.6.3-1.1.6-1.3-2.2-.3-4.5-1.1-4.5-5 0-1.1.4-2 1-2.7-.1-.2-.4-1.3.1-2.6 0 0 .8-.3 2.7 1 .8-.2 1.6-.3 2.5-.3s1.7.1 2.5.3c1.9-1.3 2.7-1 2.7-1 .5 1.3.2 2.4.1 2.6.6.7 1 1.6 1 2.7 0 3.9-2.3 4.7-4.5 5 .4.3.7.9.7 1.9v2.8c0 .3.2.6.7.5 4-1.3 6.8-5.1 6.8-9.5 0-5.5-4.5-10-10-10z" fill="#fff"/>
-        </svg>
-        GitHubに公開
-      </div>
-      <div className="fc-arr">→</div>
-      <div className="fc-node fc-node-highlight">
-        <svg viewBox="0 0 40 40" width="28" height="28" style={{ display: 'block', margin: '0 auto 4px' }}>
-          <circle cx="20" cy="20" r="15" fill="var(--color-accent)" opacity=".15"/>
-          <path d="M12 20l6 6 12-12" stroke="var(--color-accent)" strokeWidth="3" fill="none" strokeLinecap="round"/>
-        </svg>
-        採用で評価される
-      </div>
+    <div className="content center-layout">
+        <div className="scene-title">最重要：ポートフォリオ</div>
+        <div className="icon-row">
+            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/github/github-original.svg" width="48" height="48" />
+        </div>
+        <div className="big-statement">履歴書の文字より、<br /><span className="accent-primary">動くコード</span>の方が何倍も雄弁</div>
+        <div className="source-badge">企業が独学者に求めるのは「学歴の代わりの証拠」</div>
     </div>
-    <div className="mt-16 body-text">履歴書の文字より、<span className="fw-900 text-primary">動くコード</span>の方が雄弁</div>
-  </div>
 </div>
     </AbsoluteFill>
 );
 
 export const Scene17: React.FC = () => (
     <AbsoluteFill>
-        <div className="scene" id="scene-17">
-  <div className="content center-layout">
-    <div className="heading mb-8">独学エンジニアは通用するか？</div>
-    <svg viewBox="0 0 700 220" width="680" height="210">
-      {/* Scale beam */}
-      <line x1="150" y1="40" x2="550" y2="40" stroke="#d1d5db" strokeWidth="2"/>
-      <polygon points="350,30 340,20 360,20" fill="#4338ca"/>
-      {/* Left: difficulties */}
-      <rect x="80" y="60" width="200" height="140" rx="12" fill="rgba(220,38,38,0.06)" stroke="var(--color-danger)" strokeWidth="2"/>
-      <text x="180" y="85" textAnchor="middle" fill="var(--color-danger)" fontSize="16" fontWeight="800">壁</text>
-      <text x="180" y="110" textAnchor="middle" fill="#1a1d23" fontSize="13">挫折率 90%</text>
-      <text x="180" y="132" textAnchor="middle" fill="#1a1d23" fontSize="13">知識の穴</text>
-      <text x="180" y="154" textAnchor="middle" fill="#1a1d23" fontSize="13">インポスター症候群</text>
-      <text x="180" y="176" textAnchor="middle" fill="#1a1d23" fontSize="13">技術的負債</text>
-      {/* Right: strengths */}
-      <rect x="420" y="60" width="200" height="140" rx="12" fill="rgba(5,150,105,0.06)" stroke="var(--color-accent)" strokeWidth="2"/>
-      <text x="520" y="85" textAnchor="middle" fill="var(--color-accent)" fontSize="16" fontWeight="800">武器</text>
-      <text x="520" y="110" textAnchor="middle" fill="#1a1d23" fontSize="13">自走力</text>
-      <text x="520" y="132" textAnchor="middle" fill="#1a1d23" fontSize="13">年収 +26%（長期）</text>
-      <text x="520" y="154" textAnchor="middle" fill="#1a1d23" fontSize="13">新技術適応 +40%</text>
-      <text x="520" y="176" textAnchor="middle" fill="#1a1d23" fontSize="13">高い業績評価</text>
-      {/* Center label */}
-      <text x="350" y="145" textAnchor="middle" fill="#4338ca" fontSize="14" fontWeight="800">条件つきで通用する</text>
-    </svg>
-  </div>
+        <div className="scene bg-dots" id="scene-17">
+    <div className="content center-layout">
+        <div className="scene-title">独学エンジニアは通用するか？</div>
+        <svg viewBox="0 0 480 140" width="480" height="140">
+            <rect x="10" y="10" width="140" height="120" rx="10" fill="#fee2e2" stroke="#dc2626" strokeWidth="2"/>
+            <text x="80" y="45" textAnchor="middle" fontSize="14" fontWeight="900" fill="#dc2626">90%が挫折</text>
+            <text x="80" y="70" textAnchor="middle" fontSize="12" fill="#1a1d23">知識の穴</text>
+            <text x="80" y="90" textAnchor="middle" fontSize="12" fill="#1a1d23">孤独との戦い</text>
+            <text x="80" y="110" textAnchor="middle" fontSize="12" fill="#1a1d23">インポスター症候群</text>
+            <path d="M155 70 L195 70" stroke="#4338ca" strokeWidth="2.5"/>
+            <polygon points="193,64 205,70 193,76" fill="#4338ca"/>
+            <rect x="210" y="10" width="60" height="120" rx="10" fill="#e0e7ff" stroke="#4338ca" strokeWidth="2"/>
+            <text x="240" y="55" textAnchor="middle" fontSize="13" fontWeight="900" fill="#4338ca">壁を</text>
+            <text x="240" y="75" textAnchor="middle" fontSize="13" fontWeight="900" fill="#4338ca">越える</text>
+            <path d="M275 70 L315 70" stroke="#059669" strokeWidth="2.5"/>
+            <polygon points="313,64 325,70 313,76" fill="#059669"/>
+            <rect x="330" y="10" width="140" height="120" rx="10" fill="#d1fae5" stroke="#059669" strokeWidth="2"/>
+            <text x="400" y="45" textAnchor="middle" fontSize="14" fontWeight="900" fill="#059669">自走力</text>
+            <text x="400" y="70" textAnchor="middle" fontSize="12" fill="#1a1d23">年収+26%</text>
+            <text x="400" y="90" textAnchor="middle" fontSize="12" fill="#1a1d23">昇進+16%</text>
+            <text x="400" y="110" textAnchor="middle" fontSize="12" fill="#1a1d23">適応力+30-40%</text>
+        </svg>
+        <div className="big-statement">通用する。ただし<span className="accent-primary">条件つき</span>。</div>
+    </div>
 </div>
     </AbsoluteFill>
 );
@@ -551,43 +407,47 @@ export const Scene17: React.FC = () => (
 export const Scene18: React.FC = () => (
     <AbsoluteFill>
         <div className="scene" id="scene-18">
-  <div className="content center-layout">
-    <div className="heading" style={{ marginBottom: '8px' }}>通用するための3条件</div>
-    <div className="num-list">
-      <div className="num-item">
-        <div className="num-circle">1</div>
-        <div className="num-text">90%の壁を越える覚悟 — <span className="text-primary">手を動かし続ける</span></div>
-      </div>
-      <div className="num-item">
-        <div className="num-circle">2</div>
-        <div className="num-text">知識の穴を埋め続ける — <span className="text-primary">基礎に戻る謙虚さ</span></div>
-      </div>
-      <div className="num-item">
-        <div className="num-circle">3</div>
-        <div className="num-text">作ったものを世に出す — <span className="text-primary">ポートフォリオが武器</span></div>
-      </div>
+    <div className="content center-layout">
+        <div className="scene-title">3つの条件</div>
+        <div className="num-list">
+            <div className="num-item">
+                <div className="num-circle num-circle--coral">1</div>
+                <div><div className="num-title">90%の壁を越える覚悟</div><div className="num-desc">チュートリアルではなく、自分で手を動かし続ける</div></div>
+            </div>
+            <div className="num-item">
+                <div className="num-circle num-circle--primary">2</div>
+                <div><div className="num-title">知識の穴を埋め続ける</div><div className="num-desc">動くコードだけでは不十分。基礎を学び直す謙虚さ</div></div>
+            </div>
+            <div className="num-item">
+                <div className="num-circle num-circle--teal">3</div>
+                <div><div className="num-title">作ったものを世に出す</div><div className="num-desc">ポートフォリオが最強の武器</div></div>
+            </div>
+        </div>
     </div>
-  </div>
 </div>
     </AbsoluteFill>
 );
 
 export const Scene19: React.FC = () => (
     <AbsoluteFill>
-        <div className="scene" id="scene-19">
-  <div className="content center-layout">
-    <div style={{ maxWidth: '600px' }}>
-      <div className="card card-accent" style={{ textAlign: 'center', padding: '32px' }}>
-        <div style={{ fontSize: '36px', fontWeight: '900', color: 'var(--color-primary)', lineHeight: '1.4' }}>
-          独学は最もハードモード。
-        </div>
-        <div className="mt-16" style={{ fontSize: '32px', fontWeight: '800', lineHeight: '1.4' }}>
-          だからこそ、<br />歩ききった人は<span className="text-accent">強い</span>。
-        </div>
-      </div>
-      <div className="mt-16 body-text" style={{ textAlign: 'center' }}>学歴ではなくスキルで評価される時代が、<span className="fw-800">すでに始まっている。</span></div>
+        <div className="scene bg-dots" id="scene-19">
+    <div className="content center-layout">
+        <div className="scene-title">独学は最もハードモード</div>
+        <div className="big-statement">だからこそ、歩ききった人は<span className="accent-teal">強い</span></div>
+        <svg viewBox="0 0 400 80" width="400" height="80" style={{ marginTop: '12px' }}>
+            <rect x="10" y="15" width="120" height="50" rx="8" fill="#fee2e2" stroke="#dc2626" strokeWidth="2"/>
+            <text x="70" y="45" textAnchor="middle" fontSize="13" fontWeight="700" fill="#dc2626">挫折率90%</text>
+            <path d="M135 40 L175 40" stroke="#4338ca" strokeWidth="2.5"/>
+            <polygon points="173,34 185,40 173,46" fill="#4338ca"/>
+            <rect x="190" y="15" width="100" height="50" rx="8" fill="#e0e7ff" stroke="#4338ca" strokeWidth="2"/>
+            <text x="240" y="45" textAnchor="middle" fontSize="13" fontWeight="700" fill="#4338ca">自走力</text>
+            <path d="M295 40 L335 40" stroke="#059669" strokeWidth="2.5"/>
+            <polygon points="333,34 345,40 333,46" fill="#059669"/>
+            <rect x="350" y="10" width="40" height="60" rx="8" fill="#d1fae5" stroke="#059669" strokeWidth="2"/>
+            <text x="370" y="45" textAnchor="middle" fontSize="13" fontWeight="900" fill="#059669">強</text>
+        </svg>
+        <div className="title-sub">チャンネル登録・コメントお願いします</div>
     </div>
-  </div>
 </div>
     </AbsoluteFill>
 );

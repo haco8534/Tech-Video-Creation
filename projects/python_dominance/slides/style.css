@@ -1,10 +1,10 @@
-/* ========== Python Dominance - Flat Design (No Gradients) ========== */
+/* ========== Python Dominance - Flat Design ========== */
 @import url('https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;700;900&display=swap');
 
 :root {
-    --bg: #f8f9fc;
+    --bg: #f8f9fa;
     --text: #1a1d23;
-    --text-light: #374151;
+    --text-light: #1a1d23;
     --primary: #306998;
     --primary-light: #dce8f4;
     --yellow: #FFD43B;
@@ -60,11 +60,11 @@ body { font-family:'Zen Maru Gothic',sans-serif; background:var(--bg); color:var
 /* ===== Typography ===== */
 .scene-title { font-size:var(--fs-heading); font-weight:900; color:var(--text); margin-bottom:20px; letter-spacing:-0.5px; }
 .title-large { font-size:48px; font-weight:900; line-height:1.3; color:var(--text); }
-.subtitle-text { display:none; }
+.subtitle-text, .footnote { display:none; }
 .big-statement { font-size:28px; font-weight:900; line-height:1.5; color:var(--text); }
-.big-number { margin-top:8px; }
-.footnote { display:none; }
-.source { display:none; }
+
+/* Data source citation */
+.content .source { display:block !important; font-size:12px; color:var(--text); opacity:0.55; margin-top:12px; font-weight:400; }
 
 /* Accents */
 .accent-primary { color:var(--primary); }
@@ -75,6 +75,12 @@ body { font-family:'Zen Maru Gothic',sans-serif; background:var(--bg); color:var
 .accent-rust { color:var(--rust); }
 .accent-go { color:var(--go); }
 .accent-julia { color:var(--julia); }
+
+/* ===== Icon Row / Cloud ===== */
+.icon-row { margin-bottom:12px; display:flex; gap:16px; justify-content:center; align-items:center; }
+.icon-row img { width:56px; height:56px; }
+.icon-cloud { position:absolute; top:0; left:0; width:100%; height:100%; opacity:0.06; display:flex; flex-wrap:wrap; align-items:center; justify-content:center; gap:24px; z-index:0; }
+.icon-cloud img { width:48px; height:48px; }
 
 /* ===== Tags ===== */
 .tag-row { display:flex; flex-wrap:wrap; gap:8px; justify-content:center; margin-top:12px; }
@@ -87,21 +93,24 @@ body { font-family:'Zen Maru Gothic',sans-serif; background:var(--bg); color:var
 /* ===== Two Column / Cards ===== */
 .two-col { display:flex; gap:20px; justify-content:center; align-items:stretch; }
 .col-card { text-align:center; padding:16px; }
-.col-arrow { font-size:32px; font-weight:900; color:var(--text-light); display:flex; align-items:center; }
+.col-arrow { font-size:32px; font-weight:900; color:var(--text); display:flex; align-items:center; }
 
-.arch-card { background:var(--card-bg); border:2px solid var(--border); border-radius:var(--radius); padding:20px; width:280px; text-align:center; }
+.arch-card { background:var(--card-bg); border:2px solid var(--border); border-radius:var(--radius); padding:20px; width:280px; text-align:center; color:var(--text); }
+.arch-card img { display:block; margin:0 auto 10px; width:48px; height:48px; }
 .card-badge { display:inline-block; padding:3px 10px; border-radius:4px; font-size:11px; font-weight:700; letter-spacing:0.5px; margin-bottom:8px; }
 .badge-blue { background:var(--primary-light); color:var(--primary); }
 .badge-yellow { background:var(--yellow-light); color:#b8860b; }
 .badge-red { background:var(--coral-light); color:var(--coral); }
-.card-title { font-size:20px; font-weight:900; margin-bottom:8px; }
-.card-note { font-size:var(--fs-small); color:#374151; line-height:1.6; }
+.card-danger { border-color:var(--coral); }
+.card-safe { border-color:var(--primary); }
+.card-title { font-size:20px; font-weight:900; margin-bottom:8px; color:var(--text); }
+.card-note { font-size:var(--fs-small); color:var(--text); line-height:1.6; }
 
 /* ===== Metrics Grid ===== */
 .metric-grid { display:flex; gap:16px; justify-content:center; flex-wrap:wrap; margin-top:16px; }
 .metric-card { background:var(--card-bg); border:1px solid var(--border); border-radius:var(--radius); padding:16px 24px; text-align:center; min-width:120px; }
 .metric-value { font-size:24px; font-weight:900; }
-.metric-label { font-size:var(--fs-small); color:#374151; margin-top:4px; }
+.metric-label { font-size:var(--fs-small); color:var(--text); margin-top:4px; }
 
 /* ===== Bar Chart ===== */
 .bar-chart { max-width:500px; width:100%; }
@@ -116,19 +125,7 @@ body { font-family:'Zen Maru Gothic',sans-serif; background:var(--bg); color:var
 .bf-yellow { background:var(--yellow); }
 .bf-rust { background:var(--rust); }
 .bf-go { background:var(--go); }
-.bar-val { font-size:var(--fs-small); font-weight:700; color:var(--text-light); width:50px; }
-
-/* ===== Timeline ===== */
-.timeline { display:flex; gap:0; align-items:flex-start; justify-content:center; position:relative; padding:16px 0; }
-.tl-item { text-align:center; width:110px; position:relative; }
-.tl-year { font-size:12px; font-weight:700; color:var(--text-light); }
-.tl-dot { width:10px; height:10px; border-radius:50%; background:var(--text-light); margin:6px auto; position:relative; }
-.tl-dot::after { content:''; position:absolute; top:4px; left:10px; width:100px; height:2px; background:var(--border); }
-.tl-item:last-child .tl-dot::after { display:none; }
-.dot-hl { background:var(--primary)!important; width:14px; height:14px; border:2px solid var(--primary-light); }
-.dot-yellow { background:var(--yellow)!important; width:14px; height:14px; border:2px solid var(--yellow-light); }
-.tl-name { font-size:13px; font-weight:700; }
-.tl-desc { font-size:11px; color:var(--text-light); }
+.bar-val { font-size:var(--fs-small); font-weight:700; color:var(--text); width:50px; }
 
 /* ===== Flow ===== */
 .flow-row { display:flex; gap:12px; justify-content:center; align-items:center; margin-top:16px; }
@@ -137,14 +134,14 @@ body { font-family:'Zen Maru Gothic',sans-serif; background:var(--bg); color:var
 .chip-red { color:var(--coral); border-color:var(--coral); background:var(--coral-light); }
 .chip-teal { color:#0d9488; border-color:var(--teal); background:var(--teal-light); }
 .chip-yellow { color:#b8860b; border-color:var(--yellow); background:var(--yellow-light); }
-.flow-connector { font-size:18px; color:var(--text-light); font-weight:700; }
+.flow-connector { font-size:18px; color:var(--text); font-weight:700; }
 
 /* ===== Numbered List ===== */
 .num-list { display:flex; flex-direction:column; gap:14px; max-width:520px; width:100%; }
 .num-item { display:flex; gap:14px; align-items:flex-start; text-align:left; }
 .num-circle { width:36px; height:36px; border-radius:50%; background:var(--primary); color:#fff; display:flex; align-items:center; justify-content:center; font-size:16px; font-weight:900; flex-shrink:0; }
-.num-title { font-size:var(--fs-caption); font-weight:900; }
-.num-desc { font-size:var(--fs-small); color:#374151; }
+.num-title { font-size:var(--fs-caption); font-weight:900; color:var(--text); }
+.num-desc { font-size:var(--fs-small); color:var(--text); }
 
 /* ===== Layer Stack ===== */
 .layer-stack { max-width:480px; width:100%; }
@@ -152,30 +149,65 @@ body { font-family:'Zen Maru Gothic',sans-serif; background:var(--bg); color:var
 .layer-row:first-child { border-radius:var(--radius) var(--radius) 0 0; }
 .layer-row:last-child { border-radius:0 0 var(--radius) var(--radius); }
 .l-python { background:var(--primary-light); border-color:#93b4d4; color:var(--primary); }
-.l-c { background:#e5e7eb; border-color:#d1d5db; color:#374151; }
+.l-c { background:#e5e7eb; border-color:#d1d5db; color:var(--text); }
 .l-cpu { background:var(--yellow-light); border-color:#fde68a; color:#b8860b; }
+.l-api { background:#e0e7ff; border-color:#a5b4fc; color:#4f46e5; }
+
+/* Tag variants */
+.tag-rust { color:var(--rust); border-color:var(--rust); background:var(--rust-light); }
+.tag-amber { color:var(--amber); border-color:var(--amber); background:var(--amber-light); }
+.tag-julia { color:var(--julia); border-color:var(--julia); background:var(--purple-light); }
 
 /* ===== Flow Chain ===== */
 .flow-chain { display:flex; gap:8px; align-items:center; justify-content:center; flex-wrap:wrap; }
-.fc-node { background:var(--card-bg); border:1.5px solid var(--border); border-radius:var(--radius); padding:12px 16px; text-align:center; font-size:13px; min-width:100px; }
-.fc-year { font-size:14px; font-weight:900; margin-bottom:4px; }
-.fc-arr { font-size:18px; color:var(--text-light); font-weight:700; }
+.fc-node { background:var(--card-bg); border:1.5px solid var(--border); border-radius:var(--radius); padding:12px 16px; text-align:center; font-size:13px; min-width:100px; color:var(--text); }
+.fc-node img { display:block; margin:0 auto 6px; width:40px; height:40px; }
+.fc-year { font-size:14px; font-weight:900; margin-bottom:4px; color:var(--text); }
+.fc-arr { font-size:18px; color:var(--text); font-weight:700; }
+.fc-node-coral { border-color:var(--coral); }
+.fc-node-primary { border-color:var(--primary); }
 
-/* ===== Lesson Cards ===== */
+/* ===== Three Col / Lesson Cards ===== */
+.three-col { display:flex; gap:14px; justify-content:center; align-items:stretch; width:100%; }
 .lesson-cards { display:flex; gap:16px; justify-content:center; }
-.lesson-card { background:var(--card-bg); border:1px solid var(--border); border-radius:var(--radius); padding:20px; width:200px; text-align:center; }
+.lesson-card { background:var(--card-bg); border:1px solid var(--border); border-radius:var(--radius); padding:20px; width:220px; text-align:center; }
 .lesson-num { font-size:28px; font-weight:900; color:var(--primary); }
-.lesson-title { font-size:15px; font-weight:700; margin:6px 0; }
-.lesson-desc { font-size:12px; color:#374151; }
-
-/* ===== Icon Row ===== */
-.icon-row { margin-bottom:12px; }
-.icon-cloud { position:absolute; top:0; left:0; width:100%; height:100%; opacity:0.12; display:flex; flex-wrap:wrap; align-items:center; justify-content:center; gap:24px; z-index:0; }
-.icon-cloud img { width:36px; height:36px; }
+.lesson-title { font-size:15px; font-weight:700; margin:6px 0; color:var(--text); }
+.lesson-desc { font-size:12px; color:var(--text); }
 
 /* ===== Callout ===== */
-.callout { padding:12px 20px; border-radius:var(--radius); font-size:var(--fs-caption); font-weight:600; }
+.callout { padding:12px 20px; border-radius:var(--radius); font-size:var(--fs-caption); font-weight:600; margin-top:16px; }
 .callout-blue { background:var(--primary-light); color:var(--primary); border:1px solid var(--primary); }
 
-/* ===== Stagger (instant for Remotion) ===== */
-.stagger-item { opacity:1; }
+/* ===== Utility classes for inline style reduction ===== */
+.hero-number { font-size:var(--fs-hero); font-weight:900; color:var(--primary); }
+.body-bold { font-size:var(--fs-body); font-weight:700; }
+.caption-bold { font-size:var(--fs-caption); font-weight:700; }
+.caption-text { font-size:var(--fs-caption); }
+.speed-large { font-size:36px; font-weight:900; }
+.speed-xl { font-size:48px; font-weight:900; }
+.opening-sub { margin-top:16px; font-size:var(--fs-body); }
+.mt-8 { margin-top:8px; }
+.mt-12 { margin-top:12px; }
+.mt-16 { margin-top:16px; }
+.mt-20 { margin-top:20px; }
+.mt-24 { margin-top:24px; }
+.mb-8 { margin-bottom:8px; }
+.mb-12 { margin-bottom:12px; }
+.mb-16 { margin-bottom:16px; }
+
+/* ===== Stagger Animation ===== */
+.content > * {
+    animation: staggerIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+.content > *:nth-child(1) { animation-delay: 0s; }
+.content > *:nth-child(2) { animation-delay: 0.12s; }
+.content > *:nth-child(3) { animation-delay: 0.24s; }
+.content > *:nth-child(4) { animation-delay: 0.36s; }
+.content > *:nth-child(5) { animation-delay: 0.48s; }
+.content > *:nth-child(6) { animation-delay: 0.60s; }
+
+@keyframes staggerIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+}

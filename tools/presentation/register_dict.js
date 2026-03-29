@@ -181,6 +181,9 @@ const WELL_KNOWN_TERMS = [
     { surface: 'Web', pronunciation: 'ウェブ' },
     { surface: 'Overflow', pronunciation: 'オーバーフロー' },
     // TypeScript video specific
+    { surface: 'JSDoc', pronunciation: 'ジェイエスドック' },
+    { surface: 'Flow', pronunciation: 'フロー' },
+    { surface: 'TS', pronunciation: 'ティーエス' },
     { surface: 'Anders', pronunciation: 'アンダース' },
     { surface: 'Hejlsberg', pronunciation: 'ハイルズバーグ' },
     { surface: 'Svelte', pronunciation: 'スベルト' },

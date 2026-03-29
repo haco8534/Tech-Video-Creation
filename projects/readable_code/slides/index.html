@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=1920,height=1080">
+    <title>「コードは読みやすく書け」は本当に正しいのか？</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- ===== Scene 0: オープニング ===== -->
+<div class="scene" id="scene-0">
+    <div class="content center-layout">
+        <div class="icon-cloud">
+            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/python/python-original.svg">
+            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/java/java-original.svg">
+            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/javascript/javascript-original.svg">
+            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/rust/rust-original.svg">
+            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/cplusplus/cplusplus-original.svg">
+            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/linux/linux-original.svg">
+        </div>
+        <div class="title-large">「コードは読みやすく書け」は<br>本当に正しいのか？</div>
+    </div>
+</div>
+
+<!-- ===== Scene 1: 有名な格言 ===== -->
+<div class="scene" id="scene-1">
+    <div class="content center-layout">
+        <div class="scene-title">有名な格言</div>
+        <div class="quote-block">
+            <div class="quote-mark">"</div>
+            <div class="quote-body">コードを読む時間は、<br>書く時間の<span class="accent-primary">10倍</span></div>
+            <div class="quote-source">Robert C. Martin『Clean Code』(2008)</div>
+        </div>
+        <div class="big-statement" style="margin-top:32px">だから読みやすく書こう…<span class="accent-coral">本当に？</span></div>
+    </div>
+</div>
+
+<!-- ===== Scene 2: Clean Codeの原則 ===== -->
+<div class="scene" id="scene-2">
+    <div class="content center-layout">
+        <div class="scene-title">Clean Codeの代表的な教え</div>
+        <div class="three-col">
+            <div class="arch-card border-primary">
+                <div class="card-title">関数は短く</div>
+                <div class="card-body">1つの関数は<br>1つの責務だけ</div>
+            </div>
+            <div class="arch-card border-teal">
+                <div class="card-title">名前で伝える</div>
+                <div class="card-body">変数名・関数名で<br>意図を表現する</div>
+            </div>
+            <div class="arch-card border-coral">
+                <div class="card-title">コメントより<br>コード</div>
+                <div class="card-body">コード自体を<br>読みやすくする</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ===== Scene 3: 保守コストの現実 ===== -->
+<div class="scene" id="scene-3">
+    <div class="content center-layout">
+        <div class="scene-title">ソフトウェアの保守コスト</div>
+        <div class="bar-chart">
+            <div class="bar-row">
+                <div class="bar-label">保守</div>
+                <div class="bar-track">
+                    <div class="bar-fill" style="--w:75%; background:var(--primary)"></div>
+                </div>
+                <div class="bar-value accent-primary">60-80%</div>
+            </div>
+            <div class="bar-row">
+                <div class="bar-label">新規開発</div>
+                <div class="bar-track">
+                    <div class="bar-fill" style="--w:25%; background:var(--teal)"></div>
+                </div>
+                <div class="bar-value accent-teal">20-40%</div>
+            </div>
+        </div>
+        <div class="big-statement" style="margin-top:32px">読みやすさの功績は<span class="accent-primary">大きい</span></div>
+        <div class="source">出典: 業界見積もり（条件により変動）</div>
+    </div>
+</div>
+
+<!-- ===== Scene 4: 読みやすさvs速度 ===== -->
+<div class="scene" id="scene-4">
+    <div class="content center-layout">
+        <div class="scene-title">読みやすさ vs パフォーマンス</div>
+        <div class="two-col">
+            <div class="compare-card border-teal">
+                <div class="compare-title accent-teal">Clean Code式</div>
+                <div class="compare-body">ポリモーフィズムで分離<br>各クラスに単一責務<br>抽象化で拡張性を確保</div>
+            </div>
+            <div class="compare-card border-coral">
+                <div class="compare-title accent-coral">switch文式</div>
+                <div class="compare-body">1つの関数にまとめる<br>分岐で処理を振り分け<br>データの局所性を維持</div>
+            </div>
+        </div>
+        <div class="big-statement" style="margin-top:24px">場合により<span class="accent-coral">数十倍</span>の速度差</div>
+        <div class="source">Casey Muratori "Clean Code, Horrible Performance" (2023)</div>
+    </div>
+</div>
+
+<!-- ===== Scene 5: なぜ遅くなるか ===== -->
+<div class="scene" id="scene-5">
+    <div class="content center-layout">
+        <div class="scene-title">なぜ「きれいなコード」が遅くなるのか</div>
+        <div class="flow-chain">
+            <div class="fc-node">
+                <div class="fc-node-title">クラス分離</div>
+                <div class="fc-node-sub">データが散らばる</div>
+            </div>
+            <div class="fc-arr">→</div>
+            <div class="fc-node">
+                <div class="fc-node-title">仮想関数</div>
+                <div class="fc-node-sub">間接呼び出し</div>
+            </div>
+            <div class="fc-arr">→</div>
+            <div class="fc-node">
+                <div class="fc-node-title">分岐予測失敗</div>
+                <div class="fc-node-sub">CPUパイプライン</div>
+            </div>
+            <div class="fc-arr">→</div>
+            <div class="fc-node highlight">
+                <div class="fc-node-title">キャッシュミス</div>
+                <div class="fc-node-sub">大幅な速度低下</div>
+            </div>
+        </div>
+        <div class="big-statement" style="margin-top:32px">人間の整理 ≠ CPUの整理</div>
+    </div>
+</div>
+
+<!-- ===== Scene 6: 速度優先の現場 ===== -->
+<div class="scene" id="scene-6">
+    <div class="content center-layout">
+        <div class="scene-title">パフォーマンス優先の現場</div>
+        <div class="three-col">
+            <div class="arch-card border-coral">
+                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/unrealengine/unrealengine-original.svg">
+                <div class="card-title">ゲームエンジン</div>
+                <div class="card-body">毎秒60フレーム<br>データ指向設計</div>
+            </div>
+            <div class="arch-card border-primary">
+                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/postgresql/postgresql-original.svg">
+                <div class="card-title">データベース</div>
+                <div class="card-body">マイクロ秒単位<br>クエリ最適化</div>
+            </div>
+            <div class="arch-card border-amber">
+                <div class="text-badge">暗号</div>
+                <div class="card-title">暗号ライブラリ</div>
+                <div class="card-body">定時間処理<br>セキュリティ優先</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ===== Scene 7: 医療カルテのたとえ ===== -->
+<div class="scene" id="scene-7">
+    <div class="content center-layout">
+        <div class="scene-title">「誰にとっての」読みやすさ？</div>
+        <div class="two-col">
+            <div class="compare-card border-primary">
+                <div class="compare-title accent-primary">医師同士</div>
+                <div class="compare-body">専門用語 + 略語<br>= 最も効率的</div>
+            </div>
+            <div class="compare-card border-teal">
+                <div class="compare-title accent-teal">患者向け</div>
+                <div class="compare-body">平易な言葉で説明<br>= 理解しやすい</div>
+            </div>
+        </div>
+        <div class="big-statement" style="margin-top:32px">読み手が変われば<br><span class="accent-primary">最適な書き方</span>も変わる</div>
+    </div>
+</div>
+
+<!-- ===== Scene 8: 数式コードの例 ===== -->
+<div class="scene" id="scene-8">
+    <div class="content center-layout">
+        <div class="scene-title">科学計算・シェーダーの世界</div>
+        <div class="two-col">
+            <div class="compare-card border-coral">
+                <div class="compare-title">研究者にとって読みやすい</div>
+                <div class="code-box">
+                    <div class="code-body">a = b * c + d</div>
+                </div>
+            </div>
+            <div class="compare-card border-teal">
+                <div class="compare-title">Clean Code的に正しい</div>
+                <div class="code-box">
+                    <div class="code-body">result = multiplier<br>  * coefficient<br>  + offset</div>
+                </div>
+            </div>
+        </div>
+        <div class="big-statement" style="margin-top:24px">分野の常識 ≠ 教科書の常識</div>
+    </div>
+</div>
+
+<!-- ===== Scene 9: スキル別の読み方 ===== -->
+<div class="scene" id="scene-9">
+    <div class="content center-layout">
+        <div class="scene-title">スキルで変わる「読みやすさ」</div>
+        <div class="two-col">
+            <div class="compare-card border-primary">
+                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/numpy/numpy-original.svg">
+                <div class="compare-title">NumPy</div>
+                <div class="compare-body">短い変数名が慣習<br>論文の数式表記と一致</div>
+            </div>
+            <div class="compare-card border-amber">
+                <div class="text-badge">/.*/</div>
+                <div class="compare-title">正規表現</div>
+                <div class="compare-body">熟練者には1行で明快<br>初心者にはif文20行の方が親切</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ===== Scene 10: 抽象化の迷路 ===== -->
+<div class="scene" id="scene-10">
+    <div class="content center-layout">
+        <div class="scene-title">過剰な抽象化の罠</div>
+        <div class="flow-chain">
+            <div class="fc-node">
+                <div class="fc-node-title">関数A</div>
+                <div class="fc-node-sub">処理を委譲</div>
+            </div>
+            <div class="fc-arr">→</div>
+            <div class="fc-node">
+                <div class="fc-node-title">関数B</div>
+                <div class="fc-node-sub">さらに委譲</div>
+            </div>
+            <div class="fc-arr">→</div>
+            <div class="fc-node">
+                <div class="fc-node-title">関数C</div>
+                <div class="fc-node-sub">まだ委譲</div>
+            </div>
+            <div class="fc-arr">→</div>
+            <div class="fc-node highlight">
+                <div class="fc-node-title">実処理</div>
+                <div class="fc-node-sub">たった1行</div>
+            </div>
+        </div>
+        <div class="big-statement" style="margin-top:32px">整理したはずが<span class="accent-coral">迷路</span>に</div>
+    </div>
+</div>
+
+<!-- ===== Scene 11: 先人たちの言葉 ===== -->
+<div class="scene" id="scene-11">
+    <div class="content center-layout">
+        <div class="scene-title">先人たちの声</div>
+        <div class="quote-block">
+            <div class="quote-mark">"</div>
+            <div class="quote-body">深い呼び出しの連鎖より、少し長くても<br>1つにまとまっている方が理解しやすい</div>
+            <div class="quote-source">John Carmack（id Software創業者）</div>
+        </div>
+        <div class="quote-block" style="margin-top:24px">
+            <div class="quote-mark">"</div>
+            <div class="quote-body">Clean codeは<span class="accent-primary">目的</span>ではなく<span class="accent-teal">手段</span></div>
+            <div class="quote-source">Dan Abramov（React開発者）</div>
+        </div>
+    </div>
+</div>
+
+<!-- ===== Scene 12: 場面別の指針 ===== -->
+<div class="scene" id="scene-12">
+    <div class="content center-layout">
+        <div class="scene-title">コンテキストで使い分ける</div>
+        <div class="three-col">
+            <div class="arch-card border-teal">
+                <div class="card-title">ビジネスロジック</div>
+                <div class="card-body">読みやすさ最優先<br>変更頻度が高い</div>
+            </div>
+            <div class="arch-card border-coral">
+                <div class="card-title">ホットパス</div>
+                <div class="card-body">速度優先<br>コメントで補足</div>
+            </div>
+            <div class="arch-card border-amber">
+                <div class="card-title">ライブラリAPI</div>
+                <div class="card-body">使う側の<br>分かりやすさ</div>
+            </div>
+        </div>
+        <div class="big-statement" style="margin-top:24px"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/google/google-original.svg" style="vertical-align:middle" width="40"> Googleの「Readability」認定制度</div>
+    </div>
+</div>
+
+<!-- ===== Scene 13: 3つの問い ===== -->
+<div class="scene" id="scene-13">
+    <div class="content center-layout">
+        <div class="scene-title">コードを書く前に問う3つ</div>
+        <div class="num-list">
+            <div class="num-item">
+                <div class="num-circle">1</div>
+                <div class="num-text">このコードを読むのは<span class="accent-primary">誰</span>か？</div>
+            </div>
+            <div class="num-item">
+                <div class="num-circle">2</div>
+                <div class="num-text">求められる<span class="accent-teal">性能</span>は何か？</div>
+            </div>
+            <div class="num-item">
+                <div class="num-circle">3</div>
+                <div class="num-text">この抽象化は理解を<span class="accent-coral">助けているか</span>？</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ===== Scene 14: 問い続ける姿勢 ===== -->
+<div class="scene" id="scene-14">
+    <div class="content center-layout">
+        <div class="big-statement">読みやすさは<span class="accent-primary">出発点</span>であって<br><span class="accent-teal">ゴール</span>ではない</div>
+        <div class="big-statement" style="margin-top:32px">何のために、<span class="accent-coral">誰のために</span>書くのか<br>問い続けよう</div>
+    </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

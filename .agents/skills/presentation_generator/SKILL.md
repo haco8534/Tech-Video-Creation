@@ -100,6 +100,26 @@ CSS冒頭で `@import` する（`<head>` の `<link>` は不要）：
 - **ライトテーマ（白系背景）必須**。ダークテーマは完全禁止
 - **フラットデザイン**を基本とし、過度な装飾を避ける
 
+### 🚨 データ出典の明記（必須）
+
+数値・統計・調査結果を表示するシーンには、必ず **`.source`** クラスで出典を明記する。出典のないデータは視聴者の信頼を損なうため禁止。
+
+```html
+<div class="metric-card">
+    <div class="metric-value accent-primary">89%</div>
+    <div class="metric-label">利用経験率</div>
+</div>
+<!-- ↑のようなデータの後に必ず出典を添える -->
+<div class="source">出典: State of JS 2024</div>
+```
+
+**ルール:**
+- 調査名・レポート名・年度を含めること（例: `State of JS 2024`, `GitHub Octoverse 2024`）
+- メトリクスカード、バーチャート、数値インパクト等のデータ表示シーンが対象
+- 歴史的事実（「1995年にJS誕生」等）には不要
+- `.source` は `display:none` にしない（表示する）
+- **CSSリーク対策**: 他プロジェクトの `.source { display:none }` が上書きするため、`.content .source { display:block !important; }` で定義すること
+
 ### 🚨 脱AI感デザイン原則
 
 | ❌ 禁止 | ✅ 代替 |
@@ -110,7 +130,7 @@ CSS冒頭で `@import` する（`<head>` の `<link>` は不要）：
 | 全シーン左右対称レイアウト | 非対称・余白の偏り |
 | 全シーン同一レイアウト | シーンごとにレイアウト変化 |
 | グレーテキスト (`#6b7280` 等) | `#1a1d23`（メインと同色） |
-| 全スライドに補足サブテキスト | `.subtitle-text`, `.footnote`, `.source` は `display:none` |
+| 全スライドに補足サブテキスト | `.subtitle-text`, `.footnote` は `display:none` |
 | 画面左上への章タイトル配置 | Remotion側で自動付与されるため不要 |
 
 ### 🚨 inline style 最小化
@@ -148,37 +168,50 @@ inline styleは以下の場合**のみ**許可する:
 
 ---
 
-## 🔧 技術ロゴ: devicon CDN（必須）
+## 🔧 技術ロゴ: devicon（メイン）+ theSVG（サブ）
 
-技術・言語・ツール・企業のロゴは **devicon CDN の `<img>` タグ** で配置する。インラインSVGでロゴを手書き再現することは**完全禁止**。
+技術・言語・ツール・企業のロゴは **`<img>` タグ** で配置する。インラインSVGでロゴを手書き再現することは**完全禁止**。
+
+### アイコンソースの優先順位
+
+1. **devicon CDN**（メイン） — プログラミング言語・開発ツール・フレームワークに強い
+2. **theSVG**（サブ） — deviconに無いブランド（暗号通貨、企業サービス等）を補完
+3. **テキストバッジ** — どちらにも無い場合の最終手段
+
+> 🚨 **必ずdeviconを先に確認し、存在しない場合のみtheSVGを使う。** 同一プロジェクト内でソースが混在しても問題ない（どちらも `<img>` タグなのでCSS制御は共通）。
 
 ### CDN URL形式
+
 ```
+# devicon（メイン）
 https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/{name}/{name}-original.svg
+
+# theSVG（サブ）
+https://www.thesvg.org/icons/{slug}/default.svg
 ```
 
 ### 使用例
 ```html
-<!-- カード内のロゴ -->
+<!-- devicon: プログラミング言語 -->
 <div class="arch-card">
-    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/rust/rust-original.svg" width="48" height="48">
+    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/rust/rust-original.svg">
     <div class="card-title">Rust</div>
 </div>
 
-<!-- オープニングのアイコンクラウド背景 -->
-<div class="icon-cloud">
-    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/python/python-original.svg">
-    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/javascript/javascript-original.svg">
-    ...
+<!-- theSVG: deviconに無いブランド -->
+<div class="arch-card">
+    <img src="https://www.thesvg.org/icons/ethereum/default.svg">
+    <div class="card-title">Ethereum</div>
 </div>
 
-<!-- タイトル横のロゴ -->
-<div class="icon-row">
-    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/rust/rust-original.svg" width="72" height="72">
+<!-- テキストバッジ: どちらにも無い場合 -->
+<div class="arch-card">
+    <div class="text-badge">DeFi</div>
+    <div class="card-title">分散型金融</div>
 </div>
 ```
 
-### 主要アイコン名一覧（よく使うもの）
+### devicon 主要アイコン名一覧
 
 | カテゴリ | name |
 |---------|------|
@@ -188,16 +221,27 @@ https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/{name}/{name}-original
 | OS | `linux`, `windows11`, `apple` |
 | ツール | `git`, `github`, `gitlab`, `vscode`, `nodejs`, `npm` |
 | DB | `postgresql`, `mysql`, `mongodb`, `redis` |
-| その他 | `android`, `unrealengine`, `unity`, `cloudflare`, `embeddedc` |
+| その他 | `android`, `unrealengine`, `unity`, `cloudflare`, `embeddedc`, `solidity`, `facebook` |
 
-> deviconに存在しない企業・サービス（Discord等）は、テキストバッジ `<div class="text-badge">DC</div>` で代替する。SVGで手書き再現しない。
+### theSVG で補完するアイコン例（deviconに無いもの）
+
+| ブランド | slug | 用途例 |
+|---------|------|--------|
+| Ethereum | `ethereum` | 暗号通貨・ブロックチェーン |
+| Bitcoin | `bitcoin` | 暗号通貨 |
+| Stripe | `stripe` | 決済 |
+| Figma | `figma` | デザインツール |
+| Notion | `notion` | ドキュメント |
+| Discord | `discord` | コミュニケーション |
+
+> deviconにもtheSVGにも存在しない場合のみ、テキストバッジ `<div class="text-badge">XX</div>` で代替する。SVGで手書き再現しない。
 
 ### ロゴ配置の判断基準（文脈駆動）
 
 | いつ使うか | どう使うか | 例 |
 |-----------|-----------|----|
-| **特定の技術名が登場したとき** | その技術のdevicon `<img>` を**必ず**表示 | 「Dockerとは」→ docker-original.svg |
-| **複数技術を列挙・比較するとき** | すべてのロゴを**並べて**表示 | Python, JS, C, Rust, Go等のロゴを一列に |
+| **特定の技術名が登場したとき** | devicon → theSVG → テキストバッジの順で`<img>`を**必ず**表示 | 「Dockerとは」→ devicon、「Ethereumとは」→ theSVG |
+| **複数技術を列挙・比較するとき** | すべてのロゴを**並べて**表示（ソース混在OK） | Python(devicon), Ethereum(theSVG)を一列に |
 | **歴史・変遷を語るとき** | 各時代のキーテクノロジーのロゴを配置 | 各ロゴ入りfc-nodeカード |
 | **抽象的議論のとき** | 無理にアイコンを入れない | テキスト中心でOK |
 
@@ -361,9 +405,10 @@ projects/{project_id}/slides/
 - [ ] `transition` を使用していないか
 - [ ] staggerIn以外の `@keyframes` を使用していないか
 - [ ] `--text-light` が `#1a1d23` になっているか（グレー禁止）
-- [ ] `.subtitle-text`, `.footnote`, `.source` が `display:none` か
+- [ ] `.subtitle-text`, `.footnote` が `display:none` か
+- [ ] **数値・統計データを表示するシーンに `.source` で出典が明記されているか**
 - [ ] ライトテーマ（白系背景）であるか
-- [ ] **技術ロゴはすべてdevicon CDNの `<img>` タグで配置されているか（インラインSVGで再現していないか）**
+- [ ] **技術ロゴはすべてdevicon CDNまたはtheSVGの `<img>` タグで配置されているか（インラインSVGで再現していないか）**
 - [ ] **カード・グリッドが6枚以上並んでいないか**
 - [ ] **inline styleが3プロパティ以上含まれていないか（CSSクラスに分離すべき）**
 - [ ] **`.timeline` クラスを使用していないか（CSSリーク防止）**

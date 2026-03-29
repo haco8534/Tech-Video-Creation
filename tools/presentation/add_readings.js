@@ -25,6 +25,56 @@ const map = JSON.parse(fs.readFileSync(MAP_FILE, 'utf-8'));
 // プレースホルダ方式: 長いものから先に置換してプレースホルダに、最後に戻す
 const DICT = [
   // 最長一致を優先（部分文字列の衝突を防ぐ）
+  // fullstack_myth specific (長い複合語を先に)
+  ['but oftentimes better than a master of one', 'バット オフンタイムズ ベター ザン ア マスター オブ ワン'],
+  ['Jack of all trades, master of none', 'ジャック オブ オール トレーズ、マスター オブ ノン'],
+  ['One Person Framework', 'ワンパーソンフレームワーク'],
+  ['Dan Abramov', 'ダン アブラモフ'],
+  ['Ruby on Rails', 'ルビー オン レイルズ'],
+  ['Rails World', 'レイルズ ワールド'],
+  ['Kubernetes', 'クバネティス'],
+  ['MongoDB', 'モンゴデービー'],
+  ['LinkedIn', 'リンクトイン'],
+  ['Flexbox', 'フレックスボックス'],
+  ['Spotify', 'スポティファイ'],
+  ['oftentimes', 'オフンタイムズ'],
+  ['Framework', 'フレームワーク'],
+  ['Abramov', 'アブラモフ'],
+  ['Docker', 'ドッカー'],
+  ['Cursor', 'カーソル'],
+  ['better', 'ベター'],
+  ['master', 'マスター'],
+  ['trades', 'トレーズ'],
+  ['Person', 'パーソン'],
+  ['Redis', 'レディス'],
+  ['MySQL', 'マイエスキューエル'],
+  ['gRPC', 'ジーアールピーシー'],
+  ['Grid', 'グリッド'],
+  ['Next.js', 'ネクストジェイエス'],
+  ['GraphQL', 'グラフキューエル'],
+  ['Jack', 'ジャック'],
+  ['none', 'ノン'],
+  ['than', 'ザン'],
+  ['REST', 'レスト'],
+  ['PHP', 'ピーエイチピー'],
+  ['One', 'ワン'],
+  ['all', 'オール'],
+  ['but', 'バット'],
+  // readable_code specific
+  ['AbstractSingletonProxyFactoryBean', 'アブストラクト シングルトン プロキシ ファクトリー ビーン'],
+  ['id Software', 'アイディー ソフトウェア'],
+  ['Clean Code', 'クリーンコード'],
+  ['Readability', 'リーダビリティ'],
+  ['PostgreSQL', 'ポストグレスキューエル'],
+  ['SQLite', 'エスキューライト'],
+  ['Software', 'ソフトウェア'],
+  ['switch', 'スイッチ'],
+  ['Clean', 'クリーン'],
+  ['Code', 'コード'],
+  ['code', 'コード'],
+  ['if', 'イフ'],
+  ['id', 'アイディー'],
+  ['Crafting Interpreters', 'クラフティング インタープリターズ'],
   ['Stack Overflow Developer Survey', 'スタックオーバーフロー デベロッパーサーベイ'],
   ['Windows Subsystem for Linux', 'ウィンドウズ サブシステム フォー リナックス'],
   ['Classic Mac OS', 'クラシック マック オーエス'],
@@ -74,6 +124,12 @@ const DICT = [
   ['Windows', 'ウィンドウズ'],
   ['Mac', 'マック'],          // Machの後で
   ['iOS', 'アイオーエス'],
+  ['Core Web Vitals', 'コア ウェブ バイタルズ'],  // Webより先！
+  ['WebAssembly', 'ウェブアセンブリ'],  // Webより先！
+  ['web3', 'ウェブスリー'],  // Webより先！
+  ['Web3', 'ウェブスリー'],  // Webより先！
+  ['Web2', 'ウェブツー'],    // Webより先！
+  ['Web1', 'ウェブワン'],    // Webより先！
   ['Web', 'ウェブ'],
   ['CPU', 'シーピーユー'],
   ['GUI', 'ジーユーアイ'],
@@ -109,14 +165,18 @@ const DICT = [
   ['Rust', 'ラスト'],
   ['Mojo', 'モジョ'],
   ['Julia', 'ジュリア'],
+  ['JavaScript', 'ジャバスクリプト'],  // Javaより先！（既存）
   ['Java', 'ジャバ'],
   ['C++', 'シープラスプラス'],
   ['HPC', 'エイチピーシー'],
   ['ATM', 'エーティーエム'],
   ['PEP', 'ペップ'],
   ['GIL', 'ジル'],
+  ['Google Maps', 'グーグル マップス'],  // Googleより先！
   ['Google', 'グーグル'],  // Goより先！
+  ['Notion', 'ノーション'],  // Noより先！
   ['UC', 'ユーシー'],
+  ['CSS', 'シーエスエス'],  // CSより先！
   ['CS', 'シーエス'],
   ['Go', 'ゴー'],
   ['AI', 'エーアイ'],
@@ -125,6 +185,66 @@ const DICT = [
   ['for', 'フォー'],
   ['PC', 'ピーシー'],
   ['SNS', 'エスエヌエス'],
+  // css_programming_language specific
+  ['Stack Overflow Developer Survey', 'スタックオーバーフロー デベロッパーサーベイ'],
+  ['Custom Properties', 'カスタム プロパティーズ'],
+  ['Container Queries', 'コンテナ クエリーズ'],
+  ['CSS Working Group', 'シーエスエス ワーキンググループ'],
+  ['Fox-Epstein', 'フォックスエプスタイン'],
+  ['State of CSS', 'ステート オブ シーエスエス'],
+  ['nth-child', 'エヌスチャイルド'],
+  ['Hakon Wium Lie', 'ホーコン ウィウム リー'],
+  ['W3Techs', 'ダブリュースリーテックス'],
+  ['Nesting', 'ネスティング'],
+  ['W3C', 'ダブリュースリーシー'],
+  ['Container', 'コンテナ'],
+  ['Properties', 'プロパティーズ'],
+  ['Queries', 'クエリーズ'],
+  ['Working', 'ワーキング'],
+  ['Group', 'グループ'],
+  ['counter', 'カウンター'],
+  ['checked', 'チェックド'],
+  ['property', 'プロパティ'],
+  ['Rule', 'ルール'],
+  ['clamp', 'クランプ'],
+  ['hover', 'ホバー'],
+  ['State', 'ステート'],
+  ['calc', 'カルク'],
+  ['Sass', 'サス'],
+  ['has', 'ハズ'],
+  ['var', 'バー'],
+  ['max', 'マックス'],
+  ['min', 'ミン'],
+  ['Eli', 'イーライ'],
+  ['YES', 'イエス'],
+  ['NO', 'ノー'],
+  ['SQL', 'エスキューエル'],
+  ['DSL', 'ディーエスエル'],
+  ['of', 'オブ'],
+  // creating_programming_language specific
+  ['Kotlin Native', 'コトリン ネイティブ'],
+  ['ANTLR', 'アントラー'],
+  ['HOPL', 'エイチオーピーエル'],
+  ['LLVM', 'エルエルブイエム'],
+  ['Intel', 'インテル'],
+  ['AST', 'エーエスティー'],
+  ['JIT', 'ジット'],
+  ['BNF', 'ビーエヌエフ'],
+  ['ABC', 'エービーシー'],
+  ['V8', 'ブイエイト'],
+  ['IR', 'アイアール'],
+  ['Lexer', 'レキサー'],
+  ['Parser', 'パーサー'],
+  ['Guido', 'グイド'],
+  ['Graydon Hoare', 'グレイドン ホアレ'],
+  ['Rob Pike', 'ロブ パイク'],
+  ['Ken Thompson', 'ケン トンプソン'],
+  ['Swift', 'スウィフト'],
+  ['Kotlin', 'コトリン'],
+  ['Ruby', 'ルビー'],
+  ['TypeScript', 'タイプスクリプト'],
+  ['malloc', 'マロック'],
+  ['free', 'フリー'],
   // rust_vs_cpp specific
   ['UnrealEngine', 'アンリアルエンジン'],
   ['Unreal Engine', 'アンリアルエンジン'],
@@ -144,6 +264,121 @@ const DICT = [
   ['Stack Overflow', 'スタックオーバーフロー'],
   ['SIMD', 'シムド'],
   ['VM', 'ブイエム'],
+  // heavy_web_apps specific
+  ['Single Page Application', 'シングル ページ アプリケーション'],
+  ['Server Components', 'サーバー コンポーネンツ'],
+  ['create-react-app', 'クリエイト リアクト アップ'],
+  ['HTTP Archive', 'エイチティーティーピー アーカイブ'],
+  ['node_modules', 'ノード モジュールズ'],
+  ['Space Jam', 'スペース ジャム'],
+  ['Hello World', 'ハロー ワールド'],
+  ['left-pad', 'レフトパッド'],
+  ['ReactDOM', 'リアクトドム'],
+  ['A/Bテスト', 'エービーテスト'],
+  ['Quake1', 'クエイクワン'],
+  ['Facebook', 'フェイスブック'],
+  ['Tonsky', 'トンスキー'],
+  ['Chrome', 'クローム'],
+  ['Figma', 'フィグマ'],
+  ['Gmail', 'ジーメール'],
+  ['Astro', 'アストロ'],
+  ['Slack', 'スラック'],
+  ['React', 'リアクト'],
+  ['Babel', 'バベル'],
+  ['Angular', 'アンギュラー'],
+  ['Svelte', 'スベルト'],
+  ['Amazon', 'アマゾン'],
+  ['Server', 'サーバー'],
+  ['Single', 'シングル'],
+  ['gzip', 'ジージップ'],
+  ['HTMX', 'エイチティーエムエックス'],
+  ['HTTP', 'エイチティーティーピー'],
+  ['HTML', 'エイチティーエムエル'],
+  ['JSON', 'ジェイソン'],
+  ['Ajax', 'エイジャックス'],
+  ['DOM', 'ドム'],
+  ['SPA', 'エスピーエー'],
+  ['npm', 'エヌピーエム'],
+  ['Vue', 'ビュー'],
+  ['JSDoc', 'ジェイエスドック'],  // JSより先！
+  ['JS', 'ジェイエス'],
+  ['TS', 'ティーエス'],
+  ['KB', 'キロバイト'],
+  ['MB', 'メガバイト'],
+  ['GB', 'ギガバイト'],
+  ['3D', 'スリーディー'],
+  // typescript_savior_or_killer specific
+  ['undefined is not a function', 'アンデファインド イズ ノット ア ファンクション'],
+  ['DefinitelyTyped', 'デフィニトリータイプド'],
+  ['Anders Hejlsberg', 'アンダース ヘルスバーグ'],
+  ['Brendan Eich', 'ブレンダン アイク'],
+  ['Conditional Types', 'コンディショナル タイプス'],
+  ['Mapped Types', 'マップド タイプス'],
+  ['Template Literal Types', 'テンプレート リテラル タイプス'],
+  ['Yak Shaving', 'ヤクシェービング'],
+  ['Rich Harris', 'リッチ ハリス'],
+  ['tsconfig.json', 'ティーエスコンフィグ ジェイソン'],
+  ['Flow', 'フロー'],
+  ['ts-ignore', 'ティーエス イグノア'],
+  ['Copilot', 'コパイロット'],
+  ['GitHub', 'ギットハブ'],
+  ['VSCode', 'ブイエスコード'],
+  ['Airbnb', 'エアビーアンドビー'],
+  ['Pascal', 'パスカル'],
+  ['Delphi', 'デルファイ'],
+  ['Turbo', 'ターボ'],
+  ['Rails', 'レイルズ'],
+  ['Dart', 'ダート'],
+  ['Deno', 'ディーノ'],
+  ['Bun', 'バン'],
+  ['DHH', 'ディーエイチエイチ'],
+  ['TC39', 'ティーシーさんじゅうきゅう'],
+  ['undefined', 'アンデファインド'],
+  ['function', 'ファンクション'],
+  ['any', 'エニー'],
+  ['not', 'ノット'],
+  // what_was_web3 specific
+  ['Moxie Marlinspike', 'モクシー マーリンスパイク'],
+  ['Three Arrows Capital', 'スリー アローズ キャピタル'],
+  ['Celsius Network', 'セルシウス ネットワーク'],
+  ['Gavin Wood', 'ギャビン ウッド'],
+  ['Reality Labs', 'リアリティー ラブズ'],
+  ['Tornado Cash', 'トルネード キャッシュ'],
+  ['Mastercard', 'マスターカード'],
+  ['Decentraland', 'ディセントラランド'],
+  ['dappGambl', 'ダップギャンブル'],
+  ['Bloomberg', 'ブルームバーグ'],
+  ['Statista', 'スタティスタ'],
+  ['Ethereum', 'イーサリアム'],
+  ['Christie', 'クリスティーズ'],
+  ['TerraUSD', 'テラユーエスディー'],
+  ['Alchemy', 'アルケミー'],
+  ['YouTube', 'ユーチューブ'],
+  ['Twitter', 'ツイッター'],
+  ['Beeple', 'ビープル'],
+  ['Infura', 'インフュラ'],
+  ['Signal', 'シグナル'],
+  ['Terra', 'テラ'],
+  ['LUNA', 'ルナ'],
+  ['USDT', 'ユーエスディーティー'],
+  ['USDC', 'ユーエスディーシー'],
+  ['Meta', 'メタ'],
+  ['Visa', 'ビザ'],
+  ['DeFi', 'ディーファイ'],
+  ['a16z', 'エーシックスティーンゼット'],
+  ['NFT', 'エヌエフティー'],
+  ['DAO', 'ダオ'],
+  ['ETH', 'イーサ'],
+  ['FTX', 'エフティーエックス'],
+  ['SBF', 'エスビーエフ'],
+  ['TVL', 'ティーブイエル'],
+  ['PoS', 'プルーフオブステーク'],
+  ['UX', 'ユーエックス'],
+  ['VC', 'ブイシー'],
+  ['URL', 'ユーアールエル'],
+  ['API', 'エーピーアイ'],
+  ['CI', 'シーアイ'],
+  ['CD', 'シーディー'],
 ];
 
 // コマンド系は文脈依存なので正規表現で処理
@@ -220,6 +455,48 @@ for (const scene of map.scenes) {
       }
     }
   }
+}
+
+// ===== 未登録英単語の自動検出 =====
+// DICT置換後に残った英単語（2文字以上）を検出する
+function detectUnregisteredTokens(text) {
+  // DICT置換をシミュレート（プレースホルダを空文字に）
+  let r = text;
+  for (let i = 0; i < DICT.length; i++) {
+    const [search] = DICT[i];
+    if (r.includes(search)) {
+      r = r.split(search).join('');
+    }
+  }
+  // CMD_REGEX置換もシミュレート
+  for (const [re] of CMD_REGEX) {
+    r = r.replace(re, '');
+  }
+  // 残った英単語トークンを抽出（2文字以上）
+  const remaining = r.match(/[a-zA-Z][a-zA-Z0-9.#+\-]{1,}/g) || [];
+  return remaining;
+}
+
+const unregistered = new Map(); // token → 出現箇所リスト
+for (const scene of map.scenes) {
+  for (const line of scene.lines) {
+    const tokens = detectUnregisteredTokens(line.text);
+    for (const token of tokens) {
+      if (!unregistered.has(token)) unregistered.set(token, []);
+      unregistered.get(token).push(`scene ${scene.id}: "${line.text}"`);
+    }
+  }
+}
+
+if (unregistered.size > 0) {
+  console.error(`\n❌ 未登録の英単語が ${unregistered.size} 件見つかりました。DICTに追加してください:\n`);
+  for (const [token, locations] of unregistered) {
+    console.error(`  ⚠️  "${token}"`);
+    console.error(`      例: ${locations[0]}`);
+  }
+  console.error(`\nadd_readings.js の DICT に上記の単語とカタカナ読みを追加してください。`);
+  console.error('読み間違いを防ぐため、未登録の英単語がある状態では処理を中断します。\n');
+  process.exit(1);
 }
 
 // バックアップ保存

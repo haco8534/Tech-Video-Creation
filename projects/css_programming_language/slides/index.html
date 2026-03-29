@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=1920,height=1080">
+    <title>CSSはプログラミング言語か？</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- ===== Scene 0: オープニング ===== -->
+<div class="scene" id="scene-0">
+    <div class="content center-layout">
+        <div class="icon-cloud">
+            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/css3/css3-original.svg">
+            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/html5/html5-original.svg">
+            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/javascript/javascript-original.svg">
+            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/python/python-original.svg">
+            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/sass/sass-original.svg">
+        </div>
+        <div class="title-large">CSSはプログラミング言語か？</div>
+        <div class="big-statement">30年の進化と終わらない論争</div>
+    </div>
+</div>
+
+<!-- ===== Scene 1: CSSの存在感 ===== -->
+<div class="scene" id="scene-1">
+    <div class="content center-layout">
+        <div class="scene-title">CSSの存在感</div>
+        <div class="two-col">
+            <div class="metric-card border-primary">
+                <div class="metric-value accent-primary">95%+</div>
+                <div class="metric-label">全Webサイトが使用</div>
+            </div>
+            <div class="metric-card border-teal">
+                <div class="metric-value accent-teal">52%</div>
+                <div class="metric-label">開発者の使用率（第2位）</div>
+            </div>
+        </div>
+        <div class="source">出典: W3Techs 2025 / Stack Overflow Developer Survey 2024</div>
+    </div>
+</div>
+
+<!-- ===== Scene 2: プログラミング言語の定義 ===== -->
+<div class="scene" id="scene-2">
+    <div class="content center-layout">
+        <div class="scene-title">「プログラミング言語」の3つの基準</div>
+        <div class="three-col">
+            <div class="arch-card border-primary">
+                <div class="card-title">チューリング完全</div>
+                <div class="card-body">条件分岐・繰り返し・<br>メモリ読み書きが可能</div>
+            </div>
+            <div class="arch-card border-teal">
+                <div class="card-title">コンピュータへの指示</div>
+                <div class="card-body">機械に対する命令を<br>記述する言語</div>
+            </div>
+            <div class="arch-card border-amber">
+                <div class="text-badge" style="background:var(--amber)">DSL</div>
+                <div class="card-title">ドメイン固有言語</div>
+                <div class="card-body">特定領域に特化した<br>プログラミング言語</div>
+            </div>
+        </div>
+        <div class="big-statement">統一された定義は<span class="accent-coral">存在しない</span></div>
+    </div>
+</div>
+
+<!-- ===== Scene 3: CSSの進化年表 ===== -->
+<div class="scene" id="scene-3">
+    <div class="content center-layout">
+        <div class="scene-title">CSSの30年</div>
+        <div class="flow-chain">
+            <div class="fc-node">
+                <div class="year-badge">1996</div>
+                <div class="fc-node-title">CSS1</div>
+                <div class="fc-node-sub">色・フォント</div>
+            </div>
+            <div class="fc-arr">→</div>
+            <div class="fc-node">
+                <div class="year-badge">2012</div>
+                <div class="fc-node-title">calc()</div>
+                <div class="fc-node-sub">四則演算</div>
+            </div>
+            <div class="fc-arr">→</div>
+            <div class="fc-node">
+                <div class="year-badge">2017</div>
+                <div class="fc-node-title">CSS変数</div>
+                <div class="fc-node-sub">Custom Properties</div>
+            </div>
+            <div class="fc-arr">→</div>
+            <div class="fc-node highlight">
+                <div class="year-badge">2022</div>
+                <div class="fc-node-title">:has()</div>
+                <div class="fc-node-sub">条件分岐</div>
+            </div>
+            <div class="fc-arr">→</div>
+            <div class="fc-node highlight">
+                <div class="year-badge">2023</div>
+                <div class="fc-node-title">Nesting</div>
+                <div class="fc-node-sub">ネスト構文</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ===== Scene 4: :hasの衝撃 ===== -->
+<div class="scene" id="scene-4">
+    <div class="content center-layout">
+        <div class="scene-title">:has() ― CSSの条件分岐</div>
+        <div class="code-box">
+            <div class="code-head">CSS</div>
+            <div class="code-body"><span class="code-comment">/* フォーム内にエラーがあれば枠を赤く */</span>
+<span class="code-selector">.form:has(input:invalid)</span> {
+    <span class="code-property">border-color</span>: <span class="code-value">red</span>;
+}
+
+<span class="code-comment">/* 画像を含むカードだけレイアウト変更 */</span>
+<span class="code-selector">.card:has(img)</span> {
+    <span class="code-property">grid-template-rows</span>: <span class="code-value">auto 1fr</span>;
+}</div>
+        </div>
+        <div class="big-statement">JavaScript無しで<span class="accent-primary">条件分岐</span></div>
+    </div>
+</div>
+
+<!-- ===== Scene 5: 5つの能力 ===== -->
+<div class="scene" id="scene-5">
+    <div class="content center-layout">
+        <div class="scene-title">CSSの「プログラミング的」能力</div>
+        <div class="three-col">
+            <div class="arch-card border-primary">
+                <div class="card-title">演算</div>
+                <div class="card-body">calc / min / max / clamp</div>
+            </div>
+            <div class="arch-card border-teal">
+                <div class="card-title">変数</div>
+                <div class="card-body">Custom Properties</div>
+            </div>
+            <div class="arch-card border-amber">
+                <div class="card-title">条件分岐</div>
+                <div class="card-body">@media / :has() / Container Queries</div>
+            </div>
+        </div>
+        <div class="two-col">
+            <div class="arch-card border-coral">
+                <div class="card-title">繰り返し</div>
+                <div class="card-body">nth-child / counter</div>
+            </div>
+            <div class="arch-card border-primary">
+                <div class="card-title">状態管理</div>
+                <div class="card-body">:hover / :checked / :focus</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ===== Scene 6: CSSの限界 ===== -->
+<div class="scene" id="scene-6">
+    <div class="content center-layout">
+        <div class="scene-title">CSSにできないこと</div>
+        <div class="two-col">
+            <div class="compare-card border-teal">
+                <div class="compare-title accent-teal">できる</div>
+                <ul class="compare-list">
+                    <li>演算・変数・条件分岐</li>
+                    <li>繰り返しパターン</li>
+                    <li>ビジュアルの状態管理</li>
+                </ul>
+            </div>
+            <div class="compare-card border-coral">
+                <div class="compare-title accent-coral">できない</div>
+                <ul class="compare-list">
+                    <li>汎用アルゴリズム</li>
+                    <li>関数の定義・再利用</li>
+                    <li>ファイル / ネットワーク I/O</li>
+                </ul>
+            </div>
+        </div>
+        <div class="big-statement">ビジュアル制御に<span class="accent-primary">特化</span>した言語</div>
+    </div>
+</div>
+
+<!-- ===== Scene 7: Rule 110 ===== -->
+<div class="scene" id="scene-7">
+    <div class="content center-layout">
+        <div class="scene-title">CSS + HTMLでチューリング完全？</div>
+        <div class="svg-diagram">
+            <svg width="900" height="260" viewBox="0 0 900 260">
+                <rect x="20" y="20" width="250" height="220" rx="12" fill="#ffffff" stroke="#d1d5db" stroke-width="2" />
+                <text x="145" y="70" text-anchor="middle" font-family="Zen Maru Gothic" font-size="22" font-weight="900" fill="#1a1d23">CSS + HTML</text>
+                <rect x="60" y="100" width="40" height="40" rx="6" fill="#dbeafe" stroke="#2563eb" stroke-width="2" />
+                <rect x="110" y="100" width="40" height="40" rx="6" fill="#2563eb" />
+                <rect x="160" y="100" width="40" height="40" rx="6" fill="#dbeafe" stroke="#2563eb" stroke-width="2" />
+                <text x="145" y="175" text-anchor="middle" font-family="Zen Maru Gothic" font-size="16" font-weight="700" fill="#1a1d23">チェックボックス</text>
+                <text x="145" y="200" text-anchor="middle" font-family="Zen Maru Gothic" font-size="16" font-weight="700" fill="#1a1d23">+ :checked</text>
+                <text x="370" y="135" text-anchor="middle" font-family="Zen Maru Gothic" font-size="36" font-weight="900" fill="#2563eb">→</text>
+                <rect x="460" y="20" width="200" height="220" rx="12" fill="#ffffff" stroke="#d1d5db" stroke-width="2" />
+                <text x="560" y="70" text-anchor="middle" font-family="Zen Maru Gothic" font-size="22" font-weight="900" fill="#1a1d23">Rule 110</text>
+                <text x="560" y="110" text-anchor="middle" font-family="Zen Maru Gothic" font-size="16" font-weight="700" fill="#0891b2">セル・オートマトン</text>
+                <text x="560" y="145" text-anchor="middle" font-family="Zen Maru Gothic" font-size="16" font-weight="700" fill="#1a1d23">チューリング完全</text>
+                <text x="560" y="180" text-anchor="middle" font-family="Zen Maru Gothic" font-size="14" fill="#1a1d23">(Cook, 2004)</text>
+                <text x="750" y="135" text-anchor="middle" font-family="Zen Maru Gothic" font-size="18" font-weight="700" fill="#dc2626">ただしユーザー入力が必要</text>
+            </svg>
+        </div>
+        <div class="big-statement">条件付きで<span class="accent-teal">Yes</span></div>
+    </div>
+</div>
+
+<!-- ===== Scene 8: 宣言型の世界 ===== -->
+<div class="scene" id="scene-8">
+    <div class="content center-layout">
+        <div class="scene-title">命令型 vs 宣言型</div>
+        <div class="two-col">
+            <div class="compare-card border-amber">
+                <div class="compare-title accent-amber">命令型（How）</div>
+                <div class="compare-body">「どうやるか」を一歩ずつ記述</div>
+                <div class="icon-row">
+                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/python/python-original.svg">
+                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/c/c-original.svg">
+                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/javascript/javascript-original.svg">
+                </div>
+            </div>
+            <div class="compare-card border-teal">
+                <div class="compare-title accent-teal">宣言型（What）</div>
+                <div class="compare-body">「何が欲しいか」を記述</div>
+                <div class="icon-row">
+                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/css3/css3-original.svg">
+                    <div class="text-badge" style="background:var(--teal)">SQL</div>
+                </div>
+            </div>
+        </div>
+        <div class="big-statement"><span class="accent-teal">SQL</span>は宣言型だがプログラミング言語</div>
+    </div>
+</div>
+
+<!-- ===== Scene 9: ゲートキーピング ===== -->
+<div class="scene" id="scene-9">
+    <div class="content center-layout">
+        <div class="scene-title">文化的な背景</div>
+        <div class="quote-block">
+            <div class="quote-mark">"</div>
+            <div class="quote-body">CSSはプログラミング言語じゃない<br>＝ フロントエンドは本物のプログラミングじゃない</div>
+            <div class="quote-source">2010年代に見られた風潮</div>
+        </div>
+        <div class="big-statement">技術の議論と<span class="accent-coral">人の価値</span>を混同しない</div>
+    </div>
+</div>
+
+<!-- ===== Scene 10: スペクトラム ===== -->
+<div class="scene" id="scene-10">
+    <div class="content center-layout">
+        <div class="scene-title">プログラミング言語のスペクトラム</div>
+        <div class="flow-chain">
+            <div class="fc-node">
+                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/html5/html5-original.svg">
+                <div class="fc-node-title">HTML</div>
+                <div class="fc-node-sub">マークアップ</div>
+            </div>
+            <div class="fc-arr">→</div>
+            <div class="fc-node highlight">
+                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/css3/css3-original.svg">
+                <div class="fc-node-title">CSS</div>
+                <div class="fc-node-sub">宣言的スタイリング</div>
+            </div>
+            <div class="fc-arr">→</div>
+            <div class="fc-node">
+                <div class="text-badge" style="background:var(--teal)">SQL</div>
+                <div class="fc-node-title">SQL</div>
+                <div class="fc-node-sub">宣言型DSL</div>
+            </div>
+            <div class="fc-arr">→</div>
+            <div class="fc-node">
+                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/python/python-original.svg">
+                <div class="fc-node-title">Python</div>
+                <div class="fc-node-sub">汎用言語</div>
+            </div>
+            <div class="fc-arr">→</div>
+            <div class="fc-node">
+                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/c/c-original.svg">
+                <div class="fc-node-title">C</div>
+                <div class="fc-node-sub">汎用言語</div>
+            </div>
+        </div>
+        <div class="big-statement">白黒ではなく<span class="accent-primary">グラデーション</span></div>
+    </div>
+</div>
+
+<!-- ===== Scene 11: 本当に大切なこと ===== -->
+<div class="scene" id="scene-11">
+    <div class="content center-layout">
+        <div class="scene-title">本当に大切なこと</div>
+        <div class="num-list">
+            <div class="num-item">
+                <div class="num-circle">1</div>
+                <div class="num-text">「プログラミング言語」に唯一の正解の定義はない</div>
+            </div>
+            <div class="num-item">
+                <div class="num-circle">2</div>
+                <div class="num-text">CSSは30年で劇的に進化した ― 変数・演算・条件分岐</div>
+            </div>
+            <div class="num-item">
+                <div class="num-circle">3</div>
+                <div class="num-text">大切なのは「何と呼ぶか」ではなく「何ができるか」</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

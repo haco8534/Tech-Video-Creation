@@ -8,8 +8,8 @@ import {
     staticFile,
     interpolate,
 } from 'remotion';
-import { MathLayout } from '../../components/layouts/MathLayout';
-import { Subtitle } from '../../components/ui/Subtitle';
+import { MathLayout } from '@components/layouts/MathLayout';
+import { Subtitle } from '@components/ui/Subtitle';
 import { SUBTITLE_DATA, TOTAL_FRAMES, SubtitleEntry } from './subtitleData';
 import { SCENE_COMPONENTS } from './scenes/SlideScenes';
 import { isMouthOpen } from './lipSyncData';
@@ -51,7 +51,6 @@ function getImageForSpeaker(
     if (variants.length === 0) return '';
     const variant = variants[entryIndex % variants.length];
     if (!isSpeaking || !audioFile) return variant.close;
-    // 音量ベース口パク: 音声ファイル内の現在フレーム位置で判定
     const frameInAudio = frame - audioStartFrame;
     const mouthOpen = isMouthOpen(audioFile, frameInAudio);
     return mouthOpen ? variant.open : variant.close;
@@ -145,7 +144,7 @@ export const VideoWithSlides: React.FC = () => {
     const currentSceneId = getCurrentSceneId(frame, sceneRanges);
 
     const currentEntry = getCurrentSubtitle(frame, SUBTITLE_DATA);
-    const headerTitle = currentEntry?.sceneTitle ?? '';
+    const headerTitle = currentEntry?.sceneTitle ?? '「フルスタック」は本当に存在するのか？';
 
     const zundamonIdx = getLastSpeakingIndex(frame, 'ずんだもん', SUBTITLE_DATA);
     const metanIdx = getLastSpeakingIndex(frame, 'めたん', SUBTITLE_DATA);
@@ -170,7 +169,7 @@ export const VideoWithSlides: React.FC = () => {
             {/* ===== キャラクター立ち絵 ===== */}
             <div style={{
                 position: 'absolute',
-                bottom: CHARACTER_BOTTOM,
+                bottom: CHARACTER_BOTTOM - 70,
                 left: 10,
                 width: CHARACTER_WIDTH,
                 zIndex: 20,
