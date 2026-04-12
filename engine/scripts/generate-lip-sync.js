@@ -2,9 +2,13 @@ const fs = require('fs');
 const path = require('path');
 const { execSync } = require('child_process');
 
-const PROJECT_ID = process.argv[2] || 'usb_connector_diversity';
+const PROJECT_ID = process.argv[2];
+const OUTPUT_DIR = process.argv[3]; // optional: 省略時は ../channels/*/projects/{id}/remotion (後方互換)
+if (!PROJECT_ID) { console.error('Usage: node generate-lip-sync.js <project_id> [output_dir]'); process.exit(1); }
 const AUDIO_DIR = path.join('public', 'audio', PROJECT_ID);
-const OUTPUT_PATH = path.join('..', 'projects', PROJECT_ID, 'remotion', 'lipSyncData.ts');
+const OUTPUT_PATH = OUTPUT_DIR
+    ? path.resolve(OUTPUT_DIR, 'lipSyncData.ts')
+    : path.join('..', 'channels', 'tech_explainer', 'projects', PROJECT_ID, 'remotion', 'lipSyncData.ts');
 const FPS = 30;
 const THRESHOLD = 0.02;
 

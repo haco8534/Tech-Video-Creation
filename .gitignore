@@ -39,3 +39,8 @@ output/
 # Logs
 *.log
 
+# YouTube uploader secrets
+tools/youtube_uploader/credentials.json
+tools/youtube_uploader/token.json
+tools/youtube_uploader/tokens/
+

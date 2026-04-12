@@ -1,0 +1,79 @@
+{
+  "tech_explainer/creating_programming_language": {
+    "channelId": "tech_explainer",
+    "projectId": "creating_programming_language",
+    "publishAt": "2026-03-31T09:30:00.000Z",
+    "videoId": "0nkLSE4WUi4",
+    "uploadedAt": "2026-04-03T05:05:10.410Z"
+  },
+  "tech_explainer/css_programming_language": {
+    "channelId": "tech_explainer",
+    "projectId": "css_programming_language",
+    "publishAt": "2026-04-01T09:30:00.000Z",
+    "videoId": "WBK6-W2-unc",
+    "uploadedAt": "2026-04-03T04:45:06.652Z"
+  },
+  "tech_explainer/math_for_programmers": {
+    "channelId": "tech_explainer",
+    "projectId": "math_for_programmers",
+    "publishAt": "2026-04-01T09:30:00.000Z",
+    "videoId": "G7IhqFDhB_c",
+    "uploadedAt": "2026-04-01T07:29:57.048Z"
+  },
+  "myth_check/sleepwalking_brain_science": {
+    "channelId": "myth_check",
+    "projectId": "sleepwalking_brain_science",
+    "publishAt": null,
+    "videoId": "a9VOuacCMMA",
+    "uploadedAt": "2026-04-02T06:33:11.019Z"
+  },
+  "tech_explainer/python_dominance": {
+    "channelId": "tech_explainer",
+    "projectId": "python_dominance",
+    "publishAt": null,
+    "videoId": "bGH1DKPP-o0",
+    "uploadedAt": "2026-04-03T04:45:05.219Z"
+  },
+  "tech_explainer/usb_connector_diversity": {
+    "channelId": "tech_explainer",
+    "projectId": "usb_connector_diversity",
+    "publishAt": null,
+    "videoId": "m37Rh5spimI",
+    "uploadedAt": "2026-04-03T04:45:09.346Z"
+  },
+  "tech_explainer/typescript_savior_or_killer": {
+    "channelId": "tech_explainer",
+    "projectId": "typescript_savior_or_killer",
+    "publishAt": null,
+    "videoId": "Y9AtI2a5KMg",
+    "uploadedAt": "2026-04-03T05:04:40.101Z"
+  },
+  "tech_explainer/rust_vs_cpp": {
+    "channelId": "tech_explainer",
+    "projectId": "rust_vs_cpp",
+    "publishAt": null,
+    "videoId": "n4Hap-PTOgI",
+    "uploadedAt": "2026-04-03T05:05:05.728Z"
+  },
+  "tech_explainer/accurate_random_numbers": {
+    "channelId": "tech_explainer",
+    "projectId": "accurate_random_numbers",
+    "publishAt": null,
+    "videoId": "acAwUXOP4yk",
+    "uploadedAt": "2026-04-08T12:36:18.966Z"
+  },
+  "tech_explainer/5g_world_change": {
+    "channelId": "tech_explainer",
+    "projectId": "5g_world_change",
+    "publishAt": null,
+    "videoId": "2TGjzYzFz_k",
+    "uploadedAt": "2026-04-10T12:49:09.854Z"
+  },
+  "tech_explainer/cuda_grip_on_ai": {
+    "channelId": "tech_explainer",
+    "projectId": "cuda_grip_on_ai",
+    "publishAt": null,
+    "videoId": "iTyAsbFOUpc",
+    "uploadedAt": "2026-04-11T10:29:15.124Z"
+  }
+}

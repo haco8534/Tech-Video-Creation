@@ -1,164 +1,215 @@
 import { Composition } from "remotion";
 
-// === 新パイプライン: スライドTSX直接描画版 ===
-// プロジェクトファイルは projects/{id}/remotion/ に配置
-// @projects/ エイリアスで参照
+import {
+  VideoWithSlides as FiveGWorldChangeSlides,
+  TOTAL_FRAMES as FIVE_G_WORLD_CHANGE_TOTAL_FRAMES,
+} from "@channels/tech_explainer/projects/5g_world_change/remotion/VideoWithSlides";
 
 import {
-  VideoWithSlides as PythonDominanceSlides,
-  TOTAL_FRAMES as PYTHON_DOMINANCE_TOTAL_FRAMES,
-} from "@projects/python_dominance/remotion/VideoWithSlides";
+  VideoWithSlides as AccurateRandomNumbersSlides,
+  TOTAL_FRAMES as ACCURATE_RANDOM_NUMBERS_TOTAL_FRAMES,
+} from "@channels/tech_explainer/projects/accurate_random_numbers/remotion/VideoWithSlides";
 
 import {
-  VideoWithSlides as TypescriptSaviorOrKillerSlides,
-  TOTAL_FRAMES as TYPESCRIPT_SAVIOR_OR_KILLER_TOTAL_FRAMES,
-} from "@projects/typescript_savior_or_killer/remotion/VideoWithSlides";
+  VideoWithSlides as CudaGripOnAiSlides,
+  TOTAL_FRAMES as CUDA_GRIP_ON_AI_TOTAL_FRAMES,
+} from "@channels/tech_explainer/projects/cuda_grip_on_ai/remotion/VideoWithSlides";
 
 import {
-  VideoWithSlides as SelfTaughtEngineerSlides,
-  TOTAL_FRAMES as SELF_TAUGHT_ENGINEER_TOTAL_FRAMES,
-} from "@projects/self_taught_engineer/remotion/VideoWithSlides";
+  VideoWithSlides as FreeAppRealPriceSlides,
+  TOTAL_FRAMES as FREE_APP_REAL_PRICE_TOTAL_FRAMES,
+} from "@channels/tech_explainer/projects/free_app_real_price/remotion/VideoWithSlides";
+
 
 import {
-  VideoWithSlides as RustVsCppSlides,
-  TOTAL_FRAMES as RUST_VS_CPP_TOTAL_FRAMES,
-} from "@projects/rust_vs_cpp/remotion/VideoWithSlides";
+  VideoWithSlides as UsbConnectorDiversitySlides,
+  TOTAL_FRAMES as USB_CONNECTOR_DIVERSITY_TOTAL_FRAMES,
+} from "@channels/tech_explainer/projects/usb_connector_diversity/remotion/VideoWithSlides";
 
 import {
-  VideoWithSlides as CreatingProgrammingLanguageSlides,
-  TOTAL_FRAMES as CREATING_PROGRAMMING_LANGUAGE_TOTAL_FRAMES,
-} from "@projects/creating_programming_language/remotion/VideoWithSlides";
+  VideoWithSlides as FaxSlides,
+  TOTAL_FRAMES as FAX_TOTAL_FRAMES,
+} from "@channels/tech_explainer/projects/fax/remotion/VideoWithSlides";
 
 import {
-  VideoWithSlides as HeavyWebAppsSlides,
-  TOTAL_FRAMES as HEAVY_WEB_APPS_TOTAL_FRAMES,
-} from "@projects/heavy_web_apps/remotion/VideoWithSlides";
+  VideoWithSlides as WiFiSlides,
+  TOTAL_FRAMES as WI_FI_TOTAL_FRAMES,
+} from "@channels/tech_explainer/projects/wi_fi/remotion/VideoWithSlides";
 
 import {
-  VideoWithSlides as CodeWithoutTestsSlides,
-  TOTAL_FRAMES as CODE_WITHOUT_TESTS_TOTAL_FRAMES,
-} from "@projects/code_without_tests/remotion/VideoWithSlides";
+  VideoWithSlides as PasswordSecuritySlides,
+  TOTAL_FRAMES as PASSWORD_SECURITY_TOTAL_FRAMES,
+} from "@channels/tech_explainer/projects/proj_539006a7/remotion/VideoWithSlides";
 
 import {
-  VideoWithSlides as WhatWasWeb3Slides,
-  TOTAL_FRAMES as WHAT_WAS_WEB3_TOTAL_FRAMES,
-} from "@projects/what_was_web3/remotion/VideoWithSlides";
+  VideoWithSlides as ChargingCableSlides,
+  TOTAL_FRAMES as CHARGING_CABLE_TOTAL_FRAMES,
+} from "@channels/tech_explainer/projects/proj_7973c0b4/remotion/VideoWithSlides";
 
 import {
-  VideoWithSlides as CssProgrammingLanguageSlides,
-  TOTAL_FRAMES as CSS_PROGRAMMING_LANGUAGE_TOTAL_FRAMES,
-} from "@projects/css_programming_language/remotion/VideoWithSlides";
+  VideoWithSlides as ProgrammingEssenceSlides,
+  TOTAL_FRAMES as PROGRAMMING_ESSENCE_TOTAL_FRAMES,
+} from "@channels/tech_explainer/projects/proj_afbe778d/remotion/VideoWithSlides";
 
 import {
-  VideoWithSlides as ReadableCodeSlides,
-  TOTAL_FRAMES as READABLE_CODE_TOTAL_FRAMES,
-} from "@projects/readable_code/remotion/VideoWithSlides";
+  VideoWithSlides as DigitalTattooSlides,
+  TOTAL_FRAMES as DIGITAL_TATTOO_TOTAL_FRAMES,
+} from "@channels/tech_explainer/projects/proj_352c4df4/remotion/VideoWithSlides";
 
 import {
-  VideoWithSlides as FullstackMythSlides,
-  TOTAL_FRAMES as FULLSTACK_MYTH_TOTAL_FRAMES,
-} from "@projects/fullstack_myth/remotion/VideoWithSlides";
+  VideoWithSlides as AlgorithmEssenceSlides,
+  TOTAL_FRAMES as ALGORITHM_ESSENCE_TOTAL_FRAMES,
+} from "@channels/tech_explainer/projects/proj_614d0f20/remotion/VideoWithSlides";
+
+import {
+  VideoWithSlides as InternetGovernanceSlides,
+  TOTAL_FRAMES as INTERNET_GOVERNANCE_TOTAL_FRAMES,
+} from "@channels/tech_explainer/projects/proj_ede76869/remotion/VideoWithSlides";
+
+import {
+  VideoWithSlides as CloudExplainerSlides,
+  TOTAL_FRAMES as CLOUD_EXPLAINER_TOTAL_FRAMES,
+} from "@channels/tech_explainer/projects/proj_dc16b914/remotion/VideoWithSlides";
+
+import {
+  VideoWithSlides as ZeroOneVideo,
+  TOTAL_FRAMES as ZERO_ONE_TOTAL_FRAMES,
+} from "@channels/tech_explainer/projects/0_1/remotion/VideoWithSlides";
+
+import {
+  VideoWithSlides as QrVideo,
+  TOTAL_FRAMES as QR_TOTAL_FRAMES,
+} from "@channels/tech_explainer/projects/qr/remotion/VideoWithSlides";
 
 import "./index.css";
 
 export const RemotionRoot: React.FC = () => {
   return (
     <>
-
       <Composition
-        id="python-dominance-slides"
-        component={PythonDominanceSlides}
-        durationInFrames={PYTHON_DOMINANCE_TOTAL_FRAMES}
+        id="5g-world-change-slides"
+        component={FiveGWorldChangeSlides}
+        durationInFrames={FIVE_G_WORLD_CHANGE_TOTAL_FRAMES}
         fps={30}
         width={1920}
         height={1080}
       />
-
       <Composition
-        id="typescript-savior-or-killer-slides"
-        component={TypescriptSaviorOrKillerSlides}
-        durationInFrames={TYPESCRIPT_SAVIOR_OR_KILLER_TOTAL_FRAMES}
+        id="accurate-random-numbers-slides"
+        component={AccurateRandomNumbersSlides}
+        durationInFrames={ACCURATE_RANDOM_NUMBERS_TOTAL_FRAMES}
         fps={30}
         width={1920}
         height={1080}
       />
-
       <Composition
-        id="self-taught-engineer-slides"
-        component={SelfTaughtEngineerSlides}
-        durationInFrames={SELF_TAUGHT_ENGINEER_TOTAL_FRAMES}
+        id="cuda-grip-on-ai-slides"
+        component={CudaGripOnAiSlides}
+        durationInFrames={CUDA_GRIP_ON_AI_TOTAL_FRAMES}
         fps={30}
         width={1920}
         height={1080}
       />
-
       <Composition
-        id="rust-vs-cpp-slides"
-        component={RustVsCppSlides}
-        durationInFrames={RUST_VS_CPP_TOTAL_FRAMES}
+        id="free-app-real-price-slides"
+        component={FreeAppRealPriceSlides}
+        durationInFrames={FREE_APP_REAL_PRICE_TOTAL_FRAMES}
         fps={30}
         width={1920}
         height={1080}
       />
-
       <Composition
-        id="creating-programming-language-slides"
-        component={CreatingProgrammingLanguageSlides}
-        durationInFrames={CREATING_PROGRAMMING_LANGUAGE_TOTAL_FRAMES}
+        id="usb-connector-diversity-slides"
+        component={UsbConnectorDiversitySlides}
+        durationInFrames={USB_CONNECTOR_DIVERSITY_TOTAL_FRAMES}
         fps={30}
         width={1920}
         height={1080}
       />
-
       <Composition
-        id="heavy-web-apps-slides"
-        component={HeavyWebAppsSlides}
-        durationInFrames={HEAVY_WEB_APPS_TOTAL_FRAMES}
+        id="fax-slides"
+        component={FaxSlides}
+        durationInFrames={FAX_TOTAL_FRAMES}
         fps={30}
         width={1920}
         height={1080}
       />
-
       <Composition
-        id="code-without-tests-slides"
-        component={CodeWithoutTestsSlides}
-        durationInFrames={CODE_WITHOUT_TESTS_TOTAL_FRAMES}
+        id="wi-fi-slides"
+        component={WiFiSlides}
+        durationInFrames={WI_FI_TOTAL_FRAMES}
         fps={30}
         width={1920}
         height={1080}
       />
-
       <Composition
-        id="what-was-web3-slides"
-        component={WhatWasWeb3Slides}
-        durationInFrames={WHAT_WAS_WEB3_TOTAL_FRAMES}
+        id="proj-539006a7-slides"
+        component={PasswordSecuritySlides}
+        durationInFrames={PASSWORD_SECURITY_TOTAL_FRAMES}
         fps={30}
         width={1920}
         height={1080}
       />
-
       <Composition
-        id="css-programming-language-slides"
-        component={CssProgrammingLanguageSlides}
-        durationInFrames={CSS_PROGRAMMING_LANGUAGE_TOTAL_FRAMES}
+        id="proj-7973c0b4-slides"
+        component={ChargingCableSlides}
+        durationInFrames={CHARGING_CABLE_TOTAL_FRAMES}
         fps={30}
         width={1920}
         height={1080}
       />
-
       <Composition
-        id="readable-code-slides"
-        component={ReadableCodeSlides}
-        durationInFrames={READABLE_CODE_TOTAL_FRAMES}
+        id="proj-afbe778d-slides"
+        component={ProgrammingEssenceSlides}
+        durationInFrames={PROGRAMMING_ESSENCE_TOTAL_FRAMES}
         fps={30}
         width={1920}
         height={1080}
       />
-
       <Composition
-        id="fullstack-myth-slides"
-        component={FullstackMythSlides}
-        durationInFrames={FULLSTACK_MYTH_TOTAL_FRAMES}
+        id="proj-352c4df4-slides"
+        component={DigitalTattooSlides}
+        durationInFrames={DIGITAL_TATTOO_TOTAL_FRAMES}
+        fps={30}
+        width={1920}
+        height={1080}
+      />
+      <Composition
+        id="proj-614d0f20-slides"
+        component={AlgorithmEssenceSlides}
+        durationInFrames={ALGORITHM_ESSENCE_TOTAL_FRAMES}
+        fps={30}
+        width={1920}
+        height={1080}
+      />
+      <Composition
+        id="proj-ede76869-slides"
+        component={InternetGovernanceSlides}
+        durationInFrames={INTERNET_GOVERNANCE_TOTAL_FRAMES}
+        fps={30}
+        width={1920}
+        height={1080}
+      />
+      <Composition
+        id="proj-dc16b914-slides"
+        component={CloudExplainerSlides}
+        durationInFrames={CLOUD_EXPLAINER_TOTAL_FRAMES}
+        fps={30}
+        width={1920}
+        height={1080}
+      />
+      <Composition
+        id="0-1-slides"
+        component={ZeroOneVideo}
+        durationInFrames={ZERO_ONE_TOTAL_FRAMES}
+        fps={30}
+        width={1920}
+        height={1080}
+      />
+      <Composition
+        id="qr-slides"
+        component={QrVideo}
+        durationInFrames={QR_TOTAL_FRAMES}
         fps={30}
         width={1920}
         height={1080}

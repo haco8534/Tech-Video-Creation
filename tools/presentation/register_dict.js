@@ -2,7 +2,7 @@
 /**
  * VOICEVOX辞書一括登録スクリプト
  * 
- * 使い方: node register_dict.js <project_id>
+ * 使い方: node register_dict.js <project_dir>
  * 
  * scene_map.json を解析し、英語・技術用語を自動検出してVOICEVOX辞書に登録する。
  * 既存エントリと同じ surface+pronunciation の場合はスキップする。
@@ -15,11 +15,11 @@ const http = require('http');
 const fs = require('fs');
 const path = require('path');
 
-const projectId = process.argv[2];
-if (!projectId) { console.error('Usage: node register_dict.js <project_id>'); process.exit(1); }
+const projectDir = process.argv[2];
+if (!projectDir) { console.error('Usage: node register_dict.js <project_dir>'); process.exit(1); }
 
-const BASE_DIR = path.resolve(__dirname, '..');
-const sceneMapPath = path.join(BASE_DIR, projectId, 'scene_map.json');
+const ROOT_DIR = path.resolve(__dirname, '..', '..');
+const sceneMapPath = path.join(ROOT_DIR, projectDir, 'slides', 'scene_map.json');
 if (!fs.existsSync(sceneMapPath)) { console.error('scene_map.json not found: ' + sceneMapPath); process.exit(1); }
 
 // ===== 頻出技術用語辞書（随時追加） =====

@@ -28,10 +28,11 @@ if (args.length < 2) {
     process.exit(1);
 }
 
-const projectId = args[0];
+const projectDir = args[0];
 const descPath = args[1];
 
-const presDir = path.resolve(__dirname, '..', projectId);
+const ROOT_DIR = path.resolve(__dirname, '..', '..');
+const presDir = path.join(ROOT_DIR, projectDir, 'slides');
 const durPath = path.join(presDir, 'scene_durations.json');
 
 if (!fs.existsSync(durPath)) {

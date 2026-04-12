@@ -1,8 +1,11 @@
 const fs = require('fs');
-// 使い方: PROJECT_ID環境変数 or 引数で指定
-const PROJECT_ID = process.argv[2] || 'why_700_programming_languages';
-const htmlPaths = `projects/${PROJECT_ID}/slides/index.html`;
-const outPath = `projects/${PROJECT_ID}/remotion/scenes/SlideScenes.tsx`;
+const path = require('path');
+// 使い方: node html_to_tsx.js <project_dir>
+// 例: node tools/html_to_tsx.js channels/tech_explainer/projects/python_dominance
+const PROJECT_DIR = process.argv[2];
+if (!PROJECT_DIR) { console.error('Usage: node html_to_tsx.js <project_dir>'); process.exit(1); }
+const htmlPaths = path.join(PROJECT_DIR, 'slides', 'index.html');
+const outPath = path.join(PROJECT_DIR, 'remotion', 'scenes', 'SlideScenes.tsx');
 
 let html = fs.readFileSync(htmlPaths, 'utf8');
 

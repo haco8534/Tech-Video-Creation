@@ -1,0 +1,21 @@
+{
+  "name": "youtube-uploader",
+  "version": "1.0.0",
+  "description": "YouTube動画予約投稿管理ツール",
+  "type": "module",
+  "scripts": {
+    "start": "npm run build && node server.js",
+    "dev:server": "node --watch server.js",
+    "dev:client": "cd client && npm run dev",
+    "dev": "cd client && npm run dev",
+    "build": "cd client && npm run build"
+  },
+  "dependencies": {
+    "express": "^4.21.0",
+    "googleapis": "^146.0.0",
+    "multer": "^2.1.1",
+    "open": "^10.1.0",
+    "sharp": "^0.34.5",
+    "ws": "^8.20.0"
+  }
+}

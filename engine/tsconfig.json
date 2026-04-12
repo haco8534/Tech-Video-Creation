@@ -11,10 +11,10 @@
     "esModuleInterop": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
-    "noUnusedLocals": true,
+    "noUnusedLocals": false,
     "baseUrl": ".",
     "paths": {
-      "@projects/*": ["../projects/*"],
+      "@channels/*": ["../channels/*"],
       "@components/*": ["src/components/*"],
       "react": ["node_modules/react"],
       "react/*": ["node_modules/react/*"],
@@ -27,10 +27,10 @@
   },
   "include": [
     "src/**/*",
-    "../projects/*/remotion/**/*"
+    "../channels/*/projects/*/remotion/**/*"
   ],
   "exclude": [
     "remotion.config.ts",
-    "../projects/_archived"
+    "../channels/*/projects/_archived"
   ]
 }

@@ -12,10 +12,10 @@
  *   node scripts/generate-subtitle-data.js <project_slides_dir> <project_id>
  *
  * 例:
- *   node scripts/generate-subtitle-data.js "../projects/python_dominance/slides" python_dominance
+ *   node scripts/generate-subtitle-data.js "../channels/tech_explainer/projects/python_dominance/slides" python_dominance "../channels/tech_explainer/projects/python_dominance/remotion"
  *
  * 出力:
- *   ../projects/<project_id>/remotion/subtitleData.ts
+ *   <output_dir>/subtitleData.ts
  */
 
 const fs = require('fs');
@@ -23,9 +23,10 @@ const path = require('path');
 
 const mainContentDir = process.argv[2];
 const projectId = process.argv[3];
+const outputDirArg = process.argv[4]; // optional: 省略時はmainContentDir/../remotion
 
 if (!mainContentDir || !projectId) {
-    console.error('Usage: node generate-subtitle-data.js <main_content_dir> <project_id>');
+    console.error('Usage: node generate-subtitle-data.js <main_content_dir> <project_id> [output_dir]');
     process.exit(1);
 }
 
@@ -125,7 +126,9 @@ const totalDurationSec = absoluteTimeSec;
 const totalFrames = Math.round(totalDurationSec * FPS);
 
 // TypeScript ファイルとして出力
-const outputDir = path.join(__dirname, '..', '..', 'projects', projectId, 'remotion');
+const outputDir = outputDirArg
+    ? path.resolve(outputDirArg)
+    : path.resolve(mainContentDir, '..', 'remotion');
 if (!fs.existsSync(outputDir)) {
     fs.mkdirSync(outputDir, { recursive: true });
 }

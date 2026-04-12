@@ -14,7 +14,7 @@ Config.setOverwriteOutput(true);
 
 // Tailwind + パスエイリアス設定
 Config.overrideWebpackConfig((currentConfig) => {
-  const projectsPath = path.resolve(process.cwd(), '..', 'projects');
+  const channelsPath = path.resolve(process.cwd(), '..', 'channels');
   const componentsPath = path.resolve(process.cwd(), 'src', 'components');
   const withTailwind = enableTailwind(currentConfig);
   return {
@@ -23,7 +23,7 @@ Config.overrideWebpackConfig((currentConfig) => {
       ...withTailwind.resolve,
       alias: {
         ...(withTailwind.resolve?.alias || {}),
-        '@projects': projectsPath,
+        '@channels': channelsPath,
         '@components': componentsPath,
       },
       modules: [
