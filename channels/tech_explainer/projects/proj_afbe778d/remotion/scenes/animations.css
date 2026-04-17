@@ -1,0 +1,153 @@
+/* ============================================
+   animations.css
+   基本: 要素はスライドインで出現。可能な所に
+   追加アニメ(カードのポコポコ・バー伸長・SVGドロー・
+   メトリクスのポップ)を重ねる。
+   レイアウトには一切触れない。
+   ============================================ */
+
+/* === 1. 既定: content直下のスライドイン === */
+.content > * {
+    animation: slideInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+.content > *:nth-child(1) { animation-delay: 0.00s; }
+.content > *:nth-child(2) { animation-delay: 0.12s; }
+.content > *:nth-child(3) { animation-delay: 0.24s; }
+.content > *:nth-child(4) { animation-delay: 0.36s; }
+.content > *:nth-child(5) { animation-delay: 0.48s; }
+.content > *:nth-child(6) { animation-delay: 0.60s; }
+
+@keyframes slideInUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+/* === 2. ネストされたカード類のポコポコ出現 ===
+   親のスライドインが終わる頃から子が順番に pop する。
+   対象: .two-col, .three-col, .flow-chain, .num-list,
+         .bar-chart, .enterprise-grid, .icon-row, .pie-legend */
+.two-col > *,
+.three-col > *,
+.flow-chain > *,
+.num-list > *,
+.bar-chart > *,
+.enterprise-grid > *,
+.icon-row > *,
+.pie-legend > * {
+    animation: softRise 0.55s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.two-col > *:nth-child(1),
+.three-col > *:nth-child(1),
+.flow-chain > *:nth-child(1),
+.num-list > *:nth-child(1),
+.bar-chart > *:nth-child(1),
+.enterprise-grid > *:nth-child(1),
+.icon-row > *:nth-child(1),
+.pie-legend > *:nth-child(1) { animation-delay: 0.45s; }
+
+.two-col > *:nth-child(2),
+.three-col > *:nth-child(2),
+.flow-chain > *:nth-child(2),
+.num-list > *:nth-child(2),
+.bar-chart > *:nth-child(2),
+.enterprise-grid > *:nth-child(2),
+.icon-row > *:nth-child(2),
+.pie-legend > *:nth-child(2) { animation-delay: 0.58s; }
+
+.two-col > *:nth-child(3),
+.three-col > *:nth-child(3),
+.flow-chain > *:nth-child(3),
+.num-list > *:nth-child(3),
+.bar-chart > *:nth-child(3),
+.enterprise-grid > *:nth-child(3),
+.icon-row > *:nth-child(3),
+.pie-legend > *:nth-child(3) { animation-delay: 0.71s; }
+
+.two-col > *:nth-child(4),
+.three-col > *:nth-child(4),
+.flow-chain > *:nth-child(4),
+.num-list > *:nth-child(4),
+.bar-chart > *:nth-child(4),
+.enterprise-grid > *:nth-child(4),
+.icon-row > *:nth-child(4),
+.pie-legend > *:nth-child(4) { animation-delay: 0.84s; }
+
+.two-col > *:nth-child(5),
+.three-col > *:nth-child(5),
+.flow-chain > *:nth-child(5),
+.num-list > *:nth-child(5),
+.bar-chart > *:nth-child(5),
+.enterprise-grid > *:nth-child(5),
+.icon-row > *:nth-child(5),
+.pie-legend > *:nth-child(5) { animation-delay: 0.97s; }
+
+.two-col > *:nth-child(6),
+.three-col > *:nth-child(6),
+.flow-chain > *:nth-child(6),
+.num-list > *:nth-child(6),
+.bar-chart > *:nth-child(6),
+.enterprise-grid > *:nth-child(6),
+.icon-row > *:nth-child(6),
+.pie-legend > *:nth-child(6) { animation-delay: 1.10s; }
+
+.two-col > *:nth-child(7),
+.three-col > *:nth-child(7),
+.flow-chain > *:nth-child(7),
+.num-list > *:nth-child(7),
+.bar-chart > *:nth-child(7),
+.enterprise-grid > *:nth-child(7),
+.icon-row > *:nth-child(7),
+.pie-legend > *:nth-child(7) { animation-delay: 1.23s; }
+
+.two-col > *:nth-child(8),
+.three-col > *:nth-child(8),
+.flow-chain > *:nth-child(8),
+.num-list > *:nth-child(8),
+.bar-chart > *:nth-child(8),
+.enterprise-grid > *:nth-child(8),
+.icon-row > *:nth-child(8),
+.pie-legend > *:nth-child(8) { animation-delay: 1.36s; }
+
+@keyframes softRise {
+    from { opacity: 0; transform: translateY(12px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+/* === 3. バー伸長: .bar-fill の width を 0 → var(--w) === */
+.bar-fill {
+    animation: barGrow 1.1s cubic-bezier(0.22, 1, 0.36, 1) both;
+    animation-delay: 0.85s;
+}
+@keyframes barGrow {
+    from { width: 0; }
+    to   { width: var(--w); }
+}
+
+/* === 4. メトリクス数値のフェードイン === */
+.metric-value {
+    animation: fadeIn 0.6s ease-out both;
+    animation-delay: 0.35s;
+}
+
+/* === 5. SVGパス描画 (opt-in) ===
+   SKILL側で <path class="draw-in"> のようにクラス付与した
+   要素のみドロー。既存SVGのstroke-dasharray指定を壊さない。 */
+.svg-diagram svg .draw-in {
+    stroke-dasharray: 2000;
+    stroke-dashoffset: 2000;
+    animation: drawPath 1.4s cubic-bezier(0.65, 0, 0.35, 1) both;
+    animation-delay: 0.5s;
+}
+@keyframes drawPath {
+    to { stroke-dashoffset: 0; }
+}
+
+/* === 6. フェードイン (opt-in) === */
+.fade-in {
+    animation: fadeIn 0.8s ease-out both;
+}
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}

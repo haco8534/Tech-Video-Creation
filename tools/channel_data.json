@@ -1,0 +1,171 @@
+{
+  "fetchedAt": "2026-04-08T07:56:41.955Z",
+  "videos": [
+    {
+      "id": "m37Rh5spimI",
+      "title": "USBはなぜ形が統一されないのか",
+      "publishedAt": "2026-03-24T11:29:03Z",
+      "duration": "PT9M58S",
+      "views": 50334,
+      "likes": 1578,
+      "comments": 212,
+      "tags": []
+    },
+    {
+      "id": "bTZB09t-Rsg",
+      "title": "プログラミング言語って多すぎない？",
+      "publishedAt": "2026-03-26T09:18:13Z",
+      "duration": "PT16M6S",
+      "views": 14015,
+      "likes": 493,
+      "comments": 77,
+      "tags": []
+    },
+    {
+      "id": "0nkLSE4WUi4",
+      "title": "新しいプログラミング言語を作るってどうやるの？",
+      "publishedAt": "2026-04-05T09:30:00Z",
+      "duration": "PT14M40S",
+      "views": 12445,
+      "likes": 449,
+      "comments": 27,
+      "tags": [
+        "AST",
+        "Go",
+        "LLVM",
+        "Python",
+        "Ruby",
+        "Rust",
+        "TypeScript",
+        "イ���タプリタ",
+        "コンパイラ",
+        "プログラミング言語",
+        "メモリ管理",
+        "型システム",
+        "字句解析",
+        "構文解析",
+        "言語設計"
+      ]
+    },
+    {
+      "id": "NFcgmAfp9Xg",
+      "title": "どうしてみんなVSCodeを使ってるの？",
+      "publishedAt": "2026-03-19T13:29:47Z",
+      "duration": "PT16M29S",
+      "views": 9521,
+      "likes": 224,
+      "comments": 54,
+      "tags": []
+    },
+    {
+      "id": "bGH1DKPP-o0",
+      "title": "Pythonの天下はいつまで続くのか",
+      "publishedAt": "2026-03-27T14:20:38Z",
+      "duration": "PT15M48S",
+      "views": 5972,
+      "likes": 154,
+      "comments": 32,
+      "tags": []
+    },
+    {
+      "id": "G7IhqFDhB_c",
+      "title": "プログラマーに数学は必要か？",
+      "publishedAt": "2026-04-01T07:30:56Z",
+      "duration": "PT14M11S",
+      "views": 4747,
+      "likes": 175,
+      "comments": 35,
+      "tags": []
+    },
+    {
+      "id": "PW3EJ8a73FU",
+      "title": "ChatGPTにコードを書かせるのはプログラミングか？",
+      "publishedAt": "2026-03-25T09:05:21Z",
+      "duration": "PT16M44S",
+      "views": 2520,
+      "likes": 102,
+      "comments": 31,
+      "tags": []
+    },
+    {
+      "id": "c08R2x2a8pM",
+      "title": "なぜ画像形式はこんなにたくさんあるのか",
+      "publishedAt": "2026-03-11T09:45:18Z",
+      "duration": "PT16M42S",
+      "views": 1644,
+      "likes": 81,
+      "comments": 4,
+      "tags": []
+    },
+    {
+      "id": "tmZqEA5-suY",
+      "title": "TypeScriptはJavaScriptの救世主か、死神か",
+      "publishedAt": "2026-04-07T12:22:18Z",
+      "duration": "PT13M8S",
+      "views": 1139,
+      "likes": 43,
+      "comments": 8,
+      "tags": []
+    },
+    {
+      "id": "WBK6-W2-unc",
+      "title": "CSSはプログラミング言語か？",
+      "publishedAt": "2026-03-30T07:00:42Z",
+      "duration": "PT13M40S",
+      "views": 723,
+      "likes": 24,
+      "comments": 6,
+      "tags": []
+    },
+    {
+      "id": "ES6hta7KoIY",
+      "title": "なぜキーボードはQWERTY配列なのか",
+      "publishedAt": "2026-03-20T14:26:28Z",
+      "duration": "PT16M32S",
+      "views": 554,
+      "likes": 31,
+      "comments": 4,
+      "tags": []
+    },
+    {
+      "id": "G9erY0W85xo",
+      "title": "あなたがURLを打ち込んだ瞬間に起こること",
+      "publishedAt": "2026-03-16T11:39:41Z",
+      "duration": "PT16M54S",
+      "views": 518,
+      "likes": 31,
+      "comments": 0,
+      "tags": []
+    },
+    {
+      "id": "WWFhIm_ZF94",
+      "title": "パスワードはどこにどう保存されている？",
+      "publishedAt": "2026-03-18T10:26:00Z",
+      "duration": "PT16M49S",
+      "views": 371,
+      "likes": 14,
+      "comments": 1,
+      "tags": []
+    },
+    {
+      "id": "Q2Vg1Lag2y0",
+      "title": "Googleはなぜ検索で勝てたのか",
+      "publishedAt": "2026-03-17T11:25:26Z",
+      "duration": "PT16M6S",
+      "views": 275,
+      "likes": 16,
+      "comments": 0,
+      "tags": []
+    },
+    {
+      "id": "BKJ-wjHckSo",
+      "title": "Deleteキーを押すとファイルはどうなる？",
+      "publishedAt": "2026-03-15T13:09:53Z",
+      "duration": "PT16M17S",
+      "views": 252,
+      "likes": 16,
+      "comments": 0,
+      "tags": []
+    }
+  ]
+}

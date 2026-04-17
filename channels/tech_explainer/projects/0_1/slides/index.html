@@ -1,0 +1,853 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=1920,height=1080">
+    <title>0と1だけでなぜ動画や音楽が再生できるのか</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- ===== Scene 0: オープニング ===== -->
+<div class="scene" id="scene-0">
+    <div class="content center-layout">
+        <div class="icon-cloud">
+            <img src="https://api.iconify.design/mdi/music-note.svg?color=%232563eb&width=48&height=48" alt="music">
+            <img src="https://api.iconify.design/mdi/image.svg?color=%2306b6d4&width=48&height=48" alt="image">
+            <img src="https://api.iconify.design/mdi/video.svg?color=%23ef4444&width=48&height=48" alt="video">
+            <img src="https://api.iconify.design/mdi/disc.svg?color=%23f59e0b&width=48&height=48" alt="disc">
+            <img src="https://api.iconify.design/mdi/cellphone.svg?color=%232563eb&width=48&height=48" alt="phone">
+            <img src="https://api.iconify.design/mdi/youtube.svg?color=%23FF0000&width=48&height=48" alt="youtube">
+        </div>
+        <div class="title-large">0と1だけでなぜ<br>動画や音楽が再生できるのか</div>
+        <div class="scene-title" style="margin-top:24px">デジタルの「魔法」を解き明かす</div>
+    </div>
+</div>
+
+<!-- ===== Scene 1: 溝と穴の違い ===== -->
+<div class="scene" id="scene-1">
+    <div class="content center-layout">
+        <div class="scene-title">レコードの溝 vs CDの穴</div>
+        <div class="two-col">
+            <div class="compare-card border-amber">
+                <img src="https://api.iconify.design/mdi/vinyl.svg?color=%23f59e0b&width=56&height=56" alt="vinyl">
+                <div class="compare-title accent-amber">レコード（アナログ）</div>
+                <div class="svg-diagram">
+                    <svg width="280" height="100" viewBox="0 0 280 100">
+                        <path d="M10 50 Q40 15 70 50 Q100 85 130 50 Q160 15 190 50 Q220 85 250 50 Q265 30 270 50" fill="none" stroke="#f59e0b" strokeWidth="4" strokeLinecap="round"/>
+                        <text x="140" y="95" textAnchor="middle" fontSize="16" fontWeight="700" fill="#1a1d23">溝の凹凸 = 音の波そのもの</text>
+                    </svg>
+                </div>
+            </div>
+            <div class="compare-card border-primary">
+                <img src="https://api.iconify.design/mdi/disc.svg?color=%232563eb&width=56&height=56" alt="cd">
+                <div class="compare-title accent-primary">CD（デジタル）</div>
+                <div class="svg-diagram">
+                    <svg width="280" height="100" viewBox="0 0 280 100">
+                        <g fill="#2563eb">
+                            <rect x="20" y="40" width="18" height="20" rx="3"/>
+                            <rect x="50" y="40" width="8" height="20" rx="3"/>
+                            <rect x="70" y="40" width="18" height="20" rx="3"/>
+                            <rect x="100" y="40" width="8" height="20" rx="3"/>
+                            <rect x="120" y="40" width="18" height="20" rx="3"/>
+                            <rect x="150" y="40" width="18" height="20" rx="3"/>
+                            <rect x="180" y="40" width="8" height="20" rx="3"/>
+                            <rect x="200" y="40" width="18" height="20" rx="3"/>
+                            <rect x="230" y="40" width="8" height="20" rx="3"/>
+                            <rect x="250" y="40" width="18" height="20" rx="3"/>
+                        </g>
+                        <text x="140" y="95" textAnchor="middle" fontSize="16" fontWeight="700" fill="#1a1d23">ピットの列 = 0と1だけ</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ===== Scene 2: 身近なデジタル ===== -->
+<div class="scene" id="scene-2">
+    <div class="content center-layout">
+        <div class="scene-title">0と1の魔法は身のまわりに</div>
+        <div class="three-col">
+            <div class="arch-card border-primary">
+                <img src="https://api.iconify.design/mdi/cellphone.svg?color=%232563eb&width=48&height=48" alt="phone">
+                <div class="card-title">スマホの写真</div>
+                <div class="card-body">数百万ピクセル × RGB<br>= 膨大な0と1の列</div>
+            </div>
+            <div class="arch-card border-teal">
+                <img src="https://api.iconify.design/mdi/music-note.svg?color=%2306b6d4&width=48&height=48" alt="music">
+                <div class="card-title">音楽ストリーミング</div>
+                <div class="card-body">毎秒44,100個の<br>数値が音を再現</div>
+            </div>
+            <div class="arch-card border-coral">
+                <img src="https://api.iconify.design/mdi/youtube.svg?color=%23FF0000&width=48&height=48" alt="youtube">
+                <div class="card-title">YouTube動画</div>
+                <div class="card-body">画像+音声を圧縮して<br>0と1でストリーミング</div>
+            </div>
+        </div>
+        <div class="big-statement" style="margin-top:24px">すべて<span class="accent-primary">「0と1」</span>の羅列</div>
+    </div>
+</div>
+
+<!-- ===== Scene 3: モザイク画のたとえ ===== -->
+<div class="scene" id="scene-3">
+    <div class="content center-layout">
+        <div class="scene-title">モザイク画のアナロジー</div>
+        <div class="svg-diagram">
+            <svg width="900" height="320" viewBox="0 0 900 320">
+                <!-- Left: individual tiles -->
+                <text x="150" y="30" textAnchor="middle" fontSize="22" fontWeight="900" fill="#1a1d23">タイル1枚 = ただの四角</text>
+                <g transform="translate(50,50)">
+                    <rect x="0" y="0" width="40" height="40" rx="4" fill="#2563eb"/>
+                    <rect x="50" y="0" width="40" height="40" rx="4" fill="#06b6d4"/>
+                    <rect x="100" y="0" width="40" height="40" rx="4" fill="#ef4444"/>
+                    <rect x="150" y="0" width="40" height="40" rx="4" fill="#f59e0b"/>
+                </g>
+                <!-- Arrow -->
+                <text x="450" y="95" textAnchor="middle" fontSize="48" fill="#2563eb">→</text>
+                <!-- Right: mosaic assembled -->
+                <text x="700" y="30" textAnchor="middle" fontSize="22" fontWeight="900" fill="#1a1d23">何万個並べると…絵になる</text>
+                <g transform="translate(580,50)">
+                    <rect x="0" y="0" width="20" height="20" fill="#dbeafe"/>
+                    <rect x="20" y="0" width="20" height="20" fill="#dbeafe"/>
+                    <rect x="40" y="0" width="20" height="20" fill="#2563eb"/>
+                    <rect x="60" y="0" width="20" height="20" fill="#2563eb"/>
+                    <rect x="80" y="0" width="20" height="20" fill="#dbeafe"/>
+                    <rect x="100" y="0" width="20" height="20" fill="#93c5fd"/>
+                    <rect x="120" y="0" width="20" height="20" fill="#dbeafe"/>
+                    <rect x="140" y="0" width="20" height="20" fill="#dbeafe"/>
+                    <rect x="160" y="0" width="20" height="20" fill="#dbeafe"/>
+                    <rect x="180" y="0" width="20" height="20" fill="#2563eb"/>
+                    <rect x="200" y="0" width="20" height="20" fill="#dbeafe"/>
+                    <rect x="0" y="20" width="20" height="20" fill="#dbeafe"/>
+                    <rect x="20" y="20" width="20" height="20" fill="#2563eb"/>
+                    <rect x="40" y="20" width="20" height="20" fill="#1e40af"/>
+                    <rect x="60" y="20" width="20" height="20" fill="#1e40af"/>
+                    <rect x="80" y="20" width="20" height="20" fill="#2563eb"/>
+                    <rect x="100" y="20" width="20" height="20" fill="#2563eb"/>
+                    <rect x="120" y="20" width="20" height="20" fill="#93c5fd"/>
+                    <rect x="140" y="20" width="20" height="20" fill="#dbeafe"/>
+                    <rect x="160" y="20" width="20" height="20" fill="#2563eb"/>
+                    <rect x="180" y="20" width="20" height="20" fill="#1e40af"/>
+                    <rect x="200" y="20" width="20" height="20" fill="#2563eb"/>
+                    <rect x="0" y="40" width="20" height="20" fill="#93c5fd"/>
+                    <rect x="20" y="40" width="20" height="20" fill="#2563eb"/>
+                    <rect x="40" y="40" width="20" height="20" fill="#1e40af"/>
+                    <rect x="60" y="40" width="20" height="20" fill="#60a5fa"/>
+                    <rect x="80" y="40" width="20" height="20" fill="#1e40af"/>
+                    <rect x="100" y="40" width="20" height="20" fill="#93c5fd"/>
+                    <rect x="120" y="40" width="20" height="20" fill="#2563eb"/>
+                    <rect x="140" y="40" width="20" height="20" fill="#93c5fd"/>
+                    <rect x="160" y="40" width="20" height="20" fill="#1e40af"/>
+                    <rect x="180" y="40" width="20" height="20" fill="#60a5fa"/>
+                    <rect x="200" y="40" width="20" height="20" fill="#2563eb"/>
+                    <rect x="0" y="60" width="20" height="20" fill="#dbeafe"/>
+                    <rect x="20" y="60" width="20" height="20" fill="#93c5fd"/>
+                    <rect x="40" y="60" width="20" height="20" fill="#2563eb"/>
+                    <rect x="60" y="60" width="20" height="20" fill="#2563eb"/>
+                    <rect x="80" y="60" width="20" height="20" fill="#93c5fd"/>
+                    <rect x="100" y="60" width="20" height="20" fill="#dbeafe"/>
+                    <rect x="120" y="60" width="20" height="20" fill="#dbeafe"/>
+                    <rect x="140" y="60" width="20" height="20" fill="#2563eb"/>
+                    <rect x="160" y="60" width="20" height="20" fill="#2563eb"/>
+                    <rect x="180" y="60" width="20" height="20" fill="#93c5fd"/>
+                    <rect x="200" y="60" width="20" height="20" fill="#dbeafe"/>
+                </g>
+                <!-- Bottom: analogy text -->
+                <rect x="100" y="200" width="700" height="100" rx="12" fill="#dbeafe" stroke="#2563eb" strokeWidth="2"/>
+                <text x="450" y="240" textAnchor="middle" fontSize="26" fontWeight="900" fill="#2563eb">タイル = 0と1　｜　モザイク画 = デジタルデータ</text>
+                <text x="450" y="275" textAnchor="middle" fontSize="20" fontWeight="700" fill="#1a1d23">単純な要素の膨大な組み合わせが、複雑な情報を表現する</text>
+            </svg>
+        </div>
+    </div>
+</div>
+
+<!-- ===== Scene 4: 2進数の仕組み ===== -->
+<div class="scene" id="scene-4">
+    <div class="content center-layout">
+        <div class="scene-title">2進数の仕組み</div>
+        <div class="svg-diagram">
+            <svg width="1000" height="300" viewBox="0 0 1000 300">
+                <!-- 10進数 vs 2進数 table -->
+                <text x="250" y="40" textAnchor="middle" fontSize="24" fontWeight="900" fill="#f59e0b">10進数</text>
+                <text x="500" y="40" textAnchor="middle" fontSize="24" fontWeight="900" fill="#2563eb">2進数</text>
+                <text x="750" y="40" textAnchor="middle" fontSize="24" fontWeight="900" fill="#06b6d4">イメージ</text>
+                <line x1="100" y1="55" x2="900" y2="55" stroke="#d1d5db" strokeWidth="2"/>
+                <!-- Row 0 -->
+                <text x="250" y="90" textAnchor="middle" fontSize="28" fontWeight="700" fill="#1a1d23">0</text>
+                <text x="500" y="90" textAnchor="middle" fontSize="28" fontWeight="900" fill="#2563eb">0</text>
+                <g transform="translate(700,70)"><rect width="20" height="20" rx="4" fill="#d1d5db"/></g>
+                <!-- Row 1 -->
+                <text x="250" y="130" textAnchor="middle" fontSize="28" fontWeight="700" fill="#1a1d23">1</text>
+                <text x="500" y="130" textAnchor="middle" fontSize="28" fontWeight="900" fill="#2563eb">1</text>
+                <g transform="translate(700,110)"><rect width="20" height="20" rx="4" fill="#2563eb"/></g>
+                <!-- Row 2 -->
+                <text x="250" y="170" textAnchor="middle" fontSize="28" fontWeight="700" fill="#1a1d23">2</text>
+                <text x="500" y="170" textAnchor="middle" fontSize="28" fontWeight="900" fill="#2563eb">10</text>
+                <g transform="translate(700,150)"><rect width="20" height="20" rx="4" fill="#2563eb"/><rect x="24" width="20" height="20" rx="4" fill="#d1d5db"/></g>
+                <!-- Row 3 -->
+                <text x="250" y="210" textAnchor="middle" fontSize="28" fontWeight="700" fill="#1a1d23">3</text>
+                <text x="500" y="210" textAnchor="middle" fontSize="28" fontWeight="900" fill="#2563eb">11</text>
+                <g transform="translate(700,190)"><rect width="20" height="20" rx="4" fill="#2563eb"/><rect x="24" width="20" height="20" rx="4" fill="#2563eb"/></g>
+                <!-- Row 4 -->
+                <text x="250" y="250" textAnchor="middle" fontSize="28" fontWeight="700" fill="#1a1d23">4</text>
+                <text x="500" y="250" textAnchor="middle" fontSize="28" fontWeight="900" fill="#2563eb">100</text>
+                <g transform="translate(700,230)"><rect width="20" height="20" rx="4" fill="#2563eb"/><rect x="24" width="20" height="20" rx="4" fill="#d1d5db"/><rect x="48" width="20" height="20" rx="4" fill="#d1d5db"/></g>
+                <!-- Annotation -->
+                <text x="500" y="295" textAnchor="middle" fontSize="20" fontWeight="700" fill="#06b6d4">桁が増えるたびに、表現できる数が倍になる</text>
+            </svg>
+        </div>
+    </div>
+</div>
+
+<!-- ===== Scene 5: ビット数と表現力 ===== -->
+<div class="scene" id="scene-5">
+    <div class="content center-layout">
+        <div class="scene-title">ビット数と表現力</div>
+        <div class="num-list">
+            <div class="num-item">
+                <div class="num-circle">1</div>
+                <div class="num-text"><span class="accent-primary">1ビット</span> → 2通り（ON / OFF）</div>
+            </div>
+            <div class="num-item">
+                <div class="num-circle" style="background:var(--teal)">8</div>
+                <div class="num-text"><span class="accent-teal">8ビット</span> → 256通り（ファミコンの色数）</div>
+            </div>
+            <div class="num-item">
+                <div class="num-circle" style="background:var(--amber)">16</div>
+                <div class="num-text"><span class="accent-amber">16ビット</span> → 65,536通り（CDの音の細かさ）</div>
+            </div>
+            <div class="num-item">
+                <div class="num-circle" style="background:var(--coral)">24</div>
+                <div class="num-text"><span class="accent-coral">24ビット</span> → 約1,677万通り（フルカラー画像）</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ===== Scene 6: 核心の一言 ===== -->
+<div class="scene" id="scene-6">
+    <div class="content center-layout">
+        <div class="big-statement">0と1しかなくても<br><span class="accent-primary">並べ方のパターン</span>が膨大だから<br>何でも表現できる</div>
+        <div class="svg-diagram" style="margin-top:32px">
+            <svg width="600" height="80" viewBox="0 0 600 80">
+                <g fill="#2563eb" opacity="0.15" fontSize="20" fontWeight="900">
+                    <text x="0" y="25">01101001 01101110 01100110 01101111</text>
+                    <text x="0" y="55">01110011 01100101 01101110 01100100</text>
+                </g>
+            </svg>
+        </div>
+    </div>
+</div>
+
+<!-- ===== Scene 7: 音は波である ===== -->
+<div class="scene" id="scene-7">
+    <div class="content center-layout">
+        <div class="scene-title">音の正体 = 空気の振動（波）</div>
+        <div class="svg-diagram">
+            <svg width="1000" height="300" viewBox="0 0 1000 300">
+                <!-- Continuous wave -->
+                <path d="M50 150 Q125 30 200 150 Q275 270 350 150 Q425 30 500 150 Q575 270 650 150 Q725 30 800 150 Q875 270 950 150" fill="none" stroke="#06b6d4" strokeWidth="4" strokeLinecap="round"/>
+                <!-- Axis -->
+                <line x1="30" y1="150" x2="970" y2="150" stroke="#d1d5db" strokeWidth="1" strokeDasharray="8,4"/>
+                <!-- Labels -->
+                <text x="500" y="30" textAnchor="middle" fontSize="22" fontWeight="700" fill="#1a1d23">連続的に変化する波形</text>
+                <!-- Amplitude arrow -->
+                <line x1="200" y1="55" x2="200" y2="145" stroke="#ef4444" strokeWidth="2"/>
+                <text x="220" y="105" fontSize="18" fontWeight="700" fill="#ef4444">振幅</text>
+                <!-- Time arrow -->
+                <line x1="55" y1="270" x2="945" y2="270" stroke="#1a1d23" strokeWidth="2"/>
+                <polygon points="945,265 955,270 945,275" fill="#1a1d23"/>
+                <text x="500" y="295" textAnchor="middle" fontSize="18" fontWeight="700" fill="#1a1d23">時間 →</text>
+            </svg>
+        </div>
+    </div>
+</div>
+
+<!-- ===== Scene 8: もし波を数字にするなら ===== -->
+<div class="scene" id="scene-8">
+    <div class="content center-layout">
+        <div class="scene-title">思考実験：波を数字に変えるには？</div>
+        <div class="svg-diagram">
+            <svg width="1000" height="280" viewBox="0 0 1000 280">
+                <!-- Wave -->
+                <path d="M50 140 Q125 30 200 140 Q275 250 350 140 Q425 30 500 140 Q575 250 650 140 Q725 30 800 140 Q875 250 950 140" fill="none" stroke="#06b6d4" strokeWidth="3" opacity="0.4"/>
+                <!-- Sampling points -->
+                <g fill="#2563eb">
+                    <circle cx="50" cy="140" r="8"/>
+                    <circle cx="125" cy="58" r="8"/>
+                    <circle cx="200" cy="140" r="8"/>
+                    <circle cx="275" cy="222" r="8"/>
+                    <circle cx="350" cy="140" r="8"/>
+                    <circle cx="425" cy="58" r="8"/>
+                    <circle cx="500" cy="140" r="8"/>
+                    <circle cx="575" cy="222" r="8"/>
+                    <circle cx="650" cy="140" r="8"/>
+                    <circle cx="725" cy="58" r="8"/>
+                    <circle cx="800" cy="140" r="8"/>
+                    <circle cx="875" cy="222" r="8"/>
+                    <circle cx="950" cy="140" r="8"/>
+                </g>
+                <!-- Vertical lines -->
+                <g stroke="#2563eb" strokeWidth="1" strokeDasharray="4,4" opacity="0.3">
+                    <line x1="50" y1="140" x2="50" y2="260"/>
+                    <line x1="125" y1="58" x2="125" y2="260"/>
+                    <line x1="200" y1="140" x2="200" y2="260"/>
+                    <line x1="275" y1="222" x2="275" y2="260"/>
+                    <line x1="350" y1="140" x2="350" y2="260"/>
+                    <line x1="425" y1="58" x2="425" y2="260"/>
+                    <line x1="500" y1="140" x2="500" y2="260"/>
+                </g>
+                <!-- Label -->
+                <text x="500" y="28" textAnchor="middle" fontSize="22" fontWeight="900" fill="#2563eb">一定間隔で波の高さを測る = サンプリング（標本化）</text>
+            </svg>
+        </div>
+    </div>
+</div>
+
+<!-- ===== Scene 9: サンプリングの様子 ===== -->
+<div class="scene" id="scene-9">
+    <div class="content center-layout">
+        <div class="scene-title">サンプリング回数と精度</div>
+        <div class="svg-diagram">
+            <svg width="1000" height="340" viewBox="0 0 1000 340">
+                <!-- Top: sparse sampling -->
+                <text x="100" y="25" fontSize="20" fontWeight="900" fill="#ef4444">10回/秒（粗い）</text>
+                <path d="M200 70 Q275 20 350 70 Q425 120 500 70 Q575 20 650 70 Q725 120 800 70" fill="none" stroke="#d1d5db" strokeWidth="2"/>
+                <g fill="#ef4444">
+                    <circle cx="200" cy="70" r="6"/><circle cx="275" cy="32" r="6"/><circle cx="350" cy="70" r="6"/>
+                    <circle cx="425" cy="108" r="6"/><circle cx="500" cy="70" r="6"/><circle cx="575" cy="32" r="6"/>
+                    <circle cx="650" cy="70" r="6"/><circle cx="725" cy="108" r="6"/><circle cx="800" cy="70" r="6"/>
+                </g>
+                <line x1="200" y1="32" x2="275" y2="32" stroke="#ef4444" strokeWidth="2"/>
+                <line x1="275" y1="32" x2="350" y2="70" stroke="#ef4444" strokeWidth="2"/>
+                <line x1="350" y1="70" x2="425" y2="108" stroke="#ef4444" strokeWidth="2"/>
+                <line x1="425" y1="108" x2="500" y2="70" stroke="#ef4444" strokeWidth="2"/>
+                <line x1="500" y1="70" x2="575" y2="32" stroke="#ef4444" strokeWidth="2"/>
+                <line x1="575" y1="32" x2="650" y2="70" stroke="#ef4444" strokeWidth="2"/>
+                <line x1="650" y1="70" x2="725" y2="108" stroke="#ef4444" strokeWidth="2"/>
+                <line x1="725" y1="108" x2="800" y2="70" stroke="#ef4444" strokeWidth="2"/>
+                <!-- Bottom: dense sampling -->
+                <text x="100" y="195" fontSize="20" fontWeight="900" fill="#2563eb">44,100回/秒（CD品質）</text>
+                <path d="M200 240 Q275 190 350 240 Q425 290 500 240 Q575 190 650 240 Q725 290 800 240" fill="none" stroke="#2563eb" strokeWidth="3"/>
+                <!-- Many dots to suggest dense sampling -->
+                <g fill="#2563eb">
+                    <circle cx="200" cy="240" r="3"/><circle cx="210" cy="236" r="3"/><circle cx="220" cy="231" r="3"/><circle cx="230" cy="226" r="3"/>
+                    <circle cx="240" cy="221" r="3"/><circle cx="250" cy="216" r="3"/><circle cx="260" cy="211" r="3"/><circle cx="270" cy="206" r="3"/>
+                    <circle cx="280" cy="198" r="3"/><circle cx="290" cy="195" r="3"/><circle cx="300" cy="198" r="3"/><circle cx="310" cy="204" r="3"/>
+                    <circle cx="320" cy="212" r="3"/><circle cx="330" cy="220" r="3"/><circle cx="340" cy="230" r="3"/><circle cx="350" cy="240" r="3"/>
+                    <circle cx="360" cy="249" r="3"/><circle cx="370" cy="258" r="3"/><circle cx="380" cy="264" r="3"/><circle cx="390" cy="270" r="3"/>
+                    <circle cx="400" cy="276" r="3"/><circle cx="410" cy="280" r="3"/><circle cx="420" cy="282" r="3"/><circle cx="430" cy="280" r="3"/>
+                    <circle cx="440" cy="276" r="3"/><circle cx="450" cy="270" r="3"/><circle cx="460" cy="264" r="3"/><circle cx="470" cy="256" r="3"/>
+                    <circle cx="480" cy="249" r="3"/><circle cx="490" cy="244" r="3"/><circle cx="500" cy="240" r="3"/>
+                </g>
+                <text x="500" y="330" textAnchor="middle" fontSize="20" fontWeight="700" fill="#2563eb">回数が増えるほど元の波に近づく</text>
+            </svg>
+        </div>
+    </div>
+</div>
+
+<!-- ===== Scene 10: 量子化の説明 ===== -->
+<div class="scene" id="scene-10">
+    <div class="content center-layout">
+        <div class="scene-title">量子化：波の高さを整数に丸める</div>
+        <div class="svg-diagram">
+            <svg width="800" height="300" viewBox="0 0 800 300">
+                <!-- Grid lines -->
+                <g stroke="#d1d5db" strokeWidth="1">
+                    <line x1="100" y1="40" x2="700" y2="40"/><text x="80" y="45" textAnchor="end" fontSize="14" fill="#1a1d23">7</text>
+                    <line x1="100" y1="75" x2="700" y2="75"/><text x="80" y="80" textAnchor="end" fontSize="14" fill="#1a1d23">6</text>
+                    <line x1="100" y1="110" x2="700" y2="110"/><text x="80" y="115" textAnchor="end" fontSize="14" fill="#1a1d23">5</text>
+                    <line x1="100" y1="145" x2="700" y2="145"/><text x="80" y="150" textAnchor="end" fontSize="14" fill="#1a1d23">4</text>
+                    <line x1="100" y1="180" x2="700" y2="180"/><text x="80" y="185" textAnchor="end" fontSize="14" fill="#1a1d23">3</text>
+                    <line x1="100" y1="215" x2="700" y2="215"/><text x="80" y="220" textAnchor="end" fontSize="14" fill="#1a1d23">2</text>
+                    <line x1="100" y1="250" x2="700" y2="250"/><text x="80" y="255" textAnchor="end" fontSize="14" fill="#1a1d23">1</text>
+                </g>
+                <!-- Continuous wave (faded) -->
+                <path d="M120 180 Q200 40 280 110 Q360 200 440 145 Q520 75 600 110 Q660 140 680 180" fill="none" stroke="#06b6d4" strokeWidth="2" opacity="0.4"/>
+                <!-- Quantized points -->
+                <g fill="#2563eb">
+                    <circle cx="120" cy="180" r="8"/><circle cx="200" cy="75" r="8"/><circle cx="280" cy="110" r="8"/>
+                    <circle cx="360" cy="180" r="8"/><circle cx="440" cy="145" r="8"/><circle cx="520" cy="75" r="8"/>
+                    <circle cx="600" cy="110" r="8"/><circle cx="680" cy="180" r="8"/>
+                </g>
+                <!-- Error annotation -->
+                <line x1="280" y1="103" x2="280" y2="110" stroke="#ef4444" strokeWidth="3"/>
+                <text x="300" y="100" fontSize="14" fontWeight="700" fill="#ef4444">丸め誤差</text>
+                <!-- Bottom text -->
+                <text x="400" y="290" textAnchor="middle" fontSize="20" fontWeight="700" fill="#1a1d23">CDは<tspan fill="#2563eb" fontWeight="900">65,536段階</tspan>（16ビット）で丸める</text>
+            </svg>
+        </div>
+    </div>
+</div>
+
+<!-- ===== Scene 11: A/D変換3ステップ ===== -->
+<div class="scene" id="scene-11">
+    <div class="content center-layout">
+        <div class="scene-title">A/D変換の3ステップ</div>
+        <div class="flow-chain">
+            <div class="fc-node highlight">
+                <div class="fc-node-title">① 標本化</div>
+                <div class="fc-node-sub">波を一定間隔で測る</div>
+            </div>
+            <div class="fc-arr">→</div>
+            <div class="fc-node highlight">
+                <div class="fc-node-title">② 量子化</div>
+                <div class="fc-node-sub">高さを整数に丸める</div>
+            </div>
+            <div class="fc-arr">→</div>
+            <div class="fc-node highlight">
+                <div class="fc-node-title">③ 符号化</div>
+                <div class="fc-node-sub">整数を0と1に変換</div>
+            </div>
+        </div>
+        <div class="svg-diagram" style="margin-top:24px">
+            <svg width="900" height="100" viewBox="0 0 900 100">
+                <text x="150" y="40" textAnchor="middle" fontSize="32" fill="#06b6d4">〜</text>
+                <text x="150" y="75" textAnchor="middle" fontSize="16" fontWeight="700" fill="#1a1d23">アナログ波</text>
+                <text x="300" y="50" textAnchor="middle" fontSize="28" fill="#2563eb">→</text>
+                <text x="450" y="40" textAnchor="middle" fontSize="28" fontWeight="900" fill="#f59e0b">3, 7, 5, 2</text>
+                <text x="450" y="75" textAnchor="middle" fontSize="16" fontWeight="700" fill="#1a1d23">整数の列</text>
+                <text x="600" y="50" textAnchor="middle" fontSize="28" fill="#2563eb">→</text>
+                <text x="750" y="40" textAnchor="middle" fontSize="28" fontWeight="900" fill="#2563eb">011 111 101 010</text>
+                <text x="750" y="75" textAnchor="middle" fontSize="16" fontWeight="700" fill="#1a1d23">0と1の列</text>
+            </svg>
+        </div>
+    </div>
+</div>
+
+<!-- ===== Scene 12: 直感の提示 ===== -->
+<div class="scene" id="scene-12">
+    <div class="content center-layout">
+        <div class="big-statement">区切った<span class="accent-coral">「間の情報」</span>は<br>消えてしまったのか？</div>
+        <div class="svg-diagram" style="margin-top:24px">
+            <svg width="800" height="150" viewBox="0 0 800 150">
+                <path d="M50 75 Q150 10 250 75 Q350 140 450 75 Q550 10 650 75 Q710 110 750 75" fill="none" stroke="#06b6d4" strokeWidth="3" opacity="0.3"/>
+                <g fill="#2563eb">
+                    <circle cx="50" cy="75" r="8"/><circle cx="150" cy="22" r="8"/><circle cx="250" cy="75" r="8"/>
+                    <circle cx="350" cy="128" r="8"/><circle cx="450" cy="75" r="8"/><circle cx="550" cy="22" r="8"/>
+                    <circle cx="650" cy="75" r="8"/><circle cx="750" cy="75" r="8"/>
+                </g>
+                <!-- Question marks between points -->
+                <text x="100" y="65" textAnchor="middle" fontSize="24" fontWeight="900" fill="#ef4444">？</text>
+                <text x="200" y="65" textAnchor="middle" fontSize="24" fontWeight="900" fill="#ef4444">？</text>
+                <text x="300" y="115" textAnchor="middle" fontSize="24" fontWeight="900" fill="#ef4444">？</text>
+                <text x="400" y="115" textAnchor="middle" fontSize="24" fontWeight="900" fill="#ef4444">？</text>
+                <text x="500" y="65" textAnchor="middle" fontSize="24" fontWeight="900" fill="#ef4444">？</text>
+                <text x="600" y="65" textAnchor="middle" fontSize="24" fontWeight="900" fill="#ef4444">？</text>
+            </svg>
+        </div>
+    </div>
+</div>
+
+<!-- ===== Scene 13: 階段波形の誤解 ===== -->
+<div class="scene" id="scene-13">
+    <div class="content center-layout">
+        <div class="scene-title">よくある誤解：<span class="accent-coral">「デジタル波形は階段状」</span></div>
+        <div class="two-col">
+            <div class="compare-card border-coral">
+                <div class="compare-title accent-coral">❌ 誤解</div>
+                <div class="svg-diagram">
+                    <svg width="280" height="150" viewBox="0 0 280 150">
+                        <!-- Staircase wave -->
+                        <polyline points="20,75 20,30 60,30 60,50 100,50 100,75 140,75 140,110 180,110 180,75 220,75 220,30 260,30 260,50" fill="none" stroke="#ef4444" strokeWidth="3"/>
+                        <text x="140" y="145" textAnchor="middle" fontSize="14" fontWeight="700" fill="#ef4444">カクカクの階段…？</text>
+                    </svg>
+                </div>
+            </div>
+            <div class="compare-card border-primary">
+                <div class="compare-title accent-primary">✅ 実際</div>
+                <div class="svg-diagram">
+                    <svg width="280" height="150" viewBox="0 0 280 150">
+                        <!-- Smooth reconstructed wave -->
+                        <path d="M20 75 Q70 10 120 75 Q170 140 220 75 Q245 40 260 55" fill="none" stroke="#2563eb" strokeWidth="3"/>
+                        <!-- Sample points -->
+                        <g fill="#2563eb" opacity="0.5">
+                            <circle cx="20" cy="75" r="4"/><circle cx="70" cy="22" r="4"/><circle cx="120" cy="75" r="4"/>
+                            <circle cx="170" cy="128" r="4"/><circle cx="220" cy="75" r="4"/><circle cx="260" cy="55" r="4"/>
+                        </g>
+                        <text x="140" y="145" textAnchor="middle" fontSize="14" fontWeight="700" fill="#2563eb">再構成フィルタで滑らかに復元</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ===== Scene 14: 標本化定理の核心 ===== -->
+<div class="scene" id="scene-14">
+    <div class="content center-layout">
+        <div class="scene-title">標本化定理（シャノン, 1949年）</div>
+        <div class="quote-block">
+            <div class="quote-mark">"</div>
+            <div class="quote-body">元の信号の<span class="accent-primary">最大周波数の2倍を超えるレート</span>で<br>サンプリングすれば、元の連続信号を<span class="accent-primary">完全に復元</span>できる</div>
+            <div class="quote-source">— クロード・シャノン「通信の数学的理論」(1949)</div>
+        </div>
+        <div class="svg-diagram" style="margin-top:24px">
+            <svg width="800" height="100" viewBox="0 0 800 100">
+                <rect x="50" y="10" width="300" height="80" rx="12" fill="#dbeafe" stroke="#2563eb" strokeWidth="2"/>
+                <text x="200" y="40" textAnchor="middle" fontSize="18" fontWeight="700" fill="#1a1d23">可聴域上限</text>
+                <text x="200" y="68" textAnchor="middle" fontSize="28" fontWeight="900" fill="#2563eb">20,000 Hz</text>
+                <text x="425" y="55" textAnchor="middle" fontSize="32" fill="#2563eb">×2 =</text>
+                <rect x="480" y="10" width="280" height="80" rx="12" fill="#dbeafe" stroke="#2563eb" strokeWidth="2"/>
+                <text x="620" y="40" textAnchor="middle" fontSize="18" fontWeight="700" fill="#1a1d23">CDのサンプリング</text>
+                <text x="620" y="68" textAnchor="middle" fontSize="28" fontWeight="900" fill="#2563eb">44,100 Hz ✅</text>
+            </svg>
+        </div>
+    </div>
+</div>
+
+<!-- ===== Scene 15: 認識の転換 ===== -->
+<div class="scene" id="scene-15">
+    <div class="content center-layout">
+        <div class="scene-title">直感を覆す事実</div>
+        <div class="two-col">
+            <div class="compare-card border-amber">
+                <div class="compare-title accent-amber">レコード（アナログ）</div>
+                <div class="compare-body">ダイナミックレンジ<br><span class="accent-amber" style="font-size:36px;font-weight:900">約70 dB</span></div>
+            </div>
+            <div class="compare-card border-primary">
+                <div class="compare-title accent-primary">CD（デジタル）</div>
+                <div class="compare-body">ダイナミックレンジ<br><span class="accent-primary" style="font-size:36px;font-weight:900">約96 dB</span></div>
+            </div>
+        </div>
+        <div class="big-statement" style="margin-top:24px">デジタルのほうが<span class="accent-primary">約26dB正確</span></div>
+    </div>
+</div>
+
+<!-- ===== Scene 16: データ量の現実 ===== -->
+<div class="scene" id="scene-16">
+    <div class="content center-layout">
+        <div class="scene-title">圧縮なしのデータ量</div>
+        <div class="three-col">
+            <div class="arch-card border-teal">
+                <img src="https://api.iconify.design/mdi/music-note.svg?color=%2306b6d4&width=48&height=48" alt="music">
+                <div class="card-title">音声（CD品質）</div>
+                <div class="card-body">44,100回 × 16bit × 2ch<br>= <span class="accent-teal">1秒で約180KB</span><br>3分曲 ≒ 30MB</div>
+            </div>
+            <div class="arch-card border-primary">
+                <img src="https://api.iconify.design/mdi/image.svg?color=%232563eb&width=48&height=48" alt="image">
+                <div class="card-title">画像（フルHD）</div>
+                <div class="card-body">1920×1080 × 24bit<br>= <span class="accent-primary">1枚で約6MB</span></div>
+            </div>
+            <div class="arch-card border-coral">
+                <img src="https://api.iconify.design/mdi/video.svg?color=%23ef4444&width=48&height=48" alt="video">
+                <div class="card-title">動画（フルHD）</div>
+                <div class="card-body">6MB × 30fps<br>= <span class="accent-coral">1秒で180MB</span><br>3分動画 ≒ 30GB!</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ===== Scene 17: 画像も同じ原理 ===== -->
+<div class="scene" id="scene-17">
+    <div class="content center-layout">
+        <div class="scene-title">音も画像も動画も、原理は<span class="accent-primary">同じ</span></div>
+        <div class="svg-diagram">
+            <svg width="1000" height="280" viewBox="0 0 1000 280">
+                <!-- Sound -->
+                <rect x="30" y="30" width="280" height="200" rx="12" fill="#cffafe" stroke="#06b6d4" strokeWidth="2"/>
+                <text x="170" y="65" textAnchor="middle" fontSize="22" fontWeight="900" fill="#06b6d4">音</text>
+                <text x="170" y="100" textAnchor="middle" fontSize="16" fontWeight="700" fill="#1a1d23">波の高さ</text>
+                <text x="170" y="125" textAnchor="middle" fontSize="16" fontWeight="700" fill="#1a1d23">↓ 一定間隔で数値化</text>
+                <text x="170" y="160" textAnchor="middle" fontSize="16" fontWeight="700" fill="#1a1d23">→ 整数の列</text>
+                <text x="170" y="195" textAnchor="middle" fontSize="16" fontWeight="700" fill="#1a1d23">→ 0と1</text>
+                <!-- Image -->
+                <rect x="360" y="30" width="280" height="200" rx="12" fill="#dbeafe" stroke="#2563eb" strokeWidth="2"/>
+                <text x="500" y="65" textAnchor="middle" fontSize="22" fontWeight="900" fill="#2563eb">画像</text>
+                <text x="500" y="100" textAnchor="middle" fontSize="16" fontWeight="700" fill="#1a1d23">色の明るさ</text>
+                <text x="500" y="125" textAnchor="middle" fontSize="16" fontWeight="700" fill="#1a1d23">↓ ピクセルごとに数値化</text>
+                <text x="500" y="160" textAnchor="middle" fontSize="16" fontWeight="700" fill="#1a1d23">→ RGB値の列</text>
+                <text x="500" y="195" textAnchor="middle" fontSize="16" fontWeight="700" fill="#1a1d23">→ 0と1</text>
+                <!-- Video -->
+                <rect x="690" y="30" width="280" height="200" rx="12" fill="#fee2e2" stroke="#ef4444" strokeWidth="2"/>
+                <text x="830" y="65" textAnchor="middle" fontSize="22" fontWeight="900" fill="#ef4444">動画</text>
+                <text x="830" y="100" textAnchor="middle" fontSize="16" fontWeight="700" fill="#1a1d23">画像 × 時間</text>
+                <text x="830" y="125" textAnchor="middle" fontSize="16" fontWeight="700" fill="#1a1d23">↓ フレームごとに数値化</text>
+                <text x="830" y="160" textAnchor="middle" fontSize="16" fontWeight="700" fill="#1a1d23">→ フレーム列</text>
+                <text x="830" y="195" textAnchor="middle" fontSize="16" fontWeight="700" fill="#1a1d23">→ 0と1</text>
+                <!-- Common principle -->
+                <rect x="200" y="245" width="600" height="30" rx="8" fill="#2563eb"/>
+                <text x="500" y="267" textAnchor="middle" fontSize="18" fontWeight="900" fill="#ffffff">共通原理：連続的なものを区切って数値化する</text>
+            </svg>
+        </div>
+    </div>
+</div>
+
+<!-- ===== Scene 18: MP3の心理音響モデル ===== -->
+<div class="scene" id="scene-18">
+    <div class="content center-layout">
+        <div class="scene-title">MP3：人間の耳を騙す圧縮</div>
+        <div class="svg-diagram">
+            <svg width="900" height="300" viewBox="0 0 900 300">
+                <!-- Frequency axis -->
+                <line x1="80" y1="220" x2="820" y2="220" stroke="#1a1d23" strokeWidth="2"/>
+                <text x="450" y="250" textAnchor="middle" fontSize="16" fontWeight="700" fill="#1a1d23">周波数 →</text>
+                <!-- Amplitude axis -->
+                <line x1="80" y1="30" x2="80" y2="220" stroke="#1a1d23" strokeWidth="2"/>
+                <text x="40" y="130" textAnchor="middle" fontSize="16" fontWeight="700" fill="#1a1d23" transform="rotate(-90,40,130)">音量</text>
+                <!-- Big sound (masker) -->
+                <path d="M250 220 Q300 40 350 220" fill="#2563eb" opacity="0.3"/>
+                <text x="300" y="30" textAnchor="middle" fontSize="18" fontWeight="900" fill="#2563eb">大きな音</text>
+                <!-- Masking threshold curve -->
+                <path d="M150 210 Q250 180 300 100 Q350 180 500 200 Q650 210 800 215" fill="none" stroke="#f59e0b" strokeWidth="3" strokeDasharray="8,4"/>
+                <text x="650" y="185" fontSize="16" fontWeight="700" fill="#f59e0b">マスキング閾値</text>
+                <!-- Small sounds below threshold (removed) -->
+                <g opacity="0.4">
+                    <path d="M450 220 Q465 190 480 220" fill="#ef4444"/>
+                    <path d="M550 220 Q560 200 570 220" fill="#ef4444"/>
+                    <path d="M630 220 Q638 205 646 220" fill="#ef4444"/>
+                </g>
+                <text x="540" y="270" textAnchor="middle" fontSize="16" fontWeight="700" fill="#ef4444">↑ この範囲の音は聞こえない → 削除可能</text>
+                <!-- Result -->
+                <rect x="100" y="278" width="700" height="20" rx="6" fill="#dbeafe"/>
+                <text x="450" y="294" textAnchor="middle" fontSize="14" fontWeight="900" fill="#2563eb">データ量を約 1/10 に圧縮</text>
+            </svg>
+        </div>
+    </div>
+</div>
+
+<!-- ===== Scene 19: JPEGの圧縮原理 ===== -->
+<div class="scene" id="scene-19">
+    <div class="content center-layout">
+        <div class="scene-title">JPEG：人間の目を騙す圧縮</div>
+        <div class="svg-diagram">
+            <svg width="900" height="300" viewBox="0 0 900 300">
+                <!-- Original image block -->
+                <text x="120" y="30" textAnchor="middle" fontSize="18" fontWeight="900" fill="#1a1d23">元画像</text>
+                <g transform="translate(40,40)">
+                    <rect width="160" height="160" rx="8" fill="#dbeafe" stroke="#2563eb" strokeWidth="2"/>
+                    <!-- 8x8 grid -->
+                    <g stroke="#2563eb" strokeWidth="0.5" opacity="0.3">
+                        <line x1="20" y1="0" x2="20" y2="160"/><line x1="40" y1="0" x2="40" y2="160"/>
+                        <line x1="60" y1="0" x2="60" y2="160"/><line x1="80" y1="0" x2="80" y2="160"/>
+                        <line x1="100" y1="0" x2="100" y2="160"/><line x1="120" y1="0" x2="120" y2="160"/>
+                        <line x1="140" y1="0" x2="140" y2="160"/>
+                        <line x1="0" y1="20" x2="160" y2="20"/><line x1="0" y1="40" x2="160" y2="40"/>
+                        <line x1="0" y1="60" x2="160" y2="60"/><line x1="0" y1="80" x2="160" y2="80"/>
+                        <line x1="0" y1="100" x2="160" y2="100"/><line x1="0" y1="120" x2="160" y2="120"/>
+                        <line x1="0" y1="140" x2="160" y2="140"/>
+                    </g>
+                    <text x="80" y="90" textAnchor="middle" fontSize="14" fontWeight="700" fill="#2563eb">8×8ブロック</text>
+                </g>
+                <!-- Arrow 1 -->
+                <text x="260" y="130" textAnchor="middle" fontSize="36" fill="#2563eb">→</text>
+                <!-- DCT -->
+                <text x="400" y="30" textAnchor="middle" fontSize="18" fontWeight="900" fill="#06b6d4">DCT変換</text>
+                <g transform="translate(320,40)">
+                    <rect width="160" height="160" rx="8" fill="#cffafe" stroke="#06b6d4" strokeWidth="2"/>
+                    <!-- DCT coefficients visualization -->
+                    <rect x="10" y="10" width="30" height="30" rx="4" fill="#06b6d4"/>
+                    <rect x="45" y="10" width="30" height="30" rx="4" fill="#06b6d4" opacity="0.7"/>
+                    <rect x="80" y="10" width="30" height="30" rx="4" fill="#06b6d4" opacity="0.3"/>
+                    <rect x="115" y="10" width="30" height="30" rx="4" fill="#06b6d4" opacity="0.1"/>
+                    <rect x="10" y="45" width="30" height="30" rx="4" fill="#06b6d4" opacity="0.6"/>
+                    <rect x="45" y="45" width="30" height="30" rx="4" fill="#06b6d4" opacity="0.3"/>
+                    <rect x="80" y="45" width="30" height="30" rx="4" fill="#06b6d4" opacity="0.1"/>
+                    <rect x="10" y="80" width="30" height="30" rx="4" fill="#06b6d4" opacity="0.2"/>
+                    <rect x="45" y="80" width="30" height="30" rx="4" fill="#06b6d4" opacity="0.1"/>
+                    <text x="80" y="135" textAnchor="middle" fontSize="13" fontWeight="700" fill="#06b6d4">低周波（重要）→高周波</text>
+                </g>
+                <!-- Arrow 2 -->
+                <text x="540" y="130" textAnchor="middle" fontSize="36" fill="#2563eb">→</text>
+                <!-- Quantized (high freq removed) -->
+                <text x="680" y="30" textAnchor="middle" fontSize="18" fontWeight="900" fill="#ef4444">高周波カット</text>
+                <g transform="translate(600,40)">
+                    <rect width="160" height="160" rx="8" fill="#fee2e2" stroke="#ef4444" strokeWidth="2"/>
+                    <rect x="10" y="10" width="30" height="30" rx="4" fill="#2563eb"/>
+                    <rect x="45" y="10" width="30" height="30" rx="4" fill="#2563eb" opacity="0.7"/>
+                    <rect x="80" y="10" width="30" height="30" rx="4" fill="#d1d5db" opacity="0.3"/>
+                    <rect x="115" y="10" width="30" height="30" rx="4" fill="#d1d5db" opacity="0.1"/>
+                    <rect x="10" y="45" width="30" height="30" rx="4" fill="#2563eb" opacity="0.5"/>
+                    <rect x="45" y="45" width="30" height="30" rx="4" fill="#d1d5db" opacity="0.2"/>
+                    <text x="80" y="100" textAnchor="middle" fontSize="32" fontWeight="900" fill="#ef4444">✕</text>
+                    <text x="80" y="135" textAnchor="middle" fontSize="13" fontWeight="700" fill="#ef4444">人間の目に見えない部分を削除</text>
+                </g>
+                <!-- Human eye characteristic -->
+                <rect x="150" y="230" width="600" height="55" rx="8" fill="#fef3c7" stroke="#f59e0b" strokeWidth="2"/>
+                <text x="450" y="255" textAnchor="middle" fontSize="16" fontWeight="700" fill="#1a1d23">人間の目：<tspan fill="#2563eb">明るさに敏感</tspan> ／ <tspan fill="#ef4444">色の変化に鈍感</tspan> ／ <tspan fill="#ef4444">高周波に鈍感</tspan></text>
+                <text x="450" y="278" textAnchor="middle" fontSize="14" fontWeight="700" fill="#f59e0b">この視覚特性を利用して知覚的に不要な情報を削除</text>
+            </svg>
+        </div>
+    </div>
+</div>
+
+<!-- ===== Scene 20: 動画圧縮の仕組み ===== -->
+<div class="scene" id="scene-20">
+    <div class="content center-layout">
+        <div class="scene-title">動画圧縮：フレーム間の差分だけ記録</div>
+        <div class="svg-diagram">
+            <svg width="1000" height="280" viewBox="0 0 1000 280">
+                <!-- I-frame -->
+                <rect x="30" y="40" width="200" height="150" rx="8" fill="#dbeafe" stroke="#2563eb" strokeWidth="3"/>
+                <text x="130" y="30" textAnchor="middle" fontSize="18" fontWeight="900" fill="#2563eb">Iフレーム（基準）</text>
+                <!-- Person silhouette in I-frame -->
+                <circle cx="130" cy="90" r="20" fill="#2563eb"/>
+                <path d="M100 115 C100 100 160 100 160 115 L160 130 Q130 140 100 130 Z" fill="#2563eb"/>
+                <rect x="40" y="150" width="180" height="30" rx="4" fill="#93c5fd"/>
+                <!-- Arrow -->
+                <text x="280" y="120" textAnchor="middle" fontSize="28" fill="#2563eb">→</text>
+                <!-- P-frame -->
+                <rect x="330" y="40" width="200" height="150" rx="8" fill="#cffafe" stroke="#06b6d4" strokeWidth="2"/>
+                <text x="430" y="30" textAnchor="middle" fontSize="18" fontWeight="900" fill="#06b6d4">Pフレーム（差分）</text>
+                <rect x="340" y="50" width="180" height="130" rx="4" fill="none" stroke="#d1d5db" strokeWidth="1" strokeDasharray="4,4"/>
+                <!-- Only the moved part is colored -->
+                <circle cx="150" cy="90" r="20" fill="#06b6d4"/>
+                <path d="M120 115 C120 100 180 100 180 115 L180 130 Q150 140 120 130 Z" fill="#06b6d4" transform="translate(280,0)"/>
+                <!-- Arrow -->
+                <text x="580" y="120" textAnchor="middle" fontSize="28" fill="#2563eb">→</text>
+                <!-- P-frame 2 -->
+                <rect x="630" y="40" width="200" height="150" rx="8" fill="#cffafe" stroke="#06b6d4" strokeWidth="2"/>
+                <text x="730" y="30" textAnchor="middle" fontSize="18" fontWeight="900" fill="#06b6d4">Pフレーム（差分）</text>
+                <rect x="640" y="50" width="180" height="130" rx="4" fill="none" stroke="#d1d5db" strokeWidth="1" strokeDasharray="4,4"/>
+                <circle cx="170" cy="90" r="20" fill="#06b6d4"/>
+                <path d="M140 115 C140 100 200 100 200 115 L200 130 Q170 140 140 130 Z" fill="#06b6d4" transform="translate(580,0)"/>
+                <!-- Bottom annotation -->
+                <rect x="100" y="220" width="800" height="50" rx="8" fill="#dbeafe"/>
+                <text x="500" y="248" textAnchor="middle" fontSize="18" fontWeight="700" fill="#1a1d23">変化がない部分はスキップ → <tspan fill="#2563eb" fontWeight="900">H.264 / H.265</tspan> が実現</text>
+            </svg>
+        </div>
+    </div>
+</div>
+
+<!-- ===== Scene 21: 圧縮の限界 ===== -->
+<div class="scene" id="scene-21">
+    <div class="content center-layout">
+        <div class="scene-title">非可逆圧縮の注意点</div>
+        <div class="two-col">
+            <div class="compare-card border-teal">
+                <div class="compare-title accent-teal">✅ メリット</div>
+                <ul class="compare-list">
+                    <li>✓ データ量を 1/10 以下に</li>
+                    <li>✓ ストリーミング配信が可能に</li>
+                    <li>✓ 人間にはほぼ区別不能</li>
+                </ul>
+            </div>
+            <div class="compare-card border-coral">
+                <div class="compare-title accent-coral">⚠ 限界</div>
+                <ul class="compare-list">
+                    <li>✗ 一度捨てた情報は復元不可</li>
+                    <li>✗ MP3→FLACでも音は戻らない</li>
+                    <li>✗ シンバル等で破綻することも</li>
+                </ul>
+            </div>
+        </div>
+        <div class="big-statement" style="margin-top:16px">人間の<span class="accent-amber">知覚の限界</span>を逆手にとった賢い設計</div>
+    </div>
+</div>
+
+<!-- ===== Scene 22: シャノンの貢献 ===== -->
+<div class="scene" id="scene-22">
+    <div class="content center-layout">
+        <div class="scene-title">デジタル時代を開いた先駆者たち</div>
+        <div class="flow-chain">
+            <div class="fc-node">
+                <div class="year-badge">1937</div>
+                <div class="fc-node-title">アレック・リーヴス</div>
+                <div class="fc-node-sub">PCMを発明</div>
+            </div>
+            <div class="fc-arr">→</div>
+            <div class="fc-node highlight">
+                <div class="year-badge">1948</div>
+                <div class="fc-node-title">クロード・シャノン</div>
+                <div class="fc-node-sub">情報理論を確立</div>
+            </div>
+            <div class="fc-arr">→</div>
+            <div class="fc-node">
+                <div class="year-badge">1972</div>
+                <div class="fc-node-title">ナシル・アーメッド</div>
+                <div class="fc-node-sub">DCTを発明</div>
+            </div>
+        </div>
+        <div class="quote-block" style="margin-top:24px">
+            <div class="quote-mark">"</div>
+            <div class="quote-body">シャノンの1948年の論文は<span class="accent-primary">「情報時代のマグナカルタ」</span>と呼ばれている</div>
+        </div>
+    </div>
+</div>
+
+<!-- ===== Scene 23: 技術の系譜 ===== -->
+<div class="scene" id="scene-23">
+    <div class="content center-layout">
+        <div class="scene-title">1つの数学が音声も画像も動画も支える</div>
+        <div class="svg-diagram">
+            <svg width="900" height="260" viewBox="0 0 900 260">
+                <!-- DCT center -->
+                <circle cx="450" cy="80" r="60" fill="#dbeafe" stroke="#2563eb" strokeWidth="3"/>
+                <text x="450" y="75" textAnchor="middle" fontSize="18" fontWeight="900" fill="#2563eb">離散コサイン</text>
+                <text x="450" y="100" textAnchor="middle" fontSize="18" fontWeight="900" fill="#2563eb">変換(DCT)</text>
+                <!-- Lines to applications -->
+                <line x1="390" y1="100" x2="180" y2="190" stroke="#06b6d4" strokeWidth="2"/>
+                <line x1="450" y1="140" x2="450" y2="190" stroke="#2563eb" strokeWidth="2"/>
+                <line x1="510" y1="100" x2="720" y2="190" stroke="#ef4444" strokeWidth="2"/>
+                <!-- JPEG -->
+                <rect x="80" y="190" width="200" height="55" rx="8" fill="#cffafe" stroke="#06b6d4" strokeWidth="2"/>
+                <image x="90" y="198" width="36" height="36" href="https://api.iconify.design/mdi/image.svg?color=%2306b6d4&width=36&height=36"/>
+                <text x="200" y="222" textAnchor="middle" fontSize="20" fontWeight="900" fill="#06b6d4">JPEG</text>
+                <!-- MPEG -->
+                <rect x="350" y="190" width="200" height="55" rx="8" fill="#dbeafe" stroke="#2563eb" strokeWidth="2"/>
+                <image x="360" y="198" width="36" height="36" href="https://api.iconify.design/mdi/video.svg?color=%232563eb&width=36&height=36"/>
+                <text x="470" y="222" textAnchor="middle" fontSize="20" fontWeight="900" fill="#2563eb">MPEG / H.264</text>
+                <!-- AAC -->
+                <rect x="620" y="190" width="200" height="55" rx="8" fill="#fee2e2" stroke="#ef4444" strokeWidth="2"/>
+                <image x="630" y="198" width="36" height="36" href="https://api.iconify.design/mdi/music-note.svg?color=%23ef4444&width=36&height=36"/>
+                <text x="740" y="222" textAnchor="middle" fontSize="20" fontWeight="900" fill="#ef4444">AAC</text>
+            </svg>
+        </div>
+    </div>
+</div>
+
+<!-- ===== Scene 24: 日常の中の0と1 ===== -->
+<div class="scene" id="scene-24">
+    <div class="content center-layout">
+        <div class="scene-title">日常に溢れる0と1</div>
+        <div class="enterprise-grid">
+            <div class="enterprise-card border-primary">
+                <img src="https://api.iconify.design/mdi/cellphone.svg?color=%232563eb&width=40&height=40" alt="phone">
+                <div class="card-title">スマホの写真</div>
+            </div>
+            <div class="enterprise-card border-teal">
+                <img src="https://api.iconify.design/mdi/youtube.svg?color=%23FF0000&width=40&height=40" alt="youtube">
+                <div class="card-title">YouTube</div>
+            </div>
+            <div class="enterprise-card border-amber">
+                <img src="https://api.iconify.design/mdi/qrcode.svg?color=%23f59e0b&width=40&height=40" alt="qrcode">
+                <div class="card-title">QRコード</div>
+            </div>
+            <div class="enterprise-card border-coral">
+                <img src="https://api.iconify.design/mdi/train.svg?color=%23ef4444&width=40&height=40" alt="suica">
+                <div class="card-title">Suica</div>
+            </div>
+            <div class="enterprise-card border-primary">
+                <img src="https://api.iconify.design/mdi/music-note.svg?color=%232563eb&width=40&height=40" alt="music">
+                <div class="card-title">音楽配信</div>
+            </div>
+        </div>
+        <div class="big-statement" style="margin-top:16px">すべて<span class="accent-primary">サンプリング→量子化→符号化</span>の応用</div>
+    </div>
+</div>
+
+<!-- ===== Scene 25: エンディング ===== -->
+<div class="scene" id="scene-25">
+    <div class="content center-layout">
+        <div class="big-statement"><span class="accent-primary">0と1</span>のたった2つの状態でも<br>並べ方は<span class="accent-teal">無限に近い</span></div>
+        <div class="num-list" style="margin-top:24px">
+            <div class="num-item">
+                <div class="num-circle">1</div>
+                <div class="num-text"><span class="accent-primary">標本化定理</span>が完全復元を数学的に保証</div>
+            </div>
+            <div class="num-item">
+                <div class="num-circle" style="background:var(--teal)">2</div>
+                <div class="num-text"><span class="accent-teal">圧縮技術</span>が人間の知覚の限界を巧みに利用</div>
+            </div>
+            <div class="num-item">
+                <div class="num-circle" style="background:var(--amber)">3</div>
+                <div class="num-text"><span class="accent-amber">膨大な0と1</span>が、きみの感じる世界を紡いでいる</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

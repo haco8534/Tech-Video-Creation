@@ -1,0 +1,23 @@
+5G対応スマホを持っているのに、体感が4Gと変わらない——そんな疑問を持ったことはありませんか？
+
+この動画では、「なんちゃって5G（転用5G）」の仕組み、カバー率98.4%の裏側、キラーアプリが見つからない理由、そしてNSA/SA方式やネットワークスライシングなど「本当の5G」がまだ始まっていない構造を、ずんだもんとめたんの対話でわかりやすく解説します。
+
+3G（FOMA）も初期は「失敗」と言われていた歴史を振り返りながら、5Gの現在地と未来を一緒に考えましょう。
+
+## 目次
+{{TIMESTAMPS}}
+
+## 参考文献
+- ICT総研「全国通信速度実態調査」(2026年1月) https://ictr.co.jp/report/20260106.html/
+- 総務省「5G整備状況 令和6年度末」 https://www.soumu.go.jp/menu_news/s-news/01kiban14_02000731.html
+- 総務省「電気通信サービスデータ」(2025年6月末) https://orefolder.jp/2025/09/soumu-share-202506/
+- 日経クロステック「図解 なんちゃって5G」 https://xtech.nikkei.com/atcl/nxt/column/18/01481/112400001/
+- Opensignal「Does 5G Standalone Live Up to the Hype in Japan?」(2025年7月) https://insights.opensignal.com/2025/07/31/does-5g-standalone-live-up-to-the-hype-in-japan/jp
+- BUSINESS NETWORK「ネットワークスライシングで新たな競争へ」 https://businessnetwork.jp/article/15204/
+- ケータイWatch「ドコモ尾上氏 FOMA講演」 https://k-tai.watch.impress.co.jp/docs/event/embtec2009/330128.html
+- NTT R&D「IOWN/6G」 https://www.rd.ntt/research/JN202512_37488.html
+
+📘 このチャンネルについて
+一次情報と研究データに基づきながら、難しいテーマをずんだもんとめたんの対話で楽しくわかりやすく解説するチャンネルです。
+
+#5G #なんちゃって5G #ネットワーク #通信技術 #ずんだもん

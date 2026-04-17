@@ -210,19 +210,21 @@ New-Item -ItemType Directory -Force -Path "{REMOTION_DIR}/scenes"
 Copy-Item "{SLIDES_DIR}/style.css" "{REMOTION_DIR}/scenes/slides.css"
 ```
 
-2. **slides.css をRemotion用に調整（共有CSSルール・厳守）**:
+2. **slides.css + animations.css をRemotion用に調整（共有CSSルール・厳守）**:
 
 > 🚨 **全プロジェクトのCSSはRemotionで1つのグローバルスコープに統合される。**
 > クラス名（`.scene`, `.arch-card`, `.flow-chain` 等）は全プロジェクト共通であり、あるプロジェクトでサイズや余白を変更すると他の全プロジェクトに波及する。
 >
 > **変更してよいのは `:root` のカラー変数（`--primary`, `--teal` 等）のみ。**
-> レイアウト系プロパティ（width, height, padding, margin, font-size, gap 等）は `channels/tech_explainer/projects/creating_programming_language/remotion/scenes/slides.css` を正とし、**一切変更してはならない。**
+> レイアウト系プロパティ（width, height, padding, margin, font-size, gap 等）は `channels/tech_explainer/projects/proj_afbe778d/remotion/scenes/slides.css` を正とし、**一切変更してはならない。**
+>
+> アニメーションは `animations.css` に切り出されており、`slides.css` の先頭で `@import url('./animations.css');` により読み込まれる。**`animations.css` は基準ファイルをそのままコピーし、一切改変しない。**
 
 手順:
-- `channels/tech_explainer/projects/creating_programming_language/remotion/scenes/slides.css` を `{REMOTION_DIR}/scenes/slides.css` にコピーする
-- `:root` ブロックのカラー変数のみをテーマに合わせて変更する（`--primary`, `--teal`, `--coral`, `--amber` とそれぞれの `-light`）
+- `channels/tech_explainer/projects/proj_afbe778d/remotion/scenes/slides.css` を `{REMOTION_DIR}/scenes/slides.css` にコピーする
+- `channels/tech_explainer/projects/proj_afbe778d/remotion/scenes/animations.css` を `{REMOTION_DIR}/scenes/animations.css` にコピーする（改変禁止）
+- `slides.css` の `:root` ブロックのカラー変数のみをテーマに合わせて変更する（`--primary`, `--teal`, `--coral`, `--amber` とそれぞれの `-light`）
 - `.scene.active { ... }` ルールがあれば削除
-- `.bar-fill` 等の `width: 0` → `width: var(--w)`、`transition` → 削除
 - **`.timeline` クラスが使用されていたら、`.timeline` `.tl-item` `.tl-dot` に対して `border: none !important`, `content: none !important` 等のリーク防止ルールを追加**
 
 3. **HTML→TSX変換実行**:

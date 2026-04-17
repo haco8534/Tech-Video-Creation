@@ -75,5 +75,40 @@
     "publishAt": null,
     "videoId": "iTyAsbFOUpc",
     "uploadedAt": "2026-04-11T10:29:15.124Z"
+  },
+  "tech_explainer/fax": {
+    "channelId": "tech_explainer",
+    "projectId": "fax",
+    "publishAt": null,
+    "videoId": "LpdPvgvcNYY",
+    "uploadedAt": "2026-04-13T12:37:17.113Z"
+  },
+  "tech_explainer/0_1": {
+    "channelId": "tech_explainer",
+    "projectId": "0_1",
+    "publishAt": null,
+    "videoId": "BeRmF-PJljE",
+    "uploadedAt": "2026-04-15T10:40:17.668Z"
+  },
+  "tech_explainer/proj_352c4df4": {
+    "channelId": "tech_explainer",
+    "projectId": "proj_352c4df4",
+    "publishAt": "2026-04-17T09:30:00.000Z",
+    "videoId": null,
+    "uploadedAt": null
+  },
+  "tech_explainer/proj_539006a7": {
+    "channelId": "tech_explainer",
+    "projectId": "proj_539006a7",
+    "publishAt": "2026-04-19T09:30:00.000Z",
+    "videoId": "MNPaJF9q4rs",
+    "uploadedAt": "2026-04-16T13:52:49.741Z"
+  },
+  "tech_explainer/proj_7973c0b4": {
+    "channelId": "tech_explainer",
+    "projectId": "proj_7973c0b4",
+    "publishAt": "2026-04-21T09:30:00.000Z",
+    "videoId": null,
+    "uploadedAt": null
   }
 }

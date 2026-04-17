@@ -72,7 +72,16 @@ export async function authenticate(channelId) {
       const merged = { ...token, ...newTokens };
       saveToken(channelId, merged);
     });
-    return client;
+
+    // トークンが有効か確認（invalid_grant 対策）
+    try {
+      await client.getAccessToken();
+      return client;
+    } catch (err) {
+      console.error(`[youtube] ${channelId}: トークン無効 (${err.message})、再認証します...`);
+      // 無効なトークンファイルを削除して再認証フローへ
+      fs.unlinkSync(tokenPath(channelId));
+    }
   }
 
   // 初回認証: ブラウザでOAuth同意画面を開く

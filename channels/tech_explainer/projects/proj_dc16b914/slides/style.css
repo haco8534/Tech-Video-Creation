@@ -1,0 +1,346 @@
+@import url('https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;700;900&display=swap');
+
+:root {
+    --bg: #f8f9fa;
+    --text: #1a1d23;
+    --text-light: #1a1d23;
+    --primary: #2563eb;
+    --primary-light: #dbeafe;
+    --teal: #0891b2;
+    --teal-light: #cffafe;
+    --coral: #dc2626;
+    --coral-light: #fee2e2;
+    --amber: #d97706;
+    --amber-light: #fef3c7;
+    --card-bg: #ffffff;
+    --border: #d1d5db;
+    --radius: 12px;
+    --radius-sm: 6px;
+    --fs-hero: 72px;
+    --fs-heading: 36px;
+    --fs-body: 24px;
+    --fs-caption: 22px;
+    --fs-small: 18px;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+    font-family: 'Zen Maru Gothic', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    overflow: hidden;
+}
+
+/* === Scene === */
+.scene {
+    width: 100%; height: 100vh;
+    position: absolute; top: 0; left: 0;
+    display: flex; align-items: center; justify-content: center;
+    opacity: 0; pointer-events: none;
+    background: var(--bg); overflow: hidden;
+}
+.scene.active { opacity: 1; pointer-events: auto; }
+
+.content {
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    width: 1540px; max-height: 860px; padding: 20px;
+    z-index: 2; position: relative;
+}
+.center-layout { text-align: center; }
+
+/* === Typography === */
+.scene-title {
+    font-size: var(--fs-heading); font-weight: 900;
+    color: var(--text); margin-bottom: 32px;
+}
+.title-large {
+    font-size: var(--fs-hero); font-weight: 900;
+    color: var(--primary); line-height: 1.2;
+}
+.title-sub {
+    font-size: var(--fs-body); font-weight: 700;
+    color: var(--text); margin-top: 16px;
+}
+.big-statement {
+    font-size: 48px; font-weight: 900;
+    color: var(--text); line-height: 1.4;
+    max-width: 1200px;
+}
+.accent-primary { color: var(--primary); }
+.accent-teal { color: var(--teal); }
+.accent-coral { color: var(--coral); }
+.accent-amber { color: var(--amber); }
+
+/* === Icon decoration === */
+.icon-deco {
+    display: flex; gap: 24px; justify-content: center;
+    margin-bottom: 24px;
+}
+.icon-deco img { width: 64px; height: 64px; }
+
+/* === Icon Row === */
+.icon-row {
+    display: flex; gap: 32px; justify-content: center;
+    align-items: center; flex-wrap: wrap;
+    margin-bottom: 24px;
+}
+.icon-row img { width: 48px; height: 48px; }
+
+/* === Icon Cloud === */
+.icon-cloud {
+    display: flex; gap: 16px; justify-content: center;
+    align-items: center; flex-wrap: wrap;
+}
+.icon-cloud img { width: 48px; height: 48px; }
+
+/* === Metric === */
+.metric-card {
+    background: var(--card-bg); border: 2px solid var(--border);
+    border-radius: var(--radius); padding: 40px 60px;
+    display: inline-flex; flex-direction: column; align-items: center;
+}
+.metric-value {
+    font-size: 96px; font-weight: 900;
+    color: var(--primary); line-height: 1;
+}
+.metric-label {
+    font-size: var(--fs-body); font-weight: 700;
+    color: var(--text); margin-top: 12px;
+}
+
+/* === Metric Row === */
+.metric-row {
+    display: flex; gap: 24px; justify-content: center;
+    align-items: stretch; width: 100%;
+}
+.metric-row .metric-card { flex: 1; max-width: 420px; }
+
+/* === Flow Chain === */
+.flow-chain {
+    display: flex; align-items: center; justify-content: center;
+    gap: 0; flex-wrap: nowrap;
+}
+.fc-node {
+    background: var(--card-bg); border: 2px solid var(--border);
+    border-radius: var(--radius); padding: 20px 24px;
+    display: flex; flex-direction: column; align-items: center;
+    min-width: 140px;
+}
+.fc-node img { display: block; margin: 0 auto 6px; width: 40px; height: 40px; }
+.fc-node-title {
+    font-size: var(--fs-body); font-weight: 700;
+    color: var(--text);
+}
+.fc-node-sub {
+    font-size: var(--fs-small); font-weight: 400;
+    color: var(--text); margin-top: 4px;
+}
+.fc-arr {
+    font-size: 28px; color: var(--primary);
+    margin: 0 8px; flex-shrink: 0;
+}
+.fc-node.highlight {
+    border-color: var(--primary);
+    background: var(--primary-light);
+}
+.fc-node.highlight-coral {
+    border-color: var(--coral);
+    background: var(--coral-light);
+}
+.fc-node.highlight-teal {
+    border-color: var(--teal);
+    background: var(--teal-light);
+}
+.fc-node.highlight-amber {
+    border-color: var(--amber);
+    background: var(--amber-light);
+}
+
+/* === Compare / Two Col === */
+.two-col {
+    display: flex; gap: 32px; justify-content: center;
+    width: 100%;
+}
+.compare-card {
+    background: var(--card-bg); border: 2px solid var(--border);
+    border-radius: var(--radius); padding: 32px;
+    flex: 1; max-width: 700px;
+    display: flex; flex-direction: column; align-items: center;
+}
+.compare-title {
+    font-size: var(--fs-body); font-weight: 900;
+    margin-bottom: 16px;
+}
+.compare-body {
+    font-size: var(--fs-caption); font-weight: 700;
+    color: var(--text); line-height: 1.6;
+}
+
+/* === Three Col / Arch Card === */
+.three-col {
+    display: flex; gap: 24px; justify-content: center;
+    width: 100%;
+}
+.arch-card {
+    background: var(--card-bg); border: 2px solid var(--border);
+    border-radius: var(--radius); padding: 28px 24px;
+    flex: 1; max-width: 460px;
+    display: flex; flex-direction: column; align-items: center;
+}
+.arch-card img { display: block; margin: 0 auto 10px; width: 48px; height: 48px; }
+.card-title {
+    font-size: var(--fs-body); font-weight: 900;
+    color: var(--text); margin-bottom: 8px;
+}
+.card-body {
+    font-size: var(--fs-caption); font-weight: 700;
+    color: var(--text); line-height: 1.5;
+}
+
+/* === Num List === */
+.num-list {
+    display: flex; flex-direction: column; gap: 20px;
+    width: 100%; max-width: 1000px;
+}
+.num-item {
+    display: flex; align-items: center; gap: 20px;
+    background: var(--card-bg); border: 2px solid var(--border);
+    border-radius: var(--radius); padding: 20px 28px;
+}
+.num-circle {
+    width: 48px; height: 48px; border-radius: 50%;
+    background: var(--primary); color: #fff;
+    display: flex; align-items: center; justify-content: center;
+    font-size: var(--fs-body); font-weight: 900;
+    flex-shrink: 0;
+}
+.num-circle-teal { background: var(--teal); }
+.num-circle-amber { background: var(--amber); }
+.num-text {
+    font-size: var(--fs-body); font-weight: 700;
+    color: var(--text);
+}
+
+/* === SVG === */
+.svg-diagram {
+    display: flex; justify-content: center;
+    width: 100%;
+}
+.svg-diagram svg {
+    max-width: 100%;
+}
+
+/* === Bar Chart === */
+.bar-chart {
+    display: flex; flex-direction: column; gap: 16px;
+    width: 100%; max-width: 1000px;
+}
+.bar-row {
+    display: flex; align-items: center; gap: 16px;
+}
+.bar-label {
+    font-size: var(--fs-caption); font-weight: 700;
+    width: 200px; text-align: right; flex-shrink: 0;
+}
+.bar-track {
+    flex: 1; height: 40px; background: var(--primary-light);
+    border-radius: var(--radius-sm); overflow: hidden;
+}
+.bar-fill {
+    height: 100%; border-radius: var(--radius-sm);
+    width: var(--w);
+}
+.bar-fill-primary { background: var(--primary); }
+.bar-fill-coral { background: var(--coral); }
+.bar-fill-amber { background: var(--amber); }
+.bar-fill-teal { background: var(--teal); }
+.bar-value {
+    font-size: var(--fs-caption); font-weight: 900;
+    width: 100px; flex-shrink: 0;
+}
+
+/* === Text Badge === */
+.text-badge {
+    display: inline-flex; align-items: center; justify-content: center;
+    background: var(--primary); color: #fff;
+    font-size: var(--fs-small); font-weight: 900;
+    border-radius: var(--radius-sm); padding: 4px 12px;
+    min-width: 48px; height: 48px;
+}
+
+/* === Accent border top for cards === */
+.border-primary { border-top: 4px solid var(--primary); }
+.border-teal { border-top: 4px solid var(--teal); }
+.border-coral { border-top: 4px solid var(--coral); }
+.border-amber { border-top: 4px solid var(--amber); }
+
+/* === Source (visible) === */
+.content .source {
+    display: block !important;
+    font-size: var(--fs-small); font-weight: 400;
+    color: var(--text); margin-top: 16px;
+}
+
+/* === Hidden elements === */
+.subtitle-text, .footnote { display: none; }
+
+/* === Year Badge === */
+.year-badge {
+    display: inline-block;
+    background: var(--primary); color: #fff;
+    font-size: var(--fs-body); font-weight: 900;
+    border-radius: var(--radius-sm); padding: 4px 16px;
+    margin-bottom: 16px;
+}
+
+/* === Photo Text Row === */
+.photo-text-row {
+    display: flex; gap: 40px; align-items: center;
+    justify-content: center; width: 100%;
+}
+.photo-frame {
+    width: 260px; height: 300px; flex-shrink: 0;
+    border-radius: var(--radius); overflow: hidden;
+    border: 3px solid var(--border);
+    background: var(--card-bg);
+}
+.photo-frame img {
+    width: 100%; height: 100%; object-fit: cover;
+}
+.photo-text-side {
+    flex: 1; max-width: 700px;
+    display: flex; flex-direction: column; gap: 16px;
+}
+
+/* === Quote Block === */
+.quote-block {
+    background: var(--primary-light);
+    border-left: 6px solid var(--primary);
+    border-radius: var(--radius-sm);
+    padding: 24px 32px;
+    font-size: var(--fs-body); font-weight: 700;
+    color: var(--text); line-height: 1.6;
+    text-align: left;
+}
+.quote-attr {
+    font-size: var(--fs-caption); font-weight: 400;
+    color: var(--text); margin-top: 12px;
+    text-align: right;
+}
+
+/* === staggerIn === */
+.content > * {
+    animation: staggerIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+.content > *:nth-child(1) { animation-delay: 0s; }
+.content > *:nth-child(2) { animation-delay: 0.12s; }
+.content > *:nth-child(3) { animation-delay: 0.24s; }
+.content > *:nth-child(4) { animation-delay: 0.36s; }
+.content > *:nth-child(5) { animation-delay: 0.48s; }
+.content > *:nth-child(6) { animation-delay: 0.60s; }
+
+@keyframes staggerIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+}

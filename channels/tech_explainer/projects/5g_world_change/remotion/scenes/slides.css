@@ -1,0 +1,227 @@
+@import url('https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;700;900&display=swap');
+
+:root {
+    --bg: #f8f9fa;
+    --text: #1a1d23;
+    --text-light: #1a1d23;
+    --primary: #2563eb;
+    --primary-light: #dbeafe;
+    --teal: #0891b2;
+    --teal-light: #cffafe;
+    --coral: #dc2626;
+    --coral-light: #fee2e2;
+    --amber: #d97706;
+    --amber-light: #fef3c7;
+    --card-bg: #ffffff;
+    --border: #d1d5db;
+    --radius: 12px;
+    --radius-sm: 6px;
+    --fs-hero: 72px;
+    --fs-heading: 36px;
+    --fs-body: 24px;
+    --fs-caption: 18px;
+    --fs-small: 14px;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; color: inherit; }
+html { font-size: 16px; }
+body { font-family: 'Zen Maru Gothic', sans-serif; background: var(--bg); color: #1a1d23; overflow: hidden; }
+
+/* === Scene (Remotion: 960x440 scaled 2x → 1920x880) === */
+.scene {
+    width: 960px; height: 440px;
+    position: relative;
+    display: flex; align-items: center; justify-content: center;
+    background: var(--bg); overflow: hidden;
+    transform: scale(2); transform-origin: top left;
+    opacity: 1; color: #1a1d23;
+}
+
+.content {
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    width: 880px; max-height: 420px; padding: 12px;
+    z-index: 2; position: relative;
+}
+.center-layout { text-align: center; }
+
+/* === Typography === */
+.scene-title { font-size: var(--fs-heading); font-weight: 900; color: var(--text); margin-bottom: 16px; }
+.title-large { font-size: 48px; font-weight: 900; color: var(--primary); line-height: 1.3; }
+.big-statement { font-size: 26px; font-weight: 900; color: var(--text); line-height: 1.4; max-width: 700px; }
+.accent-primary { color: var(--primary); }
+.accent-teal { color: var(--teal); }
+.accent-coral { color: var(--coral); }
+.accent-amber { color: var(--amber); }
+
+/* === Icon Cloud === */
+.icon-cloud {
+    position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+    opacity: 0.06; display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 24px; z-index: 0;
+}
+.icon-cloud img { width: 40px; height: 40px; }
+
+/* === Icon Row === */
+.icon-row { display: flex; gap: 12px; align-items: center; justify-content: center; margin-bottom: 6px; }
+.icon-row img { width: 40px; height: 40px; }
+
+/* === Metric === */
+.metric-card {
+    background: var(--card-bg); border: 2px solid var(--border);
+    border-radius: var(--radius); padding: 20px 32px;
+    display: inline-flex; flex-direction: column; align-items: center;
+}
+.metric-value { font-size: 56px; font-weight: 900; color: var(--primary); line-height: 1; }
+.metric-label { font-size: 16px; font-weight: 700; color: var(--text); margin-top: 8px; }
+.metric-sub { font-size: var(--fs-small); font-weight: 700; color: #1a1d23; margin-top: 4px; }
+
+/* === Flow Chain === */
+.flow-chain { display: flex; align-items: center; justify-content: center; gap: 6px; flex-wrap: wrap; }
+.fc-node {
+    background: var(--card-bg); border: 2px solid var(--border);
+    border-radius: var(--radius); padding: 10px 14px;
+    display: flex; flex-direction: column; align-items: center;
+    min-width: 100px; text-align: center;
+}
+.fc-node img { display: block; margin: 0 auto 4px; width: 32px; height: 32px; }
+.fc-node-title { font-size: 15px; font-weight: 900; color: var(--text); }
+.fc-node-sub { font-size: 12px; font-weight: 700; color: #1a1d23; margin-top: 2px; }
+.fc-arr { font-size: 20px; font-weight: 900; color: var(--primary); flex-shrink: 0; }
+.fc-node.highlight { border-color: var(--primary); background: var(--primary-light); }
+
+/* === Compare / Two Col === */
+.two-col { display: flex; gap: 16px; justify-content: center; align-items: stretch; width: 100%; }
+.compare-card {
+    background: var(--card-bg); border: 2px solid var(--border);
+    border-radius: var(--radius); padding: 16px;
+    flex: 1; max-width: 400px;
+    display: flex; flex-direction: column; align-items: center;
+}
+.compare-card img { display: block; margin: 0 auto 8px; width: 36px; height: 36px; }
+.compare-title { font-size: 20px; font-weight: 900; margin-bottom: 8px; }
+.compare-body { font-size: 15px; font-weight: 700; color: var(--text); line-height: 1.6; }
+.compare-list { list-style: none; text-align: left; font-size: 15px; font-weight: 700; color: #1a1d23; line-height: 2; }
+.compare-list li { color: #1a1d23; }
+
+/* === Three Col / Arch Card === */
+.three-col { display: flex; gap: 14px; justify-content: center; align-items: stretch; width: 100%; }
+.arch-card {
+    background: var(--card-bg); border: 2px solid var(--border);
+    border-radius: var(--radius); padding: 16px 14px;
+    flex: 1; max-width: 280px;
+    display: flex; flex-direction: column; align-items: center; text-align: center;
+}
+.arch-card img { display: block; margin: 0 auto 8px; width: 40px; height: 40px; }
+.card-title { font-size: 20px; font-weight: 900; color: var(--text); margin-bottom: 6px; }
+.card-body { font-size: var(--fs-small); font-weight: 700; color: #1a1d23; line-height: 1.5; }
+
+/* === Num List === */
+.num-list { display: flex; flex-direction: column; gap: 12px; max-width: 600px; width: 100%; }
+.num-item {
+    display: flex; align-items: center; gap: 14px;
+    background: var(--card-bg); border: 2px solid var(--border);
+    border-radius: var(--radius); padding: 12px 18px;
+}
+.num-circle {
+    width: 40px; height: 40px; border-radius: 50%;
+    background: var(--primary); color: #fff;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px; font-weight: 900; flex-shrink: 0;
+}
+.num-text { font-size: var(--fs-caption); font-weight: 700; color: var(--text); }
+
+/* === Quote === */
+.quote-block {
+    background: var(--card-bg); border: 2px solid var(--border);
+    border-radius: var(--radius); padding: 16px 24px;
+    max-width: 600px; position: relative;
+}
+.quote-mark { font-size: 36px; color: var(--primary); opacity: 0.3; position: absolute; top: 4px; left: 12px; line-height: 1; }
+.quote-body { font-size: 16px; font-weight: 700; color: var(--text); line-height: 1.6; padding-left: 28px; }
+.quote-source { font-size: var(--fs-small); font-weight: 700; color: #1a1d23; margin-top: 6px; padding-left: 28px; }
+
+/* === SVG === */
+.svg-diagram { display: flex; justify-content: center; width: 100%; }
+.svg-diagram svg { max-width: 600px; height: auto; }
+
+/* === Text Badge === */
+.text-badge {
+    display: inline-flex; align-items: center; justify-content: center;
+    background: var(--primary); color: #fff;
+    font-size: 12px; font-weight: 900;
+    border-radius: var(--radius-sm); padding: 2px 10px;
+    min-width: 40px; height: 32px;
+}
+
+/* === Enterprise Grid === */
+.enterprise-grid { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; max-width: 700px; }
+.enterprise-card {
+    background: var(--card-bg); border: 2px solid var(--border);
+    border-radius: var(--radius); padding: 12px 14px;
+    width: 160px; text-align: center;
+    display: flex; flex-direction: column; align-items: center;
+}
+.enterprise-card img { display: block; margin: 0 auto 6px; width: 32px; height: 32px; }
+.flag-img { width: 40px; height: 30px; object-fit: contain; display: block; margin: 0 auto 8px; }
+
+/* === Source/Footnote (hidden) === */
+.subtitle-text, .footnote, .source, .source-badge { display: none; }
+
+/* === Metric Grid === */
+.metric-grid { display: flex; gap: 16px; justify-content: center; width: 100%; }
+
+/* === staggerIn === */
+.content > * {
+    animation: staggerIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+.content > *:nth-child(1) { animation-delay: 0s; }
+.content > *:nth-child(2) { animation-delay: 0.12s; }
+.content > *:nth-child(3) { animation-delay: 0.24s; }
+.content > *:nth-child(4) { animation-delay: 0.36s; }
+.content > *:nth-child(5) { animation-delay: 0.48s; }
+.content > *:nth-child(6) { animation-delay: 0.60s; }
+
+@keyframes staggerIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+/* === Bar Chart === */
+.bar-chart { display: flex; flex-direction: column; gap: 8px; width: 100%; max-width: 560px; }
+.bar-row { display: flex; align-items: center; gap: 10px; }
+.bar-label { font-size: var(--fs-small); font-weight: 700; width: 120px; text-align: right; flex-shrink: 0; }
+.bar-track { flex: 1; height: 24px; background: var(--primary-light); border-radius: var(--radius-sm); overflow: hidden; }
+.bar-fill { height: 100%; border-radius: var(--radius-sm); width: var(--w); }
+.bar-fill-primary { background: var(--primary); }
+.bar-fill-coral { background: var(--coral); }
+.bar-fill-amber { background: var(--amber); }
+.bar-fill-teal { background: var(--teal); }
+.bar-value { font-size: var(--fs-small); font-weight: 700; width: 50px; flex-shrink: 0; }
+
+/* === Accent border top for cards === */
+.border-primary { border-top: 4px solid var(--primary); }
+.border-teal { border-top: 4px solid var(--teal); }
+.border-coral { border-top: 4px solid var(--coral); }
+.border-amber { border-top: 4px solid var(--amber); }
+
+/* === Year Badge === */
+.year-badge {
+    display: inline-block;
+    background: var(--amber); color: #fff;
+    font-size: 16px; font-weight: 900;
+    border-radius: var(--radius-sm); padding: 2px 10px;
+    margin-bottom: 6px;
+}
+
+/* === Icon Deco === */
+.icon-deco { margin-bottom: 12px; }
+.icon-deco img { width: 72px; height: 72px; }
+
+/* === Title Sub === */
+.title-sub { font-size: 20px; font-weight: 700; color: var(--text); margin-top: 8px; }
+
+/* === Num Circle Variants === */
+.num-circle-teal { background: var(--teal); }
+.num-circle-amber { background: var(--amber); }
+
+/* === Highlight Variants === */
+.fc-node.highlight-coral { border-color: var(--coral); background: var(--coral-light); }

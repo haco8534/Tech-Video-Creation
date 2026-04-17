@@ -81,6 +81,16 @@ import {
   TOTAL_FRAMES as QR_TOTAL_FRAMES,
 } from "@channels/tech_explainer/projects/qr/remotion/VideoWithSlides";
 
+import {
+  VideoWithSlides as VideoFormatVideo,
+  TOTAL_FRAMES as VIDEO_FORMAT_TOTAL_FRAMES,
+} from "@channels/tech_explainer/projects/proj_cbea8eeb/remotion/VideoWithSlides";
+
+import {
+  VideoWithSlides as VpnVideo,
+  TOTAL_FRAMES as VPN_TOTAL_FRAMES,
+} from "@channels/tech_explainer/projects/vpn/remotion/VideoWithSlides";
+
 import "./index.css";
 
 export const RemotionRoot: React.FC = () => {
@@ -210,6 +220,22 @@ export const RemotionRoot: React.FC = () => {
         id="qr-slides"
         component={QrVideo}
         durationInFrames={QR_TOTAL_FRAMES}
+        fps={30}
+        width={1920}
+        height={1080}
+      />
+      <Composition
+        id="proj-cbea8eeb-slides"
+        component={VideoFormatVideo}
+        durationInFrames={VIDEO_FORMAT_TOTAL_FRAMES}
+        fps={30}
+        width={1920}
+        height={1080}
+      />
+      <Composition
+        id="vpn-slides"
+        component={VpnVideo}
+        durationInFrames={VPN_TOTAL_FRAMES}
         fps={30}
         width={1920}
         height={1080}

@@ -1,0 +1,788 @@
+import React from 'react';
+import { AbsoluteFill, staticFile } from 'remotion';
+import './slides.css';
+
+export const Scene0: React.FC = () => (
+    <AbsoluteFill>
+        <div className="scene" id="scene-0">
+    <div className="icon-cloud">
+        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/python/python-original.svg" />
+        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/javascript/javascript-original.svg" />
+        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/java/java-original.svg" />
+        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/c/c-original.svg" />
+        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/rust/rust-original.svg" />
+        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/go/go-original.svg" />
+        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/ruby/ruby-original.svg" />
+        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/swift/swift-original.svg" />
+        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/kotlin/kotlin-original.svg" />
+        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/php/php-original.svg" />
+        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/typescript/typescript-original.svg" />
+        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/csharp/csharp-original.svg" />
+        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/linux/linux-original.svg" />
+        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/docker/docker-original.svg" />
+        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/git/git-original.svg" />
+    </div>
+    <div className="content center-layout">
+        <div className="title-large">プログラミングとは<br />結局何をしているのか</div>
+        <div className="big-statement">映画のハッカーのイメージ、その裏側にある本当の姿</div>
+    </div>
+</div>
+    </AbsoluteFill>
+);
+
+export const Scene1: React.FC = () => (
+    <AbsoluteFill>
+        <div className="scene" id="scene-1">
+    <div className="content center-layout">
+        <div className="scene-title">プログラマーの1日</div>
+        <div className="svg-diagram">
+            <svg viewBox="0 0 780 280" width="780" height="280">
+                {/* Donut chart: 16% code, 84% other */}
+                <circle cx="200" cy="140" r="110" fill="none" stroke="#dbeafe" strokeWidth="40"/>
+                <circle cx="200" cy="140" r="110" fill="none" stroke="#2563eb" strokeWidth="40"
+                    strokeDasharray="110.6 580" strokeDashoffset="172.8" strokeLinecap="round"/>
+                <text x="200" y="130" textAnchor="middle" fontSize="48" fontWeight="900" fill="#2563eb">16%</text>
+                <text x="200" y="165" textAnchor="middle" fontSize="20" fontWeight="700" fill="#1a1d23">コード記述</text>
+                {/* Legend */}
+                <text x="400" y="60" fontSize="22" fontWeight="900" fill="#1a1d23">残り84%の内訳</text>
+                <rect x="400" y="80" width="20" height="20" rx="4" fill="#0d9488"/>
+                <text x="430" y="96" fontSize="20" fontWeight="700" fill="#1a1d23">設計・会議</text>
+                <rect x="400" y="112" width="20" height="20" rx="4" fill="#d97706"/>
+                <text x="430" y="128" fontSize="20" fontWeight="700" fill="#1a1d23">テスト・品質管理</text>
+                <rect x="400" y="144" width="20" height="20" rx="4" fill="#ef4444"/>
+                <text x="430" y="160" fontSize="20" fontWeight="700" fill="#1a1d23">バグ修正・デバッグ</text>
+                <rect x="400" y="176" width="20" height="20" rx="4" fill="#d1d5db"/>
+                <text x="430" y="192" fontSize="20" fontWeight="700" fill="#1a1d23">ドキュメント・その他</text>
+            </svg>
+        </div>
+        <div className="source">出典: IDC Developer Experience Survey 2024</div>
+    </div>
+</div>
+    </AbsoluteFill>
+);
+
+export const Scene2: React.FC = () => (
+    <AbsoluteFill>
+        <div className="scene" id="scene-2">
+    <div className="content center-layout">
+        <div className="scene-title">純粋にコードを生み出す時間</div>
+        <div className="svg-diagram">
+            <svg viewBox="0 0 780 220" width="780" height="220">
+                {/* Full bar */}
+                <rect x="40" y="30" width="700" height="60" rx="8" fill="#dbeafe"/>
+                {/* 16% segment */}
+                <rect x="40" y="30" width="112" height="60" rx="8" fill="#2563eb"/>
+                <text x="96" y="68" textAnchor="middle" fontSize="22" fontWeight="900" fill="#fff">16%</text>
+                {/* 8% highlight within 16% */}
+                <rect x="40" y="120" width="700" height="60" rx="8" fill="#dbeafe"/>
+                <rect x="40" y="120" width="56" height="60" rx="8" fill="#2563eb"/>
+                <text x="68" y="158" textAnchor="middle" fontSize="18" fontWeight="900" fill="#fff">8%</text>
+                {/* Labels */}
+                <text x="400" y="68" textAnchor="middle" fontSize="20" fontWeight="700" fill="#1a1d23">コード記述時間（16%）</text>
+                <text x="400" y="158" textAnchor="middle" fontSize="20" fontWeight="700" fill="#1a1d23">新コード生成（バグ探し除く）= 約8%</text>
+                {/* Arrow */}
+                <text x="770" y="108" textAnchor="end" fontSize="28" fontWeight="900" fill="#ef4444">→</text>
+                <text x="770" y="80" textAnchor="end" fontSize="18" fontWeight="700" fill="#ef4444">半分はバグ探し</text>
+            </svg>
+        </div>
+        <div className="big-statement">残りの<span className="accent-primary">92%</span>は何をしている？</div>
+    </div>
+</div>
+    </AbsoluteFill>
+);
+
+export const Scene3: React.FC = () => (
+    <AbsoluteFill>
+        <div className="scene" id="scene-3">
+    <div className="content center-layout">
+        <div className="scene-title">実験：靴ひもの結び方を説明せよ</div>
+        <div className="svg-diagram">
+            <svg viewBox="0 0 780 260" width="780" height="260">
+                {/* Shoe outline */}
+                <path d="M250 220 Q250 120 300 80 Q350 50 420 50 Q520 50 560 90 Q590 120 590 160 L590 220 Z" fill="none" stroke="#2563eb" strokeWidth="3"/>
+                {/* Laces */}
+                <line x1="350" y1="80" x2="380" y2="120" stroke="#ef4444" strokeWidth="3"/>
+                <line x1="380" y1="120" x2="410" y2="80" stroke="#ef4444" strokeWidth="3"/>
+                <line x1="410" y1="80" x2="440" y2="120" stroke="#ef4444" strokeWidth="3"/>
+                <line x1="440" y1="120" x2="470" y2="80" stroke="#ef4444" strokeWidth="3"/>
+                {/* Bow */}
+                <ellipse cx="400" cy="60" rx="40" ry="18" fill="none" stroke="#ef4444" strokeWidth="3"/>
+                <ellipse cx="420" cy="58" rx="40" ry="18" fill="none" stroke="#ef4444" strokeWidth="3" transform="rotate(20,420,58)"/>
+                {/* Question marks */}
+                <text x="160" y="140" fontSize="48" fontWeight="900" fill="#d97706">?</text>
+                <text x="640" y="100" fontSize="48" fontWeight="900" fill="#d97706">?</text>
+                <text x="120" y="80" fontSize="22" fontWeight="700" fill="#1a1d23">「交差」とは？</text>
+                <text x="620" y="170" fontSize="22" fontWeight="700" fill="#1a1d23">「上」とは？</text>
+            </svg>
+        </div>
+        <div className="big-statement">相手は靴を見たことがない宇宙人</div>
+    </div>
+</div>
+    </AbsoluteFill>
+);
+
+export const Scene4: React.FC = () => (
+    <AbsoluteFill>
+        <div className="scene" id="scene-4">
+    <div className="content center-layout">
+        <div className="scene-title">言葉にするとこうなる</div>
+        <div className="svg-diagram">
+            <svg viewBox="0 0 780 260" width="780" height="260">
+                {/* Alien silhouette (head + shoulders) */}
+                <circle cx="140" cy="80" r="40" fill="#0d9488"/>
+                <path d="M80 125 C80 95 200 95 200 125 L200 170 Q140 195 80 170 Z" fill="#0d9488"/>
+                <circle cx="125" cy="72" r="8" fill="#fff"/>
+                <circle cx="155" cy="72" r="8" fill="#fff"/>
+                <circle cx="125" cy="72" r="4" fill="#1a1d23"/>
+                <circle cx="155" cy="72" r="4" fill="#1a1d23"/>
+                {/* Speech bubble */}
+                <rect x="260" y="20" width="480" height="220" rx="16" fill="#fff" stroke="#d1d5db" strokeWidth="2"/>
+                <polygon points="250,120 270,100 270,140" fill="#fff" stroke="#d1d5db" strokeWidth="2"/>
+                <rect x="258" y="100" width="14" height="42" fill="#fff"/>
+                {/* Instructions with X marks */}
+                <text x="290" y="60" fontSize="20" fontWeight="700" fill="#1a1d23">1. ひもを持つ</text>
+                <text x="290" y="95" fontSize="20" fontWeight="700" fill="#ef4444">2. 交差させる ← どっち方向？</text>
+                <text x="290" y="130" fontSize="20" fontWeight="700" fill="#ef4444">3. くぐらせる ← 何をどこに？</text>
+                <text x="290" y="165" fontSize="20" fontWeight="700" fill="#ef4444">4. 引っ張る ← どの力で？</text>
+                <text x="290" y="205" fontSize="20" fontWeight="900" fill="#d97706">省略だらけ！</text>
+            </svg>
+        </div>
+    </div>
+</div>
+    </AbsoluteFill>
+);
+
+export const Scene5: React.FC = () => (
+    <AbsoluteFill>
+        <div className="scene" id="scene-5">
+    <div className="content center-layout">
+        <div className="scene-title">CS授業の定番：サンドイッチ演習</div>
+        <div className="svg-diagram">
+            <svg viewBox="0 0 780 260" width="780" height="260">
+                {/* Bread in bag (left) */}
+                <rect x="40" y="60" width="160" height="180" rx="8" fill="none" stroke="#d1d5db" strokeWidth="2" strokeDasharray="8,4"/>
+                <text x="120" y="40" textAnchor="middle" fontSize="18" fontWeight="700" fill="#1a1d23">パンの袋</text>
+                <rect x="65" y="100" width="110" height="30" rx="6" fill="#d97706"/>
+                <rect x="65" y="140" width="110" height="30" rx="6" fill="#d97706"/>
+                {/* Arrow */}
+                <text x="240" y="160" fontSize="36" fontWeight="900" fill="#2563eb">→</text>
+                {/* Student instruction */}
+                <rect x="290" y="80" width="200" height="50" rx="8" fill="#dbeafe"/>
+                <text x="390" y="112" textAnchor="middle" fontSize="18" fontWeight="700" fill="#2563eb">「パンにジャムを塗る」</text>
+                {/* Arrow */}
+                <text x="530" y="160" fontSize="36" fontWeight="900" fill="#ef4444">→</text>
+                {/* Result: jam on bag */}
+                <rect x="580" y="60" width="160" height="180" rx="8" fill="none" stroke="#d1d5db" strokeWidth="2" strokeDasharray="8,4"/>
+                <rect x="605" y="100" width="110" height="30" rx="6" fill="#d97706"/>
+                <rect x="605" y="140" width="110" height="30" rx="6" fill="#d97706"/>
+                {/* Jam splatter on bag */}
+                <circle cx="640" cy="90" r="12" fill="#ef4444" opacity="0.7"/>
+                <circle cx="670" cy="110" r="8" fill="#ef4444" opacity="0.7"/>
+                <circle cx="620" cy="120" r="10" fill="#ef4444" opacity="0.7"/>
+                <text x="660" y="220" textAnchor="middle" fontSize="18" fontWeight="900" fill="#ef4444">袋の上から塗った！</text>
+            </svg>
+        </div>
+        <div className="big-statement">「袋を開ける」が書いてないから</div>
+    </div>
+</div>
+    </AbsoluteFill>
+);
+
+export const Scene6: React.FC = () => (
+    <AbsoluteFill>
+        <div className="scene" id="scene-6">
+    <div className="content center-layout">
+        <div className="scene-title">暗黙知の壁</div>
+        <div className="svg-diagram">
+            <svg viewBox="0 0 780 240" width="780" height="240">
+                {/* Iceberg */}
+                <line x1="60" y1="120" x2="720" y2="120" stroke="#2563eb" strokeWidth="2" strokeDasharray="8,4"/>
+                <text x="740" y="118" fontSize="16" fontWeight="700" fill="#2563eb">水面</text>
+                {/* Tip */}
+                <polygon points="340,30 440,30 460,115 320,115" fill="#dbeafe" stroke="#2563eb" strokeWidth="2"/>
+                <text x="390" y="80" textAnchor="middle" fontSize="18" fontWeight="900" fill="#2563eb">言語化した知識</text>
+                {/* Underwater mass */}
+                <polygon points="300,125 500,125 560,230 240,230" fill="#2563eb" opacity="0.15" stroke="#2563eb" strokeWidth="2"/>
+                <text x="390" y="170" textAnchor="middle" fontSize="22" fontWeight="900" fill="#2563eb">暗黙知</text>
+                <text x="390" y="200" textAnchor="middle" fontSize="18" fontWeight="700" fill="#1a1d23">「当然でしょ」の山</text>
+            </svg>
+        </div>
+        <div className="big-statement">新人教育の苦労と<span className="accent-primary">プログラミング</span>は同じ根っこ</div>
+    </div>
+</div>
+    </AbsoluteFill>
+);
+
+export const Scene7: React.FC = () => (
+    <AbsoluteFill>
+        <div className="scene" id="scene-7">
+    <div className="content center-layout">
+        <div className="scene-title">人間 vs コンピュータ</div>
+        <div className="two-col">
+            <div className="compare-card border-teal">
+                <div className="compare-title accent-teal">人間の新人</div>
+                <ul className="compare-list">
+                    <li>→ 「適当に」でも察する</li>
+                    <li>→ 空気を読める</li>
+                    <li>→ 曖昧さに対応できる</li>
+                    <li>→ 処理速度は遅い</li>
+                </ul>
+            </div>
+            <div className="compare-card border-coral">
+                <div className="compare-title accent-coral">コンピュータ</div>
+                <ul className="compare-list">
+                    <li>→ 「適当に」→ エラー</li>
+                    <li>→ 空気? 何それ?</li>
+                    <li>→ 曖昧さ = フリーズ</li>
+                    <li>→ 毎秒数十億回の計算</li>
+                </ul>
+            </div>
+        </div>
+        <div className="big-statement"><span className="accent-primary">世界最速の新人</span>：指示通りなら光速、指示なしなら不動</div>
+    </div>
+</div>
+    </AbsoluteFill>
+);
+
+export const Scene8: React.FC = () => (
+    <AbsoluteFill>
+        <div className="scene" id="scene-8">
+    <div className="content center-layout">
+        <div className="scene-title">実験：自販機の動きを全部書き出す</div>
+        <div className="svg-diagram">
+            <svg viewBox="0 0 780 280" width="780" height="280">
+                {/* Vending machine body */}
+                <rect x="280" y="10" width="220" height="260" rx="12" fill="#fff" stroke="#2563eb" strokeWidth="3"/>
+                {/* Display */}
+                <rect x="300" y="30" width="180" height="30" rx="4" fill="#dbeafe"/>
+                <text x="390" y="52" textAnchor="middle" fontSize="16" fontWeight="700" fill="#2563eb">120円</text>
+                {/* Product buttons */}
+                <rect x="300" y="75" width="50" height="40" rx="6" fill="#0d9488" opacity="0.2" stroke="#0d9488" strokeWidth="2"/>
+                <rect x="365" y="75" width="50" height="40" rx="6" fill="#0d9488" opacity="0.2" stroke="#0d9488" strokeWidth="2"/>
+                <rect x="430" y="75" width="50" height="40" rx="6" fill="#d1d5db" stroke="#d1d5db" strokeWidth="2"/>
+                <text x="455" y="100" textAnchor="middle" fontSize="12" fontWeight="700" fill="#ef4444">売切</text>
+                {/* Coin slot */}
+                <rect x="440" y="140" width="30" height="6" rx="2" fill="#1a1d23"/>
+                {/* Dispensing area */}
+                <rect x="310" y="200" width="160" height="50" rx="6" fill="#f8f9fa" stroke="#d1d5db" strokeWidth="2"/>
+                {/* Question bubbles */}
+                <text x="80" y="60" fontSize="18" fontWeight="700" fill="#d97706">お金が足りない？</text>
+                <text x="60" y="140" fontSize="18" fontWeight="700" fill="#ef4444">同時押し？</text>
+                <text x="80" y="220" fontSize="18" fontWeight="700" fill="#0d9488">おつりの在庫？</text>
+                <text x="560" y="60" fontSize="18" fontWeight="700" fill="#ef4444">千円札ぐしゃぐしゃ？</text>
+                <text x="560" y="140" fontSize="18" fontWeight="700" fill="#d97706">10分放置？</text>
+                <text x="560" y="220" fontSize="18" fontWeight="700" fill="#ef4444">停電？</text>
+            </svg>
+        </div>
+    </div>
+</div>
+    </AbsoluteFill>
+);
+
+export const Scene9: React.FC = () => (
+    <AbsoluteFill>
+        <div className="scene" id="scene-9">
+    <div className="content center-layout">
+        <div className="scene-title">見えてきた分岐の嵐</div>
+        <div className="svg-diagram">
+            <svg viewBox="0 0 780 280" width="780" height="280">
+                <defs>
+                    <marker id="arrB" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+                        <polygon points="0 0, 8 3, 0 6" fill="#2563eb"/>
+                    </marker>
+                </defs>
+                {/* Start */}
+                <rect x="300" y="10" width="180" height="40" rx="20" fill="#2563eb"/>
+                <text x="390" y="36" textAnchor="middle" fontSize="18" fontWeight="900" fill="#fff">お金投入</text>
+                {/* Branch */}
+                <line x1="390" y1="50" x2="390" y2="80" stroke="#2563eb" strokeWidth="2" marker-end="url(#arrB)"/>
+                <polygon points="390,85 310,130 470,130" fill="none" stroke="#2563eb" strokeWidth="2"/>
+                <text x="390" y="118" textAnchor="middle" fontSize="16" fontWeight="700" fill="#2563eb">金額OK?</text>
+                {/* Yes path */}
+                <line x1="350" y1="130" x2="200" y2="165" stroke="#0d9488" strokeWidth="2" marker-end="url(#arrB)"/>
+                <rect x="120" y="165" width="160" height="36" rx="8" fill="#ccfbf1" stroke="#0d9488" strokeWidth="2"/>
+                <text x="200" y="189" textAnchor="middle" fontSize="16" fontWeight="700" fill="#0d9488">ボタン点灯</text>
+                {/* No path */}
+                <line x1="430" y1="130" x2="580" y2="165" stroke="#ef4444" strokeWidth="2" marker-end="url(#arrB)"/>
+                <rect x="500" y="165" width="160" height="36" rx="8" fill="#fee2e2" stroke="#ef4444" strokeWidth="2"/>
+                <text x="580" y="189" textAnchor="middle" fontSize="16" fontWeight="700" fill="#ef4444">追加投入待ち</text>
+                {/* More branches from Yes */}
+                <line x1="200" y1="201" x2="200" y2="230" stroke="#0d9488" strokeWidth="2" marker-end="url(#arrB)"/>
+                <polygon points="200,235 140,270 260,270" fill="none" stroke="#0d9488" strokeWidth="2"/>
+                <text x="200" y="260" textAnchor="middle" fontSize="14" fontWeight="700" fill="#0d9488">在庫?</text>
+                {/* Endless branches indicator */}
+                <text x="80" y="260" fontSize="22" fontWeight="900" fill="#d97706">...</text>
+                <text x="320" y="260" fontSize="22" fontWeight="900" fill="#d97706">...</text>
+                <text x="650" y="240" fontSize="18" fontWeight="900" fill="#ef4444">まだまだ続く</text>
+            </svg>
+        </div>
+        <div className="big-statement">「単純」の裏に隠れた<span className="accent-coral">膨大な分岐</span></div>
+    </div>
+</div>
+    </AbsoluteFill>
+);
+
+export const Scene10: React.FC = () => (
+    <AbsoluteFill>
+        <div className="scene" id="scene-10">
+    <div className="content center-layout">
+        <div className="scene-title">自販機だけでもこれだけある</div>
+        <div className="num-list">
+            <div className="num-item">
+                <div className="num-circle" style={{ background: 'var(--coral)' }}>1</div>
+                <div className="num-text">おつりの硬貨が不足したら？</div>
+            </div>
+            <div className="num-item">
+                <div className="num-circle" style={{ background: 'var(--amber)' }}>2</div>
+                <div className="num-text">ボタン2つ同時押し / 売り切れ連打</div>
+            </div>
+            <div className="num-item">
+                <div className="num-circle" style={{ background: 'var(--teal)' }}>3</div>
+                <div className="num-text">放置 / 停電 / 真夏の温度上昇</div>
+            </div>
+        </div>
+        <div className="big-statement">大規模アプリでは分岐が<span className="accent-coral">数万〜数十万</span>に</div>
+    </div>
+</div>
+    </AbsoluteFill>
+);
+
+export const Scene11: React.FC = () => (
+    <AbsoluteFill>
+        <div className="scene" id="scene-11">
+    <div className="content center-layout">
+        <div className="scene-title">「分解」という武器</div>
+        <div className="svg-diagram">
+            <svg viewBox="0 0 780 260" width="780" height="260">
+                <defs>
+                    <marker id="arrD" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+                        <polygon points="0 0, 8 3, 0 6" fill="#2563eb"/>
+                    </marker>
+                </defs>
+                {/* Top: big problem */}
+                <rect x="270" y="10" width="240" height="50" rx="12" fill="#2563eb"/>
+                <text x="390" y="42" textAnchor="middle" fontSize="22" fontWeight="900" fill="#fff">自動販売機</text>
+                {/* Arrows down */}
+                <line x1="310" y1="60" x2="130" y2="110" stroke="#2563eb" strokeWidth="2" marker-end="url(#arrD)"/>
+                <line x1="370" y1="60" x2="310" y2="110" stroke="#2563eb" strokeWidth="2" marker-end="url(#arrD)"/>
+                <line x1="410" y1="60" x2="470" y2="110" stroke="#2563eb" strokeWidth="2" marker-end="url(#arrD)"/>
+                <line x1="470" y1="60" x2="650" y2="110" stroke="#2563eb" strokeWidth="2" marker-end="url(#arrD)"/>
+                {/* Sub-problems */}
+                <rect x="50" y="115" width="160" height="40" rx="8" fill="#dbeafe" stroke="#2563eb" strokeWidth="2"/>
+                <text x="130" y="141" textAnchor="middle" fontSize="18" fontWeight="700" fill="#2563eb">お金の処理</text>
+                <rect x="230" y="115" width="160" height="40" rx="8" fill="#ccfbf1" stroke="#0d9488" strokeWidth="2"/>
+                <text x="310" y="141" textAnchor="middle" fontSize="18" fontWeight="700" fill="#0d9488">ボタン処理</text>
+                <rect x="410" y="115" width="160" height="40" rx="8" fill="#fef3c7" stroke="#d97706" strokeWidth="2"/>
+                <text x="490" y="141" textAnchor="middle" fontSize="18" fontWeight="700" fill="#d97706">おつり処理</text>
+                <rect x="590" y="115" width="160" height="40" rx="8" fill="#fee2e2" stroke="#ef4444" strokeWidth="2"/>
+                <text x="670" y="141" textAnchor="middle" fontSize="18" fontWeight="700" fill="#ef4444">エラー対応</text>
+                {/* Further decomposition arrows */}
+                <line x1="90" y1="155" x2="70" y2="190" stroke="#2563eb" strokeWidth="1.5" marker-end="url(#arrD)"/>
+                <line x1="130" y1="155" x2="130" y2="190" stroke="#2563eb" strokeWidth="1.5" marker-end="url(#arrD)"/>
+                <line x1="170" y1="155" x2="190" y2="190" stroke="#2563eb" strokeWidth="1.5" marker-end="url(#arrD)"/>
+                <rect x="20" y="195" width="100" height="30" rx="6" fill="#dbeafe"/>
+                <text x="70" y="215" textAnchor="middle" fontSize="14" fontWeight="700" fill="#2563eb">硬貨判別</text>
+                <rect x="130" y="195" width="100" height="30" rx="6" fill="#dbeafe"/>
+                <text x="180" y="215" textAnchor="middle" fontSize="14" fontWeight="700" fill="#2563eb">金額加算</text>
+                <text x="390" y="250" textAnchor="middle" fontSize="22" fontWeight="900" fill="#1a1d23">大きな問題を「扱える大きさ」に分ける</text>
+            </svg>
+        </div>
+    </div>
+</div>
+    </AbsoluteFill>
+);
+
+export const Scene12: React.FC = () => (
+    <AbsoluteFill>
+        <div className="scene" id="scene-12">
+    <div className="content center-layout">
+        <div className="scene-title">計算論的思考の4要素</div>
+        <div className="svg-diagram">
+            <svg viewBox="0 0 780 280" width="780" height="280">
+                {/* Central hub with Wing photo reference */}
+                <circle cx="390" cy="140" r="50" fill="#dbeafe" stroke="#2563eb" strokeWidth="2"/>
+                <image href="images/wing.jpg" x="355" y="105" width="70" height="70" clipPath="circle(35px at 35px 35px)"/>
+                <text x="390" y="210" textAnchor="middle" fontSize="14" fontWeight="700" fill="#1a1d23">Wing (2006)</text>
+                {/* 4 nodes */}
+                {/* Top-left: Decomposition */}
+                <rect x="60" y="20" width="180" height="70" rx="12" fill="#2563eb"/>
+                <text x="150" y="50" textAnchor="middle" fontSize="20" fontWeight="900" fill="#fff">1. 分解</text>
+                <text x="150" y="74" textAnchor="middle" fontSize="14" fontWeight="700" fill="#dbeafe">大きな問題を分ける</text>
+                <line x1="240" y1="70" x2="345" y2="115" stroke="#2563eb" strokeWidth="2"/>
+                {/* Top-right: Pattern */}
+                <rect x="540" y="20" width="200" height="70" rx="12" fill="#0d9488"/>
+                <text x="640" y="50" textAnchor="middle" fontSize="20" fontWeight="900" fill="#fff">2. パターン認識</text>
+                <text x="640" y="74" textAnchor="middle" fontSize="14" fontWeight="700" fill="#ccfbf1">似た処理を見つける</text>
+                <line x1="540" y1="70" x2="435" y2="115" stroke="#0d9488" strokeWidth="2"/>
+                {/* Bottom-left: Abstraction */}
+                <rect x="60" y="190" width="180" height="70" rx="12" fill="#d97706"/>
+                <text x="150" y="220" textAnchor="middle" fontSize="20" fontWeight="900" fill="#fff">3. 抽象化</text>
+                <text x="150" y="244" textAnchor="middle" fontSize="14" fontWeight="700" fill="#fef3c7">本質だけ残す</text>
+                <line x1="240" y1="210" x2="345" y2="170" stroke="#d97706" strokeWidth="2"/>
+                {/* Bottom-right: Algorithm */}
+                <rect x="540" y="190" width="200" height="70" rx="12" fill="#ef4444"/>
+                <text x="640" y="220" textAnchor="middle" fontSize="20" fontWeight="900" fill="#fff">4. アルゴリズム</text>
+                <text x="640" y="244" textAnchor="middle" fontSize="14" fontWeight="700" fill="#fee2e2">手順を組み立てる</text>
+                <line x1="540" y1="210" x2="435" y2="170" stroke="#ef4444" strokeWidth="2"/>
+            </svg>
+        </div>
+    </div>
+</div>
+    </AbsoluteFill>
+);
+
+export const Scene13: React.FC = () => (
+    <AbsoluteFill>
+        <div className="scene" id="scene-13">
+    <div className="content center-layout">
+        <div className="scene-title">自販機で体験した4つの思考</div>
+        <div className="three-col">
+            <div className="arch-card border-primary">
+                <div className="card-title accent-primary">分解</div>
+                <div className="card-body">自販機をお金・ボタン・おつり・エラーに分けた</div>
+            </div>
+            <div className="arch-card border-teal">
+                <div className="card-title accent-teal">パターン認識</div>
+                <div className="card-body">「足りない」と「売切」は同じエラー処理</div>
+            </div>
+            <div className="arch-card border-amber">
+                <div className="card-title accent-amber">抽象化</div>
+                <div className="card-body">コイン選別の仕組みは知らなくてOK</div>
+            </div>
+        </div>
+        <div className="big-statement">コードなしで<span className="accent-primary">計算論的思考</span>を実践していた</div>
+    </div>
+</div>
+    </AbsoluteFill>
+);
+
+export const Scene14: React.FC = () => (
+    <AbsoluteFill>
+        <div className="scene" id="scene-14">
+    <div className="content center-layout">
+        <div className="big-statement" style={{ marginTop: '0px' }}>ここまでの話で</div>
+        <div className="metric-card">
+            <div className="metric-value accent-primary">0行</div>
+            <div className="metric-label">コードの登場回数</div>
+        </div>
+        <div className="big-statement">プログラミングの本質は<br /><span className="accent-primary">言語ではなく思考法</span></div>
+    </div>
+</div>
+    </AbsoluteFill>
+);
+
+export const Scene15: React.FC = () => (
+    <AbsoluteFill>
+        <div className="scene" id="scene-15">
+    <div className="content center-layout">
+        <div className="scene-title">巨人たちも同じことを言っている</div>
+        <div className="two-col">
+            <div className="compare-card">
+                <figure className="photo-frame">
+                    <img src={staticFile('images/proj_afbe778d/dijkstra.jpg')} alt="Dijkstra" />
+                </figure>
+                <div className="compare-title">Dijkstra</div>
+                <div className="compare-body">「プログラミングの技術とは、<span className="accent-primary">複雑さを整理する</span>技術だ」</div>
+            </div>
+            <div className="compare-card">
+                <figure className="photo-frame">
+                    <img src={staticFile('images/proj_afbe778d/knuth.jpg')} alt="Knuth" />
+                </figure>
+                <div className="compare-title">Knuth</div>
+                <div className="compare-body">「何をさせたいかを<span className="accent-teal">別の人間に伝える</span>技術」</div>
+            </div>
+        </div>
+    </div>
+</div>
+    </AbsoluteFill>
+);
+
+export const Scene16: React.FC = () => (
+    <AbsoluteFill>
+        <div className="scene" id="scene-16">
+    <div className="content center-layout">
+        <div className="scene-title">92%の正体</div>
+        <div className="svg-diagram">
+            <svg viewBox="0 0 780 260" width="780" height="260">
+                {/* Central label */}
+                <text x="390" y="30" textAnchor="middle" fontSize="24" fontWeight="900" fill="#2563eb">プログラマーの仕事時間</text>
+                {/* 4 activity blocks */}
+                <rect x="40" y="60" width="160" height="100" rx="12" fill="#dbeafe" stroke="#2563eb" strokeWidth="2"/>
+                <text x="120" y="95" textAnchor="middle" fontSize="20" fontWeight="900" fill="#2563eb">設計</text>
+                <text x="120" y="122" textAnchor="middle" fontSize="16" fontWeight="700" fill="#1a1d23">何をどう</text>
+                <text x="120" y="145" textAnchor="middle" fontSize="16" fontWeight="700" fill="#1a1d23">分解するか</text>
+                <rect x="230" y="60" width="160" height="100" rx="12" fill="#ccfbf1" stroke="#0d9488" strokeWidth="2"/>
+                <text x="310" y="95" textAnchor="middle" fontSize="20" fontWeight="900" fill="#0d9488">テスト</text>
+                <text x="310" y="122" textAnchor="middle" fontSize="16" fontWeight="700" fill="#1a1d23">分解が正しいか</text>
+                <text x="310" y="145" textAnchor="middle" fontSize="16" fontWeight="700" fill="#1a1d23">確かめる</text>
+                <rect x="420" y="60" width="160" height="100" rx="12" fill="#fef3c7" stroke="#d97706" strokeWidth="2"/>
+                <text x="500" y="95" textAnchor="middle" fontSize="20" fontWeight="900" fill="#d97706">共有</text>
+                <text x="500" y="122" textAnchor="middle" fontSize="16" fontWeight="700" fill="#1a1d23">分解を他の人に</text>
+                <text x="500" y="145" textAnchor="middle" fontSize="16" fontWeight="700" fill="#1a1d23">伝える</text>
+                <rect x="610" y="60" width="130" height="100" rx="12" fill="#fee2e2" stroke="#ef4444" strokeWidth="2"/>
+                <text x="675" y="95" textAnchor="middle" fontSize="20" fontWeight="900" fill="#ef4444">修正</text>
+                <text x="675" y="122" textAnchor="middle" fontSize="16" fontWeight="700" fill="#1a1d23">抜け漏れを</text>
+                <text x="675" y="145" textAnchor="middle" fontSize="16" fontWeight="700" fill="#1a1d23">直す</text>
+                {/* Bottom conclusion */}
+                <rect x="200" y="195" width="380" height="50" rx="12" fill="#2563eb"/>
+                <text x="390" y="227" textAnchor="middle" fontSize="22" fontWeight="900" fill="#fff">全部「考えて整理する」仕事</text>
+            </svg>
+        </div>
+    </div>
+</div>
+    </AbsoluteFill>
+);
+
+export const Scene17: React.FC = () => (
+    <AbsoluteFill>
+        <div className="scene" id="scene-17">
+    <div className="content center-layout">
+        <div className="scene-title">1940年代：0と1だけの世界</div>
+        <div className="svg-diagram">
+            <svg viewBox="0 0 780 240" width="780" height="240">
+                {/* Binary rain effect */}
+                <text x="60" y="40" fontSize="22" fontWeight="700" fill="#2563eb" opacity="0.3">01001000</text>
+                <text x="220" y="60" fontSize="22" fontWeight="700" fill="#2563eb" opacity="0.2">11010110</text>
+                <text x="380" y="35" fontSize="22" fontWeight="700" fill="#2563eb" opacity="0.3">00101101</text>
+                <text x="540" y="55" fontSize="22" fontWeight="700" fill="#2563eb" opacity="0.2">10110011</text>
+                <text x="100" y="85" fontSize="22" fontWeight="700" fill="#2563eb" opacity="0.15">01110100</text>
+                <text x="460" y="80" fontSize="22" fontWeight="700" fill="#2563eb" opacity="0.15">11001010</text>
+                {/* Central message */}
+                <rect x="190" y="100" width="400" height="80" rx="12" fill="#fff" stroke="#2563eb" strokeWidth="3"/>
+                <text x="390" y="135" textAnchor="middle" fontSize="24" fontWeight="900" fill="#2563eb">「2つの数を足す」</text>
+                <text x="390" y="165" textAnchor="middle" fontSize="20" fontWeight="700" fill="#ef4444">= 何十桁もの0と1を手書き</text>
+                {/* Person silhouette exhausted */}
+                <circle cx="390" cy="215" r="14" fill="#d97706"/>
+                <path d="M370 237 C370 222 410 222 410 237 L410 250 Q390 260 370 250 Z" fill="#d97706"/>
+                <text x="440" y="240" fontSize="18" fontWeight="900" fill="#d97706">「もっと楽にならないか…」</text>
+            </svg>
+        </div>
+    </div>
+</div>
+    </AbsoluteFill>
+);
+
+export const Scene18: React.FC = () => (
+    <AbsoluteFill>
+        <div className="scene" id="scene-18">
+    <div className="content center-layout">
+        <div className="scene-title">「楽をしたい」の進化</div>
+        <div className="flow-chain">
+            <div className="fc-node">
+                <div className="fc-node-title">機械語</div>
+                <div className="fc-node-sub">0と1の列</div>
+            </div>
+            <div className="fc-arr">→</div>
+            <div className="fc-node">
+                <div className="text-badge" style={{ background: 'var(--amber)' }}>ASM</div>
+                <div className="fc-node-title">アセンブリ</div>
+                <div className="fc-node-sub">ADD, MOV</div>
+            </div>
+            <div className="fc-arr">→</div>
+            <div className="fc-node">
+                <div className="text-badge" style={{ background: 'var(--teal)' }}>FORTRAN</div>
+                <div className="fc-node-title">高水準言語</div>
+                <div className="fc-node-sub">1954年〜</div>
+            </div>
+            <div className="fc-arr">→</div>
+            <div className="fc-node highlight">
+                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/c/c-original.svg" />
+                <div className="fc-node-title">構造化</div>
+                <div className="fc-node-sub">1968年〜</div>
+            </div>
+            <div className="fc-arr">→</div>
+            <div className="fc-node highlight">
+                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/python/python-original.svg" />
+                <div className="fc-node-title">現代言語</div>
+                <div className="fc-node-sub">Python等</div>
+            </div>
+        </div>
+        <div className="big-statement">一貫して<span className="accent-primary">「人間が楽に考えられるように」</span>進化</div>
+    </div>
+</div>
+    </AbsoluteFill>
+);
+
+export const Scene19: React.FC = () => (
+    <AbsoluteFill>
+        <div className="scene" id="scene-19">
+    <div className="content center-layout">
+        <div className="scene-title">自由を制限したら読めるようになった</div>
+        <div className="svg-diagram">
+            <svg viewBox="0 0 780 240" width="780" height="240">
+                {/* Left: spaghetti */}
+                <text x="170" y="25" textAnchor="middle" fontSize="20" fontWeight="900" fill="#ef4444">Before: スパゲッティ</text>
+                {/* Tangled lines */}
+                <circle cx="80" cy="70" r="12" fill="#fee2e2" stroke="#ef4444" strokeWidth="2"/>
+                <circle cx="170" cy="120" r="12" fill="#fee2e2" stroke="#ef4444" strokeWidth="2"/>
+                <circle cx="100" cy="170" r="12" fill="#fee2e2" stroke="#ef4444" strokeWidth="2"/>
+                <circle cx="250" cy="80" r="12" fill="#fee2e2" stroke="#ef4444" strokeWidth="2"/>
+                <circle cx="200" cy="200" r="12" fill="#fee2e2" stroke="#ef4444" strokeWidth="2"/>
+                <circle cx="270" cy="170" r="12" fill="#fee2e2" stroke="#ef4444" strokeWidth="2"/>
+                <path d="M92 70 Q200 40 250 80" fill="none" stroke="#ef4444" strokeWidth="2"/>
+                <path d="M170 132 Q50 200 100 170" fill="none" stroke="#ef4444" strokeWidth="2"/>
+                <path d="M250 92 Q300 150 270 170" fill="none" stroke="#ef4444" strokeWidth="2"/>
+                <path d="M100 182 Q150 230 200 200" fill="none" stroke="#ef4444" strokeWidth="2"/>
+                <path d="M80 82 Q60 150 100 158" fill="none" stroke="#ef4444" strokeWidth="2"/>
+                <path d="M182 120 Q220 100 238 80" fill="none" stroke="#ef4444" strokeWidth="2"/>
+                <path d="M212 200 Q250 190 258 170" fill="none" stroke="#ef4444" strokeWidth="2"/>
+                {/* Divider */}
+                <line x1="370" y1="30" x2="370" y2="230" stroke="#d1d5db" strokeWidth="2" strokeDasharray="6,4"/>
+                {/* Right: structured */}
+                <text x="580" y="25" textAnchor="middle" fontSize="20" fontWeight="900" fill="#0d9488">After: 構造化</text>
+                {/* Clean flow: sequence, branch, loop */}
+                <rect x="530" y="45" width="100" height="35" rx="6" fill="#ccfbf1" stroke="#0d9488" strokeWidth="2"/>
+                <text x="580" y="68" textAnchor="middle" fontSize="14" fontWeight="700" fill="#0d9488">順番</text>
+                <line x1="580" y1="80" x2="580" y2="100" stroke="#0d9488" strokeWidth="2"/>
+                <polygon points="580,105 540,135 620,135" fill="none" stroke="#0d9488" strokeWidth="2"/>
+                <text x="580" y="128" textAnchor="middle" fontSize="14" fontWeight="700" fill="#0d9488">分岐</text>
+                <line x1="560" y1="135" x2="530" y2="160" stroke="#0d9488" strokeWidth="2"/>
+                <line x1="600" y1="135" x2="630" y2="160" stroke="#0d9488" strokeWidth="2"/>
+                <rect x="490" y="160" width="80" height="30" rx="6" fill="#ccfbf1" stroke="#0d9488" strokeWidth="2"/>
+                <rect x="590" y="160" width="80" height="30" rx="6" fill="#ccfbf1" stroke="#0d9488" strokeWidth="2"/>
+                <line x1="530" y1="190" x2="580" y2="210" stroke="#0d9488" strokeWidth="2"/>
+                <line x1="630" y1="190" x2="580" y2="210" stroke="#0d9488" strokeWidth="2"/>
+                <rect x="540" y="205" width="80" height="30" rx="6" fill="#ccfbf1" stroke="#0d9488" strokeWidth="2"/>
+                <text x="580" y="225" textAnchor="middle" fontSize="14" fontWeight="700" fill="#0d9488">繰り返し</text>
+            </svg>
+        </div>
+    </div>
+</div>
+    </AbsoluteFill>
+);
+
+export const Scene20: React.FC = () => (
+    <AbsoluteFill>
+        <div className="scene" id="scene-20">
+    <div className="content center-layout">
+        <div className="scene-title">整理の力で生まれた巨大プロジェクト</div>
+        <div className="icon-row">
+            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/linux/linux-original.svg" />
+        </div>
+        <div className="metric-card">
+            <div className="metric-value accent-primary">4,000万行</div>
+            <div className="metric-label">Linux カーネル（2025年現在）</div>
+            <div className="metric-sub">1991年の1万行から出発 → 文庫本 約500冊分</div>
+        </div>
+        <div className="big-statement">「抽象化」で全体を知らなくても自分の担当だけ触れる</div>
+        <div className="source">出典: Stackscale 2025</div>
+    </div>
+</div>
+    </AbsoluteFill>
+);
+
+export const Scene21: React.FC = () => (
+    <AbsoluteFill>
+        <div className="scene" id="scene-21">
+    <div className="content center-layout">
+        <div className="scene-title">答え合わせ</div>
+        <div className="svg-diagram">
+            <svg viewBox="0 0 780 220" width="780" height="220">
+                {/* Question */}
+                <text x="390" y="40" textAnchor="middle" fontSize="26" fontWeight="900" fill="#2563eb">プログラミングとは結局何をしているのか</text>
+                {/* Arrow */}
+                <line x1="390" y1="55" x2="390" y2="85" stroke="#2563eb" strokeWidth="3"/>
+                <polygon points="380,85 400,85 390,95" fill="#2563eb"/>
+                {/* Answer box */}
+                <rect x="140" y="100" width="500" height="70" rx="16" fill="#2563eb"/>
+                <text x="390" y="135" textAnchor="middle" fontSize="24" fontWeight="900" fill="#fff">複雑なものを分解して</text>
+                <text x="390" y="160" textAnchor="middle" fontSize="24" fontWeight="900" fill="#fff">再現できる手順に整理すること</text>
+                {/* Sub note */}
+                <text x="390" y="205" textAnchor="middle" fontSize="20" fontWeight="700" fill="#1a1d23">コードは整理した結果の「記録」にすぎない</text>
+            </svg>
+        </div>
+    </div>
+</div>
+    </AbsoluteFill>
+);
+
+export const Scene22: React.FC = () => (
+    <AbsoluteFill>
+        <div className="scene" id="scene-22">
+    <div className="content center-layout">
+        <div className="scene-title">3つの誤解を解く</div>
+        <div className="num-list">
+            <div className="num-item">
+                <div className="num-circle" style={{ background: 'var(--coral)' }}>×</div>
+                <div className="num-text">「コードを打つ＝プログラミング」→ 実は全体の<span className="accent-primary">8%</span></div>
+            </div>
+            <div className="num-item">
+                <div className="num-circle" style={{ background: 'var(--coral)' }}>×</div>
+                <div className="num-text">「コンピュータは賢い」→ 超高速だけど<span className="accent-coral">一切察しない</span></div>
+            </div>
+            <div className="num-item">
+                <div className="num-circle" style={{ background: 'var(--coral)' }}>×</div>
+                <div className="num-text">「特別な人だけの技術」→ 靴ひもも自販機も<span className="accent-teal">あなたにできた</span></div>
+            </div>
+        </div>
+    </div>
+</div>
+    </AbsoluteFill>
+);
+
+export const Scene23: React.FC = () => (
+    <AbsoluteFill>
+        <div className="scene" id="scene-23">
+    <div className="content center-layout">
+        <div className="scene-title">プログラミングの第一歩</div>
+        <div className="svg-diagram">
+            <svg viewBox="0 0 780 240" width="780" height="240">
+                {/* 3 everyday examples */}
+                {/* Recipe */}
+                <rect x="40" y="20" width="200" height="140" rx="12" fill="#fff" stroke="#0d9488" strokeWidth="2"/>
+                <text x="140" y="55" textAnchor="middle" fontSize="18" fontWeight="900" fill="#0d9488">レシピを書く</text>
+                <line x1="60" y1="70" x2="220" y2="70" stroke="#d1d5db" strokeWidth="1"/>
+                <text x="140" y="95" textAnchor="middle" fontSize="16" fontWeight="700" fill="#1a1d23">曖昧な知識を</text>
+                <text x="140" y="118" textAnchor="middle" fontSize="16" fontWeight="700" fill="#1a1d23">再現可能にする</text>
+                {/* Directions */}
+                <rect x="290" y="20" width="200" height="140" rx="12" fill="#fff" stroke="#d97706" strokeWidth="2"/>
+                <text x="390" y="55" textAnchor="middle" fontSize="18" fontWeight="900" fill="#d97706">道を教える</text>
+                <line x1="310" y1="70" x2="470" y2="70" stroke="#d1d5db" strokeWidth="1"/>
+                <text x="390" y="95" textAnchor="middle" fontSize="16" fontWeight="700" fill="#1a1d23">相手が迷わない</text>
+                <text x="390" y="118" textAnchor="middle" fontSize="16" fontWeight="700" fill="#1a1d23">手順にする</text>
+                {/* Handover doc */}
+                <rect x="540" y="20" width="200" height="140" rx="12" fill="#fff" stroke="#2563eb" strokeWidth="2"/>
+                <text x="640" y="55" textAnchor="middle" fontSize="18" fontWeight="900" fill="#2563eb">引き継ぎ書</text>
+                <line x1="560" y1="70" x2="720" y2="70" stroke="#d1d5db" strokeWidth="1"/>
+                <text x="640" y="95" textAnchor="middle" fontSize="16" fontWeight="700" fill="#1a1d23">他の誰かが</text>
+                <text x="640" y="118" textAnchor="middle" fontSize="16" fontWeight="700" fill="#1a1d23">再現できるように</text>
+                {/* Bottom: all point to same thing */}
+                <line x1="140" y1="160" x2="390" y2="200" stroke="#d1d5db" strokeWidth="2"/>
+                <line x1="390" y1="160" x2="390" y2="200" stroke="#d1d5db" strokeWidth="2"/>
+                <line x1="640" y1="160" x2="390" y2="200" stroke="#d1d5db" strokeWidth="2"/>
+                <text x="390" y="228" textAnchor="middle" fontSize="22" fontWeight="900" fill="#2563eb">「手順で動いてるんだろう？」と考える習慣 = 第一歩</text>
+            </svg>
+        </div>
+    </div>
+</div>
+    </AbsoluteFill>
+);
+
+export const SCENE_COMPONENTS: Record<number, React.FC> = {
+    0: Scene0,
+    1: Scene1,
+    2: Scene2,
+    3: Scene3,
+    4: Scene4,
+    5: Scene5,
+    6: Scene6,
+    7: Scene7,
+    8: Scene8,
+    9: Scene9,
+    10: Scene10,
+    11: Scene11,
+    12: Scene12,
+    13: Scene13,
+    14: Scene14,
+    15: Scene15,
+    16: Scene16,
+    17: Scene17,
+    18: Scene18,
+    19: Scene19,
+    20: Scene20,
+    21: Scene21,
+    22: Scene22,
+    23: Scene23,
+};
+
+export const TOTAL_SCENE_COUNT = 24;

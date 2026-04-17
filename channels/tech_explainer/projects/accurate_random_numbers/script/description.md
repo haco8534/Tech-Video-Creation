@@ -1,0 +1,33 @@
+# YouTube概要欄
+
+## タイトル
+正確な乱数はどうして必要なのか？【Math.random()じゃダメな理由】
+
+## 概要
+Math.random()で十分だと思っていませんか？
+実はロシアの犯罪グループがカジノのスロットマシンを「乱数の予測」で攻略した事件があります。
+「ランダムに見える」ことと「本当に予測できない」ことはまったく違います。
+暗号・科学シミュレーション・ゲーム――用途によって乱数に求められる品質は異なり、間違った選択は現実のセキュリティ事故につながります。
+この動画では、疑似乱数の仕組みから量子乱数まで、「なぜ正確な乱数が必要なのか」をわかりやすく解説します。
+
+## 目次
+{{TIMESTAMPS}}
+
+## 参考文献
+- Mersenne Twister - 松本眞, 西村拓士 (1997)
+- NIST SP 800-22: 乱数品質の統計テスト
+- "Ron was wrong, Whit is right" - Lenstra et al. (2012) TLS証明書の乱数脆弱性研究
+- Debian Security Advisory DSA-1571 (CVE-2008-0166)
+- fail0verflow PS3 ECDSA発表 (27C3, 2010)
+- Cloudflare Blog "LavaRand in Production" (2017)
+- V8 Blog "Math.random()" - xorshift128+への切り替え
+- Linux Kernel 5.6 /dev/random変更
+- Nobel Prize in Physics 2022 - ベルの不等式実験
+- bitcoin.org公式アラート: Android SecureRandom脆弱性 (2013)
+- RANDU - Wikipedia / John D. Cook解説
+- Intel DRNG Software Implementation Guide
+
+📘 このチャンネルについて
+一次情報と研究データに基づきながら、難しいテーマをずんだもんとめたんの対話で楽しくわかりやすく解説するチャンネルです。
+
+#乱数 #セキュリティ #暗号 #プログラミング #技術解説

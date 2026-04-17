@@ -1,0 +1,1008 @@
+import React from 'react';
+import { AbsoluteFill } from 'remotion';
+import './slides.css';
+
+export const Scene0: React.FC = () => (
+    <AbsoluteFill>
+        <div className="scene" id="scene-0">
+    <div className="content center-layout">
+        <div className="title-large">正確な乱数は<br />どうして必要なのか</div>
+        <svg viewBox="0 0 780 80" width="780" height="80">
+            <text x="10" y="40" fontSize="36" fontWeight="900" fill="#3b5998" opacity="0.12" fontFamily="monospace" letterSpacing="4">0 1 1 0 0 1 0 1 1 1 0 0 1 0 1 1 0 0 1 0 1 0 1 1</text>
+            <text x="30" y="72" fontSize="36" fontWeight="900" fill="#dc2626" opacity="0.10" fontFamily="monospace" letterSpacing="4">1 0 0 1 1 0 1 0 0 1 1 0 1 1 0 0 1 0 0 1 1 0 1 0</text>
+        </svg>
+        <div className="big-statement" style={{ fontSize: '28px' }}>「ランダムに見える」と「本当に予測できない」は<span className="accent-coral">まったく違う</span></div>
+    </div>
+</div>
+    </AbsoluteFill>
+);
+
+export const Scene1: React.FC = () => (
+    <AbsoluteFill>
+        <div className="scene" id="scene-1">
+    <div className="content center-layout">
+        <div className="scene-title">スロットマシン予測事件</div>
+        <svg viewBox="0 0 780 300" width="780" height="300">
+            {/* スロットマシン本体 */}
+            <rect x="30" y="10" width="220" height="270" rx="18" fill="#2d2d3d" stroke="#555" strokeWidth="2"/>
+            <rect x="40" y="16" width="200" height="40" rx="8" fill="#d97706"/>
+            <text x="140" y="43" textAnchor="middle" fontSize="20" fontWeight="900" fill="#fff">JACKPOT</text>
+            {/* リール窓 */}
+            <rect x="50" y="70" width="56" height="80" rx="6" fill="#111" stroke="#888" strokeWidth="1"/>
+            <rect x="112" y="70" width="56" height="80" rx="6" fill="#111" stroke="#888" strokeWidth="1"/>
+            <rect x="174" y="70" width="56" height="80" rx="6" fill="#111" stroke="#888" strokeWidth="1"/>
+            <text x="78" y="120" textAnchor="middle" fontSize="36" fontWeight="900" fill="#d97706">7</text>
+            <text x="140" y="120" textAnchor="middle" fontSize="36" fontWeight="900" fill="#d97706">7</text>
+            <text x="202" y="120" textAnchor="middle" fontSize="36" fontWeight="900" fill="#d97706">7</text>
+            {/* 内部のPRNGチップを透視で見せる */}
+            <rect x="55" y="170" width="170" height="50" rx="6" fill="none" stroke="#dc2626" strokeWidth="1.5" strokeDasharray="4"/>
+            <text x="140" y="192" textAnchor="middle" fontSize="18" fill="#dc2626" fontWeight="700">PRNG チップ</text>
+            <text x="140" y="210" textAnchor="middle" fontSize="18" fill="#aaa">Xn+1 = f(Xn)</text>
+            {/* レバー */}
+            <rect x="232" y="90" width="12" height="80" rx="4" fill="#888"/>
+            <circle cx="238" cy="86" r="14" fill="#dc2626"/>
+            {/* 矢印：録画 */}
+            <path d="M260 140 Q310 140 310 100 L310 60" stroke="#dc2626" strokeWidth="2.5" fill="none" markerEnd="url(#arrR)"/>
+            {/* スマホ（録画デバイス） */}
+            <rect x="290" y="14" width="44" height="50" rx="6" fill="#1a1d23" stroke="#555" strokeWidth="1.5"/>
+            <rect x="296" y="22" width="32" height="30" rx="2" fill="#334"/>
+            <circle cx="312" cy="58" r="3" fill="#555"/>
+            <text x="312" y="42" textAnchor="middle" fontSize="18" fill="#dc2626">REC</text>
+            {/* 24回のスピンデータ */}
+            <g transform="translate(370,20)">
+                <text x="0" y="20" fontSize="18" fill="#1a1d23" fontWeight="700">24回分の出力列</text>
+                <rect x="0" y="30" width="200" height="100" rx="8" fill="#f0f0f5" stroke="#d1d5db" strokeWidth="1.5"/>
+                <text x="12" y="56" fontSize="18" fill="#3b5998" fontFamily="monospace">47, 82, 15, 93</text>
+                <text x="12" y="78" fontSize="18" fill="#3b5998" fontFamily="monospace">61, 38, 74, 29</text>
+                <text x="12" y="100" fontSize="18" fill="#3b5998" fontFamily="monospace">56, 11, 87, ...</text>
+                <text x="12" y="122" fontSize="18" fill="#dc2626" fontFamily="monospace" fontWeight="700">→ 内部状態を逆算</text>
+            </g>
+            {/* 結果：予測 */}
+            <g transform="translate(370,160)">
+                <path d="M0 20 L0 60" stroke="#dc2626" strokeWidth="2.5" markerEnd="url(#arrR)"/>
+                <rect x="20" y="50" width="200" height="80" rx="12" fill="#dc2626"/>
+                <text x="120" y="82" textAnchor="middle" fontSize="22" fontWeight="900" fill="#fff">次の当たりを</text>
+                <text x="120" y="110" textAnchor="middle" fontSize="22" fontWeight="900" fill="#fff">完全予測</text>
+            </g>
+            <defs>
+                <marker id="arrR" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="#dc2626"/></marker>
+            </defs>
+        </svg>
+        <div className="source">出典: Schneier on Security / GGB Magazine (2017)</div>
+    </div>
+</div>
+    </AbsoluteFill>
+);
+
+export const Scene2: React.FC = () => (
+    <AbsoluteFill>
+        <div className="scene" id="scene-2">
+    <div className="content center-layout">
+        <div className="big-statement">「ランダムに見える」<br /><span style={{ fontSize: '72px', color: 'var(--coral)' }}>≠</span><br /><span className="accent-coral">本当に予測できない</span></div>
+    </div>
+</div>
+    </AbsoluteFill>
+);
+
+export const Scene3: React.FC = () => (
+    <AbsoluteFill>
+        <div className="scene" id="scene-3">
+    <div className="content center-layout">
+        <div className="scene-title">サイコロ vs コンピュータ</div>
+        <svg viewBox="0 0 780 280" width="780" height="280">
+            {/* サイコロ（3Dパース風） */}
+            <g transform="translate(80,30)">
+                <polygon points="0,60 80,20 160,60 80,100" fill="#e8e8e8" stroke="#0d9488" strokeWidth="2.5"/>
+                <polygon points="0,60 0,180 80,220 80,100" fill="#fff" stroke="#0d9488" strokeWidth="2.5"/>
+                <polygon points="80,100 80,220 160,180 160,60" fill="#f0faf9" stroke="#0d9488" strokeWidth="2.5"/>
+                {/* 上面の目：5 */}
+                <circle cx="50" cy="50" r="5" fill="#0d9488"/><circle cx="110" cy="50" r="5" fill="#0d9488"/>
+                <circle cx="80" cy="60" r="5" fill="#0d9488"/>
+                <circle cx="50" cy="70" r="5" fill="#0d9488"/><circle cx="110" cy="70" r="5" fill="#0d9488"/>
+                {/* 正面の目：3 */}
+                <circle cx="25" cy="120" r="5" fill="#0d9488"/><circle cx="40" cy="150" r="5" fill="#0d9488"/><circle cx="55" cy="180" r="5" fill="#0d9488"/>
+                {/* 右面の目：2 */}
+                <circle cx="100" cy="120" r="5" fill="#0d9488" opacity="0.7"/><circle cx="140" cy="160" r="5" fill="#0d9488" opacity="0.7"/>
+                {/* 動きの線 */}
+                <path d="M-20 40 Q-30 60 -15 80" stroke="#0d9488" strokeWidth="1.5" fill="none" opacity="0.5"/>
+                <path d="M170 40 Q185 55 175 75" stroke="#0d9488" strokeWidth="1.5" fill="none" opacity="0.5"/>
+                <path d="M80 -5 Q90 -15 80 -25" stroke="#0d9488" strokeWidth="1.5" fill="none" opacity="0.5"/>
+            </g>
+            <text x="160" y="270" textAnchor="middle" fontSize="20" fontWeight="700" fill="#0d9488">物理的カオス = 予測不能</text>
+            {/* vs */}
+            <text x="370" y="140" textAnchor="middle" fontSize="42" fontWeight="900" fill="#d97706">vs</text>
+            {/* CPUチップ（回路パターン風） */}
+            <g transform="translate(450,25)">
+                <rect x="30" y="30" width="180" height="180" rx="8" fill="#f0f2f8" stroke="#3b5998" strokeWidth="2.5"/>
+                {/* ピン */}
+                <line x1="60" y1="30" x2="60" y2="10" stroke="#3b5998" strokeWidth="2"/><line x1="100" y1="30" x2="100" y2="10" stroke="#3b5998" strokeWidth="2"/>
+                <line x1="140" y1="30" x2="140" y2="10" stroke="#3b5998" strokeWidth="2"/><line x1="180" y1="30" x2="180" y2="10" stroke="#3b5998" strokeWidth="2"/>
+                <line x1="60" y1="210" x2="60" y2="230" stroke="#3b5998" strokeWidth="2"/><line x1="100" y1="210" x2="100" y2="230" stroke="#3b5998" strokeWidth="2"/>
+                <line x1="140" y1="210" x2="140" y2="230" stroke="#3b5998" strokeWidth="2"/><line x1="180" y1="210" x2="180" y2="230" stroke="#3b5998" strokeWidth="2"/>
+                <line x1="30" y1="70" x2="10" y2="70" stroke="#3b5998" strokeWidth="2"/><line x1="30" y1="110" x2="10" y2="110" stroke="#3b5998" strokeWidth="2"/>
+                <line x1="30" y1="150" x2="10" y2="150" stroke="#3b5998" strokeWidth="2"/><line x1="30" y1="190" x2="10" y2="190" stroke="#3b5998" strokeWidth="2"/>
+                <line x1="210" y1="70" x2="230" y2="70" stroke="#3b5998" strokeWidth="2"/><line x1="210" y1="110" x2="230" y2="110" stroke="#3b5998" strokeWidth="2"/>
+                <line x1="210" y1="150" x2="230" y2="150" stroke="#3b5998" strokeWidth="2"/><line x1="210" y1="190" x2="230" y2="190" stroke="#3b5998" strokeWidth="2"/>
+                {/* 内部回路パターン */}
+                <rect x="70" y="70" width="100" height="100" rx="4" fill="#3b5998" opacity="0.12"/>
+                <path d="M70 90 L170 90 M70 130 L170 130 M100 70 L100 170 M140 70 L140 170" stroke="#3b5998" strokeWidth="1" opacity="0.3"/>
+                <text x="120" y="115" textAnchor="middle" fontSize="20" fontWeight="900" fill="#3b5998">f(x)</text>
+                <text x="120" y="140" textAnchor="middle" fontSize="18" fill="#3b5998">= 常に同じ</text>
+            </g>
+            <text x="570" y="270" textAnchor="middle" fontSize="20" fontWeight="700" fill="#3b5998">決定論的 = 予測可能</text>
+        </svg>
+    </div>
+</div>
+    </AbsoluteFill>
+);
+
+export const Scene4: React.FC = () => (
+    <AbsoluteFill>
+        <div className="scene" id="scene-4">
+    <div className="content center-layout">
+        <div className="scene-title">コンピュータのジレンマ</div>
+        <svg viewBox="0 0 780 160" width="780" height="160">
+            {/* 入力 → 歯車 → 出力を繰り返しても同じ */}
+            <rect x="20" y="40" width="130" height="70" rx="10" fill="#dce4f2" stroke="#3b5998" strokeWidth="2"/>
+            <text x="85" y="82" textAnchor="middle" fontSize="20" fontWeight="700" fill="#3b5998">入力 A</text>
+            <path d="M160 75 L210 75" stroke="#3b5998" strokeWidth="3" markerEnd="url(#aB)"/>
+            {/* 歯車 */}
+            <circle cx="260" cy="75" r="40" fill="none" stroke="#3b5998" strokeWidth="2.5"/>
+            <circle cx="260" cy="75" r="18" fill="#3b5998" opacity="0.15"/>
+            <path d="M260 33 L254 42 L266 42 Z" fill="#3b5998"/><path d="M260 117 L254 108 L266 108 Z" fill="#3b5998"/>
+            <path d="M218 75 L227 69 L227 81 Z" fill="#3b5998"/><path d="M302 75 L293 69 L293 81 Z" fill="#3b5998"/>
+            <text x="260" y="80" textAnchor="middle" fontSize="18" fontWeight="700" fill="#3b5998">f(x)</text>
+            <path d="M310 75 L360 75" stroke="#3b5998" strokeWidth="3" markerEnd="url(#aB)"/>
+            <rect x="370" y="40" width="130" height="70" rx="10" fill="#dce4f2" stroke="#3b5998" strokeWidth="2"/>
+            <text x="435" y="82" textAnchor="middle" fontSize="20" fontWeight="700" fill="#3b5998">出力 B</text>
+            {/* 「毎回同じ」の強調 */}
+            <text x="600" y="60" fontSize="20" fill="#dc2626" fontWeight="700">毎回</text>
+            <text x="600" y="85" fontSize="20" fill="#dc2626" fontWeight="700">必ず同じ</text>
+            <path d="M590 70 L530 70" stroke="#dc2626" strokeWidth="1.5" strokeDasharray="4" markerEnd="url(#arrR)"/>
+            <defs><marker id="aB" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="#3b5998"/></marker></defs>
+        </svg>
+        <div className="quote-block">
+            <div className="quote-mark">"</div>
+            <div className="quote-body">算術的な方法で乱数を生成しようとする者は、<br />もちろん罪の状態にある</div>
+            <div className="quote-author">― ジョン・フォン・ノイマン (1951)</div>
+        </div>
+    </div>
+</div>
+    </AbsoluteFill>
+);
+
+export const Scene5: React.FC = () => (
+    <AbsoluteFill>
+        <div className="scene" id="scene-5">
+    <div className="content center-layout">
+        <div className="scene-title">疑似乱数生成器（PRNG）の仕組み</div>
+        <svg viewBox="0 0 780 200" width="780" height="200">
+            {/* シード（種のアイコン） */}
+            <circle cx="60" cy="80" r="30" fill="#d97706" opacity="0.15" stroke="#d97706" strokeWidth="2"/>
+            <text x="60" y="74" textAnchor="middle" fontSize="22" fill="#d97706">🌱</text>
+            <text x="60" y="98" textAnchor="middle" fontSize="18" fontWeight="700" fill="#d97706">42</text>
+            <text x="60" y="135" textAnchor="middle" fontSize="18" fill="#1a1d23">シード</text>
+            {/* 矢印 */}
+            <path d="M100 80 L160 80" stroke="#3b5998" strokeWidth="2.5" markerEnd="url(#aB)"/>
+            {/* 計算の連鎖（歯車が連なるイメージ） */}
+            <g transform="translate(180,50)">
+                <circle cx="30" cy="30" r="25" fill="#3b5998" opacity="0.1" stroke="#3b5998" strokeWidth="2"/>
+                <text x="30" y="36" textAnchor="middle" fontSize="18" fontWeight="700" fill="#3b5998">×A</text>
+                <path d="M60 30 L80 30" stroke="#3b5998" strokeWidth="2"/>
+                <circle cx="110" cy="30" r="25" fill="#3b5998" opacity="0.1" stroke="#3b5998" strokeWidth="2"/>
+                <text x="110" y="36" textAnchor="middle" fontSize="18" fontWeight="700" fill="#3b5998">+B</text>
+                <path d="M140 30 L160 30" stroke="#3b5998" strokeWidth="2"/>
+                <circle cx="190" cy="30" r="25" fill="#3b5998" opacity="0.1" stroke="#3b5998" strokeWidth="2"/>
+                <text x="190" y="36" textAnchor="middle" fontSize="18" fontWeight="700" fill="#3b5998">%M</text>
+            </g>
+            <text x="370" y="135" textAnchor="middle" fontSize="18" fill="#1a1d23">数学的変換の繰り返し</text>
+            {/* 矢印 */}
+            <path d="M420 80 L470 80" stroke="#0d9488" strokeWidth="2.5" markerEnd="url(#aT)"/>
+            {/* 出力数列 */}
+            <g transform="translate(490,40)">
+                <rect x="0" y="0" width="260" height="80" rx="10" fill="#ccfbf1" stroke="#0d9488" strokeWidth="2"/>
+                <text x="130" y="32" textAnchor="middle" fontSize="18" fontWeight="700" fill="#0d9488">出力数列</text>
+                <text x="130" y="60" textAnchor="middle" fontSize="22" fontWeight="700" fill="#0d9488" fontFamily="monospace">73, 18, 95, 41, 62…</text>
+            </g>
+            <text x="620" y="145" textAnchor="middle" fontSize="18" fill="#dc2626" fontWeight="700">同じシード → 同じ数列</text>
+            <defs><marker id="aT" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="#0d9488"/></marker></defs>
+        </svg>
+        <div className="big-statement" style={{ fontSize: '24px', marginTop: '16px' }}>決定論的だが、シミュレーションでは再現性として役立つ</div>
+    </div>
+</div>
+    </AbsoluteFill>
+);
+
+export const Scene6: React.FC = () => (
+    <AbsoluteFill>
+        <div className="scene" id="scene-6">
+    <div className="content center-layout">
+        <div className="scene-title">思考実験：偏りゼロでもダメ？</div>
+        <svg viewBox="0 0 780 240" width="780" height="240">
+            {/* パターン乱数：規則的な0と1の並び */}
+            <text x="20" y="40" fontSize="20" fontWeight="700" fill="#dc2626">パターン乱数</text>
+            <g transform="translate(20,55)">
+                <rect x="0" y="0" width="36" height="36" rx="4" fill="#3b5998"/><text x="18" y="26" textAnchor="middle" fontSize="20" fontWeight="900" fill="#fff">0</text>
+                <rect x="40" y="0" width="36" height="36" rx="4" fill="#dc2626"/><text x="58" y="26" textAnchor="middle" fontSize="20" fontWeight="900" fill="#fff">1</text>
+                <rect x="80" y="0" width="36" height="36" rx="4" fill="#3b5998"/><text x="98" y="26" textAnchor="middle" fontSize="20" fontWeight="900" fill="#fff">0</text>
+                <rect x="120" y="0" width="36" height="36" rx="4" fill="#dc2626"/><text x="138" y="26" textAnchor="middle" fontSize="20" fontWeight="900" fill="#fff">1</text>
+                <rect x="160" y="0" width="36" height="36" rx="4" fill="#3b5998"/><text x="178" y="26" textAnchor="middle" fontSize="20" fontWeight="900" fill="#fff">0</text>
+                <rect x="200" y="0" width="36" height="36" rx="4" fill="#dc2626"/><text x="218" y="26" textAnchor="middle" fontSize="20" fontWeight="900" fill="#fff">1</text>
+                <rect x="240" y="0" width="36" height="36" rx="4" fill="#3b5998"/><text x="258" y="26" textAnchor="middle" fontSize="20" fontWeight="900" fill="#fff">0</text>
+                <rect x="280" y="0" width="36" height="36" rx="4" fill="#dc2626"/><text x="298" y="26" textAnchor="middle" fontSize="20" fontWeight="900" fill="#fff">1</text>
+                <rect x="320" y="0" width="36" height="36" rx="4" fill="#3b5998"/><text x="338" y="26" textAnchor="middle" fontSize="20" fontWeight="900" fill="#fff">0</text>
+                <rect x="360" y="0" width="36" height="36" rx="4" fill="#dc2626"/><text x="378" y="26" textAnchor="middle" fontSize="20" fontWeight="900" fill="#fff">1</text>
+            </g>
+            {/* 波形で規則性を可視化 */}
+            <path d="M20 115 L56 115 L56 100 L96 100 L96 115 L136 115 L136 100 L176 100 L176 115 L216 115 L216 100 L256 100 L256 115 L296 115 L296 100 L336 100 L336 115 L376 115 L376 100 L416 100" stroke="#dc2626" strokeWidth="2" fill="none"/>
+            <text x="440" y="112" fontSize="18" fill="#dc2626" fontWeight="700">← パターン丸見え</text>
+            {/* 本物の乱数：不規則 */}
+            <text x="20" y="150" fontSize="20" fontWeight="700" fill="#0d9488">本物の乱数</text>
+            <g transform="translate(20,160)">
+                <rect x="0" y="0" width="36" height="36" rx="4" fill="#3b5998"/><text x="18" y="26" textAnchor="middle" fontSize="20" fontWeight="900" fill="#fff">0</text>
+                <rect x="40" y="0" width="36" height="36" rx="4" fill="#dc2626"/><text x="58" y="26" textAnchor="middle" fontSize="20" fontWeight="900" fill="#fff">1</text>
+                <rect x="80" y="0" width="36" height="36" rx="4" fill="#dc2626"/><text x="98" y="26" textAnchor="middle" fontSize="20" fontWeight="900" fill="#fff">1</text>
+                <rect x="120" y="0" width="36" height="36" rx="4" fill="#3b5998"/><text x="138" y="26" textAnchor="middle" fontSize="20" fontWeight="900" fill="#fff">0</text>
+                <rect x="160" y="0" width="36" height="36" rx="4" fill="#dc2626"/><text x="178" y="26" textAnchor="middle" fontSize="20" fontWeight="900" fill="#fff">1</text>
+                <rect x="200" y="0" width="36" height="36" rx="4" fill="#3b5998"/><text x="218" y="26" textAnchor="middle" fontSize="20" fontWeight="900" fill="#fff">0</text>
+                <rect x="240" y="0" width="36" height="36" rx="4" fill="#3b5998"/><text x="258" y="26" textAnchor="middle" fontSize="20" fontWeight="900" fill="#fff">0</text>
+                <rect x="280" y="0" width="36" height="36" rx="4" fill="#dc2626"/><text x="298" y="26" textAnchor="middle" fontSize="20" fontWeight="900" fill="#fff">1</text>
+                <rect x="320" y="0" width="36" height="36" rx="4" fill="#dc2626"/><text x="338" y="26" textAnchor="middle" fontSize="20" fontWeight="900" fill="#fff">1</text>
+                <rect x="360" y="0" width="36" height="36" rx="4" fill="#3b5998"/><text x="378" y="26" textAnchor="middle" fontSize="20" fontWeight="900" fill="#fff">0</text>
+            </g>
+            <path d="M20 220 L56 220 L56 205 L96 205 L96 205 L136 205 L136 220 L176 220 L176 205 L216 205 L216 220 L256 220 L256 220 L296 220 L296 205 L336 205 L336 205 L376 205 L376 220 L416 220" stroke="#0d9488" strokeWidth="2" fill="none"/>
+            <text x="440" y="218" fontSize="18" fill="#0d9488" fontWeight="700">← パターンなし</text>
+            {/* 共通：0と1の比率は両方50% */}
+            <g transform="translate(560,50)">
+                <text x="90" y="20" textAnchor="middle" fontSize="18" fill="#1a1d23" fontWeight="700">0と1の比率</text>
+                <rect x="10" y="35" width="160" height="30" rx="6" fill="#dce4f2"/>
+                <rect x="10" y="35" width="80" height="30" rx="6" fill="#3b5998"/>
+                <text x="50" y="56" textAnchor="middle" fontSize="18" fontWeight="700" fill="#fff">50%</text>
+                <text x="130" y="56" textAnchor="middle" fontSize="18" fontWeight="700" fill="#3b5998">50%</text>
+                <text x="90" y="88" textAnchor="middle" fontSize="18" fill="#1a1d23">どちらも同じ！</text>
+                <text x="90" y="140" textAnchor="middle" fontSize="20" fill="#dc2626" fontWeight="700">偏りがないだけ</text>
+                <text x="90" y="164" textAnchor="middle" fontSize="20" fill="#dc2626" fontWeight="700">では不十分</text>
+            </g>
+        </svg>
+    </div>
+</div>
+    </AbsoluteFill>
+);
+
+export const Scene7: React.FC = () => (
+    <AbsoluteFill>
+        <div className="scene" id="scene-7">
+    <div className="content center-layout">
+        <div className="scene-title">線形合同法（LCG）</div>
+        <svg viewBox="0 0 780 260" width="780" height="260">
+            <rect x="140" y="20" width="500" height="80" rx="12" fill="#dce4f2" stroke="#3b5998" strokeWidth="2"/>
+            <text x="390" y="55" textAnchor="middle" fontSize="28" fontWeight="900" fill="#3b5998">X(n+1) = (A × X(n) + B) mod M</text>
+            <text x="390" y="82" textAnchor="middle" fontSize="18" fill="#1a1d23">前の値 → 掛ける → 足す → 割った余り → 次の値</text>
+            {/* ステップ図解 */}
+            <rect x="60" y="140" width="120" height="60" rx="8" fill="#3b5998"/>
+            <text x="120" y="177" textAnchor="middle" fontSize="20" fontWeight="700" fill="#fff">X(n)</text>
+            <path d="M190 170 L230 170" stroke="#3b5998" strokeWidth="2" markerEnd="url(#aB)"/>
+            <rect x="240" y="140" width="100" height="60" rx="8" fill="#d97706"/>
+            <text x="290" y="177" textAnchor="middle" fontSize="20" fontWeight="700" fill="#fff">× A + B</text>
+            <path d="M350 170 L390 170" stroke="#3b5998" strokeWidth="2" markerEnd="url(#aB)"/>
+            <rect x="400" y="140" width="100" height="60" rx="8" fill="#0d9488"/>
+            <text x="450" y="177" textAnchor="middle" fontSize="20" fontWeight="700" fill="#fff">mod M</text>
+            <path d="M510 170 L550 170" stroke="#3b5998" strokeWidth="2" markerEnd="url(#aB)"/>
+            <rect x="560" y="140" width="120" height="60" rx="8" fill="#3b5998"/>
+            <text x="620" y="177" textAnchor="middle" fontSize="20" fontWeight="700" fill="#fff">X(n+1)</text>
+            <text x="390" y="240" textAnchor="middle" fontSize="20" fill="#1a1d23">高速だが単純すぎる構造</text>
+        </svg>
+    </div>
+</div>
+    </AbsoluteFill>
+);
+
+export const Scene8: React.FC = () => (
+    <AbsoluteFill>
+        <div className="scene" id="scene-8">
+    <div className="content center-layout">
+        <div className="scene-title">RANDU：史上最悪の乱数生成器</div>
+        <svg viewBox="0 0 780 320" width="780" height="320">
+            {/* 左：良い乱数の散布図 */}
+            <text x="170" y="24" textAnchor="middle" fontSize="20" fontWeight="700" fill="#0d9488">良い乱数</text>
+            <rect x="20" y="30" width="300" height="240" rx="4" fill="#f8faf9" stroke="#d1d5db" strokeWidth="1.5"/>
+            {/* ランダムに散布された点（60個） */}
+            <circle cx="45" cy="55" r="3" fill="#0d9488" opacity="0.7"/><circle cx="120" cy="70" r="3" fill="#0d9488" opacity="0.7"/>
+            <circle cx="200" cy="45" r="3" fill="#0d9488" opacity="0.7"/><circle cx="280" cy="90" r="3" fill="#0d9488" opacity="0.7"/>
+            <circle cx="55" cy="130" r="3" fill="#0d9488" opacity="0.7"/><circle cx="145" cy="105" r="3" fill="#0d9488" opacity="0.7"/>
+            <circle cx="230" cy="140" r="3" fill="#0d9488" opacity="0.7"/><circle cx="300" cy="60" r="3" fill="#0d9488" opacity="0.7"/>
+            <circle cx="80" cy="200" r="3" fill="#0d9488" opacity="0.7"/><circle cx="170" cy="180" r="3" fill="#0d9488" opacity="0.7"/>
+            <circle cx="260" cy="210" r="3" fill="#0d9488" opacity="0.7"/><circle cx="35" cy="240" r="3" fill="#0d9488" opacity="0.7"/>
+            <circle cx="130" cy="250" r="3" fill="#0d9488" opacity="0.7"/><circle cx="210" cy="230" r="3" fill="#0d9488" opacity="0.7"/>
+            <circle cx="290" cy="250" r="3" fill="#0d9488" opacity="0.7"/><circle cx="70" cy="80" r="3" fill="#0d9488" opacity="0.7"/>
+            <circle cx="150" cy="150" r="3" fill="#0d9488" opacity="0.7"/><circle cx="240" cy="170" r="3" fill="#0d9488" opacity="0.7"/>
+            <circle cx="100" cy="160" r="3" fill="#0d9488" opacity="0.7"/><circle cx="50" cy="190" r="3" fill="#0d9488" opacity="0.7"/>
+            <circle cx="190" cy="90" r="3" fill="#0d9488" opacity="0.7"/><circle cx="270" cy="150" r="3" fill="#0d9488" opacity="0.7"/>
+            <circle cx="310" cy="190" r="3" fill="#0d9488" opacity="0.7"/><circle cx="95" cy="40" r="3" fill="#0d9488" opacity="0.7"/>
+            <circle cx="180" cy="260" r="3" fill="#0d9488" opacity="0.7"/><circle cx="250" cy="55" r="3" fill="#0d9488" opacity="0.7"/>
+            <circle cx="60" cy="110" r="3" fill="#0d9488" opacity="0.7"/><circle cx="160" cy="220" r="3" fill="#0d9488" opacity="0.7"/>
+            <circle cx="220" cy="120" r="3" fill="#0d9488" opacity="0.7"/><circle cx="305" cy="130" r="3" fill="#0d9488" opacity="0.7"/>
+            <text x="170" y="290" textAnchor="middle" fontSize="18" fill="#0d9488" fontWeight="700">空間を満遍なく埋める</text>
+            {/* 右：RANDUの散布図（帯状に集中） */}
+            <text x="610" y="24" textAnchor="middle" fontSize="20" fontWeight="700" fill="#dc2626">RANDU</text>
+            <rect x="460" y="30" width="300" height="240" rx="4" fill="#fef5f5" stroke="#d1d5db" strokeWidth="1.5"/>
+            {/* 帯状のガイド（平面の可視化） */}
+            <rect x="460" y="48" width="300" height="8" rx="1" fill="#dc2626" opacity="0.08"/>
+            <rect x="460" y="88" width="300" height="8" rx="1" fill="#dc2626" opacity="0.08"/>
+            <rect x="460" y="128" width="300" height="8" rx="1" fill="#dc2626" opacity="0.08"/>
+            <rect x="460" y="168" width="300" height="8" rx="1" fill="#dc2626" opacity="0.08"/>
+            <rect x="460" y="208" width="300" height="8" rx="1" fill="#dc2626" opacity="0.08"/>
+            <rect x="460" y="248" width="300" height="8" rx="1" fill="#dc2626" opacity="0.08"/>
+            {/* 帯の上にだけ点が並ぶ */}
+            <circle cx="480" cy="52" r="3" fill="#dc2626"/><circle cx="520" cy="50" r="3" fill="#dc2626"/><circle cx="570" cy="53" r="3" fill="#dc2626"/><circle cx="620" cy="51" r="3" fill="#dc2626"/><circle cx="680" cy="52" r="3" fill="#dc2626"/><circle cx="730" cy="50" r="3" fill="#dc2626"/>
+            <circle cx="490" cy="92" r="3" fill="#dc2626"/><circle cx="540" cy="90" r="3" fill="#dc2626"/><circle cx="590" cy="93" r="3" fill="#dc2626"/><circle cx="650" cy="91" r="3" fill="#dc2626"/><circle cx="710" cy="92" r="3" fill="#dc2626"/><circle cx="745" cy="90" r="3" fill="#dc2626"/>
+            <circle cx="475" cy="132" r="3" fill="#dc2626"/><circle cx="530" cy="130" r="3" fill="#dc2626"/><circle cx="580" cy="133" r="3" fill="#dc2626"/><circle cx="640" cy="131" r="3" fill="#dc2626"/><circle cx="700" cy="132" r="3" fill="#dc2626"/><circle cx="750" cy="130" r="3" fill="#dc2626"/>
+            <circle cx="485" cy="172" r="3" fill="#dc2626"/><circle cx="535" cy="170" r="3" fill="#dc2626"/><circle cx="600" cy="173" r="3" fill="#dc2626"/><circle cx="660" cy="171" r="3" fill="#dc2626"/><circle cx="720" cy="172" r="3" fill="#dc2626"/>
+            <circle cx="470" cy="212" r="3" fill="#dc2626"/><circle cx="510" cy="210" r="3" fill="#dc2626"/><circle cx="560" cy="213" r="3" fill="#dc2626"/><circle cx="630" cy="211" r="3" fill="#dc2626"/><circle cx="690" cy="212" r="3" fill="#dc2626"/><circle cx="740" cy="210" r="3" fill="#dc2626"/>
+            <circle cx="495" cy="252" r="3" fill="#dc2626"/><circle cx="550" cy="250" r="3" fill="#dc2626"/><circle cx="610" cy="253" r="3" fill="#dc2626"/><circle cx="670" cy="251" r="3" fill="#dc2626"/><circle cx="725" cy="252" r="3" fill="#dc2626"/>
+            <text x="610" y="290" textAnchor="middle" fontSize="18" fill="#dc2626" fontWeight="700">点が帯状にしか並ばない</text>
+        </svg>
+        <div className="source">IBM RANDU (1960年代) / D.Knuth「本当にひどい」</div>
+    </div>
+</div>
+    </AbsoluteFill>
+);
+
+export const Scene9: React.FC = () => (
+    <AbsoluteFill>
+        <div className="scene" id="scene-9">
+    <div className="content center-layout">
+        <div className="scene-title">メルセンヌ・ツイスタ (MT19937)</div>
+        <svg viewBox="0 0 780 240" width="780" height="240">
+            {/* 内部状態を624個の小セルで表現 */}
+            <g transform="translate(20,20)">
+                <text x="90" y="18" textAnchor="middle" fontSize="18" fontWeight="700" fill="#3b5998">内部状態 624個</text>
+                <g transform="translate(0,25)">
+                    {/* 8x4グリッドの小セル（624個を象徴） */}
+                    <rect x="0" y="0" width="22" height="18" rx="2" fill="#3b5998" opacity="0.3"/><rect x="24" y="0" width="22" height="18" rx="2" fill="#3b5998" opacity="0.4"/>
+                    <rect x="48" y="0" width="22" height="18" rx="2" fill="#3b5998" opacity="0.2"/><rect x="72" y="0" width="22" height="18" rx="2" fill="#3b5998" opacity="0.5"/>
+                    <rect x="96" y="0" width="22" height="18" rx="2" fill="#3b5998" opacity="0.3"/><rect x="120" y="0" width="22" height="18" rx="2" fill="#3b5998" opacity="0.6"/>
+                    <rect x="144" y="0" width="22" height="18" rx="2" fill="#3b5998" opacity="0.2"/><rect x="168" y="0" width="22" height="18" rx="2" fill="#3b5998" opacity="0.4"/>
+                    <rect x="0" y="22" width="22" height="18" rx="2" fill="#3b5998" opacity="0.5"/><rect x="24" y="22" width="22" height="18" rx="2" fill="#3b5998" opacity="0.2"/>
+                    <rect x="48" y="22" width="22" height="18" rx="2" fill="#3b5998" opacity="0.4"/><rect x="72" y="22" width="22" height="18" rx="2" fill="#3b5998" opacity="0.3"/>
+                    <rect x="96" y="22" width="22" height="18" rx="2" fill="#3b5998" opacity="0.6"/><rect x="120" y="22" width="22" height="18" rx="2" fill="#3b5998" opacity="0.2"/>
+                    <rect x="144" y="22" width="22" height="18" rx="2" fill="#3b5998" opacity="0.5"/><rect x="168" y="22" width="22" height="18" rx="2" fill="#3b5998" opacity="0.3"/>
+                    <rect x="0" y="44" width="22" height="18" rx="2" fill="#3b5998" opacity="0.3"/><rect x="24" y="44" width="22" height="18" rx="2" fill="#3b5998" opacity="0.5"/>
+                    <rect x="48" y="44" width="22" height="18" rx="2" fill="#3b5998" opacity="0.2"/><rect x="72" y="44" width="22" height="18" rx="2" fill="#3b5998" opacity="0.4"/>
+                    <rect x="96" y="44" width="22" height="18" rx="2" fill="#3b5998" opacity="0.3"/><rect x="120" y="44" width="22" height="18" rx="2" fill="#3b5998" opacity="0.6"/>
+                    <rect x="144" y="44" width="22" height="18" rx="2" fill="#3b5998" opacity="0.4"/><rect x="168" y="44" width="22" height="18" rx="2" fill="#3b5998" opacity="0.2"/>
+                    <text x="90" y="82" textAnchor="middle" fontSize="18" fill="#3b5998">…計624個の32bit値</text>
+                </g>
+            </g>
+            {/* Twist */}
+            <path d="M220 80 L290 80" stroke="#3b5998" strokeWidth="3" markerEnd="url(#aB)"/>
+            <g transform="translate(300,35)">
+                <rect x="0" y="0" width="140" height="90" rx="12" fill="#3b5998"/>
+                {/* ツイストの螺旋イメージ */}
+                <path d="M30 25 Q70 15 70 45 Q70 75 110 65" stroke="#fff" strokeWidth="2" fill="none"/>
+                <path d="M30 35 Q70 25 70 55 Q70 85 110 75" stroke="#dce4f2" strokeWidth="1.5" fill="none"/>
+                <text x="70" y="55" textAnchor="middle" fontSize="20" fontWeight="700" fill="#fff">Twist</text>
+            </g>
+            {/* Tempering */}
+            <path d="M450 80 L500 80" stroke="#0d9488" strokeWidth="3" markerEnd="url(#aT)"/>
+            <g transform="translate(510,35)">
+                <rect x="0" y="0" width="140" height="90" rx="12" fill="#0d9488"/>
+                <text x="70" y="55" textAnchor="middle" fontSize="20" fontWeight="700" fill="#fff">Tempering</text>
+            </g>
+            <path d="M660 80 L690 80" stroke="#0d9488" strokeWidth="3" markerEnd="url(#aT)"/>
+            <text x="720" y="85" fontSize="20" fontWeight="700" fill="#0d9488">出力</text>
+            {/* 特徴 */}
+            <rect x="140" y="155" width="500" height="70" rx="10" fill="#ccfbf1" stroke="#0d9488" strokeWidth="2"/>
+            <text x="390" y="185" textAnchor="middle" fontSize="20" fontWeight="700" fill="#0d9488">周期: 2^19937 - 1（途方もない長さ）</text>
+            <text x="390" y="210" textAnchor="middle" fontSize="18" fill="#1a1d23">松本眞・西村拓士 (1997) / 統計テスト合格</text>
+        </svg>
+    </div>
+</div>
+    </AbsoluteFill>
+);
+
+export const Scene10: React.FC = () => (
+    <AbsoluteFill>
+        <div className="scene" id="scene-10">
+    <div className="content center-layout">
+        <div className="scene-title">乱数品質がシミュレーションを歪める</div>
+        <svg viewBox="0 0 780 300" width="780" height="300">
+            {/* 左：良い乱数でのモンテカルロ（円の内外に均一に点） */}
+            <text x="170" y="24" textAnchor="middle" fontSize="20" fontWeight="700" fill="#0d9488">良い乱数</text>
+            <rect x="30" y="35" width="260" height="200" rx="4" fill="#f8faf9" stroke="#d1d5db" strokeWidth="1.5"/>
+            <circle cx="160" cy="135" r="95" fill="none" stroke="#0d9488" strokeWidth="2" opacity="0.4"/>
+            {/* 円内の点（緑） */}
+            <circle cx="140" cy="100" r="3" fill="#0d9488"/><circle cx="180" cy="120" r="3" fill="#0d9488"/>
+            <circle cx="120" cy="140" r="3" fill="#0d9488"/><circle cx="190" cy="90" r="3" fill="#0d9488"/>
+            <circle cx="150" cy="170" r="3" fill="#0d9488"/><circle cx="100" cy="130" r="3" fill="#0d9488"/>
+            <circle cx="200" cy="150" r="3" fill="#0d9488"/><circle cx="170" cy="80" r="3" fill="#0d9488"/>
+            <circle cx="130" cy="180" r="3" fill="#0d9488"/><circle cx="160" cy="110" r="3" fill="#0d9488"/>
+            <circle cx="210" cy="130" r="3" fill="#0d9488"/><circle cx="110" cy="110" r="3" fill="#0d9488"/>
+            <circle cx="175" cy="190" r="3" fill="#0d9488"/><circle cx="145" cy="60" r="3" fill="#0d9488"/>
+            <circle cx="90" cy="155" r="3" fill="#0d9488"/><circle cx="220" cy="115" r="3" fill="#0d9488"/>
+            {/* 円外の点（グレー） */}
+            <circle cx="50" cy="50" r="3" fill="#999"/><circle cx="270" cy="60" r="3" fill="#999"/>
+            <circle cx="40" cy="200" r="3" fill="#999"/><circle cx="280" cy="210" r="3" fill="#999"/>
+            <circle cx="55" cy="80" r="3" fill="#999"/><circle cx="260" cy="180" r="3" fill="#999"/>
+            <circle cx="250" cy="50" r="3" fill="#999"/><circle cx="45" cy="220" r="3" fill="#999"/>
+            <text x="160" y="258" textAnchor="middle" fontSize="36" fontWeight="900" fill="#0d9488">100%</text>
+            <text x="160" y="285" textAnchor="middle" fontSize="18" fill="#1a1d23">正しい推定値</text>
+            {/* 右：悪い乱数（点が帯状に偏る） */}
+            <text x="600" y="24" textAnchor="middle" fontSize="20" fontWeight="700" fill="#dc2626">古いLCG</text>
+            <rect x="470" y="35" width="260" height="200" rx="4" fill="#fef5f5" stroke="#d1d5db" strokeWidth="1.5"/>
+            <circle cx="600" cy="135" r="95" fill="none" stroke="#dc2626" strokeWidth="2" opacity="0.3"/>
+            {/* 偏った分布（対角線上に集中） */}
+            <circle cx="510" cy="70" r="3" fill="#dc2626"/><circle cx="530" cy="85" r="3" fill="#dc2626"/>
+            <circle cx="550" cy="100" r="3" fill="#dc2626"/><circle cx="570" cy="110" r="3" fill="#dc2626"/>
+            <circle cx="590" cy="125" r="3" fill="#dc2626"/><circle cx="610" cy="135" r="3" fill="#dc2626"/>
+            <circle cx="630" cy="145" r="3" fill="#dc2626"/><circle cx="650" cy="155" r="3" fill="#dc2626"/>
+            <circle cx="670" cy="170" r="3" fill="#dc2626"/><circle cx="690" cy="185" r="3" fill="#dc2626"/>
+            <circle cx="520" cy="130" r="3" fill="#dc2626"/><circle cx="540" cy="145" r="3" fill="#dc2626"/>
+            <circle cx="560" cy="160" r="3" fill="#dc2626"/><circle cx="580" cy="170" r="3" fill="#dc2626"/>
+            <circle cx="600" cy="185" r="3" fill="#dc2626"/><circle cx="620" cy="195" r="3" fill="#dc2626"/>
+            <circle cx="640" cy="205" r="3" fill="#dc2626"/><circle cx="660" cy="95" r="3" fill="#dc2626"/>
+            {/* 偏りの帯を可視化 */}
+            <line x1="490" y1="55" x2="715" y2="210" stroke="#dc2626" strokeWidth="1" opacity="0.3" strokeDasharray="4"/>
+            <line x1="490" y1="105" x2="680" y2="215" stroke="#dc2626" strokeWidth="1" opacity="0.3" strokeDasharray="4"/>
+            <text x="600" y="258" textAnchor="middle" fontSize="36" fontWeight="900" fill="#dc2626">124%</text>
+            <text x="600" y="285" textAnchor="middle" fontSize="18" fill="#1a1d23">+24%の誤差！</text>
+        </svg>
+        <div className="source">出典: PMC論文 - 分子シミュレーションにおけるPRNG品質の影響</div>
+    </div>
+</div>
+    </AbsoluteFill>
+);
+
+export const Scene11: React.FC = () => (
+    <AbsoluteFill>
+        <div className="scene" id="scene-11">
+    <div className="content center-layout">
+        <div className="scene-title">ここまでの理解 = 80%正しい</div>
+        <div className="num-list">
+            <div className="num-item">
+                <div className="num-circle" style={{ background: 'var(--teal)' }}>1</div>
+                <div className="num-text">偏りがない（統計的に均一）</div>
+            </div>
+            <div className="num-item">
+                <div className="num-circle" style={{ background: 'var(--teal)' }}>2</div>
+                <div className="num-text">周期が長い（繰り返しが天文学的に遠い）</div>
+            </div>
+            <div className="num-item">
+                <div className="num-circle" style={{ background: 'var(--teal)' }}>3</div>
+                <div className="num-text">統計テストに合格する</div>
+            </div>
+        </div>
+    </div>
+</div>
+    </AbsoluteFill>
+);
+
+export const Scene12: React.FC = () => (
+    <AbsoluteFill>
+        <div className="scene" id="scene-12">
+    <div className="content center-layout">
+        <div className="scene-title">メルセンヌ・ツイスタの致命的弱点</div>
+        <svg viewBox="0 0 780 280" width="780" height="280">
+            {/* 出力の流れ（数字が鍵穴から漏れ出すイメージ） */}
+            <g transform="translate(20,20)">
+                <text x="100" y="20" textAnchor="middle" fontSize="18" fontWeight="700" fill="#3b5998">出力を覗き見る</text>
+                {/* 624個の出力を小さな数字の流れで表現 */}
+                <rect x="10" y="30" width="180" height="120" rx="8" fill="#dce4f2" stroke="#3b5998" strokeWidth="2"/>
+                <text x="20" y="55" fontSize="18" fill="#3b5998" fontFamily="monospace" opacity="0.6">3847291056</text>
+                <text x="20" y="77" fontSize="18" fill="#3b5998" fontFamily="monospace" opacity="0.7">1729384651</text>
+                <text x="20" y="99" fontSize="18" fill="#3b5998" fontFamily="monospace" opacity="0.8">9182736450</text>
+                <text x="20" y="121" fontSize="18" fill="#3b5998" fontFamily="monospace" opacity="0.9">2648159370</text>
+                <text x="100" y="165" textAnchor="middle" fontSize="20" fontWeight="900" fill="#3b5998">624個</text>
+            </g>
+            {/* 大きな矢印 */}
+            <path d="M230 100 L310 100" stroke="#dc2626" strokeWidth="4" markerEnd="url(#arrR)"/>
+            <text x="270" y="85" textAnchor="middle" fontSize="18" fill="#dc2626" fontWeight="700">逆算</text>
+            {/* 南京錠が開くイメージ */}
+            <g transform="translate(320,20)">
+                {/* 錠前の本体 */}
+                <rect x="30" y="70" width="100" height="90" rx="10" fill="#dc2626"/>
+                {/* 開いたシャックル */}
+                <path d="M50 70 L50 40 Q50 15 80 15 Q110 15 110 40 L110 50" stroke="#dc2626" strokeWidth="8" fill="none" strokeLinecap="round"/>
+                <path d="M110 50 L130 30" stroke="#dc2626" strokeWidth="8" fill="none" strokeLinecap="round"/>
+                {/* 鍵穴 */}
+                <circle cx="80" cy="110" r="10" fill="#fff"/>
+                <rect x="77" y="115" width="6" height="16" rx="2" fill="#fff"/>
+                <text x="80" y="180" textAnchor="middle" fontSize="20" fontWeight="900" fill="#dc2626">内部状態</text>
+                <text x="80" y="200" textAnchor="middle" fontSize="20" fontWeight="900" fill="#dc2626">完全復元</text>
+            </g>
+            {/* 結果 */}
+            <path d="M480 100 L540 100" stroke="#dc2626" strokeWidth="4" markerEnd="url(#arrR)"/>
+            <g transform="translate(550,20)">
+                <rect x="0" y="30" width="210" height="140" rx="10" fill="#fee2e2" stroke="#dc2626" strokeWidth="2"/>
+                <text x="105" y="70" textAnchor="middle" fontSize="20" fontWeight="700" fill="#dc2626">625個目以降</text>
+                <text x="105" y="100" textAnchor="middle" fontSize="22" fontWeight="900" fill="#dc2626">全出力を予測可能</text>
+                <text x="105" y="130" textAnchor="middle" fontSize="18" fontFamily="monospace" fill="#dc2626">next: 4817293650</text>
+                <text x="105" y="150" textAnchor="middle" fontSize="18" fontFamily="monospace" fill="#dc2626">next: 7362819405</text>
+            </g>
+        </svg>
+    </div>
+</div>
+    </AbsoluteFill>
+);
+
+export const Scene13: React.FC = () => (
+    <AbsoluteFill>
+        <div className="scene" id="scene-13">
+    <div className="content center-layout">
+        <div className="scene-title">足りなかった条件</div>
+        <svg viewBox="0 0 780 300" width="780" height="300">
+            {/* 2x2マトリクス */}
+            <line x1="390" y1="40" x2="390" y2="280" stroke="#d1d5db" strokeWidth="2"/>
+            <line x1="100" y1="140" x2="680" y2="140" stroke="#d1d5db" strokeWidth="2"/>
+            {/* 軸ラベル */}
+            <text x="390" y="30" textAnchor="middle" fontSize="20" fontWeight="700" fill="#1a1d23">予測不能性</text>
+            <text x="240" y="25" textAnchor="middle" fontSize="18" fill="#dc2626">低い</text>
+            <text x="540" y="25" textAnchor="middle" fontSize="18" fill="#0d9488">高い</text>
+            <text x="80" y="145" textAnchor="end" fontSize="20" fontWeight="700" fill="#1a1d23">均一性</text>
+            <text x="80" y="95" textAnchor="end" fontSize="18" fill="#0d9488">高い</text>
+            <text x="80" y="220" textAnchor="end" fontSize="18" fill="#dc2626">低い</text>
+            {/* 象限 */}
+            <rect x="130" y="55" width="230" height="70" rx="8" fill="#fef3c7" stroke="#d97706" strokeWidth="2"/>
+            <text x="245" y="85" textAnchor="middle" fontSize="20" fontWeight="700" fill="#d97706">メルセンヌ・ツイスタ</text>
+            <text x="245" y="108" textAnchor="middle" fontSize="18" fill="#1a1d23">均一だが予測できる</text>
+            <rect x="420" y="55" width="230" height="70" rx="8" fill="#ccfbf1" stroke="#0d9488" strokeWidth="3"/>
+            <text x="535" y="85" textAnchor="middle" fontSize="20" fontWeight="700" fill="#0d9488">CSPRNG</text>
+            <text x="535" y="108" textAnchor="middle" fontSize="18" fill="#1a1d23">均一かつ予測不能</text>
+            <rect x="130" y="165" width="230" height="70" rx="8" fill="#fee2e2" stroke="#dc2626" strokeWidth="2"/>
+            <text x="245" y="195" textAnchor="middle" fontSize="20" fontWeight="700" fill="#dc2626">RANDU</text>
+            <text x="245" y="218" textAnchor="middle" fontSize="18" fill="#1a1d23">偏りも予測も最悪</text>
+            <rect x="420" y="165" width="230" height="70" rx="8" fill="#dce4f2" stroke="#3b5998" strokeWidth="2"/>
+            <text x="535" y="195" textAnchor="middle" fontSize="20" fontWeight="700" fill="#3b5998">TRNG</text>
+            <text x="535" y="218" textAnchor="middle" fontSize="18" fill="#1a1d23">予測不能だが偏りあり</text>
+        </svg>
+    </div>
+</div>
+    </AbsoluteFill>
+);
+
+export const Scene14: React.FC = () => (
+    <AbsoluteFill>
+        <div className="scene" id="scene-14">
+    <div className="content center-layout">
+        <div className="scene-title">Debian OpenSSL事件 (2006-2008)</div>
+        <svg viewBox="0 0 780 290" width="780" height="290">
+            {/* 左：広大な鍵空間（多くの小さな鍵アイコン） */}
+            <text x="170" y="24" textAnchor="middle" fontSize="20" fontWeight="700" fill="#0d9488">正常な鍵空間</text>
+            <rect x="30" y="35" width="280" height="150" rx="8" fill="#f0faf9" stroke="#0d9488" strokeWidth="2"/>
+            {/* 小さな鍵を大量に描画 */}
+            <g fill="#0d9488" opacity="0.4">
+                <circle cx="50" cy="55" r="4"/><circle cx="70" cy="55" r="4"/><circle cx="90" cy="55" r="4"/><circle cx="110" cy="55" r="4"/><circle cx="130" cy="55" r="4"/><circle cx="150" cy="55" r="4"/><circle cx="170" cy="55" r="4"/><circle cx="190" cy="55" r="4"/><circle cx="210" cy="55" r="4"/><circle cx="230" cy="55" r="4"/><circle cx="250" cy="55" r="4"/><circle cx="270" cy="55" r="4"/><circle cx="290" cy="55" r="4"/>
+                <circle cx="50" cy="75" r="4"/><circle cx="70" cy="75" r="4"/><circle cx="90" cy="75" r="4"/><circle cx="110" cy="75" r="4"/><circle cx="130" cy="75" r="4"/><circle cx="150" cy="75" r="4"/><circle cx="170" cy="75" r="4"/><circle cx="190" cy="75" r="4"/><circle cx="210" cy="75" r="4"/><circle cx="230" cy="75" r="4"/><circle cx="250" cy="75" r="4"/><circle cx="270" cy="75" r="4"/><circle cx="290" cy="75" r="4"/>
+                <circle cx="50" cy="95" r="4"/><circle cx="70" cy="95" r="4"/><circle cx="90" cy="95" r="4"/><circle cx="110" cy="95" r="4"/><circle cx="130" cy="95" r="4"/><circle cx="150" cy="95" r="4"/><circle cx="170" cy="95" r="4"/><circle cx="190" cy="95" r="4"/><circle cx="210" cy="95" r="4"/><circle cx="230" cy="95" r="4"/><circle cx="250" cy="95" r="4"/><circle cx="270" cy="95" r="4"/><circle cx="290" cy="95" r="4"/>
+                <circle cx="50" cy="115" r="4"/><circle cx="70" cy="115" r="4"/><circle cx="90" cy="115" r="4"/><circle cx="110" cy="115" r="4"/><circle cx="130" cy="115" r="4"/><circle cx="150" cy="115" r="4"/><circle cx="170" cy="115" r="4"/><circle cx="190" cy="115" r="4"/><circle cx="210" cy="115" r="4"/><circle cx="230" cy="115" r="4"/><circle cx="250" cy="115" r="4"/><circle cx="270" cy="115" r="4"/><circle cx="290" cy="115" r="4"/>
+                <circle cx="50" cy="135" r="4"/><circle cx="70" cy="135" r="4"/><circle cx="90" cy="135" r="4"/><circle cx="110" cy="135" r="4"/><circle cx="130" cy="135" r="4"/><circle cx="150" cy="135" r="4"/><circle cx="170" cy="135" r="4"/><circle cx="190" cy="135" r="4"/><circle cx="210" cy="135" r="4"/><circle cx="230" cy="135" r="4"/><circle cx="250" cy="135" r="4"/><circle cx="270" cy="135" r="4"/><circle cx="290" cy="135" r="4"/>
+                <circle cx="50" cy="155" r="4"/><circle cx="70" cy="155" r="4"/><circle cx="90" cy="155" r="4"/><circle cx="110" cy="155" r="4"/><circle cx="130" cy="155" r="4"/><circle cx="150" cy="155" r="4"/><circle cx="170" cy="155" r="4"/><circle cx="190" cy="155" r="4"/><circle cx="210" cy="155" r="4"/><circle cx="230" cy="155" r="4"/><circle cx="250" cy="155" r="4"/><circle cx="270" cy="155" r="4"/><circle cx="290" cy="155" r="4"/>
+                <circle cx="50" cy="175" r="4"/><circle cx="70" cy="175" r="4"/><circle cx="90" cy="175" r="4"/><circle cx="110" cy="175" r="4"/><circle cx="130" cy="175" r="4"/><circle cx="150" cy="175" r="4"/><circle cx="170" cy="175" r="4"/><circle cx="190" cy="175" r="4"/><circle cx="210" cy="175" r="4"/><circle cx="230" cy="175" r="4"/><circle cx="250" cy="175" r="4"/><circle cx="270" cy="175" r="4"/><circle cx="290" cy="175" r="4"/>
+            </g>
+            <text x="170" y="210" textAnchor="middle" fontSize="28" fontWeight="900" fill="#0d9488">2^128 通り</text>
+            {/* 矢印 */}
+            <path d="M330 110 L420 110" stroke="#dc2626" strokeWidth="4" markerEnd="url(#arrR)"/>
+            <text x="375" y="95" textAnchor="middle" fontSize="18" fill="#dc2626" fontWeight="700">バグ</text>
+            {/* 右：たった数個の鍵 */}
+            <text x="600" y="24" textAnchor="middle" fontSize="20" fontWeight="700" fill="#dc2626">バグ後の鍵空間</text>
+            <rect x="460" y="35" width="280" height="150" rx="8" fill="#fef5f5" stroke="#dc2626" strokeWidth="2"/>
+            <g fill="#dc2626">
+                <circle cx="530" cy="100" r="6"/><circle cx="570" cy="100" r="6"/><circle cx="610" cy="100" r="6"/><circle cx="650" cy="100" r="6"/>
+                <circle cx="550" cy="130" r="6"/><circle cx="590" cy="130" r="6"/><circle cx="630" cy="130" r="6"/>
+            </g>
+            <text x="600" y="210" textAnchor="middle" fontSize="28" fontWeight="900" fill="#dc2626">32,767 通り</text>
+            {/* 原因 */}
+            <rect x="140" y="240" width="500" height="40" rx="8" fill="#ffffff" stroke="#d1d5db" strokeWidth="2"/>
+            <text x="390" y="267" textAnchor="middle" fontSize="18" fontWeight="700" fill="#dc2626">シードがプロセスID（1〜32,767）のみに依存 → 2年間未発覚</text>
+        </svg>
+        <div className="source">出典: Debian Security Advisory DSA-1571 (CVE-2008-0166)</div>
+    </div>
+</div>
+    </AbsoluteFill>
+);
+
+export const Scene15: React.FC = () => (
+    <AbsoluteFill>
+        <div className="scene" id="scene-15">
+    <div className="content center-layout">
+        <div className="scene-title">PS3 ECDSA署名破り (2010)</div>
+        <svg viewBox="0 0 780 260" width="780" height="260">
+            {/* 正しい実装 */}
+            <rect x="40" y="30" width="320" height="90" rx="10" fill="#ccfbf1" stroke="#0d9488" strokeWidth="2"/>
+            <text x="200" y="60" textAnchor="middle" fontSize="20" fontWeight="700" fill="#0d9488">正しい実装</text>
+            <text x="200" y="90" textAnchor="middle" fontSize="18" fill="#1a1d23">署名ごとにランダムな <tspan fontWeight="700">k</tspan> を生成</text>
+            {/* ソニーの実装 */}
+            <rect x="420" y="30" width="320" height="90" rx="10" fill="#fee2e2" stroke="#dc2626" strokeWidth="2"/>
+            <text x="580" y="60" textAnchor="middle" fontSize="20" fontWeight="700" fill="#dc2626">ソニーの実装</text>
+            <text x="580" y="90" textAnchor="middle" fontSize="18" fill="#1a1d23">毎回<tspan fontWeight="700" fill="#dc2626">同じ固定値 k</tspan> を使用</text>
+            {/* 結果 */}
+            <path d="M580 130 L580 170" stroke="#dc2626" strokeWidth="3" markerEnd="url(#arrR)"/>
+            <rect x="380" y="180" width="360" height="60" rx="10" fill="#dc2626"/>
+            <text x="560" y="217" textAnchor="middle" fontSize="22" fontWeight="900" fill="#fff">秘密鍵が完全に復元される</text>
+        </svg>
+        <div className="source">出典: fail0verflow / 27C3 (2010)</div>
+    </div>
+</div>
+    </AbsoluteFill>
+);
+
+export const Scene16: React.FC = () => (
+    <AbsoluteFill>
+        <div className="scene" id="scene-16">
+    <div className="content center-layout">
+        <div className="scene-title">CSPRNG: 暗号論的に安全な疑似乱数</div>
+        <div className="num-list">
+            <div className="num-item">
+                <div className="num-circle" style={{ background: 'var(--primary)' }}>1</div>
+                <div className="num-text">出力をどれだけ見ても、<span className="accent-coral">次の1ビットすら予測できない</span></div>
+            </div>
+            <div className="num-item">
+                <div className="num-circle" style={{ background: 'var(--primary)' }}>2</div>
+                <div className="num-text">内部状態がバレても、<span className="accent-coral">過去の出力は復元できない</span></div>
+            </div>
+        </div>
+    </div>
+</div>
+    </AbsoluteFill>
+);
+
+export const Scene17: React.FC = () => (
+    <AbsoluteFill>
+        <div className="scene" id="scene-17">
+    <div className="content center-layout">
+        <div className="scene-title">用途で変わる「正確さ」</div>
+        <div className="three-col">
+            <div className="arch-card" style={{ borderTop: '4px solid var(--coral)' }}>
+                <div className="card-title accent-coral">暗号</div>
+                <div className="card-body">予測不能性が最優先<br />鍵・トークン・署名</div>
+            </div>
+            <div className="arch-card" style={{ borderTop: '4px solid var(--teal)' }}>
+                <div className="card-title accent-teal">科学計算</div>
+                <div className="card-body">統計的均一性と再現性<br />モンテカルロ法</div>
+            </div>
+            <div className="arch-card" style={{ borderTop: '4px solid var(--amber)' }}>
+                <div className="card-title accent-amber">ゲーム</div>
+                <div className="card-body">公平性と検証可能性<br />ガチャ・抽選</div>
+            </div>
+        </div>
+    </div>
+</div>
+    </AbsoluteFill>
+);
+
+export const Scene18: React.FC = () => (
+    <AbsoluteFill>
+        <div className="scene" id="scene-18">
+    <div className="content center-layout">
+        <div className="scene-title">物理乱数生成器（TRNG）</div>
+        <svg viewBox="0 0 780 280" width="780" height="280">
+            {/* 物理ノイズ源：電子の揺らぎ */}
+            <g transform="translate(20,20)">
+                <rect x="0" y="20" width="180" height="160" rx="12" fill="#fef3c7" stroke="#d97706" strokeWidth="2"/>
+                <text x="90" y="50" textAnchor="middle" fontSize="18" fontWeight="700" fill="#d97706">物理ノイズ源</text>
+                {/* 不規則な波形（ノイズ） */}
+                <path d="M20 90 L35 75 L42 95 L55 70 L65 100 L75 65 L88 90 L95 78 L108 105 L115 68 L125 92 L135 72 L148 88 L160 80" stroke="#d97706" strokeWidth="2.5" fill="none" strokeLinecap="round"/>
+                {/* 電子の雲 */}
+                <circle cx="50" cy="140" r="6" fill="#d97706" opacity="0.3"/><circle cx="75" cy="135" r="4" fill="#d97706" opacity="0.4"/>
+                <circle cx="100" cy="142" r="5" fill="#d97706" opacity="0.25"/><circle cx="130" cy="138" r="3" fill="#d97706" opacity="0.35"/>
+                <circle cx="60" cy="155" r="3" fill="#d97706" opacity="0.2"/><circle cx="115" cy="152" r="5" fill="#d97706" opacity="0.3"/>
+                <text x="90" y="175" textAnchor="middle" fontSize="18" fill="#1a1d23">熱雑音 / 放射性崩壊</text>
+            </g>
+            {/* 矢印 */}
+            <path d="M220 100 L290 100" stroke="#3b5998" strokeWidth="3" markerEnd="url(#aB)"/>
+            {/* AD変換 */}
+            <g transform="translate(300,30)">
+                <rect x="0" y="20" width="160" height="120" rx="10" fill="#3b5998"/>
+                {/* 閾値線 */}
+                <line x1="20" y1="80" x2="140" y2="80" stroke="#fff" strokeWidth="1.5" strokeDasharray="4"/>
+                <text x="80" y="55" textAnchor="middle" fontSize="18" fontWeight="700" fill="#fff">AD変換</text>
+                <text x="45" y="100" textAnchor="middle" fontSize="20" fontWeight="900" fill="#ccfbf1">0</text>
+                <text x="80" y="100" textAnchor="middle" fontSize="20" fontWeight="900" fill="#fff">1</text>
+                <text x="115" y="100" textAnchor="middle" fontSize="20" fontWeight="900" fill="#ccfbf1">0</text>
+                <text x="80" y="125" textAnchor="middle" fontSize="18" fill="#dce4f2">閾値で0/1判定</text>
+            </g>
+            {/* 矢印 */}
+            <path d="M480 100 L540 100" stroke="#0d9488" strokeWidth="3" markerEnd="url(#aT)"/>
+            {/* 出力 */}
+            <g transform="translate(550,30)">
+                <rect x="0" y="20" width="210" height="120" rx="10" fill="#ccfbf1" stroke="#0d9488" strokeWidth="2"/>
+                <text x="105" y="55" textAnchor="middle" fontSize="18" fontWeight="700" fill="#0d9488">真の乱数ビット列</text>
+                <text x="105" y="85" textAnchor="middle" fontSize="24" fontWeight="700" fill="#0d9488" fontFamily="monospace">01101001...</text>
+                <text x="105" y="120" textAnchor="middle" fontSize="18" fill="#1a1d23">物理法則が予測不能性を保証</text>
+            </g>
+            {/* 下部の注釈 */}
+            <text x="390" y="220" textAnchor="middle" fontSize="20" fill="#1a1d23">計算ではなく<tspan fontWeight="700" fill="#d97706">自然界の観測</tspan>で乱数を得る</text>
+        </svg>
+    </div>
+</div>
+    </AbsoluteFill>
+);
+
+export const Scene19: React.FC = () => (
+    <AbsoluteFill>
+        <div className="scene" id="scene-19">
+    <div className="content center-layout">
+        <div className="scene-title">Cloudflareのラバランプ</div>
+        <svg viewBox="0 0 780 300" width="780" height="300">
+            {/* ラバランプ（ランプ型の瓶＋中のblob） */}
+            <g transform="translate(10,10)">
+                <rect x="0" y="0" width="260" height="240" rx="12" fill="#1a1d23" stroke="#333" strokeWidth="2"/>
+                <text x="130" y="25" textAnchor="middle" fontSize="18" fontWeight="700" fill="#d97706">ラバランプ壁</text>
+                {/* ランプ1 */}
+                <rect x="15" y="35" width="36" height="100" rx="12" fill="#111" stroke="#444" strokeWidth="1"/>
+                <ellipse cx="33" cy="55" rx="12" ry="15" fill="#dc2626" opacity="0.8"/>
+                <ellipse cx="33" cy="90" rx="10" ry="12" fill="#dc2626" opacity="0.5"/>
+                <ellipse cx="33" cy="115" rx="8" ry="8" fill="#dc2626" opacity="0.6"/>
+                {/* ランプ2 */}
+                <rect x="58" y="35" width="36" height="100" rx="12" fill="#111" stroke="#444" strokeWidth="1"/>
+                <ellipse cx="76" cy="65" rx="11" ry="18" fill="#d97706" opacity="0.7"/>
+                <ellipse cx="76" cy="100" rx="9" ry="10" fill="#d97706" opacity="0.5"/>
+                {/* ランプ3 */}
+                <rect x="101" y="35" width="36" height="100" rx="12" fill="#111" stroke="#444" strokeWidth="1"/>
+                <ellipse cx="119" cy="50" rx="10" ry="12" fill="#dc2626" opacity="0.6"/>
+                <ellipse cx="119" cy="80" rx="13" ry="16" fill="#dc2626" opacity="0.7"/>
+                <ellipse cx="119" cy="120" rx="7" ry="7" fill="#dc2626" opacity="0.4"/>
+                {/* ランプ4 */}
+                <rect x="144" y="35" width="36" height="100" rx="12" fill="#111" stroke="#444" strokeWidth="1"/>
+                <ellipse cx="162" cy="60" rx="12" ry="14" fill="#d97706" opacity="0.8"/>
+                <ellipse cx="162" cy="95" rx="10" ry="13" fill="#d97706" opacity="0.6"/>
+                {/* ランプ5 */}
+                <rect x="187" y="35" width="36" height="100" rx="12" fill="#111" stroke="#444" strokeWidth="1"/>
+                <ellipse cx="205" cy="55" rx="11" ry="15" fill="#dc2626" opacity="0.7"/>
+                <ellipse cx="205" cy="85" rx="9" ry="11" fill="#dc2626" opacity="0.5"/>
+                <ellipse cx="205" cy="110" rx="7" ry="8" fill="#dc2626" opacity="0.6"/>
+                {/* ランプ下段 */}
+                <rect x="15" y="142" width="36" height="90" rx="12" fill="#111" stroke="#444" strokeWidth="1"/>
+                <ellipse cx="33" cy="162" rx="10" ry="13" fill="#d97706" opacity="0.6"/>
+                <ellipse cx="33" cy="200" rx="8" ry="10" fill="#d97706" opacity="0.5"/>
+                <rect x="58" y="142" width="36" height="90" rx="12" fill="#111" stroke="#444" strokeWidth="1"/>
+                <ellipse cx="76" cy="170" rx="12" ry="16" fill="#dc2626" opacity="0.7"/>
+                <ellipse cx="76" cy="210" rx="7" ry="7" fill="#dc2626" opacity="0.4"/>
+                <rect x="101" y="142" width="36" height="90" rx="12" fill="#111" stroke="#444" strokeWidth="1"/>
+                <ellipse cx="119" cy="160" rx="10" ry="12" fill="#d97706" opacity="0.8"/>
+                <ellipse cx="119" cy="195" rx="9" ry="11" fill="#d97706" opacity="0.5"/>
+                <rect x="144" y="142" width="36" height="90" rx="12" fill="#111" stroke="#444" strokeWidth="1"/>
+                <ellipse cx="162" cy="165" rx="11" ry="14" fill="#dc2626" opacity="0.6"/>
+                <ellipse cx="162" cy="205" rx="8" ry="9" fill="#dc2626" opacity="0.7"/>
+                <rect x="187" y="142" width="36" height="90" rx="12" fill="#111" stroke="#444" strokeWidth="1"/>
+                <ellipse cx="205" cy="155" rx="10" ry="13" fill="#d97706" opacity="0.7"/>
+                <ellipse cx="205" cy="190" rx="12" ry="15" fill="#d97706" opacity="0.5"/>
+                <text x="130" y="245" textAnchor="middle" fontSize="18" fill="#888">約100個 / 毎回違う動き</text>
+            </g>
+            {/* カメラレンズ */}
+            <g transform="translate(300,80)">
+                <circle cx="40" cy="40" r="35" fill="#1a1d23" stroke="#555" strokeWidth="2"/>
+                <circle cx="40" cy="40" r="25" fill="none" stroke="#3b5998" strokeWidth="2"/>
+                <circle cx="40" cy="40" r="15" fill="#3b5998" opacity="0.3"/>
+                <circle cx="40" cy="40" r="6" fill="#3b5998"/>
+                <text x="40" y="95" textAnchor="middle" fontSize="18" fill="#3b5998" fontWeight="700">撮影</text>
+            </g>
+            {/* 矢印 */}
+            <path d="M390 120 L440 120" stroke="#3b5998" strokeWidth="3" markerEnd="url(#aB)"/>
+            {/* ピクセルデータ */}
+            <g transform="translate(450,50)">
+                <rect x="0" y="0" width="140" height="140" rx="6" fill="#f0f2f8" stroke="#3b5998" strokeWidth="1.5"/>
+                {/* ピクセルグリッド */}
+                <g opacity="0.8">
+                    <rect x="8" y="8" width="16" height="16" fill="#dc2626" opacity="0.6"/><rect x="26" y="8" width="16" height="16" fill="#d97706" opacity="0.4"/>
+                    <rect x="44" y="8" width="16" height="16" fill="#dc2626" opacity="0.3"/><rect x="62" y="8" width="16" height="16" fill="#d97706" opacity="0.7"/>
+                    <rect x="80" y="8" width="16" height="16" fill="#dc2626" opacity="0.5"/><rect x="98" y="8" width="16" height="16" fill="#d97706" opacity="0.3"/>
+                    <rect x="116" y="8" width="16" height="16" fill="#dc2626" opacity="0.6"/>
+                    <rect x="8" y="26" width="16" height="16" fill="#d97706" opacity="0.5"/><rect x="26" y="26" width="16" height="16" fill="#dc2626" opacity="0.7"/>
+                    <rect x="44" y="26" width="16" height="16" fill="#d97706" opacity="0.4"/><rect x="62" y="26" width="16" height="16" fill="#dc2626" opacity="0.6"/>
+                    <rect x="80" y="26" width="16" height="16" fill="#d97706" opacity="0.3"/><rect x="98" y="26" width="16" height="16" fill="#dc2626" opacity="0.5"/>
+                    <rect x="116" y="26" width="16" height="16" fill="#d97706" opacity="0.7"/>
+                    <rect x="8" y="44" width="16" height="16" fill="#dc2626" opacity="0.4"/><rect x="26" y="44" width="16" height="16" fill="#d97706" opacity="0.6"/>
+                    <rect x="44" y="44" width="16" height="16" fill="#dc2626" opacity="0.5"/><rect x="62" y="44" width="16" height="16" fill="#d97706" opacity="0.3"/>
+                    <rect x="80" y="44" width="16" height="16" fill="#dc2626" opacity="0.7"/><rect x="98" y="44" width="16" height="16" fill="#d97706" opacity="0.4"/>
+                    <rect x="116" y="44" width="16" height="16" fill="#dc2626" opacity="0.6"/>
+                </g>
+                <text x="70" y="90" textAnchor="middle" fontSize="18" fill="#3b5998" fontWeight="700">ピクセル</text>
+                <text x="70" y="112" textAnchor="middle" fontSize="18" fill="#3b5998" fontWeight="700">データ</text>
+                <text x="70" y="134" textAnchor="middle" fontSize="18" fill="#1a1d23">= エントロピー</text>
+            </g>
+            {/* 矢印 */}
+            <path d="M600 120 L640 120" stroke="#0d9488" strokeWidth="3" markerEnd="url(#aT)"/>
+            {/* 暗号鍵 */}
+            <g transform="translate(650,60)">
+                <rect x="0" y="0" width="120" height="120" rx="10" fill="#ccfbf1" stroke="#0d9488" strokeWidth="2"/>
+                <text x="60" y="40" textAnchor="middle" fontSize="18" fontWeight="700" fill="#0d9488">暗号鍵</text>
+                <text x="60" y="65" textAnchor="middle" fontSize="20" fontWeight="900" fill="#0d9488" fontFamily="monospace">a3f8...</text>
+                <text x="60" y="90" textAnchor="middle" fontSize="18" fill="#1a1d23">ネット20%</text>
+                <text x="60" y="110" textAnchor="middle" fontSize="18" fill="#1a1d23">を処理</text>
+            </g>
+            <defs>
+                <marker id="arrR" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="#dc2626"/></marker>
+            </defs>
+        </svg>
+        <div className="source">出典: Cloudflare Blog "LavaRand in Production" (2017)</div>
+    </div>
+</div>
+    </AbsoluteFill>
+);
+
+export const Scene20: React.FC = () => (
+    <AbsoluteFill>
+        <div className="scene" id="scene-20">
+    <div className="content center-layout">
+        <div className="scene-title">Intel RDRAND とバックドア疑惑</div>
+        <svg viewBox="0 0 780 240" width="780" height="240">
+            {/* CPUチップ */}
+            <g transform="translate(40,20)">
+                <rect x="0" y="0" width="200" height="140" rx="10" fill="#f0f2f8" stroke="#3b5998" strokeWidth="2.5"/>
+                <rect x="15" y="20" width="80" height="50" rx="4" fill="#3b5998" opacity="0.15" stroke="#3b5998" strokeWidth="1"/>
+                <text x="55" y="50" textAnchor="middle" fontSize="18" fill="#3b5998" fontWeight="700">RDRAND</text>
+                <rect x="105" y="20" width="80" height="50" rx="4" fill="#3b5998" opacity="0.06"/>
+                <rect x="15" y="80" width="80" height="50" rx="4" fill="#3b5998" opacity="0.06"/>
+                <rect x="105" y="80" width="80" height="50" rx="4" fill="#3b5998" opacity="0.06"/>
+                {/* ピン */}
+                <line x1="40" y1="140" x2="40" y2="155" stroke="#3b5998" strokeWidth="2"/>
+                <line x1="80" y1="140" x2="80" y2="155" stroke="#3b5998" strokeWidth="2"/>
+                <line x1="120" y1="140" x2="120" y2="155" stroke="#3b5998" strokeWidth="2"/>
+                <line x1="160" y1="140" x2="160" y2="155" stroke="#3b5998" strokeWidth="2"/>
+                <text x="100" y="180" textAnchor="middle" fontSize="18" fill="#3b5998" fontWeight="700">Intel CPU (2012年〜)</text>
+            </g>
+            {/* 疑問符 */}
+            <g transform="translate(310,20)">
+                <circle cx="60" cy="60" r="55" fill="#fee2e2" stroke="#dc2626" strokeWidth="2"/>
+                <text x="60" y="75" textAnchor="middle" fontSize="56" fontWeight="900" fill="#dc2626">?</text>
+                <text x="60" y="145" textAnchor="middle" fontSize="20" fill="#dc2626" fontWeight="700">NSAバックドア疑惑</text>
+                <text x="60" y="170" textAnchor="middle" fontSize="18" fill="#1a1d23">(2013年 スノーデン文書)</text>
+            </g>
+            {/* 対応 */}
+            <g transform="translate(500,20)">
+                <rect x="0" y="0" width="250" height="130" rx="10" fill="#ccfbf1" stroke="#0d9488" strokeWidth="2"/>
+                <text x="125" y="40" textAnchor="middle" fontSize="22" fontWeight="700" fill="#0d9488">対応策</text>
+                <text x="125" y="75" textAnchor="middle" fontSize="20" fill="#1a1d23">RDRANDだけに頼らず</text>
+                <text x="125" y="105" textAnchor="middle" fontSize="20" fill="#1a1d23">他のソースと混合する</text>
+            </g>
+        </svg>
+    </div>
+</div>
+    </AbsoluteFill>
+);
+
+export const Scene21: React.FC = () => (
+    <AbsoluteFill>
+        <div className="scene" id="scene-21">
+    <div className="content center-layout">
+        <div className="scene-title">量子乱数：物理法則が保証するランダム</div>
+        <svg viewBox="0 0 780 280" width="780" height="280">
+            {/* 光源 */}
+            <circle cx="60" cy="140" r="30" fill="#d97706" opacity="0.15" stroke="#d97706" strokeWidth="2"/>
+            <circle cx="60" cy="140" r="12" fill="#d97706"/>
+            <text x="60" y="145" textAnchor="middle" fontSize="18" fontWeight="700" fill="#fff">hv</text>
+            <text x="60" y="195" textAnchor="middle" fontSize="18" fill="#d97706" fontWeight="700">光子</text>
+            {/* ビーム */}
+            <line x1="95" y1="140" x2="240" y2="140" stroke="#d97706" strokeWidth="3"/>
+            {/* 波動を表す正弦波 */}
+            <path d="M100 140 Q115 125 130 140 Q145 155 160 140 Q175 125 190 140 Q205 155 220 140" stroke="#d97706" strokeWidth="1.5" fill="none" opacity="0.4"/>
+            {/* ビームスプリッタ（ひし形プリズム） */}
+            <polygon points="280,100 320,140 280,180 240,140" fill="#dce4f2" stroke="#3b5998" strokeWidth="2.5" opacity="0.8"/>
+            <line x1="240" y1="100" x2="320" y2="180" stroke="#3b5998" strokeWidth="1.5" opacity="0.5"/>
+            <text x="280" y="80" textAnchor="middle" fontSize="18" fontWeight="700" fill="#3b5998">ビーム</text>
+            <text x="280" y="65" textAnchor="middle" fontSize="18" fontWeight="700" fill="#3b5998">スプリッタ</text>
+            {/* 透過パス（上方向） */}
+            <line x1="320" y1="140" x2="470" y2="50" stroke="#0d9488" strokeWidth="3"/>
+            <path d="M360 118 Q375 103 390 118 Q405 133 420 118" stroke="#0d9488" strokeWidth="1.5" fill="none" opacity="0.3" transform="rotate(-30,390,118)"/>
+            {/* 反射パス（下方向） */}
+            <line x1="280" y1="180" x2="470" y2="240" stroke="#dc2626" strokeWidth="3"/>
+            <path d="M340 200 Q355 185 370 200 Q385 215 400 200" stroke="#dc2626" strokeWidth="1.5" fill="none" opacity="0.3" transform="rotate(20,370,200)"/>
+            {/* 検出器0 */}
+            <rect x="480" y="20" width="80" height="70" rx="10" fill="#ccfbf1" stroke="#0d9488" strokeWidth="2.5"/>
+            <text x="520" y="52" textAnchor="middle" fontSize="36" fontWeight="900" fill="#0d9488">0</text>
+            <text x="520" y="78" textAnchor="middle" fontSize="18" fill="#0d9488">透過</text>
+            {/* 検出器1 */}
+            <rect x="480" y="205" width="80" height="70" rx="10" fill="#fee2e2" stroke="#dc2626" strokeWidth="2.5"/>
+            <text x="520" y="237" textAnchor="middle" fontSize="36" fontWeight="900" fill="#dc2626">1</text>
+            <text x="520" y="263" textAnchor="middle" fontSize="18" fill="#dc2626">反射</text>
+            {/* 確率表示 */}
+            <text x="430" y="80" fontSize="22" fontWeight="700" fill="#0d9488">50%</text>
+            <text x="430" y="225" fontSize="22" fontWeight="700" fill="#dc2626">50%</text>
+            {/* 注釈 */}
+            <g transform="translate(590,40)">
+                <rect x="0" y="0" width="170" height="120" rx="10" fill="#dce4f2" stroke="#3b5998" strokeWidth="2"/>
+                <text x="85" y="32" textAnchor="middle" fontSize="20" fontWeight="700" fill="#3b5998">原理的に</text>
+                <text x="85" y="58" textAnchor="middle" fontSize="20" fontWeight="700" fill="#3b5998">予測不可能</text>
+                <line x1="20" y1="72" x2="150" y2="72" stroke="#3b5998" strokeWidth="1" opacity="0.3"/>
+                <text x="85" y="95" textAnchor="middle" fontSize="18" fill="#1a1d23">2022年</text>
+                <text x="85" y="115" textAnchor="middle" fontSize="18" fill="#1a1d23">ノーベル物理学賞</text>
+            </g>
+        </svg>
+    </div>
+</div>
+    </AbsoluteFill>
+);
+
+export const Scene22: React.FC = () => (
+    <AbsoluteFill>
+        <div className="scene" id="scene-22">
+    <div className="content center-layout">
+        <div className="big-statement"><span className="accent-primary">全部「信頼できる乱数」が土台</span></div>
+        <div className="big-statement" style={{ fontSize: '28px', marginTop: '24px' }}>暗号の鍵も、カジノのスロットも、科学シミュレーションも</div>
+    </div>
+</div>
+    </AbsoluteFill>
+);
+
+export const Scene23: React.FC = () => (
+    <AbsoluteFill>
+        <div className="scene" id="scene-23">
+    <div className="content center-layout">
+        <div className="scene-title">乱数生成器の階層</div>
+        <svg viewBox="0 0 780 300" width="780" height="300">
+            {/* 同心円シールド型 */}
+            {/* 外層：PRNG */}
+            <ellipse cx="370" cy="160" rx="310" ry="130" fill="#d97706" opacity="0.08" stroke="#d97706" strokeWidth="2"/>
+            <text x="370" y="280" textAnchor="middle" fontSize="20" fontWeight="700" fill="#d97706">PRNG（MT, xorshift等）</text>
+            <text x="150" y="268" textAnchor="middle" fontSize="18" fill="#d97706">均一だが予測可能</text>
+            {/* 中層：CSPRNG */}
+            <ellipse cx="370" cy="150" rx="210" ry="90" fill="#3b5998" opacity="0.08" stroke="#3b5998" strokeWidth="2"/>
+            <text x="550" y="100" fontSize="20" fontWeight="700" fill="#3b5998">CSPRNG</text>
+            <text x="550" y="122" fontSize="18" fill="#3b5998">計算的に予測不能</text>
+            {/* 内層：TRNG/QRNG */}
+            <ellipse cx="370" cy="145" rx="120" ry="55" fill="#0d9488" opacity="0.1" stroke="#0d9488" strokeWidth="2.5"/>
+            <text x="370" y="138" textAnchor="middle" fontSize="22" fontWeight="700" fill="#0d9488">TRNG / QRNG</text>
+            <text x="370" y="162" textAnchor="middle" fontSize="18" fill="#0d9488">物理的に予測不可能</text>
+            {/* 矢印と注釈 */}
+            <path d="M720 60 L720 250" stroke="#d1d5db" strokeWidth="1.5" strokeDasharray="4"/>
+            <text x="720" y="48" textAnchor="middle" fontSize="18" fill="#0d9488" fontWeight="700">品質 高</text>
+            <text x="720" y="275" textAnchor="middle" fontSize="18" fill="#d97706" fontWeight="700">速度 高</text>
+        </svg>
+    </div>
+</div>
+    </AbsoluteFill>
+);
+
+export const Scene24: React.FC = () => (
+    <AbsoluteFill>
+        <div className="scene" id="scene-24">
+    <div className="content center-layout">
+        <div className="big-statement"><span className="accent-primary">用途に合った乱数生成器を選ぶ</span><br /><br />それが「正確な乱数」の本当の意味</div>
+        <div className="big-statement" style={{ fontSize: '24px', marginTop: '24px' }}>HTTPS通信も、ゲームの抽選も、天気予報も<br />すべての裏で正確な乱数が動いている</div>
+    </div>
+</div>
+    </AbsoluteFill>
+);
+
+export const Scene25: React.FC = () => (
+    <AbsoluteFill>
+        <div className="scene" id="scene-25">
+    <div className="content center-layout">
+        <div className="title-large">ご視聴ありがとうございました</div>
+        <div className="big-statement" style={{ fontSize: '28px' }}>チャンネル登録・高評価よろしくお願いします</div>
+    </div>
+</div>
+    </AbsoluteFill>
+);
+
+export const SCENE_COMPONENTS: Record<number, React.FC> = {
+    0: Scene0,
+    1: Scene1,
+    2: Scene2,
+    3: Scene3,
+    4: Scene4,
+    5: Scene5,
+    6: Scene6,
+    7: Scene7,
+    8: Scene8,
+    9: Scene9,
+    10: Scene10,
+    11: Scene11,
+    12: Scene12,
+    13: Scene13,
+    14: Scene14,
+    15: Scene15,
+    16: Scene16,
+    17: Scene17,
+    18: Scene18,
+    19: Scene19,
+    20: Scene20,
+    21: Scene21,
+    22: Scene22,
+    23: Scene23,
+    24: Scene24,
+    25: Scene25,
+};
+
+export const TOTAL_SCENE_COUNT = 26;
