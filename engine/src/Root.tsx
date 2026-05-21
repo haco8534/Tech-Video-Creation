@@ -116,6 +116,11 @@ import {
   TOTAL_FRAMES as SANDBOX_TRANSFORMER_TOTAL_FRAMES,
 } from "@sandbox/experiments/transformer/Composition";
 
+import {
+  Diffusion as SandboxDiffusion,
+  TOTAL_FRAMES as SANDBOX_DIFFUSION_TOTAL_FRAMES,
+} from "@sandbox/experiments/diffusion/Composition";
+
 import "./index.css";
 
 export const RemotionRoot: React.FC = () => {
@@ -303,6 +308,14 @@ export const RemotionRoot: React.FC = () => {
         id="sandbox-transformer"
         component={SandboxTransformer}
         durationInFrames={SANDBOX_TRANSFORMER_TOTAL_FRAMES}
+        fps={30}
+        width={1920}
+        height={1080}
+      />
+      <Composition
+        id="sandbox-diffusion"
+        component={SandboxDiffusion}
+        durationInFrames={SANDBOX_DIFFUSION_TOTAL_FRAMES}
         fps={30}
         width={1920}
         height={1080}
