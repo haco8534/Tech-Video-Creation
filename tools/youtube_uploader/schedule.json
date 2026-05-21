@@ -94,8 +94,8 @@
     "channelId": "tech_explainer",
     "projectId": "proj_352c4df4",
     "publishAt": "2026-04-17T09:30:00.000Z",
-    "videoId": null,
-    "uploadedAt": null
+    "videoId": "GWLiVReaD8g",
+    "uploadedAt": "2026-04-20T07:08:04.314Z"
   },
   "tech_explainer/proj_539006a7": {
     "channelId": "tech_explainer",
@@ -108,7 +108,35 @@
     "channelId": "tech_explainer",
     "projectId": "proj_7973c0b4",
     "publishAt": "2026-04-21T09:30:00.000Z",
-    "videoId": null,
-    "uploadedAt": null
+    "videoId": "7MAcLnatjxM",
+    "uploadedAt": "2026-04-22T15:06:05.010Z"
+  },
+  "tech_explainer/proj_afbe778d": {
+    "channelId": "tech_explainer",
+    "projectId": "proj_afbe778d",
+    "publishAt": null,
+    "videoId": "07urW4-44_k",
+    "uploadedAt": "2026-04-19T10:31:03.049Z"
+  },
+  "tech_explainer/proj_614d0f20": {
+    "channelId": "tech_explainer",
+    "projectId": "proj_614d0f20",
+    "publishAt": null,
+    "videoId": "JGifft3EBII",
+    "uploadedAt": "2026-04-22T15:05:32.236Z"
+  },
+  "tech_explainer/wi_fi": {
+    "channelId": "tech_explainer",
+    "projectId": "wi_fi",
+    "publishAt": null,
+    "videoId": "mc9FuzyUpJM",
+    "uploadedAt": "2026-04-22T15:06:10.233Z"
+  },
+  "tech_explainer/free_app_real_price": {
+    "channelId": "tech_explainer",
+    "projectId": "free_app_real_price",
+    "publishAt": null,
+    "videoId": "G8F2BxUf5dg",
+    "uploadedAt": "2026-04-23T08:55:29.704Z"
   }
 }

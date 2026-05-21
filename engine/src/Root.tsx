@@ -20,7 +20,6 @@ import {
   TOTAL_FRAMES as FREE_APP_REAL_PRICE_TOTAL_FRAMES,
 } from "@channels/tech_explainer/projects/free_app_real_price/remotion/VideoWithSlides";
 
-
 import {
   VideoWithSlides as UsbConnectorDiversitySlides,
   TOTAL_FRAMES as USB_CONNECTOR_DIVERSITY_TOTAL_FRAMES,
@@ -42,11 +41,6 @@ import {
 } from "@channels/tech_explainer/projects/proj_539006a7/remotion/VideoWithSlides";
 
 import {
-  VideoWithSlides as ChargingCableSlides,
-  TOTAL_FRAMES as CHARGING_CABLE_TOTAL_FRAMES,
-} from "@channels/tech_explainer/projects/proj_7973c0b4/remotion/VideoWithSlides";
-
-import {
   VideoWithSlides as ProgrammingEssenceSlides,
   TOTAL_FRAMES as PROGRAMMING_ESSENCE_TOTAL_FRAMES,
 } from "@channels/tech_explainer/projects/proj_afbe778d/remotion/VideoWithSlides";
@@ -57,19 +51,14 @@ import {
 } from "@channels/tech_explainer/projects/proj_352c4df4/remotion/VideoWithSlides";
 
 import {
-  VideoWithSlides as AlgorithmEssenceSlides,
-  TOTAL_FRAMES as ALGORITHM_ESSENCE_TOTAL_FRAMES,
-} from "@channels/tech_explainer/projects/proj_614d0f20/remotion/VideoWithSlides";
-
-import {
   VideoWithSlides as InternetGovernanceSlides,
   TOTAL_FRAMES as INTERNET_GOVERNANCE_TOTAL_FRAMES,
 } from "@channels/tech_explainer/projects/proj_ede76869/remotion/VideoWithSlides";
 
 import {
-  VideoWithSlides as CloudExplainerSlides,
-  TOTAL_FRAMES as CLOUD_EXPLAINER_TOTAL_FRAMES,
-} from "@channels/tech_explainer/projects/proj_dc16b914/remotion/VideoWithSlides";
+  VideoWithSlides as AlgorithmEssenceSlides,
+  TOTAL_FRAMES as ALGORITHM_ESSENCE_TOTAL_FRAMES,
+} from "@channels/tech_explainer/projects/proj_614d0f20/remotion/VideoWithSlides";
 
 import {
   VideoWithSlides as ZeroOneVideo,
@@ -87,9 +76,45 @@ import {
 } from "@channels/tech_explainer/projects/proj_cbea8eeb/remotion/VideoWithSlides";
 
 import {
+  VideoWithSlides as CloudVideo,
+  TOTAL_FRAMES as CLOUD_TOTAL_FRAMES,
+} from "@channels/tech_explainer/projects/proj_dc16b914/remotion/VideoWithSlides";
+
+import {
   VideoWithSlides as VpnVideo,
   TOTAL_FRAMES as VPN_TOTAL_FRAMES,
 } from "@channels/tech_explainer/projects/vpn/remotion/VideoWithSlides";
+
+import {
+  VideoWithSlides as ChargingCableVideo,
+  TOTAL_FRAMES as CHARGING_CABLE_TOTAL_FRAMES,
+} from "@channels/tech_explainer/projects/proj_7973c0b4/remotion/VideoWithSlides";
+
+import {
+  VideoWithSlides as RestartFixesVideo,
+  TOTAL_FRAMES as RESTART_FIXES_TOTAL_FRAMES,
+} from "@channels/tech_explainer/projects/proj_dd86b600/remotion/VideoWithSlides";
+
+import {
+  VideoWithSlides as PrinterMoodVideo,
+  TOTAL_FRAMES as PRINTER_MOOD_TOTAL_FRAMES,
+} from "@channels/tech_explainer/projects/proj_215da920/remotion/VideoWithSlides";
+
+import {
+  VideoWithSlides as CacheClearVideo,
+  TOTAL_FRAMES as CACHE_CLEAR_TOTAL_FRAMES,
+} from "@channels/tech_explainer/projects/proj_c86941a8/remotion/VideoWithSlides";
+
+import {
+  VideoWithSlides as BluetoothVideo,
+  TOTAL_FRAMES as BLUETOOTH_TOTAL_FRAMES,
+} from "@channels/tech_explainer/projects/bluetooth/remotion/VideoWithSlides";
+
+// ===== sandbox（試作） =====
+import {
+  Transformer as SandboxTransformer,
+  TOTAL_FRAMES as SANDBOX_TRANSFORMER_TOTAL_FRAMES,
+} from "@sandbox/experiments/transformer/Composition";
 
 import "./index.css";
 
@@ -161,14 +186,6 @@ export const RemotionRoot: React.FC = () => {
         height={1080}
       />
       <Composition
-        id="proj-7973c0b4-slides"
-        component={ChargingCableSlides}
-        durationInFrames={CHARGING_CABLE_TOTAL_FRAMES}
-        fps={30}
-        width={1920}
-        height={1080}
-      />
-      <Composition
         id="proj-afbe778d-slides"
         component={ProgrammingEssenceSlides}
         durationInFrames={PROGRAMMING_ESSENCE_TOTAL_FRAMES}
@@ -185,14 +202,6 @@ export const RemotionRoot: React.FC = () => {
         height={1080}
       />
       <Composition
-        id="proj-614d0f20-slides"
-        component={AlgorithmEssenceSlides}
-        durationInFrames={ALGORITHM_ESSENCE_TOTAL_FRAMES}
-        fps={30}
-        width={1920}
-        height={1080}
-      />
-      <Composition
         id="proj-ede76869-slides"
         component={InternetGovernanceSlides}
         durationInFrames={INTERNET_GOVERNANCE_TOTAL_FRAMES}
@@ -201,9 +210,9 @@ export const RemotionRoot: React.FC = () => {
         height={1080}
       />
       <Composition
-        id="proj-dc16b914-slides"
-        component={CloudExplainerSlides}
-        durationInFrames={CLOUD_EXPLAINER_TOTAL_FRAMES}
+        id="proj-614d0f20-slides"
+        component={AlgorithmEssenceSlides}
+        durationInFrames={ALGORITHM_ESSENCE_TOTAL_FRAMES}
         fps={30}
         width={1920}
         height={1080}
@@ -233,9 +242,67 @@ export const RemotionRoot: React.FC = () => {
         height={1080}
       />
       <Composition
+        id="proj-dc16b914-slides"
+        component={CloudVideo}
+        durationInFrames={CLOUD_TOTAL_FRAMES}
+        fps={30}
+        width={1920}
+        height={1080}
+      />
+      <Composition
         id="vpn-slides"
         component={VpnVideo}
         durationInFrames={VPN_TOTAL_FRAMES}
+        fps={30}
+        width={1920}
+        height={1080}
+      />
+      <Composition
+        id="proj-7973c0b4-slides"
+        component={ChargingCableVideo}
+        durationInFrames={CHARGING_CABLE_TOTAL_FRAMES}
+        fps={30}
+        width={1920}
+        height={1080}
+      />
+      <Composition
+        id="proj-dd86b600-slides"
+        component={RestartFixesVideo}
+        durationInFrames={RESTART_FIXES_TOTAL_FRAMES}
+        fps={30}
+        width={1920}
+        height={1080}
+      />
+      <Composition
+        id="proj-215da920-slides"
+        component={PrinterMoodVideo}
+        durationInFrames={PRINTER_MOOD_TOTAL_FRAMES}
+        fps={30}
+        width={1920}
+        height={1080}
+      />
+      <Composition
+        id="proj-c86941a8-slides"
+        component={CacheClearVideo}
+        durationInFrames={CACHE_CLEAR_TOTAL_FRAMES}
+        fps={30}
+        width={1920}
+        height={1080}
+      />
+      <Composition
+        id="bluetooth-slides"
+        component={BluetoothVideo}
+        durationInFrames={BLUETOOTH_TOTAL_FRAMES}
+        fps={30}
+        width={1920}
+        height={1080}
+      />
+      {/* ===== sandbox（試作） ===== */}
+
+      <Composition
+        id="sandbox-transformer"
+        component={SandboxTransformer}
+        durationInFrames={SANDBOX_TRANSFORMER_TOTAL_FRAMES}
         fps={30}
         width={1920}
         height={1080}

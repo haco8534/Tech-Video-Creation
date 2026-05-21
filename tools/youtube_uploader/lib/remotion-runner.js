@@ -25,7 +25,7 @@ export async function startStudio() {
     return { running: true, port: STUDIO_PORT, message: "Studio already running" };
   }
 
-  studioProcess = spawn("npx", ["remotion", "studio", "--port", String(STUDIO_PORT)], {
+  studioProcess = spawn("npx", ["remotion", "studio", "--port", String(STUDIO_PORT), "--host", "0.0.0.0"], {
     cwd: ENGINE_DIR,
     stdio: "pipe",
     shell: true,

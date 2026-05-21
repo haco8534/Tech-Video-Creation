@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ChatGPT Image Auto</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+
+<body>
+  <div class="app">
+
+    <header class="app-header">
+      <h1>ChatGPT Image Auto</h1>
+    </header>
+
+    <!-- ステータス + 進捗 -->
+    <div class="status" id="statusCard">
+      <div class="status-line">
+        <span class="status-dot" id="statusIndicator"></span>
+        <span class="status-text" id="statusText">待機中</span>
+        <span class="status-count" id="progressText"></span>
+      </div>
+      <div class="progress-track" id="progressSection">
+        <div class="progress-bar" id="progressFill"></div>
+      </div>
+    </div>
+
+    <!-- コントロール（上部固定） -->
+    <div class="controls">
+      <button class="btn btn-primary" id="startBtn" disabled>スタート</button>
+      <button class="btn btn-danger" id="stopBtn" hidden>停止</button>
+      <button class="btn btn-ghost" id="clearBtn" type="button">クリア</button>
+    </div>
+
+    <!-- 入力エリア -->
+    <section class="input-section">
+      <textarea id="promptInput" class="prompt-input"
+        placeholder="プロンプトを入力&#10;&#10;1行 = 1件  または  --- で区切って複数行"
+        rows="6"></textarea>
+
+      <div class="input-footer">
+        <div class="input-footer-left">
+          <button class="chip" id="fileBtn" type="button">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+              <polyline points="14 2 14 8 20 8"></polyline>
+            </svg>
+            ファイル
+          </button>
+          <input type="file" id="csvFileInput" accept=".csv,.tsv,.txt" hidden>
+        </div>
+        <span class="line-count" id="lineCount">0件</span>
+      </div>
+
+      <!-- CSV 読み込み時のみ表示 -->
+      <div class="csv-info" id="csvInfo" hidden>
+        <div class="csv-info-row">
+          <span class="csv-filename" id="csvFilename"></span>
+          <span class="csv-preview-count" id="csvPreviewCount">0件</span>
+        </div>
+        <div class="csv-info-row">
+          <label class="csv-opt">
+            <span>列</span>
+            <select id="csvColumnSelect" class="mini-input">
+              <option value="auto">自動</option>
+              <option value="0">1</option>
+              <option value="1">2</option>
+              <option value="2">3</option>
+              <option value="3">4</option>
+            </select>
+          </label>
+          <label class="csv-opt csv-opt-check">
+            <input type="checkbox" id="csvHasHeader" checked>
+            <span>ヘッダーあり</span>
+          </label>
+        </div>
+      </div>
+
+      <button class="btn btn-add" id="addBtn" type="button">キューに追加</button>
+    </section>
+
+    <!-- キュー -->
+    <section class="queue-section">
+      <div class="queue-header">
+        <span class="queue-label">キュー</span>
+        <span class="queue-count" id="queueCount">0件</span>
+      </div>
+      <div class="queue-list" id="queueList"></div>
+    </section>
+
+    <!-- 詳細設定 -->
+    <details class="settings">
+      <summary>詳細設定</summary>
+      <div class="settings-body">
+        <label class="setting-row">
+          <span>タイムアウト（秒）</span>
+          <input type="number" id="timeoutInput" class="mini-input" value="300" min="60" max="900">
+        </label>
+        <label class="setting-row">
+          <span>送信間隔（秒）</span>
+          <input type="number" id="delayInput" class="mini-input" value="3" min="1" max="30">
+        </label>
+        <label class="setting-row setting-row-col">
+          <span>プレフィックス</span>
+          <textarea id="prefixInput" class="prefix-input" rows="5"></textarea>
+        </label>
+      </div>
+    </details>
+
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+
+</html>

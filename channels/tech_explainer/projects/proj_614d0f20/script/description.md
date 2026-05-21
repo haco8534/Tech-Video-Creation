@@ -1,25 +1,23 @@
-# 「アルゴリズム」って結局なんなのか
+「アルゴリズム」って結局なんなのか——人の名前・紀元前の手順・YouTubeのあれ、全部親戚です
 
-「アルゴリズム＝プログラミングのテクニック」だと思っていませんか？
-実はアルゴリズムの歴史はコンピュータよりも遥かに古く、約4000年前のバビロニアにまで遡ります。
-この動画では「料理のレシピはアルゴリズムか？」という問いから出発し、
-アルゴリズムの本質が「手順」ではなく「保証」であることを、
-ずんだもんとめたんの対話で丁寧に解き明かしていきます。
+「YouTubeのアルゴリズム」「アルゴリズムを勉強しなきゃ」「最短経路のアルゴリズム」。普段よく耳にするけれど、正面から聞かれると手が止まる言葉。
+9世紀ペルシャの数学者al-Khwarizmiの名前から来たこと、紀元前300年のEuclidの手順が今もRSA暗号の中で動いていること、そしてYouTubeの「あれ」が厳密には機械学習モデルであること。
+Knuthの5つの性質を軸に、レシピ・コード・YouTubeの推薦との違いをほどき、「問題の解き方の抽象パターン」という一言までたどり着く17分です。
 
-## 目次
 {{TIMESTAMPS}}
 
-## 参考文献
-- Donald E. Knuth『The Art of Computer Programming』Vol.1 - アルゴリズムの5条件
-- Alan Turing「On Computable Numbers」(1936) - チューリングマシンと停止問題
-- Al-Khwarizmi - Wikipedia / Britannica
-- Clay Mathematics Institute - P vs NP Problem (Millennium Prize)
-- ProPublica「Machine Bias」(2016) - COMPAS アルゴリズムバイアス調査
-- Big-O Cheat Sheet (bigocheatsheet.com)
-- 文部科学省 - プログラミング教育の手引き
-- ACM Communications「Algorithms Have Been Around for 4,000 Years」
+📚 参考文献
+- Knuth, D. E. "The Art of Computer Programming, Volume 1: Fundamental Algorithms" §1.1（アルゴリズムの5性質） 🟢
+- Stanford Encyclopedia of Philosophy "The Church-Turing Thesis" https://plato.stanford.edu/entries/church-turing/ 🟢
+- Wikipedia "Al-Khwarizmi" https://en.wikipedia.org/wiki/Al-Khwarizmi 🟢
+- Wikipedia "Euclidean algorithm" https://en.wikipedia.org/wiki/Euclidean_algorithm 🟢
+- Britannica "al-Khwarizmi" https://www.britannica.com/biography/al-Khwarizmi 🟢
+- University of Melbourne "Why are algorithms called algorithms?" https://findanexpert.unimelb.edu.au/news/81898 🟢
+- Wing, J. M. "Computational Thinking", Communications of the ACM, 2006 🟢
+- Communications of the ACM "What Is an Algorithm?" (Moshe Y. Vardi) 🟡
+- Wikipedia "Algorithm characterizations" https://en.wikipedia.org/wiki/Algorithm_characterizations 🟢
 
 📘 このチャンネルについて
 一次情報と研究データに基づきながら、難しいテーマをずんだもんとめたんの対話で楽しくわかりやすく解説するチャンネルです。
 
-#アルゴリズム #プログラミング #コンピュータサイエンス #ずんだもん解説
+#アルゴリズム #コンピュータサイエンス #技術解説 #ずんだもん

@@ -32,6 +32,40 @@ function projectKey(channelId, projectId) {
   return `${channelId}/${projectId}`;
 }
 
+function stripAnsi(str) {
+  return str
+    .replace(/\x1b\[[0-9;]*[A-Za-z]/g, "")
+    .replace(/\x1b\][^\x07]*\x07/g, "")
+    .replace(/\r/g, "\n");
+}
+
+function parseRenderProgress(text) {
+  const clean = stripAnsi(text);
+  // "X/Y frames (Z%)" or "X/Y frames (Z.Z%)"
+  let m = clean.match(/(\d+)\s*\/\s*(\d+)\s+frames?\s*\(\s*(\d+(?:\.\d+)?)\s*%/i);
+  if (m) return { current: +m[1], total: +m[2], percent: Math.round(+m[3]) };
+  // "(X/Y) ... Z%"
+  m = clean.match(/\((\d+)\s*\/\s*(\d+)\)[^%]*?(\d+(?:\.\d+)?)\s*%/);
+  if (m) return { current: +m[1], total: +m[2], percent: Math.round(+m[3]) };
+  // "(X/Y)" with computed percent as fallback
+  m = clean.match(/\((\d+)\s*\/\s*(\d+)\)/);
+  if (m) {
+    const current = +m[1], total = +m[2];
+    return { current, total, percent: total ? Math.round(current * 100 / total) : 0 };
+  }
+  // Just "Z%"
+  m = clean.match(/(\d+(?:\.\d+)?)\s*%/);
+  if (m) return { percent: Math.round(+m[1]) };
+  return null;
+}
+
+function extractLastLogLine(text) {
+  const clean = stripAnsi(text).trim();
+  if (!clean) return null;
+  const lines = clean.split("\n").map((l) => l.trim()).filter(Boolean);
+  return lines.length ? lines[lines.length - 1] : null;
+}
+
 function getSession(channelId, projectId) {
   return projectSessions.get(projectKey(channelId, projectId));
 }
@@ -217,16 +251,15 @@ function executeRender(channelId, projectId, key) {
 
   function handleOutput(chunk) {
     const text = chunk.toString();
-    const match = text.match(/(\d+)\/(\d+)\s+frames?\s*\((\d+)%\)/);
-    if (match) {
-      const progress = {
-        current: parseInt(match[1]),
-        total: parseInt(match[2]),
-        percent: parseInt(match[3]),
-      };
+    const progress = parseRenderProgress(text);
+    if (progress) {
       const render = activeRenders.get(key);
       if (render) render.progress = progress;
       broadcastLive(key, { type: "render-progress", projectKey: key, ...progress });
+    }
+    const lastLine = extractLastLogLine(text);
+    if (lastLine) {
+      broadcastLive(key, { type: "render-log", projectKey: key, text: lastLine });
     }
   }
 
@@ -347,7 +380,7 @@ function launchTheme(ws, channelId, seed) {
 function launchThumbnailPrompt(ws, titles) {
   const workflowPath = path.join(ROOT, "thumbnail", "_agents", "workflows", "thumbnail_prompts.md");
   const titlesText = titles.map((t) => `- 「${t}」`).join("\n");
-  const prompt = `以下の動画タイトルについてサムネイルプロンプトを生成してください。\n\n${titlesText}`;
+  const prompt = `以下の動画タイトルそれぞれについて、ワークフローに従ってサムネ設計を行い、Step 7の最終YAMLを1タイトルにつき1つ出力してください。\n\n${titlesText}`;
 
   const args = buildArgs([
     "--system-prompt-file", workflowPath,
@@ -464,6 +497,9 @@ export function handleClaudeWs(ws) {
         case "start-production": {
           const key = projectKey(msg.channelId, msg.projectId);
           const session = getSession(msg.channelId, msg.projectId);
+
+          ensureSession(key);
+          broadcast(key, { type: "user-message", projectKey: key, text: msg.message });
 
           if (session?.running) {
             console.log(`[claude] ${key} interrupt with new message`);

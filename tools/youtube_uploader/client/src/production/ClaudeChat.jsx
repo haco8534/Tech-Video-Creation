@@ -1,18 +1,81 @@
 import { useState, useEffect, useRef } from "react";
 import { getSharedWs, addProjectListener, removeProjectListener } from "../lib/sharedWs";
-import { SendIcon, StopIcon, TerminalIcon } from "../icons";
+import { SendIcon, StopIcon, TerminalIcon, FileTextIcon } from "../icons";
+import {
+  fetchPromptTemplates,
+  createPromptTemplate,
+  updatePromptTemplate,
+  deletePromptTemplate,
+} from "../api";
 
 export default function ClaudeChat({ channelId, projectId, autoStart, onAutoStartDone }) {
   const key = `${channelId}/${projectId}`;
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState("");
   const [running, setRunning] = useState(false);
+  const [templates, setTemplates] = useState([]);
+  const [tmplOpen, setTmplOpen] = useState(false);
+  const [tmplEditing, setTmplEditing] = useState(null); // null | { id?, name, body }
   const bottomRef = useRef(null);
   const inputRef = useRef(null);
+  const tmplRef = useRef(null);
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
+
+  useEffect(() => {
+    loadTemplates();
+  }, []);
+
+  useEffect(() => {
+    if (!tmplOpen) return;
+    function onClickOutside(e) {
+      if (tmplRef.current && !tmplRef.current.contains(e.target)) {
+        setTmplOpen(false);
+        setTmplEditing(null);
+      }
+    }
+    document.addEventListener("mousedown", onClickOutside);
+    return () => document.removeEventListener("mousedown", onClickOutside);
+  }, [tmplOpen]);
+
+  function loadTemplates() {
+    fetchPromptTemplates()
+      .then((data) => setTemplates(data.templates || []))
+      .catch(() => {});
+  }
+
+  function handleInsertTemplate(t) {
+    setInput((prev) => (prev ? `${prev}\n${t.body}` : t.body));
+    setTmplOpen(false);
+    setTmplEditing(null);
+    setTimeout(() => inputRef.current?.focus(), 0);
+  }
+
+  async function handleSaveTemplate() {
+    if (!tmplEditing) return;
+    const name = tmplEditing.name.trim();
+    const body = tmplEditing.body;
+    if (!name || !body.trim()) return;
+    try {
+      if (tmplEditing.id) {
+        await updatePromptTemplate(tmplEditing.id, name, body);
+      } else {
+        await createPromptTemplate(name, body);
+      }
+      setTmplEditing(null);
+      loadTemplates();
+    } catch {}
+  }
+
+  async function handleDeleteTemplate(id) {
+    if (!confirm("この定型文を削除しますか？")) return;
+    try {
+      await deletePromptTemplate(id);
+      loadTemplates();
+    } catch {}
+  }
 
   // subscribe/unsubscribe
   useEffect(() => {
@@ -37,18 +100,6 @@ export default function ClaudeChat({ channelId, projectId, autoStart, onAutoStar
             for (const block of data.message.content) {
               if (block.type === "text" && block.text) {
                 addMsg({ role: "assistant", text: block.text });
-              }
-              if (block.type === "tool_use") {
-                addMsg({ role: "tool-use", toolName: block.name, toolInput: block.input });
-              }
-            }
-          }
-          if (data.type === "user" && data.message?.content) {
-            for (const block of data.message.content) {
-              if (block.type === "tool_result") {
-                const content = typeof block.content === "string"
-                  ? block.content : JSON.stringify(block.content, null, 2);
-                addMsg({ role: "tool-result", content });
               }
             }
           }
@@ -104,8 +155,8 @@ export default function ClaudeChat({ channelId, projectId, autoStart, onAutoStar
     const title = autoStart.title || projectId;
     const note = autoStart.note;
     const message = note
-      ? `テーマ「${title}」で動画を作成してください。\n\n補足メモ: ${note}\n\nワークフローに従って最初のステップから実行してください。`
-      : `テーマ「${title}」で動画を作成してください。ワークフローに従って最初のステップから実行してください。`;
+      ? `テーマ「${title}」で動画を作成してください。\n\n補足メモ: ${note}\n\nワークフローに従って最初のステップから実行してください。最後まで止まらずに全部実行してください。`
+      : `テーマ「${title}」で動画を作成してください。ワークフローに従って最初のステップから実行してください。最後まで止まらずに全部実行してください。`;
 
     getSharedWs().then((ws) => {
       ws.send(JSON.stringify({
@@ -180,6 +231,105 @@ export default function ClaudeChat({ channelId, projectId, autoStart, onAutoStar
       </div>
 
       <div className="chat-input-area">
+        <div className="chat-tmpl-wrap" ref={tmplRef}>
+          <button
+            type="button"
+            className="btn btn-sm btn-ghost chat-tmpl-btn"
+            onClick={() => { setTmplOpen((v) => !v); setTmplEditing(null); }}
+            title="定型文"
+          >
+            <FileTextIcon />
+          </button>
+          {tmplOpen && (
+            <div className="chat-tmpl-popover">
+              {!tmplEditing && (
+                <>
+                  <div className="chat-tmpl-header">
+                    <span>定型文</span>
+                    <button
+                      className="btn btn-sm btn-primary"
+                      onClick={() => setTmplEditing({ name: "", body: "" })}
+                    >
+                      + 新規
+                    </button>
+                  </div>
+                  <div className="chat-tmpl-list">
+                    {templates.length === 0 && (
+                      <div className="chat-tmpl-empty">定型文がありません</div>
+                    )}
+                    {templates.map((t) => (
+                      <div key={t.id} className="chat-tmpl-item">
+                        <button
+                          type="button"
+                          className="chat-tmpl-item-main"
+                          onClick={() => handleInsertTemplate(t)}
+                          title="クリックで挿入"
+                        >
+                          <div className="chat-tmpl-item-name">{t.name}</div>
+                          <div className="chat-tmpl-item-preview">{t.body}</div>
+                        </button>
+                        <div className="chat-tmpl-item-actions">
+                          <button
+                            type="button"
+                            className="chat-tmpl-action"
+                            onClick={() => setTmplEditing({ id: t.id, name: t.name, body: t.body })}
+                            title="編集"
+                          >
+                            編集
+                          </button>
+                          <button
+                            type="button"
+                            className="chat-tmpl-action chat-tmpl-action-danger"
+                            onClick={() => handleDeleteTemplate(t.id)}
+                            title="削除"
+                          >
+                            削除
+                          </button>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </>
+              )}
+              {tmplEditing && (
+                <div className="chat-tmpl-edit">
+                  <div className="chat-tmpl-header">
+                    <span>{tmplEditing.id ? "編集" : "新規作成"}</span>
+                  </div>
+                  <input
+                    className="chat-tmpl-input"
+                    placeholder="名前"
+                    value={tmplEditing.name}
+                    onChange={(e) => setTmplEditing({ ...tmplEditing, name: e.target.value })}
+                    autoFocus
+                  />
+                  <textarea
+                    className="chat-tmpl-textarea"
+                    placeholder="定型文の本文"
+                    value={tmplEditing.body}
+                    onChange={(e) => setTmplEditing({ ...tmplEditing, body: e.target.value })}
+                    rows={6}
+                  />
+                  <div className="chat-tmpl-edit-actions">
+                    <button
+                      className="btn btn-sm btn-primary"
+                      onClick={handleSaveTemplate}
+                      disabled={!tmplEditing.name.trim() || !tmplEditing.body.trim()}
+                    >
+                      保存
+                    </button>
+                    <button
+                      className="btn btn-sm btn-ghost"
+                      onClick={() => setTmplEditing(null)}
+                    >
+                      取消
+                    </button>
+                  </div>
+                </div>
+              )}
+            </div>
+          )}
+        </div>
         <textarea
           ref={inputRef}
           className="chat-input"
@@ -218,34 +368,6 @@ function ChatMsg({ message }) {
         <div className="chat-msg-bubble assistant">
           <pre className="chat-msg-text">{message.text}</pre>
         </div>
-      </div>
-    );
-  }
-
-  if (role === "tool-use") {
-    const inputStr = typeof message.toolInput === "string"
-      ? message.toolInput
-      : JSON.stringify(message.toolInput, null, 2);
-    return (
-      <div className="chat-msg chat-msg-tool">
-        <div className="chat-tool-block">
-          <div className="chat-tool-header">
-            <span className="chat-tool-icon">&#9654;</span>
-            <span className="chat-tool-name">{message.toolName}</span>
-          </div>
-          <pre className="chat-tool-input">{inputStr}</pre>
-        </div>
-      </div>
-    );
-  }
-
-  if (role === "tool-result") {
-    return (
-      <div className="chat-msg chat-msg-tool-result">
-        <details className="chat-tool-result-details">
-          <summary className="chat-tool-result-summary">結果を表示</summary>
-          <pre className="chat-tool-result-content">{message.content}</pre>
-        </details>
       </div>
     );
   }

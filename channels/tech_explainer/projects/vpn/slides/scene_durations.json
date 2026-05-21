@@ -1,1226 +1,918 @@
 [
   {
     "id": 0,
-    "title": "VPN広告の謎",
-    "duration": 20.3,
+    "title": "広告が多すぎる",
+    "duration": 31,
     "audioFiles": [
       {
         "file": "scene_00_00.wav",
-        "duration": 3.2213333333333334,
+        "duration": 5.632,
         "speaker": "めたん"
       },
       {
         "file": "scene_00_01.wav",
-        "duration": 1.0346666666666666,
+        "duration": 3.8826666666666667,
         "speaker": "ずんだもん"
       },
       {
         "file": "scene_00_02.wav",
-        "duration": 2.5813333333333333,
+        "duration": 6.890666666666666,
         "speaker": "めたん"
       },
       {
         "file": "scene_00_03.wav",
-        "duration": 4.341333333333333,
+        "duration": 6.474666666666667,
         "speaker": "ずんだもん"
       },
       {
         "file": "scene_00_04.wav",
-        "duration": 4.245333333333333,
+        "duration": 6.464,
         "speaker": "めたん"
-      },
-      {
-        "file": "scene_00_05.wav",
-        "duration": 2.88,
-        "speaker": "ずんだもん"
       }
     ]
   },
   {
     "id": 1,
-    "title": "44000本の動画",
-    "duration": 18.7,
+    "title": "今日の問い",
+    "duration": 23.2,
     "audioFiles": [
       {
         "file": "scene_01_00.wav",
-        "duration": 3.530666666666667,
+        "duration": 4.938666666666666,
         "speaker": "めたん"
       },
       {
         "file": "scene_01_01.wav",
-        "duration": 5.1946666666666665,
+        "duration": 7.285333333333333,
         "speaker": "ずんだもん"
       },
       {
         "file": "scene_01_02.wav",
-        "duration": 1.3653333333333333,
+        "duration": 2.912,
         "speaker": "めたん"
       },
       {
         "file": "scene_01_03.wav",
-        "duration": 3.936,
+        "duration": 6.709333333333333,
         "speaker": "ずんだもん"
-      },
-      {
-        "file": "scene_01_04.wav",
-        "duration": 2.933333333333333,
-        "speaker": "めたん"
       }
     ]
   },
   {
     "id": 2,
-    "title": "4人に1人がVPN利用",
-    "duration": 18.2,
+    "title": "4つの論点",
+    "duration": 28.1,
     "audioFiles": [
       {
         "file": "scene_02_00.wav",
-        "duration": 5.344,
-        "speaker": "ずんだもん"
+        "duration": 3.7653333333333334,
+        "speaker": "めたん"
       },
       {
         "file": "scene_02_01.wav",
-        "duration": 2.976,
-        "speaker": "めたん"
-      },
-      {
-        "file": "scene_02_02.wav",
-        "duration": 2.24,
+        "duration": 4.1066666666666665,
         "speaker": "ずんだもん"
       },
       {
-        "file": "scene_02_03.wav",
-        "duration": 0.9706666666666667,
+        "file": "scene_02_02.wav",
+        "duration": 2.4106666666666667,
         "speaker": "めたん"
       },
       {
+        "file": "scene_02_03.wav",
+        "duration": 7.296,
+        "speaker": "ずんだもん"
+      },
+      {
         "file": "scene_02_04.wav",
-        "duration": 4.970666666666666,
+        "duration": 2.72,
+        "speaker": "めたん"
+      },
+      {
+        "file": "scene_02_05.wav",
+        "duration": 5.8453333333333335,
         "speaker": "ずんだもん"
       }
     ]
   },
   {
     "id": 3,
-    "title": "今日の問い",
-    "duration": 21.5,
+    "title": "順路を示す",
+    "duration": 38.6,
     "audioFiles": [
       {
         "file": "scene_03_00.wav",
-        "duration": 4.010666666666666,
+        "duration": 3.3706666666666667,
         "speaker": "めたん"
       },
       {
         "file": "scene_03_01.wav",
-        "duration": 2.784,
+        "duration": 5.866666666666666,
         "speaker": "ずんだもん"
       },
       {
         "file": "scene_03_02.wav",
-        "duration": 5.6,
-        "speaker": "ずんだもん"
-      },
-      {
-        "file": "scene_03_03.wav",
-        "duration": 4.608,
+        "duration": 5.088,
         "speaker": "めたん"
       },
       {
-        "file": "scene_03_04.wav",
-        "duration": 2.8053333333333335,
+        "file": "scene_03_03.wav",
+        "duration": 6.752,
         "speaker": "ずんだもん"
+      },
+      {
+        "file": "scene_03_04.wav",
+        "duration": 5.514666666666667,
+        "speaker": "めたん"
+      },
+      {
+        "file": "scene_03_05.wav",
+        "duration": 6.112,
+        "speaker": "ずんだもん"
+      },
+      {
+        "file": "scene_03_06.wav",
+        "duration": 3.6053333333333333,
+        "speaker": "めたん"
       }
     ]
   },
   {
     "id": 4,
-    "title": "通信の丸見え問題",
-    "duration": 28.5,
+    "title": "VPNは継続課金",
+    "duration": 29.5,
     "audioFiles": [
       {
         "file": "scene_04_00.wav",
-        "duration": 3.6053333333333333,
+        "duration": 6.165333333333334,
         "speaker": "ずんだもん"
       },
       {
         "file": "scene_04_01.wav",
-        "duration": 1.056,
+        "duration": 4.362666666666667,
         "speaker": "めたん"
       },
       {
         "file": "scene_04_02.wav",
-        "duration": 4.768,
+        "duration": 6.282666666666667,
         "speaker": "ずんだもん"
       },
       {
         "file": "scene_04_03.wav",
-        "duration": 2.9226666666666667,
+        "duration": 5.002666666666666,
         "speaker": "めたん"
       },
       {
         "file": "scene_04_04.wav",
-        "duration": 4.256,
+        "duration": 6.016,
         "speaker": "ずんだもん"
-      },
-      {
-        "file": "scene_04_05.wav",
-        "duration": 2.6133333333333333,
-        "speaker": "めたん"
-      },
-      {
-        "file": "scene_04_06.wav",
-        "duration": 4.533333333333333,
-        "speaker": "ずんだもん"
-      },
-      {
-        "file": "scene_04_07.wav",
-        "duration": 2.1546666666666665,
-        "speaker": "めたん"
       }
     ]
   },
   {
     "id": 5,
-    "title": "はがきと封筒",
-    "duration": 17.4,
+    "title": "紹介報酬の異常値",
+    "duration": 28.6,
     "audioFiles": [
       {
         "file": "scene_05_00.wav",
-        "duration": 3.1893333333333334,
-        "speaker": "ずんだもん"
+        "duration": 3.52,
+        "speaker": "めたん"
       },
       {
         "file": "scene_05_01.wav",
-        "duration": 3.4026666666666667,
+        "duration": 7.434666666666667,
         "speaker": "ずんだもん"
       },
       {
         "file": "scene_05_02.wav",
-        "duration": 1.6213333333333333,
+        "duration": 4.917333333333334,
         "speaker": "めたん"
       },
       {
         "file": "scene_05_03.wav",
-        "duration": 2.8266666666666667,
+        "duration": 7.445333333333333,
         "speaker": "ずんだもん"
       },
       {
         "file": "scene_05_04.wav",
-        "duration": 4.672,
-        "speaker": "ずんだもん"
+        "duration": 3.584,
+        "speaker": "めたん"
       }
     ]
   },
   {
     "id": 6,
-    "title": "VPNトンネル",
-    "duration": 21.7,
+    "title": "ExpressVPNの固定額",
+    "duration": 23.6,
     "audioFiles": [
       {
         "file": "scene_06_00.wav",
-        "duration": 4.992,
+        "duration": 6.549333333333333,
         "speaker": "ずんだもん"
       },
       {
         "file": "scene_06_01.wav",
-        "duration": 2.1866666666666665,
+        "duration": 5.205333333333333,
         "speaker": "めたん"
       },
       {
         "file": "scene_06_02.wav",
-        "duration": 5.1306666666666665,
+        "duration": 5.482666666666667,
         "speaker": "ずんだもん"
       },
       {
         "file": "scene_06_03.wav",
-        "duration": 3.3493333333333335,
+        "duration": 4.981333333333334,
         "speaker": "めたん"
-      },
-      {
-        "file": "scene_06_04.wav",
-        "duration": 4.330666666666667,
-        "speaker": "ずんだもん"
       }
     ]
   },
   {
     "id": 7,
-    "title": "HTTPS時代の現実",
-    "duration": 41.1,
+    "title": "他ジャンルとの比較",
+    "duration": 30,
     "audioFiles": [
       {
         "file": "scene_07_00.wav",
-        "duration": 2.976,
+        "duration": 6.762666666666667,
         "speaker": "ずんだもん"
       },
       {
         "file": "scene_07_01.wav",
-        "duration": 0.8533333333333334,
+        "duration": 4.309333333333333,
         "speaker": "めたん"
       },
       {
         "file": "scene_07_02.wav",
-        "duration": 6.453333333333333,
+        "duration": 7.082666666666666,
         "speaker": "ずんだもん"
       },
       {
         "file": "scene_07_03.wav",
-        "duration": 1.4826666666666666,
+        "duration": 4.618666666666667,
         "speaker": "めたん"
       },
       {
         "file": "scene_07_04.wav",
-        "duration": 4.533333333333333,
-        "speaker": "ずんだもん"
-      },
-      {
-        "file": "scene_07_05.wav",
-        "duration": 5.258666666666667,
-        "speaker": "ずんだもん"
-      },
-      {
-        "file": "scene_07_06.wav",
-        "duration": 5.205333333333333,
-        "speaker": "めたん"
-      },
-      {
-        "file": "scene_07_07.wav",
-        "duration": 5.269333333333333,
-        "speaker": "ずんだもん"
-      },
-      {
-        "file": "scene_07_08.wav",
-        "duration": 0.9813333333333333,
-        "speaker": "めたん"
-      },
-      {
-        "file": "scene_07_09.wav",
-        "duration": 4.874666666666666,
+        "duration": 5.557333333333333,
         "speaker": "ずんだもん"
       }
     ]
   },
   {
     "id": 8,
-    "title": "VPN市場500億ドル",
-    "duration": 17.6,
+    "title": "広告媒体の比較",
+    "duration": 23.1,
     "audioFiles": [
       {
         "file": "scene_08_00.wav",
-        "duration": 5.248,
-        "speaker": "ずんだもん"
+        "duration": 4.1386666666666665,
+        "speaker": "めたん"
       },
       {
         "file": "scene_08_01.wav",
-        "duration": 2.0693333333333332,
-        "speaker": "めたん"
-      },
-      {
-        "file": "scene_08_02.wav",
-        "duration": 5.312,
+        "duration": 6.474666666666667,
         "speaker": "ずんだもん"
       },
       {
-        "file": "scene_08_03.wav",
-        "duration": 3.562666666666667,
+        "file": "scene_08_02.wav",
+        "duration": 2.7733333333333334,
         "speaker": "めたん"
+      },
+      {
+        "file": "scene_08_03.wav",
+        "duration": 8.309333333333333,
+        "speaker": "ずんだもん"
       }
     ]
   },
   {
     "id": 9,
-    "title": "SaaSの利益構造",
-    "duration": 27.2,
+    "title": "信頼のお裾分け",
+    "duration": 24.9,
     "audioFiles": [
       {
         "file": "scene_09_00.wav",
-        "duration": 4.053333333333334,
-        "speaker": "ずんだもん"
-      },
-      {
-        "file": "scene_09_01.wav",
-        "duration": 1.1306666666666667,
+        "duration": 2.944,
         "speaker": "めたん"
       },
       {
-        "file": "scene_09_02.wav",
-        "duration": 3.712,
+        "file": "scene_09_01.wav",
+        "duration": 5.941333333333334,
         "speaker": "ずんだもん"
       },
       {
+        "file": "scene_09_02.wav",
+        "duration": 5.610666666666667,
+        "speaker": "めたん"
+      },
+      {
         "file": "scene_09_03.wav",
-        "duration": 4.8533333333333335,
+        "duration": 5.9093333333333335,
         "speaker": "ずんだもん"
       },
       {
         "file": "scene_09_04.wav",
-        "duration": 3.296,
-        "speaker": "めたん"
-      },
-      {
-        "file": "scene_09_05.wav",
-        "duration": 5.493333333333333,
-        "speaker": "ずんだもん"
-      },
-      {
-        "file": "scene_09_06.wav",
-        "duration": 2.3786666666666667,
+        "duration": 2.8266666666666667,
         "speaker": "めたん"
       }
     ]
   },
   {
     "id": 10,
-    "title": "アフィリエイト報酬",
-    "duration": 35,
+    "title": "ExpressVPNの流入",
+    "duration": 22.1,
     "audioFiles": [
       {
         "file": "scene_10_00.wav",
-        "duration": 4.565333333333333,
-        "speaker": "ずんだもん"
-      },
-      {
-        "file": "scene_10_01.wav",
-        "duration": 1.664,
-        "speaker": "めたん"
-      },
-      {
-        "file": "scene_10_02.wav",
-        "duration": 6.144,
-        "speaker": "ずんだもん"
-      },
-      {
-        "file": "scene_10_03.wav",
-        "duration": 3.488,
-        "speaker": "めたん"
-      },
-      {
-        "file": "scene_10_04.wav",
-        "duration": 5.365333333333333,
-        "speaker": "ずんだもん"
-      },
-      {
-        "file": "scene_10_05.wav",
         "duration": 2.005333333333333,
         "speaker": "めたん"
       },
       {
-        "file": "scene_10_06.wav",
-        "duration": 5.856,
+        "file": "scene_10_01.wav",
+        "duration": 8.021333333333333,
         "speaker": "ずんだもん"
       },
       {
-        "file": "scene_10_07.wav",
-        "duration": 3.2853333333333334,
+        "file": "scene_10_02.wav",
+        "duration": 4.1706666666666665,
         "speaker": "めたん"
+      },
+      {
+        "file": "scene_10_03.wav",
+        "duration": 6.549333333333333,
+        "speaker": "ずんだもん"
       }
     ]
   },
   {
     "id": 11,
-    "title": "LTVの仕組み",
-    "duration": 34.4,
+    "title": "視聴者の体感",
+    "duration": 32.9,
     "audioFiles": [
       {
         "file": "scene_11_00.wav",
-        "duration": 5.44,
-        "speaker": "ずんだもん"
-      },
-      {
-        "file": "scene_11_01.wav",
-        "duration": 0.43733333333333335,
+        "duration": 4.512,
         "speaker": "めたん"
       },
       {
-        "file": "scene_11_02.wav",
-        "duration": 5.056,
+        "file": "scene_11_01.wav",
+        "duration": 5.386666666666667,
         "speaker": "ずんだもん"
       },
       {
+        "file": "scene_11_02.wav",
+        "duration": 5.0986666666666665,
+        "speaker": "めたん"
+      },
+      {
         "file": "scene_11_03.wav",
-        "duration": 6.517333333333333,
+        "duration": 5.173333333333333,
         "speaker": "ずんだもん"
       },
       {
         "file": "scene_11_04.wav",
-        "duration": 2.6453333333333333,
+        "duration": 4.629333333333333,
         "speaker": "めたん"
       },
       {
         "file": "scene_11_05.wav",
-        "duration": 3.648,
+        "duration": 6.133333333333334,
         "speaker": "ずんだもん"
-      },
-      {
-        "file": "scene_11_06.wav",
-        "duration": 5.077333333333334,
-        "speaker": "ずんだもん"
-      },
-      {
-        "file": "scene_11_07.wav",
-        "duration": 2.986666666666667,
-        "speaker": "めたん"
       }
     ]
   },
   {
     "id": 12,
-    "title": "恐怖マーケティング",
-    "duration": 69.2,
+    "title": "競合に見える人たち",
+    "duration": 26.1,
     "audioFiles": [
       {
         "file": "scene_12_00.wav",
-        "duration": 4.1066666666666665,
-        "speaker": "ずんだもん"
+        "duration": 5.152,
+        "speaker": "めたん"
       },
       {
         "file": "scene_12_01.wav",
-        "duration": 0.8746666666666667,
-        "speaker": "めたん"
+        "duration": 10.773333333333333,
+        "speaker": "ずんだもん"
       },
       {
         "file": "scene_12_02.wav",
-        "duration": 4.1386666666666665,
-        "speaker": "ずんだもん"
+        "duration": 2.624,
+        "speaker": "めたん"
       },
       {
         "file": "scene_12_03.wav",
-        "duration": 1.632,
-        "speaker": "めたん"
-      },
-      {
-        "file": "scene_12_04.wav",
-        "duration": 5.226666666666667,
+        "duration": 6.1546666666666665,
         "speaker": "ずんだもん"
-      },
-      {
-        "file": "scene_12_05.wav",
-        "duration": 5.184,
-        "speaker": "ずんだもん"
-      },
-      {
-        "file": "scene_12_06.wav",
-        "duration": 2.08,
-        "speaker": "めたん"
-      },
-      {
-        "file": "scene_12_07.wav",
-        "duration": 5.674666666666667,
-        "speaker": "ずんだもん"
-      },
-      {
-        "file": "scene_12_08.wav",
-        "duration": 6.1866666666666665,
-        "speaker": "ずんだもん"
-      },
-      {
-        "file": "scene_12_09.wav",
-        "duration": 3.5733333333333333,
-        "speaker": "めたん"
-      },
-      {
-        "file": "scene_12_10.wav",
-        "duration": 6.336,
-        "speaker": "ずんだもん"
-      },
-      {
-        "file": "scene_12_11.wav",
-        "duration": 2.2933333333333334,
-        "speaker": "めたん"
-      },
-      {
-        "file": "scene_12_12.wav",
-        "duration": 4.448,
-        "speaker": "ずんだもん"
-      },
-      {
-        "file": "scene_12_13.wav",
-        "duration": 5.376,
-        "speaker": "ずんだもん"
-      },
-      {
-        "file": "scene_12_14.wav",
-        "duration": 4.032,
-        "speaker": "ずんだもん"
-      },
-      {
-        "file": "scene_12_15.wav",
-        "duration": 2.997333333333333,
-        "speaker": "めたん"
       }
     ]
   },
   {
     "id": 13,
-    "title": "広告を検証する",
-    "duration": 12.4,
+    "title": "Kape傘下のブランド",
+    "duration": 27.4,
     "audioFiles": [
       {
         "file": "scene_13_00.wav",
-        "duration": 3.498666666666667,
+        "duration": 8.874666666666666,
         "speaker": "ずんだもん"
       },
       {
         "file": "scene_13_01.wav",
-        "duration": 2.944,
+        "duration": 4.842666666666666,
         "speaker": "めたん"
       },
       {
         "file": "scene_13_02.wav",
-        "duration": 4.8853333333333335,
+        "duration": 7.712,
         "speaker": "ずんだもん"
+      },
+      {
+        "file": "scene_13_03.wav",
+        "duration": 4.586666666666667,
+        "speaker": "めたん"
       }
     ]
   },
   {
     "id": 14,
-    "title": "ASA行政指導",
-    "duration": 21.5,
+    "title": "Kapeの前歴",
+    "duration": 43,
     "audioFiles": [
       {
         "file": "scene_14_00.wav",
-        "duration": 5.888,
-        "speaker": "ずんだもん"
+        "duration": 6.346666666666667,
+        "speaker": "めたん"
       },
       {
         "file": "scene_14_01.wav",
-        "duration": 2.8053333333333335,
-        "speaker": "めたん"
+        "duration": 7.648,
+        "speaker": "ずんだもん"
       },
       {
         "file": "scene_14_02.wav",
-        "duration": 5.12,
-        "speaker": "ずんだもん"
-      },
-      {
-        "file": "scene_14_03.wav",
-        "duration": 3.1466666666666665,
+        "duration": 2.304,
         "speaker": "めたん"
       },
       {
-        "file": "scene_14_04.wav",
-        "duration": 2.8693333333333335,
+        "file": "scene_14_03.wav",
+        "duration": 6.613333333333333,
         "speaker": "ずんだもん"
+      },
+      {
+        "file": "scene_14_04.wav",
+        "duration": 5.0986666666666665,
+        "speaker": "めたん"
+      },
+      {
+        "file": "scene_14_05.wav",
+        "duration": 8.181333333333333,
+        "speaker": "ずんだもん"
+      },
+      {
+        "file": "scene_14_06.wav",
+        "duration": 4.501333333333333,
+        "speaker": "めたん"
       }
     ]
   },
   {
     "id": 15,
-    "title": "HTTPS普及率95%",
-    "duration": 24.5,
+    "title": "Nord傘下のブランド",
+    "duration": 32,
     "audioFiles": [
       {
         "file": "scene_15_00.wav",
-        "duration": 5.589333333333333,
+        "duration": 8.810666666666666,
         "speaker": "ずんだもん"
       },
       {
         "file": "scene_15_01.wav",
-        "duration": 3.1893333333333334,
+        "duration": 3.232,
         "speaker": "めたん"
       },
       {
         "file": "scene_15_02.wav",
-        "duration": 5.12,
+        "duration": 5.365333333333333,
         "speaker": "ずんだもん"
       },
       {
         "file": "scene_15_03.wav",
-        "duration": 4.362666666666667,
+        "duration": 5.248,
         "speaker": "めたん"
       },
       {
         "file": "scene_15_04.wav",
-        "duration": 4.554666666666667,
+        "duration": 7.605333333333333,
         "speaker": "ずんだもん"
       }
     ]
   },
   {
     "id": 16,
-    "title": "VPNが防げないもの",
-    "duration": 44.9,
+    "title": "見かけの多様性",
+    "duration": 21.8,
     "audioFiles": [
       {
         "file": "scene_16_00.wav",
-        "duration": 2.8373333333333335,
-        "speaker": "ずんだもん"
+        "duration": 4.266666666666667,
+        "speaker": "めたん"
       },
       {
         "file": "scene_16_01.wav",
-        "duration": 1.4186666666666667,
-        "speaker": "めたん"
+        "duration": 5.482666666666667,
+        "speaker": "ずんだもん"
       },
       {
         "file": "scene_16_02.wav",
-        "duration": 3.7653333333333334,
-        "speaker": "ずんだもん"
+        "duration": 5.237333333333333,
+        "speaker": "めたん"
       },
       {
         "file": "scene_16_03.wav",
-        "duration": 0.8106666666666666,
-        "speaker": "めたん"
-      },
-      {
-        "file": "scene_16_04.wav",
-        "duration": 4.714666666666667,
-        "speaker": "ずんだもん"
-      },
-      {
-        "file": "scene_16_05.wav",
-        "duration": 2.506666666666667,
-        "speaker": "めたん"
-      },
-      {
-        "file": "scene_16_06.wav",
-        "duration": 4.789333333333333,
-        "speaker": "ずんだもん"
-      },
-      {
-        "file": "scene_16_07.wav",
-        "duration": 2.8693333333333335,
-        "speaker": "ずんだもん"
-      },
-      {
-        "file": "scene_16_08.wav",
-        "duration": 0.9386666666666666,
-        "speaker": "めたん"
-      },
-      {
-        "file": "scene_16_09.wav",
-        "duration": 4.842666666666666,
-        "speaker": "ずんだもん"
-      },
-      {
-        "file": "scene_16_10.wav",
-        "duration": 1.664,
-        "speaker": "めたん"
-      },
-      {
-        "file": "scene_16_11.wav",
-        "duration": 4.992,
-        "speaker": "ずんだもん"
-      },
-      {
-        "file": "scene_16_12.wav",
-        "duration": 4.650666666666667,
+        "duration": 5.429333333333333,
         "speaker": "ずんだもん"
       }
     ]
   },
   {
     "id": 17,
-    "title": "フィンガープリント",
-    "duration": 31.1,
+    "title": "空港のハッカー",
+    "duration": 25.3,
     "audioFiles": [
       {
         "file": "scene_17_00.wav",
-        "duration": 5.493333333333333,
+        "duration": 4.192,
         "speaker": "めたん"
       },
       {
         "file": "scene_17_01.wav",
-        "duration": 2.9013333333333335,
+        "duration": 5.653333333333333,
         "speaker": "ずんだもん"
       },
       {
         "file": "scene_17_02.wav",
-        "duration": 3.029333333333333,
-        "speaker": "ずんだもん"
-      },
-      {
-        "file": "scene_17_03.wav",
-        "duration": 2.421333333333333,
+        "duration": 3.530666666666667,
         "speaker": "めたん"
       },
       {
+        "file": "scene_17_03.wav",
+        "duration": 6.176,
+        "speaker": "ずんだもん"
+      },
+      {
         "file": "scene_17_04.wav",
-        "duration": 4.693333333333333,
-        "speaker": "ずんだもん"
-      },
-      {
-        "file": "scene_17_05.wav",
-        "duration": 5.930666666666666,
-        "speaker": "ずんだもん"
-      },
-      {
-        "file": "scene_17_06.wav",
-        "duration": 4.309333333333333,
+        "duration": 4.053333333333334,
         "speaker": "めたん"
       }
     ]
   },
   {
     "id": 18,
-    "title": "ログインした瞬間",
-    "duration": 32.2,
+    "title": "軍事レベルの中身",
+    "duration": 33.7,
     "audioFiles": [
       {
         "file": "scene_18_00.wav",
-        "duration": 4.992,
-        "speaker": "ずんだもん"
-      },
-      {
-        "file": "scene_18_01.wav",
-        "duration": 3.808,
+        "duration": 4.128,
         "speaker": "めたん"
       },
       {
-        "file": "scene_18_02.wav",
-        "duration": 5.034666666666666,
+        "file": "scene_18_01.wav",
+        "duration": 5.8133333333333335,
         "speaker": "ずんだもん"
       },
       {
+        "file": "scene_18_02.wav",
+        "duration": 2.0906666666666665,
+        "speaker": "めたん"
+      },
+      {
         "file": "scene_18_03.wav",
-        "duration": 4.128,
+        "duration": 9.418666666666667,
         "speaker": "ずんだもん"
       },
       {
         "file": "scene_18_04.wav",
-        "duration": 2.8266666666666667,
+        "duration": 4.373333333333333,
         "speaker": "めたん"
       },
       {
         "file": "scene_18_05.wav",
-        "duration": 4.437333333333333,
-        "speaker": "ずんだもん"
-      },
-      {
-        "file": "scene_18_06.wav",
-        "duration": 4.661333333333333,
+        "duration": 5.856,
         "speaker": "ずんだもん"
       }
     ]
   },
   {
     "id": 19,
-    "title": "業界の寡占構造",
-    "duration": 29.5,
+    "title": "公衆Wi-Fiの現在",
+    "duration": 25.7,
     "audioFiles": [
       {
         "file": "scene_19_00.wav",
-        "duration": 4,
+        "duration": 9.002666666666666,
         "speaker": "ずんだもん"
       },
       {
         "file": "scene_19_01.wav",
-        "duration": 1.2586666666666666,
+        "duration": 3.7546666666666666,
         "speaker": "めたん"
       },
       {
         "file": "scene_19_02.wav",
-        "duration": 5.365333333333333,
+        "duration": 6.485333333333333,
         "speaker": "ずんだもん"
       },
       {
         "file": "scene_19_03.wav",
-        "duration": 1.2693333333333334,
+        "duration": 5.045333333333334,
         "speaker": "めたん"
-      },
-      {
-        "file": "scene_19_04.wav",
-        "duration": 7.1466666666666665,
-        "speaker": "ずんだもん"
-      },
-      {
-        "file": "scene_19_05.wav",
-        "duration": 3.7973333333333334,
-        "speaker": "めたん"
-      },
-      {
-        "file": "scene_19_06.wav",
-        "duration": 4.405333333333333,
-        "speaker": "ずんだもん"
       }
     ]
   },
   {
     "id": 20,
-    "title": "Kapeの正体",
-    "duration": 37.7,
+    "title": "テンプレ化の合理性",
+    "duration": 30.1,
     "audioFiles": [
       {
         "file": "scene_20_00.wav",
-        "duration": 7.605333333333333,
+        "duration": 6.357333333333333,
         "speaker": "ずんだもん"
       },
       {
         "file": "scene_20_01.wav",
-        "duration": 1.6,
+        "duration": 5.1626666666666665,
         "speaker": "めたん"
       },
       {
         "file": "scene_20_02.wav",
-        "duration": 3.8826666666666667,
+        "duration": 5.1306666666666665,
         "speaker": "ずんだもん"
       },
       {
         "file": "scene_20_03.wav",
-        "duration": 2.624,
+        "duration": 5.888,
         "speaker": "めたん"
       },
       {
         "file": "scene_20_04.wav",
-        "duration": 4.416,
-        "speaker": "ずんだもん"
-      },
-      {
-        "file": "scene_20_05.wav",
-        "duration": 4.746666666666667,
-        "speaker": "めたん"
-      },
-      {
-        "file": "scene_20_06.wav",
-        "duration": 3.989333333333333,
-        "speaker": "ずんだもん"
-      },
-      {
-        "file": "scene_20_07.wav",
-        "duration": 2.272,
-        "speaker": "めたん"
-      },
-      {
-        "file": "scene_20_08.wav",
-        "duration": 3.6586666666666665,
+        "duration": 5.8773333333333335,
         "speaker": "ずんだもん"
       }
     ]
   },
   {
     "id": 21,
-    "title": "ノーログの実態",
-    "duration": 38.1,
+    "title": "反転の問いかけ",
+    "duration": 17.5,
     "audioFiles": [
       {
         "file": "scene_21_00.wav",
-        "duration": 1.8666666666666667,
+        "duration": 5.056,
         "speaker": "めたん"
       },
       {
         "file": "scene_21_01.wav",
-        "duration": 3.7013333333333334,
+        "duration": 2.6773333333333333,
         "speaker": "ずんだもん"
       },
       {
         "file": "scene_21_02.wav",
-        "duration": 5.28,
+        "duration": 1.28,
         "speaker": "めたん"
       },
       {
         "file": "scene_21_03.wav",
-        "duration": 5.28,
-        "speaker": "ずんだもん"
-      },
-      {
-        "file": "scene_21_04.wav",
-        "duration": 4.298666666666667,
-        "speaker": "ずんだもん"
-      },
-      {
-        "file": "scene_21_05.wav",
-        "duration": 0.448,
-        "speaker": "めたん"
-      },
-      {
-        "file": "scene_21_06.wav",
-        "duration": 2.965333333333333,
-        "speaker": "ずんだもん"
-      },
-      {
-        "file": "scene_21_07.wav",
-        "duration": 4.437333333333333,
-        "speaker": "ずんだもん"
-      },
-      {
-        "file": "scene_21_08.wav",
-        "duration": 1.3546666666666667,
-        "speaker": "めたん"
-      },
-      {
-        "file": "scene_21_09.wav",
-        "duration": 5.248,
+        "duration": 7.136,
         "speaker": "ずんだもん"
       }
     ]
   },
   {
     "id": 22,
-    "title": "無料VPNの闇",
-    "duration": 55.5,
+    "title": "評価上位の3社",
+    "duration": 23,
     "audioFiles": [
       {
         "file": "scene_22_00.wav",
-        "duration": 2.88,
-        "speaker": "ずんだもん"
-      },
-      {
-        "file": "scene_22_01.wav",
-        "duration": 1.856,
+        "duration": 2.3466666666666667,
         "speaker": "めたん"
       },
       {
-        "file": "scene_22_02.wav",
-        "duration": 5.066666666666666,
+        "file": "scene_22_01.wav",
+        "duration": 6.485333333333333,
         "speaker": "ずんだもん"
       },
       {
+        "file": "scene_22_02.wav",
+        "duration": 1.3866666666666667,
+        "speaker": "めたん"
+      },
+      {
         "file": "scene_22_03.wav",
-        "duration": 4.384,
+        "duration": 5.568,
         "speaker": "ずんだもん"
       },
       {
         "file": "scene_22_04.wav",
-        "duration": 4.053333333333334,
-        "speaker": "めたん"
-      },
-      {
-        "file": "scene_22_05.wav",
-        "duration": 5.8133333333333335,
-        "speaker": "ずんだもん"
-      },
-      {
-        "file": "scene_22_06.wav",
-        "duration": 4.234666666666667,
-        "speaker": "めたん"
-      },
-      {
-        "file": "scene_22_07.wav",
-        "duration": 2.485333333333333,
-        "speaker": "ずんだもん"
-      },
-      {
-        "file": "scene_22_08.wav",
-        "duration": 7.594666666666667,
-        "speaker": "ずんだもん"
-      },
-      {
-        "file": "scene_22_09.wav",
-        "duration": 3.2853333333333334,
-        "speaker": "めたん"
-      },
-      {
-        "file": "scene_22_10.wav",
-        "duration": 6.570666666666667,
-        "speaker": "ずんだもん"
-      },
-      {
-        "file": "scene_22_11.wav",
-        "duration": 3.445333333333333,
+        "duration": 5.482666666666667,
         "speaker": "めたん"
       }
     ]
   },
   {
     "id": 23,
-    "title": "万能でも無意味でもない",
-    "duration": 12.9,
+    "title": "広告と評価のズレ",
+    "duration": 27.5,
     "audioFiles": [
       {
         "file": "scene_23_00.wav",
-        "duration": 3.466666666666667,
+        "duration": 4.608,
         "speaker": "めたん"
       },
       {
         "file": "scene_23_01.wav",
-        "duration": 4.757333333333333,
+        "duration": 8.501333333333333,
         "speaker": "ずんだもん"
       },
       {
         "file": "scene_23_02.wav",
-        "duration": 3.584,
+        "duration": 1.792,
+        "speaker": "めたん"
+      },
+      {
+        "file": "scene_23_03.wav",
+        "duration": 5.749333333333333,
         "speaker": "ずんだもん"
+      },
+      {
+        "file": "scene_23_04.wav",
+        "duration": 5.12,
+        "speaker": "めたん"
       }
     ]
   },
   {
     "id": 24,
-    "title": "VPNが有効な場面",
-    "duration": 73.6,
+    "title": "レビューサイトの罠",
+    "duration": 32.4,
     "audioFiles": [
       {
         "file": "scene_24_00.wav",
-        "duration": 4.576,
+        "duration": 8.245333333333333,
         "speaker": "ずんだもん"
       },
       {
         "file": "scene_24_01.wav",
-        "duration": 2.304,
+        "duration": 3.776,
         "speaker": "めたん"
       },
       {
         "file": "scene_24_02.wav",
-        "duration": 4.896,
+        "duration": 8.938666666666666,
         "speaker": "ずんだもん"
       },
       {
         "file": "scene_24_03.wav",
         "duration": 4.426666666666667,
-        "speaker": "ずんだもん"
+        "speaker": "めたん"
       },
       {
         "file": "scene_24_04.wav",
-        "duration": 2.933333333333333,
-        "speaker": "めたん"
-      },
-      {
-        "file": "scene_24_05.wav",
-        "duration": 5.013333333333334,
-        "speaker": "ずんだもん"
-      },
-      {
-        "file": "scene_24_06.wav",
-        "duration": 5.216,
-        "speaker": "ずんだもん"
-      },
-      {
-        "file": "scene_24_07.wav",
-        "duration": 3.1466666666666665,
-        "speaker": "めたん"
-      },
-      {
-        "file": "scene_24_08.wav",
-        "duration": 3.029333333333333,
-        "speaker": "ずんだもん"
-      },
-      {
-        "file": "scene_24_09.wav",
-        "duration": 3.3066666666666666,
-        "speaker": "めたん"
-      },
-      {
-        "file": "scene_24_10.wav",
-        "duration": 5.141333333333334,
-        "speaker": "ずんだもん"
-      },
-      {
-        "file": "scene_24_11.wav",
-        "duration": 3.498666666666667,
-        "speaker": "めたん"
-      },
-      {
-        "file": "scene_24_12.wav",
-        "duration": 5.045333333333334,
-        "speaker": "ずんだもん"
-      },
-      {
-        "file": "scene_24_13.wav",
-        "duration": 5.301333333333333,
-        "speaker": "めたん"
-      },
-      {
-        "file": "scene_24_14.wav",
-        "duration": 5.8133333333333335,
-        "speaker": "ずんだもん"
-      },
-      {
-        "file": "scene_24_15.wav",
-        "duration": 4.949333333333334,
+        "duration": 5.354666666666667,
         "speaker": "ずんだもん"
       }
     ]
   },
   {
     "id": 25,
-    "title": "本当に優先すべき対策",
-    "duration": 26.4,
+    "title": "見分けるヒント",
+    "duration": 23.3,
     "audioFiles": [
       {
         "file": "scene_25_00.wav",
-        "duration": 4.896,
-        "speaker": "ずんだもん"
+        "duration": 3.4346666666666668,
+        "speaker": "めたん"
       },
       {
         "file": "scene_25_01.wav",
-        "duration": 1.952,
-        "speaker": "めたん"
+        "duration": 5.856,
+        "speaker": "ずんだもん"
       },
       {
         "file": "scene_25_02.wav",
-        "duration": 4.266666666666667,
-        "speaker": "ずんだもん"
+        "duration": 4.757333333333333,
+        "speaker": "めたん"
       },
       {
         "file": "scene_25_03.wav",
-        "duration": 4.96,
+        "duration": 7.850666666666666,
         "speaker": "ずんだもん"
-      },
-      {
-        "file": "scene_25_04.wav",
-        "duration": 4.416,
-        "speaker": "ずんだもん"
-      },
-      {
-        "file": "scene_25_05.wav",
-        "duration": 3.872,
-        "speaker": "めたん"
       }
     ]
   },
   {
     "id": 26,
-    "title": "広告の量≠必要性",
-    "duration": 25.9,
+    "title": "4つの理由を回収",
+    "duration": 27.9,
     "audioFiles": [
       {
         "file": "scene_26_00.wav",
-        "duration": 2.6986666666666665,
-        "speaker": "ずんだもん"
+        "duration": 6.890666666666666,
+        "speaker": "めたん"
       },
       {
         "file": "scene_26_01.wav",
-        "duration": 5.024,
+        "duration": 10.272,
         "speaker": "ずんだもん"
       },
       {
         "file": "scene_26_02.wav",
-        "duration": 3.488,
-        "speaker": "ずんだもん"
+        "duration": 3.9466666666666668,
+        "speaker": "めたん"
       },
       {
         "file": "scene_26_03.wav",
-        "duration": 3.616,
-        "speaker": "めたん"
-      },
-      {
-        "file": "scene_26_04.wav",
-        "duration": 4.949333333333334,
+        "duration": 5.344,
         "speaker": "ずんだもん"
-      },
-      {
-        "file": "scene_26_05.wav",
-        "duration": 4.149333333333334,
-        "speaker": "めたん"
       }
     ]
   },
   {
     "id": 27,
-    "title": "おわりに",
-    "duration": 18,
+    "title": "VPNの用途",
+    "duration": 26.9,
     "audioFiles": [
       {
         "file": "scene_27_00.wav",
-        "duration": 3.84,
-        "speaker": "ずんだもん"
+        "duration": 3.989333333333333,
+        "speaker": "めたん"
       },
       {
         "file": "scene_27_01.wav",
-        "duration": 4.064,
+        "duration": 9.461333333333334,
         "speaker": "ずんだもん"
       },
       {
         "file": "scene_27_02.wav",
-        "duration": 2.8053333333333335,
+        "duration": 5.173333333333333,
         "speaker": "めたん"
       },
       {
         "file": "scene_27_03.wav",
-        "duration": 3.7226666666666666,
+        "duration": 6.8693333333333335,
+        "speaker": "ずんだもん"
+      }
+    ]
+  },
+  {
+    "id": 28,
+    "title": "次の広告を見たとき",
+    "duration": 46.7,
+    "audioFiles": [
+      {
+        "file": "scene_28_00.wav",
+        "duration": 5.408,
         "speaker": "めたん"
       },
       {
-        "file": "scene_27_04.wav",
-        "duration": 1.824,
+        "file": "scene_28_01.wav",
+        "duration": 6.058666666666666,
+        "speaker": "ずんだもん"
+      },
+      {
+        "file": "scene_28_02.wav",
+        "duration": 3.6586666666666665,
+        "speaker": "めたん"
+      },
+      {
+        "file": "scene_28_03.wav",
+        "duration": 6.368,
+        "speaker": "ずんだもん"
+      },
+      {
+        "file": "scene_28_04.wav",
+        "duration": 6.485333333333333,
+        "speaker": "めたん"
+      },
+      {
+        "file": "scene_28_05.wav",
+        "duration": 7.712,
+        "speaker": "ずんだもん"
+      },
+      {
+        "file": "scene_28_06.wav",
+        "duration": 2.6133333333333333,
+        "speaker": "めたん"
+      },
+      {
+        "file": "scene_28_07.wav",
+        "duration": 5.76,
         "speaker": "ずんだもん"
       }
     ]

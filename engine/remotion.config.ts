@@ -16,6 +16,7 @@ Config.setOverwriteOutput(true);
 Config.overrideWebpackConfig((currentConfig) => {
   const channelsPath = path.resolve(process.cwd(), '..', 'channels');
   const componentsPath = path.resolve(process.cwd(), 'src', 'components');
+  const sandboxPath = path.resolve(process.cwd(), '..', 'sandbox');
   const withTailwind = enableTailwind(currentConfig);
   return {
     ...withTailwind,
@@ -25,6 +26,7 @@ Config.overrideWebpackConfig((currentConfig) => {
         ...(withTailwind.resolve?.alias || {}),
         '@channels': channelsPath,
         '@components': componentsPath,
+        '@sandbox': sandboxPath,
       },
       modules: [
         ...(withTailwind.resolve?.modules || []),

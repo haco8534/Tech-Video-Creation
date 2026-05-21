@@ -88,13 +88,30 @@ export function importThumbnails(formData) {
   return fetch("/api/thumbnails/import", { method: "POST", body: formData }).then((r) => r.json());
 }
 
-export function fetchThumbnailPrompts() {
-  return api("/api/thumbnails/prompts");
-}
-
 // Sessions
 export function fetchActiveSessions() {
   return api("/api/sessions/active");
+}
+
+// Prompt Templates
+export function fetchPromptTemplates() {
+  return api("/api/templates");
+}
+
+export function createPromptTemplate(name, body) {
+  return postJson("/api/templates", { name, body });
+}
+
+export function updatePromptTemplate(id, name, body) {
+  return api(`/api/templates/${id}`, {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ name, body }),
+  });
+}
+
+export function deletePromptTemplate(id) {
+  return api(`/api/templates/${id}`, { method: "DELETE" });
 }
 
 // === WebSocket ===

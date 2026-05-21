@@ -207,29 +207,30 @@ async function main() {
   try {
     const videos = await getAllVideos();
 
-    // Get comments for all videos
     const topN = videos.length;
     console.log(`\n\n========================================`);
     console.log(`FETCHING COMMENTS FOR TOP ${topN} VIDEOS`);
     console.log(`========================================`);
 
+    const videosWithComments = [];
     for (let i = 0; i < topN; i++) {
-      await getComments(videos[i].id, videos[i].snippet.title, 50);
+      const comments = await getComments(videos[i].id, videos[i].snippet.title, 200);
+      videosWithComments.push({
+        id: videos[i].id,
+        title: videos[i].snippet.title,
+        publishedAt: videos[i].snippet.publishedAt,
+        duration: videos[i].contentDetails.duration,
+        views: parseInt(videos[i].statistics.viewCount || 0),
+        likes: parseInt(videos[i].statistics.likeCount || 0),
+        commentCount: parseInt(videos[i].statistics.commentCount || 0),
+        tags: videos[i].snippet.tags || [],
+        comments: comments
+      });
     }
 
-    // Also output as JSON for further analysis
     const output = {
       fetchedAt: new Date().toISOString(),
-      videos: videos.map(v => ({
-        id: v.id,
-        title: v.snippet.title,
-        publishedAt: v.snippet.publishedAt,
-        duration: v.contentDetails.duration,
-        views: parseInt(v.statistics.viewCount || 0),
-        likes: parseInt(v.statistics.likeCount || 0),
-        comments: parseInt(v.statistics.commentCount || 0),
-        tags: v.snippet.tags || []
-      }))
+      videos: videosWithComments
     };
 
     fs.writeFileSync(

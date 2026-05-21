@@ -1,775 +1,1247 @@
 import React from 'react';
-import { AbsoluteFill } from 'remotion';
-import './slides.css';
+import { interpolate, Img, staticFile } from 'remotion';
+import { SceneProps } from '@components/layouts/FigureLayout';
+import { BASE_COLORS } from '@components/theme';
 
-export const Scene0: React.FC = () => (
-    <AbsoluteFill>
-        <div className="scene active" id="scene-0">
-    <div className="content center-layout">
-        <div className="title-large">インターネットの<br /><span className="accent-coral">"社長"</span>は誰？</div>
-        <div className="title-sub">誰が作って、誰が管理しているのか</div>
-        <svg viewBox="0 0 780 180" width="780" height="180">
-            <line x1="60" y1="90" x2="720" y2="90" stroke="#d1d5db" strokeWidth="2"/>
-            <circle cx="120" cy="90" r="28" fill="#dbeafe" stroke="#2563eb" strokeWidth="2"/>
-            <text x="120" y="95" textAnchor="middle" fontSize="24" fontWeight="900" fill="#2563eb">?</text>
-            <circle cx="280" cy="90" r="28" fill="#cffafe" stroke="#0891b2" strokeWidth="2"/>
-            <text x="280" y="95" textAnchor="middle" fontSize="24" fontWeight="900" fill="#0891b2">?</text>
-            <circle cx="440" cy="90" r="28" fill="#fee2e2" stroke="#dc2626" strokeWidth="2"/>
-            <text x="440" y="95" textAnchor="middle" fontSize="24" fontWeight="900" fill="#dc2626">?</text>
-            <circle cx="600" cy="90" r="28" fill="#fef3c7" stroke="#d97706" strokeWidth="2"/>
-            <text x="600" y="95" textAnchor="middle" fontSize="24" fontWeight="900" fill="#d97706">?</text>
-            <text x="390" y="160" textAnchor="middle" fontSize="18" fontWeight="700" fill="#1a1d23">世界60億人がつながるネットワーク</text>
-        </svg>
-    </div>
-</div>
-    </AbsoluteFill>
-);
+export type { SceneProps };
 
-export const Scene1: React.FC = () => (
-    <AbsoluteFill>
-        <div className="scene" id="scene-1">
-    <div className="content center-layout">
-        <div className="scene-title">世界のインターネット利用</div>
-        <div className="metric-grid">
-            <div className="metric-card border-primary">
-                <div className="metric-value accent-primary">73%+</div>
-                <div className="metric-label">世界人口のオンライン率</div>
-            </div>
-            <div className="metric-card border-teal">
-                <div className="metric-value accent-teal">6.5h</div>
-                <div className="metric-label">1日平均オンライン時間</div>
-            </div>
-        </div>
-        <div className="big-statement">管理者は<span className="accent-coral">「誰もいない」</span></div>
-        <div className="source">出典: DataReportal Digital 2025</div>
-    </div>
-</div>
-    </AbsoluteFill>
-);
-
-export const Scene2: React.FC = () => (
-    <AbsoluteFill>
-        <div className="scene" id="scene-2">
-    <div className="content center-layout">
-        <div className="scene-title">よくある誤解を正す</div>
-        <svg viewBox="0 0 780 240" width="780" height="240">
-            {/* 左: 誤解 */}
-            <rect x="20" y="20" width="340" height="200" rx="12" fill="#fee2e2" stroke="#dc2626" strokeWidth="2"/>
-            <text x="190" y="55" textAnchor="middle" fontSize="20" fontWeight="900" fill="#dc2626">× よくある誤解</text>
-            <text x="190" y="90" textAnchor="middle" fontSize="18" fontWeight="700" fill="#1a1d23">「核戦争に備えて</text>
-            <text x="190" y="115" textAnchor="middle" fontSize="18" fontWeight="700" fill="#1a1d23">作られた」</text>
-            <text x="190" y="150" textAnchor="middle" fontSize="14" fontWeight="700" fill="#1a1d23">ポール・バラン / RAND研究所</text>
-            <text x="190" y="175" textAnchor="middle" fontSize="14" fontWeight="700" fill="#1a1d23">1964年 核攻撃耐性の通信網設計</text>
-            <text x="190" y="200" textAnchor="middle" fontSize="14" fontWeight="700" fill="#dc2626">→ ARPANETとは別プロジェクト</text>
-            {/* 矢印 */}
-            <text x="390" y="130" textAnchor="middle" fontSize="28" fontWeight="900" fill="#2563eb">→</text>
-            {/* 右: 事実 */}
-            <rect x="420" y="20" width="340" height="200" rx="12" fill="#dbeafe" stroke="#2563eb" strokeWidth="2"/>
-            <text x="590" y="55" textAnchor="middle" fontSize="20" fontWeight="900" fill="#2563eb">○ 本当の目的</text>
-            <text x="590" y="90" textAnchor="middle" fontSize="18" fontWeight="700" fill="#1a1d23">「離れたコンピュータを</text>
-            <text x="590" y="115" textAnchor="middle" fontSize="18" fontWeight="700" fill="#1a1d23">みんなで共有したい」</text>
-            <rect x="490" y="140" width="200" height="32" rx="6" fill="#d97706"/>
-            <text x="590" y="162" textAnchor="middle" fontSize="16" fontWeight="900" fill="#fff">1969年10月29日</text>
-            <text x="590" y="195" textAnchor="middle" fontSize="14" fontWeight="700" fill="#1a1d23">UCLA ↔ スタンフォード研究所</text>
-        </svg>
-    </div>
-</div>
-    </AbsoluteFill>
-);
-
-export const Scene3: React.FC = () => (
-    <AbsoluteFill>
-        <div className="scene" id="scene-3">
-    <div className="content center-layout">
-        <div className="scene-title">インターネット＝「手紙」のシステム</div>
-        <svg viewBox="0 0 780 230" width="780" height="230">
-            {/* 長い手紙 */}
-            <rect x="30" y="30" width="120" height="170" rx="6" fill="#fff" stroke="#d1d5db" strokeWidth="2"/>
-            <line x1="50" y1="60" x2="130" y2="60" stroke="#d1d5db" strokeWidth="1.5"/>
-            <line x1="50" y1="80" x2="130" y2="80" stroke="#d1d5db" strokeWidth="1.5"/>
-            <line x1="50" y1="100" x2="130" y2="100" stroke="#d1d5db" strokeWidth="1.5"/>
-            <line x1="50" y1="120" x2="130" y2="120" stroke="#d1d5db" strokeWidth="1.5"/>
-            <line x1="50" y1="140" x2="130" y2="140" stroke="#d1d5db" strokeWidth="1.5"/>
-            <line x1="50" y1="160" x2="130" y2="160" stroke="#d1d5db" strokeWidth="1.5"/>
-            <text x="90" y="195" textAnchor="middle" fontSize="14" fontWeight="700" fill="#1a1d23">元のデータ</text>
-            {/* 分割矢印 */}
-            <text x="195" y="120" textAnchor="middle" fontSize="28" fontWeight="900" fill="#2563eb">→</text>
-            {/* パケットに分割 */}
-            <rect x="240" y="30" width="80" height="50" rx="6" fill="#dbeafe" stroke="#2563eb" strokeWidth="2"/>
-            <text x="280" y="50" textAnchor="middle" fontSize="12" fontWeight="900" fill="#2563eb">#1</text>
-            <text x="280" y="68" textAnchor="middle" fontSize="10" fontWeight="700" fill="#1a1d23">192.168..</text>
-            <rect x="240" y="90" width="80" height="50" rx="6" fill="#cffafe" stroke="#0891b2" strokeWidth="2"/>
-            <text x="280" y="110" textAnchor="middle" fontSize="12" fontWeight="900" fill="#0891b2">#2</text>
-            <text x="280" y="128" textAnchor="middle" fontSize="10" fontWeight="700" fill="#1a1d23">192.168..</text>
-            <rect x="240" y="150" width="80" height="50" rx="6" fill="#fef3c7" stroke="#d97706" strokeWidth="2"/>
-            <text x="280" y="170" textAnchor="middle" fontSize="12" fontWeight="900" fill="#d97706">#3</text>
-            <text x="280" y="188" textAnchor="middle" fontSize="10" fontWeight="700" fill="#1a1d23">192.168..</text>
-            <text x="280" y="220" textAnchor="middle" fontSize="14" fontWeight="700" fill="#1a1d23">パケットに分割</text>
-            {/* ネットワーク雲 */}
-            <text x="380" y="120" textAnchor="middle" fontSize="28" fontWeight="900" fill="#2563eb">→</text>
-            <ellipse cx="510" cy="110" rx="110" ry="70" fill="none" stroke="#2563eb" strokeWidth="2" strokeDasharray="6 4"/>
-            <circle cx="470" cy="90" r="8" fill="#2563eb" opacity="0.3"/>
-            <circle cx="510" cy="70" r="8" fill="#0891b2" opacity="0.3"/>
-            <circle cx="550" cy="90" r="8" fill="#d97706" opacity="0.3"/>
-            <circle cx="490" cy="120" r="8" fill="#dc2626" opacity="0.3"/>
-            <circle cx="530" cy="130" r="8" fill="#2563eb" opacity="0.3"/>
-            <line x1="470" y1="90" x2="510" y2="70" stroke="#d1d5db" strokeWidth="1"/>
-            <line x1="510" y1="70" x2="550" y2="90" stroke="#d1d5db" strokeWidth="1"/>
-            <line x1="470" y1="90" x2="490" y2="120" stroke="#d1d5db" strokeWidth="1"/>
-            <line x1="550" y1="90" x2="530" y2="130" stroke="#d1d5db" strokeWidth="1"/>
-            <line x1="490" y1="120" x2="530" y2="130" stroke="#d1d5db" strokeWidth="1"/>
-            <text x="510" y="200" textAnchor="middle" fontSize="14" fontWeight="700" fill="#1a1d23">ネットワーク</text>
-            {/* 再組立 */}
-            <text x="640" y="120" textAnchor="middle" fontSize="28" fontWeight="900" fill="#2563eb">→</text>
-            <rect x="680" y="30" width="80" height="170" rx="6" fill="#fff" stroke="#2563eb" strokeWidth="2"/>
-            <text x="720" y="95" textAnchor="middle" fontSize="12" fontWeight="900" fill="#2563eb">#1</text>
-            <text x="720" y="115" textAnchor="middle" fontSize="12" fontWeight="900" fill="#0891b2">#2</text>
-            <text x="720" y="135" textAnchor="middle" fontSize="12" fontWeight="900" fill="#d97706">#3</text>
-            <text x="720" y="220" textAnchor="middle" fontSize="14" fontWeight="700" fill="#1a1d23">再組立</text>
-        </svg>
-        <div className="big-statement">住所 = <span className="accent-primary">IPアドレス</span>　ルール = <span className="accent-teal">TCP/IP</span></div>
-    </div>
-</div>
-    </AbsoluteFill>
-);
-
-export const Scene4: React.FC = () => (
-    <AbsoluteFill>
-        <div className="scene" id="scene-4">
-    <div className="content center-layout">
-        <div className="scene-title">TCP/IPの設計者たち</div>
-        <div className="two-col">
-            <div className="compare-card border-primary">
-                <figure className="photo-frame">
-                    <svg viewBox="0 0 120 120" width="120" height="120" style={{ display: 'block', margin: '0 auto' }}>
-                        <circle cx="60" cy="38" r="24" fill="var(--primary)" opacity="0.85" />
-                        <ellipse cx="60" cy="110" rx="40" ry="32" fill="var(--primary)" opacity="0.7" />
-                        <text x="60" y="44" textAnchor="middle" fontSize="18" fill="#fff" fontWeight="bold">V</text>
-                    </svg>
-                </figure>
-                <div className="compare-title">ヴィントン・サーフ</div>
-                <div className="compare-body">「構想を一気に20ページ以上書き上げた」</div>
-            </div>
-            <div className="compare-card border-teal">
-                <figure className="photo-frame">
-                    <svg viewBox="0 0 120 120" width="120" height="120" style={{ display: 'block', margin: '0 auto' }}>
-                        <circle cx="60" cy="38" r="24" fill="var(--teal)" opacity="0.85" />
-                        <ellipse cx="60" cy="110" rx="40" ry="32" fill="var(--teal)" opacity="0.7" />
-                        <text x="60" y="44" textAnchor="middle" fontSize="18" fill="#fff" fontWeight="bold">B</text>
-                    </svg>
-                </figure>
-                <div className="compare-title">ボブ・カーン</div>
-                <div className="compare-body">「まず8ページを書いて議論の土台を作った」</div>
-            </div>
-        </div>
-        <div className="big-statement"><span className="accent-amber">1974年</span> 「インターネットの郵便ルール」を設計</div>
-    </div>
-</div>
-    </AbsoluteFill>
-);
-
-export const Scene5: React.FC = () => (
-    <AbsoluteFill>
-        <div className="scene" id="scene-5">
-    <div className="content center-layout">
-        <div className="scene-title">世界をつなぐ海底ケーブル</div>
-        <svg viewBox="0 0 780 220" width="780" height="220">
-            {/* 海面 */}
-            <path d="M0 80 Q40 65 80 80 Q120 95 160 80 Q200 65 240 80 Q280 95 320 80 Q360 65 400 80 Q440 95 480 80 Q520 65 560 80 Q600 95 640 80 Q680 65 720 80 Q760 95 780 80" fill="none" stroke="#0891b2" strokeWidth="2" opacity="0.4"/>
-            {/* 海底ケーブル */}
-            <path d="M60 100 Q200 180 390 170 Q580 160 720 100" fill="none" stroke="#2563eb" strokeWidth="4" strokeLinecap="round"/>
-            {/* 左の陸地 */}
-            <rect x="20" y="50" width="80" height="55" rx="8" fill="#dbeafe" stroke="#2563eb" strokeWidth="2"/>
-            <text x="60" y="82" textAnchor="middle" fontSize="14" fontWeight="900" fill="#2563eb">東京</text>
-            {/* 右の陸地 */}
-            <rect x="680" y="50" width="80" height="55" rx="8" fill="#cffafe" stroke="#0891b2" strokeWidth="2"/>
-            <text x="720" y="82" textAnchor="middle" fontSize="14" fontWeight="900" fill="#0891b2">NY</text>
-            {/* データ */}
-            <rect x="220" y="115" width="160" height="30" rx="6" fill="#fff" stroke="#d1d5db" strokeWidth="1.5"/>
-            <text x="300" y="135" textAnchor="middle" fontSize="14" fontWeight="900" fill="#2563eb">約570本</text>
-            <rect x="420" y="115" width="200" height="30" rx="6" fill="#fff" stroke="#d1d5db" strokeWidth="1.5"/>
-            <text x="520" y="135" textAnchor="middle" fontSize="14" fontWeight="900" fill="#0891b2">150万km+</text>
-            {/* 99% */}
-            <rect x="260" y="175" width="260" height="36" rx="8" fill="#d97706"/>
-            <text x="390" y="199" textAnchor="middle" fontSize="18" fontWeight="900" fill="#fff">トラフィックの99%が海底経由</text>
-        </svg>
-        <div className="icon-row">
-            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/google/google-original.svg" />
-            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/facebook/facebook-original.svg" />
-        </div>
-        <div className="source">出典: TeleGeography Submarine Cable Map 2025</div>
-    </div>
-</div>
-    </AbsoluteFill>
-);
-
-export const Scene6: React.FC = () => (
-    <AbsoluteFill>
-        <div className="scene" id="scene-6">
-    <div className="content center-layout">
-        <div className="scene-title">ISPの階層構造</div>
-        <svg viewBox="0 0 780 240" width="780" height="240">
-            {/* Tier 1 */}
-            <rect x="240" y="10" width="300" height="55" rx="10" fill="#2563eb"/>
-            <text x="390" y="43" textAnchor="middle" fontSize="20" fontWeight="900" fill="#fff">Tier 1 — 国際バックボーン</text>
-            {/* 矢印 */}
-            <line x1="330" y1="65" x2="280" y2="90" stroke="#d1d5db" strokeWidth="2"/>
-            <line x1="450" y1="65" x2="500" y2="90" stroke="#d1d5db" strokeWidth="2"/>
-            {/* Tier 2 */}
-            <rect x="140" y="90" width="220" height="50" rx="10" fill="#0891b2"/>
-            <text x="250" y="120" textAnchor="middle" fontSize="18" fontWeight="900" fill="#fff">Tier 2 — 地域レベル</text>
-            <rect x="420" y="90" width="220" height="50" rx="10" fill="#0891b2"/>
-            <text x="530" y="120" textAnchor="middle" fontSize="18" fontWeight="900" fill="#fff">Tier 2 — 地域レベル</text>
-            {/* 矢印 */}
-            <line x1="200" y1="140" x2="160" y2="170" stroke="#d1d5db" strokeWidth="2"/>
-            <line x1="300" y1="140" x2="340" y2="170" stroke="#d1d5db" strokeWidth="2"/>
-            <line x1="480" y1="140" x2="440" y2="170" stroke="#d1d5db" strokeWidth="2"/>
-            <line x1="580" y1="140" x2="620" y2="170" stroke="#d1d5db" strokeWidth="2"/>
-            {/* Tier 3 */}
-            <rect x="80" y="170" width="140" height="44" rx="8" fill="#d97706"/>
-            <text x="150" y="196" textAnchor="middle" fontSize="14" fontWeight="900" fill="#fff">Tier 3</text>
-            <rect x="260" y="170" width="140" height="44" rx="8" fill="#d97706"/>
-            <text x="330" y="196" textAnchor="middle" fontSize="14" fontWeight="900" fill="#fff">Tier 3</text>
-            <rect x="440" y="170" width="140" height="44" rx="8" fill="#d97706"/>
-            <text x="510" y="196" textAnchor="middle" fontSize="14" fontWeight="900" fill="#fff">Tier 3</text>
-            <rect x="620" y="170" width="100" height="44" rx="8" fill="#d97706"/>
-            <text x="670" y="196" textAnchor="middle" fontSize="14" fontWeight="900" fill="#fff">Tier 3</text>
-            {/* 家アイコン群 */}
-            <text x="150" y="235" textAnchor="middle" fontSize="20">🏠</text>
-            <text x="330" y="235" textAnchor="middle" fontSize="20">🏠</text>
-            <text x="510" y="235" textAnchor="middle" fontSize="20">🏠</text>
-            <text x="670" y="235" textAnchor="middle" fontSize="20">🏠</text>
-            {/* 対等ラベル */}
-            <text x="390" y="43" textAnchor="middle" fontSize="0" fill="none">spacer</text>
-            <line x1="360" y1="37" x2="420" y2="37" stroke="none"/>
-        </svg>
-        <div className="big-statement">Tier 1同士は<span className="accent-primary">対等に無料交換</span>　料金は<span className="accent-amber">下→上</span>に流れる</div>
-    </div>
-</div>
-    </AbsoluteFill>
-);
-
-export const Scene7: React.FC = () => (
-    <AbsoluteFill>
-        <div className="scene" id="scene-7">
-    <div className="content center-layout">
-        <div className="scene-title">誰が管理しているのか</div>
-        <svg viewBox="0 0 780 230" width="780" height="230">
-            {/* 中央ハブ */}
-            <circle cx="390" cy="115" r="45" fill="#dbeafe" stroke="#2563eb" strokeWidth="3"/>
-            <text x="390" y="110" textAnchor="middle" fontSize="13" fontWeight="900" fill="#2563eb">マルチ</text>
-            <text x="390" y="128" textAnchor="middle" fontSize="13" fontWeight="900" fill="#2563eb">ステークホルダー</text>
-            {/* 名前と番号 */}
-            <line x1="345" y1="100" x2="180" y2="55" stroke="#2563eb" strokeWidth="2"/>
-            <rect x="80" y="25" width="200" height="60" rx="10" fill="#fff" stroke="#2563eb" strokeWidth="2"/>
-            <text x="180" y="52" textAnchor="middle" fontSize="16" fontWeight="900" fill="#2563eb">名前と番号の管理</text>
-            <text x="180" y="72" textAnchor="middle" fontSize="14" fontWeight="700" fill="#1a1d23">ICANN / IANA</text>
-            {/* 技術標準 */}
-            <line x1="435" y1="100" x2="600" y2="55" stroke="#0891b2" strokeWidth="2"/>
-            <rect x="500" y="25" width="200" height="60" rx="10" fill="#fff" stroke="#0891b2" strokeWidth="2"/>
-            <text x="600" y="52" textAnchor="middle" fontSize="16" fontWeight="900" fill="#0891b2">技術標準の策定</text>
-            <text x="600" y="72" textAnchor="middle" fontSize="14" fontWeight="700" fill="#1a1d23">IETF / W3C</text>
-            {/* 物理インフラ */}
-            <line x1="390" y1="160" x2="390" y2="185" stroke="#d97706" strokeWidth="2"/>
-            <rect x="270" y="185" width="240" height="40" rx="10" fill="#fff" stroke="#d97706" strokeWidth="2"/>
-            <text x="390" y="210" textAnchor="middle" fontSize="16" fontWeight="900" fill="#d97706">物理インフラの運用</text>
-        </svg>
-        <div className="big-statement">「1つの組織」ではなく<span className="accent-primary">「役割分担した複数の組織」</span></div>
-    </div>
-</div>
-    </AbsoluteFill>
-);
-
-export const Scene8: React.FC = () => (
-    <AbsoluteFill>
-        <div className="scene" id="scene-8">
-    <div className="content center-layout">
-        <div className="scene-title">ICANN — 名前と番号の管理</div>
-        <svg viewBox="0 0 780 230" width="780" height="230">
-            {/* DNSツリー構造 */}
-            <rect x="315" y="10" width="150" height="40" rx="8" fill="#2563eb"/>
-            <text x="390" y="36" textAnchor="middle" fontSize="16" fontWeight="900" fill="#fff">ルート (13名前)</text>
-            {/* 枝 */}
-            <line x1="350" y1="50" x2="180" y2="85" stroke="#d1d5db" strokeWidth="2"/>
-            <line x1="390" y1="50" x2="390" y2="85" stroke="#d1d5db" strokeWidth="2"/>
-            <line x1="430" y1="50" x2="600" y2="85" stroke="#d1d5db" strokeWidth="2"/>
-            {/* TLD */}
-            <rect x="120" y="85" width="120" height="35" rx="6" fill="#dbeafe" stroke="#2563eb" strokeWidth="2"/>
-            <text x="180" y="107" textAnchor="middle" fontSize="16" fontWeight="900" fill="#2563eb">.com</text>
-            <rect x="330" y="85" width="120" height="35" rx="6" fill="#cffafe" stroke="#0891b2" strokeWidth="2"/>
-            <text x="390" y="107" textAnchor="middle" fontSize="16" fontWeight="900" fill="#0891b2">.jp</text>
-            <rect x="540" y="85" width="120" height="35" rx="6" fill="#fef3c7" stroke="#d97706" strokeWidth="2"/>
-            <text x="600" y="107" textAnchor="middle" fontSize="16" fontWeight="900" fill="#d97706">.org</text>
-            {/* 分散ノード */}
-            <text x="390" y="155" textAnchor="middle" fontSize="18" fontWeight="900" fill="#1a1d23">物理サーバーの分散配置</text>
-            {/* 世界地図的な分散表現 */}
-            <circle cx="140" cy="195" r="10" fill="#2563eb" opacity="0.5"/>
-            <circle cx="220" cy="180" r="8" fill="#0891b2" opacity="0.5"/>
-            <circle cx="300" cy="200" r="10" fill="#d97706" opacity="0.5"/>
-            <circle cx="380" cy="185" r="8" fill="#2563eb" opacity="0.5"/>
-            <circle cx="460" cy="195" r="10" fill="#0891b2" opacity="0.5"/>
-            <circle cx="540" cy="180" r="8" fill="#d97706" opacity="0.5"/>
-            <circle cx="620" cy="200" r="10" fill="#2563eb" opacity="0.5"/>
-            <text x="390" y="228" textAnchor="middle" fontSize="14" fontWeight="700" fill="#1a1d23">130カ国以上 / 1,700台以上 / 12組織が運用</text>
-        </svg>
-    </div>
-</div>
-    </AbsoluteFill>
-);
-
-export const Scene9: React.FC = () => (
-    <AbsoluteFill>
-        <div className="scene" id="scene-9">
-    <div className="content center-layout">
-        <div className="scene-title">IETF — 技術標準の決め方</div>
-        <div className="two-col">
-            <div className="compare-card border-coral">
-                <div className="compare-title accent-coral">普通の国際ルール</div>
-                <div className="compare-body">政府代表が集まる<br />投票で多数決<br />国単位の参加</div>
-            </div>
-            <div className="compare-card border-primary">
-                <div className="compare-title accent-primary">IETFのやり方</div>
-                <div className="compare-body">個人として参加<br />ラフコンセンサス<br />誰でも参加可能</div>
-            </div>
-        </div>
-        <div className="quote-block">
-            <div className="quote-mark">"</div>
-            <div className="quote-body">王も、大統領も、投票も拒否する。<br />信じるのは、ラフコンセンサスとランニングコード</div>
-            <div className="quote-source">— デイビッド・クラーク (1992)</div>
-        </div>
-    </div>
-</div>
-    </AbsoluteFill>
-);
-
-export const Scene10: React.FC = () => (
-    <AbsoluteFill>
-        <div className="scene" id="scene-10">
-    <div className="content center-layout">
-        <div className="scene-title">RFCができるまで</div>
-        <div className="flow-chain">
-            <div className="fc-node">
-                <div className="fc-node-title">Internet-Draft</div>
-                <div className="fc-node-sub">誰でも提出</div>
-            </div>
-            <div className="fc-arr">→</div>
-            <div className="fc-node">
-                <div className="fc-node-title">WG査読</div>
-                <div className="fc-node-sub">議論・修正</div>
-            </div>
-            <div className="fc-arr">→</div>
-            <div className="fc-node">
-                <div className="fc-node-title">ラフコンセンサス</div>
-                <div className="fc-node-sub">おおまかな合意</div>
-            </div>
-            <div className="fc-arr">→</div>
-            <div className="fc-node highlight">
-                <div className="fc-node-title">RFC公開</div>
-                <div className="fc-node-sub">世界標準に</div>
-            </div>
-        </div>
-        <div className="metric-grid">
-            <div className="metric-card border-primary">
-                <div className="metric-value accent-primary">9,700+</div>
-                <div className="metric-label">公開されたRFC数</div>
-            </div>
-        </div>
-        <div className="big-statement">TCP/IP、HTTP、DNS…すべてこのプロセスで標準化</div>
-    </div>
-</div>
-    </AbsoluteFill>
-);
-
-export const Scene11: React.FC = () => (
-    <AbsoluteFill>
-        <div className="scene" id="scene-11">
-    <div className="content center-layout">
-        <div className="scene-title">BGP — 経路の交通整理</div>
-        <svg viewBox="0 0 780 230" width="780" height="230">
-            {/* AS群のハブ&スポーク */}
-            <circle cx="390" cy="110" r="35" fill="#dbeafe" stroke="#2563eb" strokeWidth="2"/>
-            <text x="390" y="107" textAnchor="middle" fontSize="13" fontWeight="900" fill="#2563eb">AS</text>
-            <text x="390" y="122" textAnchor="middle" fontSize="13" fontWeight="900" fill="#2563eb">100</text>
-            {/* 周囲のAS */}
-            <circle cx="180" cy="60" r="28" fill="#cffafe" stroke="#0891b2" strokeWidth="2"/>
-            <text x="180" y="64" textAnchor="middle" fontSize="12" fontWeight="900" fill="#0891b2">AS 200</text>
-            <circle cx="600" cy="60" r="28" fill="#fef3c7" stroke="#d97706" strokeWidth="2"/>
-            <text x="600" y="64" textAnchor="middle" fontSize="12" fontWeight="900" fill="#d97706">AS 300</text>
-            <circle cx="180" cy="170" r="28" fill="#fee2e2" stroke="#dc2626" strokeWidth="2"/>
-            <text x="180" y="174" textAnchor="middle" fontSize="12" fontWeight="900" fill="#dc2626">AS 400</text>
-            <circle cx="600" cy="170" r="28" fill="#dbeafe" stroke="#2563eb" strokeWidth="2"/>
-            <text x="600" y="174" textAnchor="middle" fontSize="12" fontWeight="900" fill="#2563eb">AS 500</text>
-            {/* 接続線 */}
-            <line x1="208" y1="60" x2="355" y2="100" stroke="#d1d5db" strokeWidth="2"/>
-            <line x1="572" y1="60" x2="425" y2="100" stroke="#d1d5db" strokeWidth="2"/>
-            <line x1="208" y1="170" x2="355" y2="120" stroke="#d1d5db" strokeWidth="2"/>
-            <line x1="572" y1="170" x2="425" y2="120" stroke="#d1d5db" strokeWidth="2"/>
-            <line x1="208" y1="60" x2="572" y2="60" stroke="#d1d5db" strokeWidth="1" strokeDasharray="4 3"/>
-            <line x1="208" y1="170" x2="572" y2="170" stroke="#d1d5db" strokeWidth="1" strokeDasharray="4 3"/>
-            {/* ラベル */}
-            <rect x="270" y="30" width="240" height="26" rx="6" fill="#fff" stroke="#d1d5db" strokeWidth="1"/>
-            <text x="390" y="48" textAnchor="middle" fontSize="13" fontWeight="700" fill="#1a1d23">「うちはこの道を知ってるよ」</text>
-            <text x="390" y="220" textAnchor="middle" fontSize="16" fontWeight="900" fill="#dc2626">基本的に相手の言うことを「信頼」する</text>
-        </svg>
-    </div>
-</div>
-    </AbsoluteFill>
-);
-
-export const Scene12: React.FC = () => (
-    <AbsoluteFill>
-        <div className="scene" id="scene-12">
-    <div className="content center-layout">
-        <div className="scene-title accent-coral">2008年 YouTubeハイジャック事件</div>
-        <svg viewBox="0 0 780 220" width="780" height="220">
-            {/* YouTube */}
-            <rect x="40" y="30" width="180" height="70" rx="10" fill="#fee2e2" stroke="#dc2626" strokeWidth="2"/>
-            <image href="https://api.iconify.design/mdi/youtube.svg?color=%23FF0000&width=72&height=72" x="60" y="38" width="36" height="36"/>
-            <text x="150" y="60" textAnchor="middle" fontSize="16" fontWeight="900" fill="#dc2626">YouTube</text>
-            <text x="130" y="85" textAnchor="middle" fontSize="12" fontWeight="700" fill="#1a1d23">正規の経路情報</text>
-            {/* パキスタンテレコム */}
-            <rect x="560" y="30" width="180" height="70" rx="10" fill="#fef3c7" stroke="#d97706" strokeWidth="2"/>
-            <image href="https://flagicons.lipis.dev/flags/4x3/pk.svg" x="610" y="38" width="30" height="22"/>
-            <text x="680" y="60" textAnchor="middle" fontSize="14" fontWeight="900" fill="#d97706">Pakistan Telecom</text>
-            <text x="650" y="85" textAnchor="middle" fontSize="12" fontWeight="700" fill="#1a1d23">嘘の経路情報</text>
-            {/* 世界 */}
-            <ellipse cx="390" cy="120" rx="140" ry="40" fill="none" stroke="#d1d5db" strokeWidth="2"/>
-            <text x="390" y="125" textAnchor="middle" fontSize="16" fontWeight="900" fill="#1a1d23">世界中のトラフィック</text>
-            {/* 矢印: 正規 */}
-            <line x1="220" y1="65" x2="260" y2="100" stroke="#2563eb" strokeWidth="2" strokeDasharray="4 3"/>
-            {/* 矢印: 嘘 */}
-            <path d="M560 65 Q480 80 530 110" fill="none" stroke="#dc2626" strokeWidth="3"/>
-            <text x="500" y="80" fontSize="14" fontWeight="900" fill="#dc2626">×</text>
-            {/* 結果 */}
-            <rect x="240" y="175" width="300" height="36" rx="8" fill="#dc2626"/>
-            <text x="390" y="198" textAnchor="middle" fontSize="16" fontWeight="900" fill="#fff">全世界で約2時間ダウン</text>
-        </svg>
-        <div className="source">出典: RIPE NCC RIS Case Study 2008</div>
-    </div>
-</div>
-    </AbsoluteFill>
-);
-
-export const Scene13: React.FC = () => (
-    <AbsoluteFill>
-        <div className="scene" id="scene-13">
-    <div className="content center-layout">
-        <div className="scene-title">「分散」なのに「集中」する現実</div>
-        <svg viewBox="0 0 780 180" width="780" height="180">
-            {/* 巨大な丸（集中） */}
-            <circle cx="390" cy="90" r="70" fill="#dbeafe" stroke="#2563eb" strokeWidth="2" opacity="0.5"/>
-            {/* ロゴ配置 */}
-            <image href="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/cloudflare/cloudflare-original.svg" x="340" y="40" width="40" height="40"/>
-            <image href="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/amazonwebservices/amazonwebservices-original-wordmark.svg" x="395" y="40" width="40" height="40"/>
-            <image href="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/azure/azure-original.svg" x="365" y="95" width="40" height="40"/>
-            <image href="https://api.iconify.design/mdi/google-cloud.svg?color=%234285F4&width=72&height=72" x="410" y="95" width="35" height="35"/>
-            {/* 小さな丸（分散のはず） */}
-            <circle cx="120" cy="50" r="8" fill="#d1d5db"/>
-            <circle cx="80" cy="100" r="6" fill="#d1d5db"/>
-            <circle cx="150" cy="130" r="7" fill="#d1d5db"/>
-            <circle cx="640" cy="40" r="7" fill="#d1d5db"/>
-            <circle cx="680" cy="100" r="6" fill="#d1d5db"/>
-            <circle cx="620" cy="140" r="8" fill="#d1d5db"/>
-            {/* ラベル */}
-            <text x="390" y="175" textAnchor="middle" fontSize="14" fontWeight="700" fill="#1a1d23">経済の論理で効率を求めると自然に集中が起きる</text>
-        </svg>
-        <div className="bar-chart">
-            <div className="bar-row">
-                <div className="bar-label">Cloudflare</div>
-                <div className="bar-track"><div className="bar-fill bar-fill-primary" style={{ '--w': '20%' } as React.CSSProperties}></div></div>
-                <div className="bar-value">~20%</div>
-            </div>
-        </div>
-        <div className="source">出典: W3Techs Web Technology Surveys 2025</div>
-    </div>
-</div>
-    </AbsoluteFill>
-);
-
-export const Scene14: React.FC = () => (
-    <AbsoluteFill>
-        <div className="scene" id="scene-14">
-    <div className="content center-layout">
-        <div className="scene-title">設計は分散、現実は集中</div>
-        <svg viewBox="0 0 780 200" width="780" height="200">
-            {/* 左: プロトコル層（分散） */}
-            <rect x="40" y="20" width="320" height="160" rx="12" fill="#dbeafe" stroke="#2563eb" strokeWidth="2"/>
-            <text x="200" y="50" textAnchor="middle" fontSize="18" fontWeight="900" fill="#2563eb">プロトコル層</text>
-            {/* 分散ノード */}
-            <circle cx="100" cy="100" r="12" fill="#2563eb" opacity="0.4"/>
-            <circle cx="160" cy="80" r="12" fill="#2563eb" opacity="0.4"/>
-            <circle cx="220" cy="110" r="12" fill="#2563eb" opacity="0.4"/>
-            <circle cx="280" cy="85" r="12" fill="#2563eb" opacity="0.4"/>
-            <circle cx="140" cy="140" r="12" fill="#2563eb" opacity="0.4"/>
-            <circle cx="240" cy="145" r="12" fill="#2563eb" opacity="0.4"/>
-            <line x1="100" y1="100" x2="160" y2="80" stroke="#2563eb" strokeWidth="1" opacity="0.3"/>
-            <line x1="160" y1="80" x2="220" y2="110" stroke="#2563eb" strokeWidth="1" opacity="0.3"/>
-            <line x1="220" y1="110" x2="280" y2="85" stroke="#2563eb" strokeWidth="1" opacity="0.3"/>
-            <line x1="100" y1="100" x2="140" y2="140" stroke="#2563eb" strokeWidth="1" opacity="0.3"/>
-            <line x1="220" y1="110" x2="240" y2="145" stroke="#2563eb" strokeWidth="1" opacity="0.3"/>
-            <text x="200" y="178" textAnchor="middle" fontSize="14" fontWeight="900" fill="#2563eb">今も分散設計</text>
-            {/* 右: インフラ層（集中） */}
-            <rect x="420" y="20" width="320" height="160" rx="12" fill="#fee2e2" stroke="#dc2626" strokeWidth="2"/>
-            <text x="580" y="50" textAnchor="middle" fontSize="18" fontWeight="900" fill="#dc2626">インフラ層</text>
-            <circle cx="580" cy="110" r="50" fill="#dc2626" opacity="0.15"/>
-            <circle cx="580" cy="110" r="30" fill="#dc2626" opacity="0.25"/>
-            <circle cx="580" cy="110" r="12" fill="#dc2626" opacity="0.6"/>
-            <circle cx="480" cy="80" r="5" fill="#d1d5db"/>
-            <circle cx="680" cy="80" r="5" fill="#d1d5db"/>
-            <circle cx="500" cy="150" r="4" fill="#d1d5db"/>
-            <circle cx="660" cy="150" r="4" fill="#d1d5db"/>
-            <text x="580" y="178" textAnchor="middle" fontSize="14" fontWeight="900" fill="#dc2626">集中が進行中</text>
-        </svg>
-        <div className="big-statement">RPKIやマルチクラウド戦略で<span className="accent-primary">対処を模索中</span></div>
-    </div>
-</div>
-    </AbsoluteFill>
-);
-
-export const Scene15: React.FC = () => (
-    <AbsoluteFill>
-        <div className="scene" id="scene-15">
-    <div className="content center-layout">
-        <div className="scene-title accent-coral">信頼が壊されるとき</div>
-        <svg viewBox="0 0 780 220" width="780" height="220">
-            {/* グローバルネット */}
-            <rect x="40" y="20" width="300" height="180" rx="12" fill="#dbeafe" stroke="#2563eb" strokeWidth="2"/>
-            <text x="190" y="50" textAnchor="middle" fontSize="16" fontWeight="900" fill="#2563eb">グローバルインターネット</text>
-            {/* ロゴ群 */}
-            <image href="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/google/google-original.svg" x="80" y="70" width="36" height="36"/>
-            <image href="https://api.iconify.design/mdi/youtube.svg?color=%23FF0000&width=72&height=72" x="140" y="70" width="36" height="36"/>
-            <image href="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/facebook/facebook-original.svg" x="200" y="70" width="36" height="36"/>
-            <image href="https://api.iconify.design/mdi/twitter.svg?color=%231DA1F2&width=72&height=72" x="260" y="70" width="36" height="36"/>
-            {/* ファイアウォール壁 */}
-            <rect x="370" y="15" width="30" height="195" rx="4" fill="#dc2626" opacity="0.8"/>
-            <text x="385" y="115" textAnchor="middle" fontSize="28" fontWeight="900" fill="#fff" transform="rotate(-90 385 115)">FIREWALL</text>
-            {/* 中国側 */}
-            <rect x="430" y="20" width="310" height="180" rx="12" fill="#fee2e2" stroke="#dc2626" strokeWidth="2"/>
-            <image href="https://flagicons.lipis.dev/flags/4x3/cn.svg" x="560" y="30" width="40" height="30"/>
-            <text x="585" y="80" textAnchor="middle" fontSize="16" fontWeight="900" fill="#dc2626">グレートファイアウォール</text>
-            {/* ブロックされたサービスのX印 */}
-            <text x="480" y="120" fontSize="24" fontWeight="900" fill="#dc2626">×</text>
-            <text x="530" y="120" fontSize="24" fontWeight="900" fill="#dc2626">×</text>
-            <text x="580" y="120" fontSize="24" fontWeight="900" fill="#dc2626">×</text>
-            <text x="630" y="120" fontSize="24" fontWeight="900" fill="#dc2626">×</text>
-            <text x="585" y="155" textAnchor="middle" fontSize="13" fontWeight="700" fill="#1a1d23">Google, YouTube, Facebook, X</text>
-            <text x="585" y="175" textAnchor="middle" fontSize="13" fontWeight="700" fill="#1a1d23">すべてアクセス不可</text>
-        </svg>
-        <div className="big-statement">検閲技術は<span className="accent-coral">他国にも輸出</span>されている</div>
-    </div>
-</div>
-    </AbsoluteFill>
-);
-
-export const Scene16: React.FC = () => (
-    <AbsoluteFill>
-        <div className="scene" id="scene-16">
-    <div className="content center-layout">
-        <div className="scene-title">IANA監督権限の移管</div>
-        <svg viewBox="0 0 780 200" width="780" height="200">
-            {/* Before */}
-            <rect x="40" y="20" width="300" height="80" rx="10" fill="#fee2e2" stroke="#dc2626" strokeWidth="2"/>
-            <image href="https://flagicons.lipis.dev/flags/4x3/us.svg" x="60" y="35" width="40" height="30"/>
-            <text x="220" y="50" textAnchor="middle" fontSize="16" fontWeight="900" fill="#dc2626">アメリカ商務省が監督</text>
-            <text x="190" y="80" textAnchor="middle" fontSize="14" fontWeight="700" fill="#1a1d23">世界中から批判</text>
-            {/* 矢印 */}
-            <text x="390" y="65" textAnchor="middle" fontSize="32" fontWeight="900" fill="#2563eb">→</text>
-            {/* After */}
-            <rect x="440" y="20" width="300" height="80" rx="10" fill="#dbeafe" stroke="#2563eb" strokeWidth="2"/>
-            <text x="590" y="50" textAnchor="middle" fontSize="16" fontWeight="900" fill="#2563eb">グローバルコミュニティ</text>
-            <text x="590" y="80" textAnchor="middle" fontSize="14" fontWeight="700" fill="#1a1d23">多様なステークホルダー</text>
-            {/* 年 */}
-            <rect x="320" y="115" width="140" height="36" rx="8" fill="#d97706"/>
-            <text x="390" y="139" textAnchor="middle" fontSize="18" fontWeight="900" fill="#fff">2016年10月1日</text>
-            {/* 世界の旗 */}
-            <image href="https://flagicons.lipis.dev/flags/4x3/jp.svg" x="180" y="160" width="30" height="22"/>
-            <image href="https://flagicons.lipis.dev/flags/4x3/de.svg" x="250" y="160" width="30" height="22"/>
-            <image href="https://flagicons.lipis.dev/flags/4x3/br.svg" x="320" y="160" width="30" height="22"/>
-            <image href="https://flagicons.lipis.dev/flags/4x3/in.svg" x="390" y="160" width="30" height="22"/>
-            <image href="https://flagicons.lipis.dev/flags/4x3/ke.svg" x="460" y="160" width="30" height="22"/>
-            <image href="https://flagicons.lipis.dev/flags/4x3/au.svg" x="530" y="160" width="30" height="22"/>
-        </svg>
-    </div>
-</div>
-    </AbsoluteFill>
-);
-
-export const Scene17: React.FC = () => (
-    <AbsoluteFill>
-        <div className="scene" id="scene-17">
-    <div className="content center-layout">
-        <div className="scene-title">日本のインターネット史</div>
-        <div className="flow-chain">
-            <div className="fc-node">
-                <div className="year-badge">1984</div>
-                <div className="fc-node-title">JUNET</div>
-                <div className="fc-node-sub">村井純が接続</div>
-            </div>
-            <div className="fc-arr">→</div>
-            <div className="fc-node">
-                <div className="year-badge">1988</div>
-                <div className="fc-node-title">WIDE</div>
-                <div className="fc-node-sub">本格始動</div>
-            </div>
-            <div className="fc-arr">→</div>
-            <div className="fc-node">
-                <div className="year-badge">1990s</div>
-                <div className="fc-node-title">ダイヤルアップ</div>
-                <div className="fc-node-sub">ピーヒョロロ</div>
-            </div>
-            <div className="fc-arr">→</div>
-            <div className="fc-node highlight">
-                <div className="year-badge">2000s~</div>
-                <div className="fc-node-title">ADSL→光</div>
-                <div className="fc-node-sub">高速化</div>
-            </div>
-        </div>
-        <div className="icon-row">
-            <img src="https://flagicons.lipis.dev/flags/4x3/jp.svg" />
-        </div>
-    </div>
-</div>
-    </AbsoluteFill>
-);
-
-export const Scene18: React.FC = () => (
-    <AbsoluteFill>
-        <div className="scene" id="scene-18">
-    <div className="content center-layout">
-        <div className="scene-title">インターネットを支える人々</div>
-        <svg viewBox="0 0 780 230" width="780" height="230">
-            {/* 中央の「信頼」 */}
-            <circle cx="390" cy="115" r="55" fill="#dbeafe" stroke="#2563eb" strokeWidth="3"/>
-            <text x="390" y="112" textAnchor="middle" fontSize="22" fontWeight="900" fill="#2563eb">信頼</text>
-            <text x="390" y="132" textAnchor="middle" fontSize="14" fontWeight="700" fill="#2563eb">と合意</text>
-            {/* 放射状の役割 */}
-            {/* 研究者 */}
-            <line x1="340" y1="80" x2="190" y2="40" stroke="#2563eb" strokeWidth="2"/>
-            <circle cx="170" cy="22" r="14" fill="#2563eb"/>
-            <path d="M150 40 C150 27 190 27 190 40 L190 50 Q170 58 150 50 Z" fill="#2563eb"/>
-            <text x="170" y="75" textAnchor="middle" fontSize="12" fontWeight="700" fill="#1a1d23">研究者</text>
-            {/* 標準化 */}
-            <line x1="440" y1="80" x2="590" y2="40" stroke="#0891b2" strokeWidth="2"/>
-            <circle cx="610" cy="22" r="14" fill="#0891b2"/>
-            <path d="M590 40 C590 27 630 27 630 40 L630 50 Q610 58 590 50 Z" fill="#0891b2"/>
-            <text x="610" y="75" textAnchor="middle" fontSize="12" fontWeight="700" fill="#1a1d23">IETF技術者</text>
-            {/* ISP */}
-            <line x1="340" y1="150" x2="190" y2="190" stroke="#d97706" strokeWidth="2"/>
-            <circle cx="170" cy="172" r="14" fill="#d97706"/>
-            <path d="M150 190 C150 177 190 177 190 190 L190 200 Q170 208 150 200 Z" fill="#d97706"/>
-            <text x="170" y="225" textAnchor="middle" fontSize="12" fontWeight="700" fill="#1a1d23">ISP運用者</text>
-            {/* ケーブル */}
-            <line x1="440" y1="150" x2="590" y2="190" stroke="#dc2626" strokeWidth="2"/>
-            <circle cx="610" cy="172" r="14" fill="#dc2626"/>
-            <path d="M590 190 C590 177 630 177 630 190 L630 200 Q610 208 590 200 Z" fill="#dc2626"/>
-            <text x="610" y="225" textAnchor="middle" fontSize="12" fontWeight="700" fill="#1a1d23">海底ケーブル事業者</text>
-        </svg>
-        <div className="big-statement">全員が自分の領域で<span className="accent-primary">責任を持ち協力</span>している</div>
-    </div>
-</div>
-    </AbsoluteFill>
-);
-
-export const Scene19: React.FC = () => (
-    <AbsoluteFill>
-        <div className="scene" id="scene-19">
-    <div className="content center-layout">
-        <div className="scene-title">インターネットの"社長"は？</div>
-        <svg viewBox="0 0 780 180" width="780" height="180">
-            {/* 問い */}
-            <rect x="40" y="30" width="300" height="60" rx="10" fill="#fef3c7" stroke="#d97706" strokeWidth="2"/>
-            <text x="190" y="66" textAnchor="middle" fontSize="18" fontWeight="900" fill="#d97706">社長は誰？</text>
-            {/* 矢印 */}
-            <text x="390" y="68" textAnchor="middle" fontSize="28" fontWeight="900" fill="#2563eb">→</text>
-            {/* 答え */}
-            <rect x="440" y="20" width="300" height="80" rx="10" fill="#dbeafe" stroke="#2563eb" strokeWidth="2"/>
-            <text x="590" y="52" textAnchor="middle" fontSize="18" fontWeight="900" fill="#2563eb">誰でもあり</text>
-            <text x="590" y="78" textAnchor="middle" fontSize="18" fontWeight="900" fill="#2563eb">誰でもない</text>
-            {/* 下部: 仕組み群 */}
-            <rect x="80" y="120" width="130" height="40" rx="8" fill="#fff" stroke="#2563eb" strokeWidth="2"/>
-            <text x="145" y="145" textAnchor="middle" fontSize="14" fontWeight="900" fill="#2563eb">IETF</text>
-            <rect x="240" y="120" width="130" height="40" rx="8" fill="#fff" stroke="#0891b2" strokeWidth="2"/>
-            <text x="305" y="145" textAnchor="middle" fontSize="14" fontWeight="900" fill="#0891b2">ICANN</text>
-            <rect x="400" y="120" width="130" height="40" rx="8" fill="#fff" stroke="#d97706" strokeWidth="2"/>
-            <text x="465" y="145" textAnchor="middle" fontSize="14" fontWeight="900" fill="#d97706">ISP</text>
-            <rect x="560" y="120" width="130" height="40" rx="8" fill="#fff" stroke="#dc2626" strokeWidth="2"/>
-            <text x="625" y="145" textAnchor="middle" fontSize="14" fontWeight="900" fill="#dc2626">BGP</text>
-        </svg>
-        <div className="big-statement"><span className="accent-primary">信頼と合意の積み重ね</span>で動いている</div>
-    </div>
-</div>
-    </AbsoluteFill>
-);
-
-export const Scene20: React.FC = () => (
-    <AbsoluteFill>
-        <div className="scene" id="scene-20">
-    <div className="content center-layout">
-        <div className="scene-title">エンドツーエンド原則</div>
-        <svg viewBox="0 0 780 180" width="780" height="180">
-            {/* ネットワーク中央はシンプル */}
-            <rect x="240" y="30" width="300" height="120" rx="12" fill="#f8f9fa" stroke="#d1d5db" strokeWidth="2"/>
-            <text x="390" y="65" textAnchor="middle" fontSize="16" fontWeight="900" fill="#d1d5db">ネットワーク中身</text>
-            <text x="390" y="90" textAnchor="middle" fontSize="24" fontWeight="900" fill="#1a1d23">シンプル</text>
-            <text x="390" y="115" textAnchor="middle" fontSize="14" fontWeight="700" fill="#1a1d23">パケットを運ぶだけ</text>
-            {/* 左端: 知性 */}
-            <rect x="40" y="40" width="160" height="100" rx="12" fill="#dbeafe" stroke="#2563eb" strokeWidth="3"/>
-            <text x="120" y="75" textAnchor="middle" fontSize="16" fontWeight="900" fill="#2563eb">端の知性</text>
-            <text x="120" y="100" textAnchor="middle" fontSize="14" fontWeight="700" fill="#1a1d23">Web</text>
-            <text x="120" y="120" textAnchor="middle" fontSize="14" fontWeight="700" fill="#1a1d23">スマホ / AI</text>
-            {/* 右端: 知性 */}
-            <rect x="580" y="40" width="160" height="100" rx="12" fill="#cffafe" stroke="#0891b2" strokeWidth="3"/>
-            <text x="660" y="75" textAnchor="middle" fontSize="16" fontWeight="900" fill="#0891b2">端の知性</text>
-            <text x="660" y="100" textAnchor="middle" fontSize="14" fontWeight="700" fill="#1a1d23">IoT</text>
-            <text x="660" y="120" textAnchor="middle" fontSize="14" fontWeight="700" fill="#1a1d23">クラウド</text>
-            {/* 矢印 */}
-            <line x1="200" y1="90" x2="240" y2="90" stroke="#2563eb" strokeWidth="2"/>
-            <line x1="540" y1="90" x2="580" y2="90" stroke="#0891b2" strokeWidth="2"/>
-            <text x="390" y="175" textAnchor="middle" fontSize="16" fontWeight="900" fill="#1a1d23">だから後からWebもスマホもAIも乗っかれた</text>
-        </svg>
-    </div>
-</div>
-    </AbsoluteFill>
-);
-
-export const Scene21: React.FC = () => (
-    <AbsoluteFill>
-        <div className="scene" id="scene-21">
-    <div className="content center-layout">
-        <div className="title-large">人類史上最大の<br /><span className="accent-primary">共同作業</span></div>
-        <div className="big-statement">問題が見つかるたびにRFCを書いて<br />ラフコンセンサスで前に進めてきた</div>
-        <div className="quote-block">
-            <div className="quote-mark">"</div>
-            <div className="quote-body">王も大統領も拒否する。<br />信じるのはラフコンセンサスとランニングコード</div>
-        </div>
-    </div>
-</div>
-    </AbsoluteFill>
-);
-
-export const SCENE_COMPONENTS: Record<number, React.FC> = {
-    0: Scene0,
-    1: Scene1,
-    2: Scene2,
-    3: Scene3,
-    4: Scene4,
-    5: Scene5,
-    6: Scene6,
-    7: Scene7,
-    8: Scene8,
-    9: Scene9,
-    10: Scene10,
-    11: Scene11,
-    12: Scene12,
-    13: Scene13,
-    14: Scene14,
-    15: Scene15,
-    16: Scene16,
-    17: Scene17,
-    18: Scene18,
-    19: Scene19,
-    20: Scene20,
-    21: Scene21,
+// Palette: 海底ケーブルの深い青 / データの流れる水色 / 人間の温かみ / 遮断の警告
+const P = {
+    ...BASE_COLORS,
+    primary: '#1F6FEB',
+    primaryDeep: '#0B3D91',
+    primaryGlow: 'rgba(31,111,235,0.28)',
+    cyan: '#06B6D4',
+    cyanDeep: '#0E7490',
+    accent: '#10B981',
+    accentDeep: '#047857',
+    amber: '#F59E0B',
+    amberDeep: '#B45309',
+    rose: '#E11D48',
+    violet: '#7C3AED',
+    gold: '#CA8A04',
+    ink: '#0F172A',
+    paper: '#FFFFFF',
+    muted: '#94A3B8',
+    panel: 'rgba(255,255,255,0.92)',
+    border: 'rgba(15, 23, 42, 0.10)',
+    grid: 'rgba(11, 61, 145, 0.10)',
 };
 
-export const TOTAL_SCENE_COUNT = 22;
+const fade = (f: number, from: number, to = from + 18) =>
+    interpolate(f, [from, to], [0, 1], { extrapolateLeft: 'clamp', extrapolateRight: 'clamp' });
+const rise = (f: number, from: number, to = from + 18, dist = 18) =>
+    interpolate(f, [from, to], [dist, 0], { extrapolateLeft: 'clamp', extrapolateRight: 'clamp' });
+
+const Stage: React.FC<React.PropsWithChildren<{ align?: string }>> = ({ children, align = 'center' }) => (
+    <div style={{
+        position: 'absolute', inset: 0,
+        paddingTop: 150, paddingBottom: 260,
+        paddingLeft: 80, paddingRight: 80,
+        display: 'flex', alignItems: align as any, justifyContent: 'center',
+    }}>{children}</div>
+);
+
+const Card: React.FC<React.PropsWithChildren<{ style?: React.CSSProperties }>> = ({ children, style }) => (
+    <div style={{
+        background: P.panel, border: `2px solid ${P.border}`,
+        borderRadius: 22, padding: '24px 32px',
+        boxShadow: '0 14px 36px rgba(15, 23, 42, 0.08)',
+        ...style,
+    }}>{children}</div>
+);
+
+// ───────────────────────────────────────────────
+// Scene 0: 質問からスタート — 電話先がない
+// ───────────────────────────────────────────────
+const Scene0: React.FC<SceneProps> = ({ localFrame: f }) => (
+    <Stage>
+        <div style={{ textAlign: 'center', width: 1200 }}>
+            <div style={{ fontSize: 40, color: P.muted, letterSpacing: 8, marginBottom: 24, opacity: fade(f, 2) }}>
+                今日のテーマ
+            </div>
+            <div style={{
+                fontSize: 88, fontWeight: 900, letterSpacing: 1,
+                background: `linear-gradient(135deg, ${P.primaryDeep} 0%, ${P.cyan} 100%)`,
+                WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent',
+                lineHeight: 1.18, opacity: fade(f, 8),
+                transform: `translateY(${rise(f, 8)}px)`,
+            }}>
+                インターネットを<br />誰が動かしているのか
+            </div>
+            <div style={{ display: 'flex', justifyContent: 'center', gap: 48, marginTop: 56, opacity: fade(f, 28) }}>
+                <svg viewBox="0 0 240 200" width={300} height={250}>
+                    <defs>
+                        <radialGradient id="phoneGlow0">
+                            <stop offset="0%" stopColor={P.primaryGlow} />
+                            <stop offset="100%" stopColor="transparent" />
+                        </radialGradient>
+                    </defs>
+                    <circle cx="120" cy="100" r="90" fill="url(#phoneGlow0)" opacity={fade(f, 30)} />
+                    {/* 受話器 */}
+                    <g transform="translate(120 100)" opacity={fade(f, 32)}>
+                        <path d="M -55 -20 L -25 -50 L 25 0 L 55 -30 L 25 -60 Q -10 -95 -45 -60 Z"
+                            fill={P.primaryDeep} stroke={P.ink} strokeWidth="2" />
+                        <line x1="-25" y1="-50" x2="-45" y2="-60" stroke={P.ink} strokeWidth="2" />
+                    </g>
+                    {/* ?マーク */}
+                    {[
+                        { x: 30, y: 30, d: 38 },
+                        { x: 200, y: 40, d: 46 },
+                        { x: 35, y: 165, d: 54 },
+                        { x: 200, y: 160, d: 60 },
+                    ].map((q, i) => (
+                        <text key={i} x={q.x} y={q.y} fontSize="56" fontWeight="900" fill={P.rose}
+                            opacity={fade(f, q.d)}>?</text>
+                    ))}
+                </svg>
+            </div>
+            <div style={{ fontSize: 38, color: P.ink, marginTop: 32, opacity: fade(f, 56), fontWeight: 700 }}>
+                止めたい時、どこに電話する？
+            </div>
+        </div>
+    </Stage>
+);
+
+// ───────────────────────────────────────────────
+// Scene 1: 今日話すこと — 4つの問い
+// ───────────────────────────────────────────────
+const Scene1: React.FC<SceneProps> = ({ localFrame: f }) => {
+    const items = [
+        { n: '1', title: '誰が作った？', sub: '1969〜', color: P.amber },
+        { n: '2', title: '今は誰が管理？', sub: '4つの組織', color: P.primary },
+        { n: '3', title: '物理的に？', sub: '海底ケーブル', color: P.cyan },
+        { n: '4', title: '止められる？', sub: '国 vs 世界', color: P.rose },
+    ];
+    return (
+        <Stage>
+            <div style={{ width: 1300 }}>
+                <div style={{ textAlign: 'center', fontSize: 44, fontWeight: 800, color: P.ink, marginBottom: 40, opacity: fade(f, 2) }}>
+                    4つの問いで解きほぐす
+                </div>
+                <div style={{ display: 'flex', gap: 24, justifyContent: 'center' }}>
+                    {items.map((it, i) => (
+                        <Card key={it.n} style={{
+                            width: 280, textAlign: 'center', padding: '32px 20px',
+                            transform: `translateY(${rise(f, 8 + i * 8)}px)`,
+                            opacity: fade(f, 8 + i * 8),
+                            borderTop: `6px solid ${it.color}`,
+                        }}>
+                            <div style={{
+                                width: 78, height: 78, borderRadius: '50%',
+                                background: it.color, color: P.paper,
+                                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                                fontSize: 42, fontWeight: 900, margin: '0 auto 18px',
+                            }}>{it.n}</div>
+                            <div style={{ fontSize: 30, fontWeight: 800, color: P.ink, marginBottom: 8 }}>{it.title}</div>
+                            <div style={{ fontSize: 22, color: P.muted }}>{it.sub}</div>
+                        </Card>
+                    ))}
+                </div>
+            </div>
+        </Stage>
+    );
+};
+
+// ───────────────────────────────────────────────
+// Scene 2: 1969年UCLA — 初メッセージ "lo"
+// ───────────────────────────────────────────────
+const Scene2: React.FC<SceneProps> = ({ localFrame: f }) => (
+    <Stage>
+        <div style={{ width: 1400 }}>
+            <div style={{ textAlign: 'center', opacity: fade(f, 2) }}>
+                <div style={{ display: 'inline-block', padding: '8px 28px', background: P.amber, color: P.paper, borderRadius: 999, fontSize: 28, fontWeight: 800, letterSpacing: 4 }}>
+                    1969年10月29日 22:30
+                </div>
+            </div>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 0, marginTop: 60, position: 'relative' }}>
+                {/* UCLA */}
+                <div style={{
+                    width: 320, opacity: fade(f, 8), transform: `translateY(${rise(f, 8)}px)`,
+                    textAlign: 'center',
+                }}>
+                    <svg viewBox="0 0 220 180" width={220} height={180} style={{ display: 'block', margin: '0 auto' }}>
+                        <rect x="30" y="40" width="160" height="110" rx="6" fill={P.primaryDeep} />
+                        <rect x="40" y="55" width="140" height="80" rx="3" fill="#0a0a0a" />
+                        <text x="110" y="100" fontSize="20" fill={P.accent} textAnchor="middle" fontFamily="monospace">login</text>
+                        <rect x="80" y="150" width="60" height="8" fill="#444" />
+                        <rect x="60" y="158" width="100" height="6" fill="#222" />
+                    </svg>
+                    <div style={{ fontSize: 32, fontWeight: 800, color: P.ink, marginTop: 8 }}>UCLA</div>
+                    <div style={{ fontSize: 22, color: P.muted }}>カリフォルニア大学</div>
+                </div>
+
+                {/* 矢印とメッセージ */}
+                <div style={{ flex: 1, position: 'relative', height: 220 }}>
+                    <svg viewBox="0 0 600 200" width="100%" height="200" style={{ display: 'block' }}>
+                        <line x1="20" y1="100" x2="580" y2="100" stroke={P.primary} strokeWidth="6"
+                            strokeDasharray="14 10"
+                            strokeDashoffset={interpolate(f, [16, 60], [200, 0], { extrapolateLeft: 'clamp', extrapolateRight: 'clamp' })}
+                            opacity={fade(f, 16)} />
+                        <polygon points="565,86 600,100 565,114" fill={P.primary} opacity={fade(f, 28)} />
+                        {/* 送信中のパケット */}
+                        <g opacity={fade(f, 32)}>
+                            <rect x="240" y="40" width="80" height="50" rx="6" fill={P.paper} stroke={P.primaryDeep} strokeWidth="3" />
+                            <text x="280" y="74" fontSize="36" fontWeight="900" fill={P.primaryDeep} textAnchor="middle" fontFamily="monospace">l o</text>
+                        </g>
+                        {/* CRASHアイコン */}
+                        <g opacity={fade(f, 60)} transform="translate(440 130)">
+                            <polygon points="0,0 16,-30 26,-10 50,-22 36,4 56,2 30,28 18,12 -4,30 8,8 -22,12"
+                                fill={P.rose} stroke={P.ink} strokeWidth="2" />
+                            <text x="60" y="20" fontSize="22" fontWeight="900" fill={P.rose}>CRASH</text>
+                        </g>
+                    </svg>
+                </div>
+
+                {/* Stanford */}
+                <div style={{
+                    width: 320, opacity: fade(f, 16), transform: `translateY(${rise(f, 16)}px)`,
+                    textAlign: 'center',
+                }}>
+                    <svg viewBox="0 0 220 180" width={220} height={180} style={{ display: 'block', margin: '0 auto' }}>
+                        <rect x="30" y="40" width="160" height="110" rx="6" fill={P.primaryDeep} />
+                        <rect x="40" y="55" width="140" height="80" rx="3" fill="#0a0a0a" />
+                        <text x="110" y="100" fontSize="22" fill={P.rose} textAnchor="middle" fontFamily="monospace" opacity={fade(f, 60)}>× × ×</text>
+                        <rect x="80" y="150" width="60" height="8" fill="#444" />
+                        <rect x="60" y="158" width="100" height="6" fill="#222" />
+                    </svg>
+                    <div style={{ fontSize: 32, fontWeight: 800, color: P.ink, marginTop: 8 }}>Stanford</div>
+                    <div style={{ fontSize: 22, color: P.muted }}>研究所</div>
+                </div>
+            </div>
+            <div style={{
+                textAlign: 'center', fontSize: 30, color: P.ink, marginTop: 40, opacity: fade(f, 80),
+                fontWeight: 700,
+            }}>
+                インターネットの直接のご先祖、<span style={{ color: P.primary }}>ARPANET</span>
+            </div>
+        </div>
+    </Stage>
+);
+
+// ───────────────────────────────────────────────
+// Scene 3: 発注者と実装者 — ARPA → BBN
+// ───────────────────────────────────────────────
+const Scene3: React.FC<SceneProps> = ({ localFrame: f }) => (
+    <Stage>
+        <div style={{ width: 1300 }}>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 40 }}>
+                <Card style={{
+                    width: 360, textAlign: 'center', padding: '40px 32px',
+                    opacity: fade(f, 4), transform: `translateY(${rise(f, 4)}px)`,
+                    borderTop: `6px solid ${P.amber}`,
+                }}>
+                    <div style={{ fontSize: 22, color: P.muted, letterSpacing: 4, marginBottom: 8 }}>発注</div>
+                    <div style={{ fontSize: 64, fontWeight: 900, color: P.amberDeep }}>ARPA</div>
+                    <div style={{ fontSize: 22, color: P.muted, marginTop: 4 }}>(現 DARPA)</div>
+                    <div style={{ fontSize: 24, color: P.ink, marginTop: 18, fontWeight: 700 }}>米国国防高等研究計画局</div>
+                </Card>
+                <div style={{ opacity: fade(f, 16) }}>
+                    <svg viewBox="0 0 120 60" width={120} height={60}>
+                        <line x1="6" y1="30" x2="100" y2="30" stroke={P.ink} strokeWidth="6" />
+                        <polygon points="100,18 118,30 100,42" fill={P.ink} />
+                    </svg>
+                    <div style={{ textAlign: 'center', fontSize: 22, color: P.muted, marginTop: 6 }}>契約</div>
+                </div>
+                <Card style={{
+                    width: 360, textAlign: 'center', padding: '40px 32px',
+                    opacity: fade(f, 22), transform: `translateY(${rise(f, 22)}px)`,
+                    borderTop: `6px solid ${P.primary}`,
+                }}>
+                    <div style={{ fontSize: 22, color: P.muted, letterSpacing: 4, marginBottom: 8 }}>実装</div>
+                    <div style={{ fontSize: 64, fontWeight: 900, color: P.primaryDeep }}>BBN</div>
+                    <div style={{ fontSize: 22, color: P.muted, marginTop: 4 }}>(ボストン)</div>
+                    <div style={{ fontSize: 24, color: P.ink, marginTop: 18, fontWeight: 700 }}>民間コンサル会社</div>
+                </Card>
+            </div>
+        </div>
+    </Stage>
+);
+
+// ───────────────────────────────────────────────
+// Scene 4: 核戦争説の訂正
+// ───────────────────────────────────────────────
+const Scene4: React.FC<SceneProps> = ({ localFrame: f }) => (
+    <Stage>
+        <div style={{ width: 1400 }}>
+            <div style={{ display: 'flex', gap: 36, justifyContent: 'center', alignItems: 'stretch' }}>
+                <Card style={{
+                    width: 540, padding: '28px 32px',
+                    opacity: fade(f, 2), transform: `translateY(${rise(f, 2)}px)`,
+                    borderTop: `6px solid ${P.muted}`,
+                    background: 'rgba(255,255,255,0.6)',
+                }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 16, marginBottom: 12 }}>
+                        <span style={{
+                            width: 56, height: 56, background: P.muted, color: P.paper, borderRadius: '50%',
+                            display: 'inline-flex', alignItems: 'center', justifyContent: 'center', fontSize: 38, fontWeight: 900,
+                        }}>×</span>
+                        <span style={{ fontSize: 28, fontWeight: 800, color: P.muted, letterSpacing: 2 }}>よく聞く話</span>
+                    </div>
+                    <div style={{ fontSize: 30, fontWeight: 700, color: P.ink, lineHeight: 1.55 }}>
+                        「核攻撃に耐えるため<br />米軍が作った」
+                    </div>
+                    <div style={{ marginTop: 16, fontSize: 20, color: P.muted, fontStyle: 'italic' }}>
+                        ＊Paul Baran（1964・RAND）の<br />　別の論文と混ざって伝わった
+                    </div>
+                </Card>
+                <Card style={{
+                    width: 540, padding: '28px 32px',
+                    opacity: fade(f, 22), transform: `translateY(${rise(f, 22)}px)`,
+                    borderTop: `6px solid ${P.accent}`,
+                }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 16, marginBottom: 12 }}>
+                        <span style={{
+                            width: 56, height: 56, background: P.accent, color: P.paper, borderRadius: '50%',
+                            display: 'inline-flex', alignItems: 'center', justifyContent: 'center', fontSize: 36, fontWeight: 900,
+                        }}>○</span>
+                        <span style={{ fontSize: 28, fontWeight: 800, color: P.accentDeep, letterSpacing: 2 }}>本当の動機</span>
+                    </div>
+                    <div style={{ fontSize: 28, fontWeight: 700, color: P.ink, lineHeight: 1.55 }}>
+                        全国に数台しかない<br />大型コンピューターを<br />研究者で共有したい
+                    </div>
+                    <div style={{ marginTop: 14, fontSize: 20, color: P.muted, fontStyle: 'italic' }}>
+                        ＊ARPA長官 Charles Herzfeld 本人の証言
+                    </div>
+                </Card>
+            </div>
+            <div style={{
+                textAlign: 'center', marginTop: 36, fontSize: 30, color: P.ink, fontWeight: 700,
+                opacity: fade(f, 50),
+            }}>
+                派手な物語より、地味な「資源共有」が出発点
+            </div>
+        </div>
+    </Stage>
+);
+
+// ───────────────────────────────────────────────
+// Scene 5: TCP/IPの発明者
+// ───────────────────────────────────────────────
+const Scene5: React.FC<SceneProps> = ({ localFrame: f }) => (
+    <Stage>
+        <div style={{ width: 1300 }}>
+            <div style={{ display: 'flex', justifyContent: 'center', gap: 32, marginBottom: 32 }}>
+                {[
+                    { name: 'Vint Cerf', role: 'TCP/IP 共同設計', color: P.primary, delay: 4 },
+                    { name: 'Bob Kahn', role: 'TCP/IP 共同設計', color: P.cyan, delay: 12 },
+                ].map((p) => (
+                    <Card key={p.name} style={{
+                        width: 360, textAlign: 'center', padding: '28px 24px',
+                        opacity: fade(f, p.delay), transform: `translateY(${rise(f, p.delay)}px)`,
+                        borderTop: `6px solid ${p.color}`,
+                    }}>
+                        <svg viewBox="0 0 100 100" width={100} height={100} style={{ display: 'block', margin: '0 auto 12px' }}>
+                            <circle cx="50" cy="38" r="22" fill={p.color} opacity="0.85" />
+                            <path d="M 18 92 Q 50 60 82 92 Z" fill={p.color} opacity="0.85" />
+                        </svg>
+                        <div style={{ fontSize: 32, fontWeight: 900, color: P.ink }}>{p.name}</div>
+                        <div style={{ fontSize: 22, color: P.muted, marginTop: 6 }}>{p.role}</div>
+                    </Card>
+                ))}
+            </div>
+            <div style={{ display: 'flex', justifyContent: 'center', gap: 0, alignItems: 'center', opacity: fade(f, 26) }}>
+                <div style={{ fontSize: 26, color: P.muted, marginRight: 16 }}>1974</div>
+                <div style={{ width: 50, height: 4, background: P.primary }} />
+                <div style={{ padding: '12px 28px', borderRadius: 12, background: P.primaryDeep, color: P.paper, fontSize: 30, fontWeight: 800, margin: '0 -2px' }}>
+                    原型発表
+                </div>
+                <div style={{ width: 100, height: 4, background: P.primary }} />
+                <div style={{ padding: '12px 28px', borderRadius: 12, background: P.primary, color: P.paper, fontSize: 28, fontWeight: 800, opacity: fade(f, 36) }}>
+                    1981 RFC 791 / 793
+                </div>
+                <div style={{ width: 50, height: 4, background: P.primary, opacity: fade(f, 36) }} />
+                <div style={{ fontSize: 26, color: P.muted, marginLeft: 16, opacity: fade(f, 36) }}>仕様確定</div>
+            </div>
+            <div style={{ textAlign: 'center', marginTop: 40, fontSize: 32, color: P.ink, fontWeight: 700, opacity: fade(f, 56) }}>
+                通称、<span style={{ color: P.primaryDeep }}>「インターネットの父」</span>
+            </div>
+        </div>
+    </Stage>
+);
+
+// ───────────────────────────────────────────────
+// Scene 6: WWWは別の発明 — 電気と家電
+// ───────────────────────────────────────────────
+const Scene6: React.FC<SceneProps> = ({ localFrame: f }) => (
+    <Stage>
+        <div style={{ width: 1280 }}>
+            <div style={{ textAlign: 'center', fontSize: 30, color: P.ink, fontWeight: 700, marginBottom: 28, opacity: fade(f, 2) }}>
+                Tim Berners-Lee（1989・CERN）が作ったのは「Web」
+            </div>
+            {/* 電気と家電 アナロジー */}
+            <div style={{ width: 1100, margin: '0 auto' }}>
+                {/* 上段: アプリ群 */}
+                <div style={{ display: 'flex', gap: 16, justifyContent: 'space-around', marginBottom: 8 }}>
+                    {[
+                        { name: 'Web', sub: 'WWW', color: P.primary, delay: 12 },
+                        { name: 'メール', sub: 'SMTP', color: P.cyan, delay: 20 },
+                        { name: 'FTP', sub: 'ファイル転送', color: P.amber, delay: 28 },
+                        { name: 'チャット', sub: 'IRC ほか', color: P.violet, delay: 36 },
+                    ].map((a) => (
+                        <div key={a.name} style={{
+                            width: 240, textAlign: 'center', padding: '16px 12px',
+                            background: P.paper, border: `3px solid ${a.color}`, borderRadius: 14,
+                            opacity: fade(f, a.delay), transform: `translateY(${rise(f, a.delay)}px)`,
+                        }}>
+                            <div style={{ fontSize: 30, fontWeight: 800, color: P.ink }}>{a.name}</div>
+                            <div style={{ fontSize: 18, color: P.muted, marginTop: 4 }}>{a.sub}</div>
+                        </div>
+                    ))}
+                </div>
+                {/* 接続線 */}
+                <svg viewBox="0 0 1100 50" width={1100} height={50} style={{ display: 'block' }}>
+                    {[120, 380, 640, 900].map((x, i) => (
+                        <line key={i} x1={x} y1={0} x2={x} y2={48}
+                            stroke={P.muted} strokeWidth="3" strokeDasharray="4 4"
+                            opacity={fade(f, 44 + i * 2)} />
+                    ))}
+                </svg>
+                {/* 下段: インターネット = インフラ */}
+                <div style={{
+                    background: `linear-gradient(180deg, ${P.primary} 0%, ${P.primaryDeep} 100%)`,
+                    color: P.paper, borderRadius: 16, padding: '36px 48px', textAlign: 'center',
+                    opacity: fade(f, 8), transform: `translateY(${rise(f, 8)}px)`,
+                    boxShadow: '0 12px 32px rgba(11,61,145,0.25)',
+                }}>
+                    <div style={{ fontSize: 22, opacity: 0.85, letterSpacing: 6, marginBottom: 4 }}>INFRASTRUCTURE</div>
+                    <div style={{ fontSize: 56, fontWeight: 900, letterSpacing: 2 }}>インターネット</div>
+                    <div style={{ fontSize: 22, opacity: 0.85, marginTop: 4 }}>通信インフラ（TCP/IP）</div>
+                </div>
+            </div>
+            <div style={{ textAlign: 'center', marginTop: 24, fontSize: 26, color: P.muted, opacity: fade(f, 56) }}>
+                電気（インフラ） vs 家電（アプリ）の関係
+            </div>
+        </div>
+    </Stage>
+);
+
+// ───────────────────────────────────────────────
+// Scene 7: 1995年に政府が手を引いた
+// ───────────────────────────────────────────────
+const Scene7: React.FC<SceneProps> = ({ localFrame: f }) => (
+    <Stage>
+        <div style={{ width: 1300 }}>
+            <div style={{
+                position: 'relative', height: 360, marginBottom: 16,
+            }}>
+                {/* timeline base */}
+                <svg viewBox="0 0 1300 360" width={1300} height={360}>
+                    <line x1="60" y1="180" x2="1240" y2="180" stroke={P.muted} strokeWidth="4" opacity={fade(f, 2)} />
+                    {[
+                        { x: 250, y: -1, label: '1969', sub: 'ARPANET' },
+                        { x: 660, y: 1, label: '1995/4/30', sub: 'NSFNET 退役' },
+                        { x: 1100, y: -1, label: '現在', sub: '民間 ISP 運用' },
+                    ].map((t, i) => (
+                        <g key={t.label} opacity={fade(f, 6 + i * 14)}>
+                            <circle cx={t.x} cy="180" r="14" fill={i === 1 ? P.rose : P.primary} />
+                            <line x1={t.x} y1="180" x2={t.x} y2={180 + t.y * 90} stroke={P.muted} strokeWidth="2" strokeDasharray="6 4" />
+                            <text x={t.x} y={t.y > 0 ? 295 : 130} fontSize="32" fontWeight="900"
+                                fill={i === 1 ? P.rose : P.primaryDeep} textAnchor="middle">{t.label}</text>
+                            <text x={t.x} y={t.y > 0 ? 330 : 100} fontSize="24"
+                                fill={P.ink} textAnchor="middle">{t.sub}</text>
+                        </g>
+                    ))}
+                </svg>
+                {/* 中央の強調 */}
+                <div style={{
+                    position: 'absolute', left: 530, top: 18, width: 240,
+                    opacity: fade(f, 30), transform: `translateY(${rise(f, 30)}px)`,
+                }}>
+                    <div style={{
+                        background: P.rose, color: P.paper, padding: '14px 20px', borderRadius: 12,
+                        textAlign: 'center', fontSize: 26, fontWeight: 900,
+                        boxShadow: '0 12px 28px rgba(225,29,72,0.3)',
+                    }}>政府、ここで撤退</div>
+                </div>
+            </div>
+            <div style={{
+                textAlign: 'center', fontSize: 30, color: P.ink, fontWeight: 700,
+                opacity: fade(f, 48),
+            }}>
+                作ったのはアメリカ政府。<span style={{ color: P.rose }}>でもずっとは持っていなかった。</span>
+            </div>
+        </div>
+    </Stage>
+);
+
+// ───────────────────────────────────────────────
+// Scene 8: ICANNの仕事 — 識別子だけ
+// ───────────────────────────────────────────────
+const Scene8: React.FC<SceneProps> = ({ localFrame: f }) => (
+    <Stage>
+        <div style={{ width: 1280 }}>
+            <div style={{ display: 'flex', gap: 32, justifyContent: 'center', alignItems: 'flex-start' }}>
+                <Card style={{
+                    width: 480, padding: '28px 32px',
+                    opacity: fade(f, 2), transform: `translateY(${rise(f, 2)}px)`,
+                    borderTop: `6px solid ${P.accent}`,
+                }}>
+                    <div style={{ fontSize: 28, color: P.accentDeep, fontWeight: 800, letterSpacing: 4, marginBottom: 14 }}>
+                        ○ やる
+                    </div>
+                    <div style={{ fontSize: 38, fontWeight: 900, color: P.primaryDeep, marginBottom: 18 }}>ICANN</div>
+                    <div style={{ display: 'flex', gap: 10, marginBottom: 14, opacity: fade(f, 12) }}>
+                        <div style={{ flex: 1, padding: '14px 8px', background: '#EEF6FF', border: `2px solid ${P.primary}`, borderRadius: 10, textAlign: 'center' }}>
+                            <div style={{ fontSize: 18, color: P.muted }}>名前</div>
+                            <div style={{ fontSize: 22, fontWeight: 800, color: P.primaryDeep, fontFamily: 'monospace' }}>youtube.com</div>
+                        </div>
+                        <div style={{ flex: 1, padding: '14px 8px', background: '#EEF6FF', border: `2px solid ${P.primary}`, borderRadius: 10, textAlign: 'center' }}>
+                            <div style={{ fontSize: 18, color: P.muted }}>番号</div>
+                            <div style={{ fontSize: 22, fontWeight: 800, color: P.primaryDeep, fontFamily: 'monospace' }}>142.250.x.x</div>
+                        </div>
+                    </div>
+                    <div style={{ fontSize: 22, color: P.ink, opacity: fade(f, 18) }}>
+                        重複しないよう、世界で1つに調整する役
+                    </div>
+                </Card>
+                <Card style={{
+                    width: 480, padding: '28px 32px',
+                    opacity: fade(f, 26), transform: `translateY(${rise(f, 26)}px)`,
+                    borderTop: `6px solid ${P.muted}`,
+                    background: 'rgba(255,255,255,0.6)',
+                }}>
+                    <div style={{ fontSize: 28, color: P.muted, fontWeight: 800, letterSpacing: 4, marginBottom: 14 }}>
+                        × やらない
+                    </div>
+                    <div style={{ fontSize: 22, color: P.ink, lineHeight: 1.9 }}>
+                        {['コンテンツの管理', 'ISPの運営', 'プロトコルの策定', '経路（ルーティング）の制御'].map((it, i) => (
+                            <div key={it} style={{
+                                display: 'flex', alignItems: 'center', gap: 12, opacity: fade(f, 32 + i * 6),
+                            }}>
+                                <span style={{ color: P.rose, fontWeight: 900, fontSize: 26 }}>×</span>
+                                <span style={{ textDecoration: 'line-through', color: P.muted }}>{it}</span>
+                            </div>
+                        ))}
+                    </div>
+                </Card>
+            </div>
+            <div style={{ textAlign: 'center', marginTop: 30, fontSize: 26, color: P.ink, opacity: fade(f, 64) }}>
+                「インターネットの管理会社」と思われがち。<span style={{ color: P.rose, fontWeight: 700 }}>実は識別子の調整だけ。</span>
+            </div>
+        </div>
+    </Stage>
+);
+
+// ───────────────────────────────────────────────
+// Scene 9: IETFの意思決定 — Rough Consensus
+// ───────────────────────────────────────────────
+const Scene9: React.FC<SceneProps> = ({ localFrame: f }) => (
+    <Stage>
+        <div style={{ width: 1300 }}>
+            {/* 引用 */}
+            <div style={{
+                background: P.paper, border: `3px solid ${P.primary}`,
+                borderRadius: 18, padding: '28px 40px',
+                fontSize: 30, color: P.ink, fontWeight: 600, lineHeight: 1.55,
+                position: 'relative',
+                opacity: fade(f, 2), transform: `translateY(${rise(f, 2)}px)`,
+                marginBottom: 32,
+            }}>
+                <span style={{ position: 'absolute', top: -16, left: 24, background: P.primary, color: P.paper, padding: '4px 14px', borderRadius: 6, fontSize: 18, fontWeight: 800, letterSpacing: 2 }}>
+                    David Clark, 1992
+                </span>
+                <div style={{ fontStyle: 'italic' }}>
+                    「我々は<span style={{ background: 'linear-gradient(transparent 60%, #FDE68A 60%)' }}>王も大統領も投票も拒否</span>する。<br />
+                    <span style={{ background: 'linear-gradient(transparent 60%, #FDE68A 60%)' }}>ラフコンセンサスと動くコード</span>を信じる」
+                </div>
+            </div>
+            <div style={{ display: 'flex', gap: 18, justifyContent: 'center' }}>
+                {[
+                    { sym: '×', label: '多数決', color: P.muted, delay: 22 },
+                    { sym: '×', label: '会員登録', color: P.muted, delay: 28 },
+                    { sym: '×', label: '会費', color: P.muted, delay: 34 },
+                    { sym: '○', label: 'ハミング', color: P.accent, delay: 40 },
+                    { sym: '○', label: '動くコード', color: P.accent, delay: 46 },
+                    { sym: '○', label: 'Tシャツ可', color: P.accent, delay: 52 },
+                ].map((it) => (
+                    <div key={it.label} style={{
+                        width: 165, padding: '18px 8px', background: P.paper,
+                        border: `3px solid ${it.color}`, borderRadius: 14, textAlign: 'center',
+                        opacity: fade(f, it.delay), transform: `translateY(${rise(f, it.delay)}px)`,
+                    }}>
+                        <div style={{ fontSize: 38, fontWeight: 900, color: it.color }}>{it.sym}</div>
+                        <div style={{ fontSize: 22, fontWeight: 700, color: P.ink, marginTop: 4 }}>{it.label}</div>
+                    </div>
+                ))}
+            </div>
+            <div style={{ textAlign: 'center', marginTop: 24, fontSize: 22, color: P.muted, opacity: fade(f, 64) }}>
+                ＊RFC 7282 に正式記述
+            </div>
+        </div>
+    </Stage>
+);
+
+// ───────────────────────────────────────────────
+// Scene 10: RIRの地域分散 — 5つの地域
+// ───────────────────────────────────────────────
+const Scene10: React.FC<SceneProps> = ({ localFrame: f }) => (
+    <Stage>
+        <div style={{ width: 1400 }}>
+            <div style={{ textAlign: 'center', fontSize: 32, fontWeight: 800, color: P.ink, marginBottom: 32, opacity: fade(f, 2) }}>
+                IPアドレスは<span style={{ color: P.primary }}>5つの地域</span>に分けて配布
+            </div>
+            {/* 簡易世界マップ */}
+            <svg viewBox="0 0 1100 380" width={1100} height={380} style={{ display: 'block', margin: '0 auto' }}>
+                {/* 大陸の楕円形シルエット（簡略） */}
+                <ellipse cx="240" cy="160" rx="140" ry="80" fill={P.primaryGlow} opacity="0.5" />
+                <ellipse cx="540" cy="140" rx="120" ry="70" fill={P.primaryGlow} opacity="0.5" />
+                <ellipse cx="820" cy="170" rx="160" ry="90" fill={P.primaryGlow} opacity="0.5" />
+                <ellipse cx="350" cy="290" rx="110" ry="60" fill={P.primaryGlow} opacity="0.5" />
+                <ellipse cx="600" cy="290" rx="90" ry="60" fill={P.primaryGlow} opacity="0.5" />
+
+                {[
+                    { x: 240, y: 160, name: 'ARIN', region: '北米', hq: 'アメリカ', delay: 8 },
+                    { x: 540, y: 140, name: 'RIPE NCC', region: 'ヨーロッパ', hq: 'オランダ', delay: 16 },
+                    { x: 820, y: 170, name: 'APNIC', region: 'アジア太平洋', hq: 'オーストラリア', delay: 24 },
+                    { x: 350, y: 290, name: 'LACNIC', region: '中南米', hq: 'ウルグアイ', delay: 32 },
+                    { x: 600, y: 290, name: 'AFRINIC', region: 'アフリカ', hq: 'モーリシャス', delay: 40 },
+                ].map(r => (
+                    <g key={r.name} opacity={fade(f, r.delay)}>
+                        <circle cx={r.x} cy={r.y} r="22" fill={P.primary} stroke={P.paper} strokeWidth="4" />
+                        <text x={r.x} y={r.y + 7} fontSize="20" fontWeight="900" fill={P.paper} textAnchor="middle">5</text>
+                        <rect x={r.x - 90} y={r.y + 32} width="180" height="60" rx="8" fill={P.paper} stroke={P.primary} strokeWidth="2" />
+                        <text x={r.x} y={r.y + 56} fontSize="22" fontWeight="900" fill={P.primaryDeep} textAnchor="middle">{r.name}</text>
+                        <text x={r.x} y={r.y + 80} fontSize="18" fill={P.muted} textAnchor="middle">{r.region}</text>
+                    </g>
+                ))}
+            </svg>
+            <div style={{ textAlign: 'center', marginTop: 14, fontSize: 24, color: P.muted, opacity: fade(f, 56) }}>
+                本社の国もバラバラ。世界中の合計5つに分散。
+            </div>
+        </div>
+    </Stage>
+);
+
+// ───────────────────────────────────────────────
+// Scene 11: W3Cとまとめ — 横並びの4組織
+// ───────────────────────────────────────────────
+const Scene11: React.FC<SceneProps> = ({ localFrame: f }) => (
+    <Stage>
+        <div style={{ width: 1380 }}>
+            <div style={{ textAlign: 'center', fontSize: 36, fontWeight: 800, color: P.ink, marginBottom: 30, opacity: fade(f, 2) }}>
+                4つの組織が<span style={{ color: P.primary }}>横並びで分業</span>
+            </div>
+            <div style={{ display: 'flex', gap: 20, justifyContent: 'center' }}>
+                {[
+                    { name: 'ICANN', task: '識別子\n（名前と番号）', color: P.amber, delay: 8 },
+                    { name: 'IETF', task: 'プロトコル\n（通信ルール）', color: P.primary, delay: 14 },
+                    { name: 'RIR ×5', task: 'IPアドレスを\n地域ごとに配布', color: P.cyan, delay: 20 },
+                    { name: 'W3C', task: 'Webの標準\n（HTML/CSS）', color: P.violet, delay: 26 },
+                ].map((o) => (
+                    <Card key={o.name} style={{
+                        width: 290, textAlign: 'center', padding: '24px 16px',
+                        opacity: fade(f, o.delay), transform: `translateY(${rise(f, o.delay)}px)`,
+                        borderTop: `6px solid ${o.color}`,
+                    }}>
+                        <div style={{ fontSize: 36, fontWeight: 900, color: o.color, letterSpacing: 1 }}>{o.name}</div>
+                        <div style={{ fontSize: 22, color: P.ink, marginTop: 12, whiteSpace: 'pre-line', lineHeight: 1.5 }}>
+                            {o.task}
+                        </div>
+                    </Card>
+                ))}
+            </div>
+            {/* ピラミッド否定 */}
+            <div style={{ marginTop: 36, display: 'flex', justifyContent: 'center', gap: 60, alignItems: 'center', opacity: fade(f, 44) }}>
+                <div style={{ textAlign: 'center' }}>
+                    <svg viewBox="0 0 120 100" width={120} height={100}>
+                        <polygon points="60,10 110,90 10,90" fill="none" stroke={P.muted} strokeWidth="4" />
+                        <line x1="20" y1="20" x2="100" y2="20" stroke={P.rose} strokeWidth="6" />
+                    </svg>
+                    <div style={{ fontSize: 22, color: P.muted, marginTop: 4 }}>× ピラミッド</div>
+                </div>
+                <div style={{ fontSize: 36, color: P.ink, fontWeight: 800 }}>↓</div>
+                <div style={{ textAlign: 'center' }}>
+                    <svg viewBox="0 0 200 100" width={200} height={100}>
+                        {[20, 60, 100, 140].map(x => (
+                            <rect key={x} x={x - 12} y={30} width="24" height="50" rx="3" fill={P.primary} />
+                        ))}
+                        <line x1="20" y1="55" x2="160" y2="55" stroke={P.primaryDeep} strokeWidth="3" strokeDasharray="6 4" />
+                    </svg>
+                    <div style={{ fontSize: 22, color: P.primaryDeep, marginTop: 4, fontWeight: 700 }}>○ 横並び</div>
+                </div>
+            </div>
+        </div>
+    </Stage>
+);
+
+// ───────────────────────────────────────────────
+// Scene 12: クラウドの実体 — 99%が海底
+// ───────────────────────────────────────────────
+const Scene12: React.FC<SceneProps> = ({ localFrame: f }) => {
+    // ドーナツチャート 99% vs 1%
+    const r = 110;
+    const c = 2 * Math.PI * r;
+    return (
+        <Stage>
+            <div style={{ width: 1300 }}>
+                <div style={{ textAlign: 'center', fontSize: 34, fontWeight: 800, color: P.ink, marginBottom: 24, opacity: fade(f, 2) }}>
+                    国際通信の<span style={{ color: P.primaryDeep }}>99%</span>は海の底
+                </div>
+                <div style={{ display: 'flex', gap: 60, justifyContent: 'center', alignItems: 'center' }}>
+                    <svg viewBox="0 0 280 280" width={280} height={280}>
+                        <circle cx="140" cy="140" r={r} fill="none" stroke={P.muted} strokeWidth="36" opacity="0.25" />
+                        <circle cx="140" cy="140" r={r} fill="none" stroke={P.primaryDeep} strokeWidth="36"
+                            strokeDasharray={c} strokeDashoffset={interpolate(f, [10, 50], [c, c * 0.01], { extrapolateRight: 'clamp' })}
+                            transform="rotate(-90 140 140)" strokeLinecap="butt" />
+                        <text x="140" y="135" fontSize="56" fontWeight="900" fill={P.primaryDeep} textAnchor="middle">99%</text>
+                        <text x="140" y="170" fontSize="22" fill={P.muted} textAnchor="middle">海底ケーブル</text>
+                    </svg>
+                    <div>
+                        {[
+                            { v: '694本', sub: '世界の海底ケーブル本数', delay: 18 },
+                            { v: '150万km', sub: '総延長（地球〜月の約4倍）', delay: 30 },
+                            { v: '1%未満', sub: '衛星通信の割合', delay: 42 },
+                        ].map((s) => (
+                            <div key={s.v} style={{
+                                marginBottom: 18, padding: '16px 28px',
+                                background: P.paper, border: `2px solid ${P.border}`, borderRadius: 14,
+                                minWidth: 460,
+                                opacity: fade(f, s.delay), transform: `translateX(${interpolate(f, [s.delay, s.delay + 18], [24, 0], { extrapolateRight: 'clamp' })}px)`,
+                            }}>
+                                <div style={{ fontSize: 44, fontWeight: 900, color: P.primaryDeep, lineHeight: 1 }}>{s.v}</div>
+                                <div style={{ fontSize: 22, color: P.muted, marginTop: 4 }}>{s.sub}</div>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+                <div style={{ textAlign: 'center', marginTop: 14, fontSize: 22, color: P.muted, opacity: fade(f, 56) }}>
+                    出典: TeleGeography 2026
+                </div>
+            </div>
+        </Stage>
+    );
+};
+
+// ───────────────────────────────────────────────
+// Scene 13: 漁船で切れる
+// ───────────────────────────────────────────────
+const Scene13: React.FC<SceneProps> = ({ localFrame: f }) => {
+    const total = 200;
+    const fishing = Math.round(total * 0.8);
+    return (
+        <Stage>
+            <div style={{ width: 1300 }}>
+                <div style={{ textAlign: 'center', fontSize: 34, fontWeight: 800, color: P.ink, marginBottom: 8, opacity: fade(f, 2) }}>
+                    年に <span style={{ color: P.rose }}>150〜200回</span> 切れている
+                </div>
+                <div style={{ textAlign: 'center', fontSize: 22, color: P.muted, marginBottom: 28, opacity: fade(f, 6) }}>
+                    原因の8割が、漁船の錨か底引き網
+                </div>
+                {/* バーチャート */}
+                <div style={{ width: 1100, margin: '0 auto', padding: '24px 40px', background: P.paper, borderRadius: 18, border: `2px solid ${P.border}` }}>
+                    {[
+                        { label: '漁船の錨・底引き網', pct: 80, color: P.primary, delay: 12 },
+                        { label: '自然災害（地震ほか）', pct: 14, color: P.cyan, delay: 24 },
+                        { label: 'サメなど海洋生物', pct: 6, color: P.accent, delay: 36 },
+                    ].map((b) => (
+                        <div key={b.label} style={{ display: 'flex', alignItems: 'center', gap: 20, marginBottom: 16, opacity: fade(f, b.delay) }}>
+                            <div style={{ width: 320, fontSize: 24, fontWeight: 700, color: P.ink, textAlign: 'right' }}>{b.label}</div>
+                            <div style={{ flex: 1, height: 46, background: '#F0F4FA', borderRadius: 6, overflow: 'hidden' }}>
+                                <div style={{
+                                    height: '100%',
+                                    width: `${interpolate(f, [b.delay + 4, b.delay + 24], [0, b.pct], { extrapolateRight: 'clamp' })}%`,
+                                    background: `linear-gradient(90deg, ${b.color}, ${b.color}dd)`,
+                                    display: 'flex', alignItems: 'center', justifyContent: 'flex-end',
+                                    paddingRight: 16, color: P.paper, fontSize: 22, fontWeight: 800,
+                                }}>
+                                    {b.pct}%
+                                </div>
+                            </div>
+                        </div>
+                    ))}
+                </div>
+                <div style={{ textAlign: 'center', marginTop: 24, fontSize: 26, color: P.ink, opacity: fade(f, 60), fontWeight: 700 }}>
+                    「クラウド」のイメージから一番遠い、<span style={{ color: P.primaryDeep }}>アナログな現実</span>
+                </div>
+            </div>
+        </Stage>
+    );
+};
+
+// ───────────────────────────────────────────────
+// Scene 14: Netflixの配信 — Open Connect
+// ───────────────────────────────────────────────
+const Scene14: React.FC<SceneProps> = ({ localFrame: f }) => (
+    <Stage>
+        <div style={{ width: 1380 }}>
+            <div style={{ textAlign: 'center', fontSize: 32, fontWeight: 800, color: P.ink, marginBottom: 24, opacity: fade(f, 2) }}>
+                95%は<span style={{ color: P.primary }}>近所のISP</span>から届いている
+            </div>
+            <div style={{ display: 'flex', justifyContent: 'center', gap: 0, alignItems: 'center' }}>
+                {/* 左: Netflix */}
+                <div style={{
+                    width: 240, opacity: fade(f, 6), transform: `translateY(${rise(f, 6)}px)`,
+                    textAlign: 'center',
+                }}>
+                    <div style={{ background: P.paper, padding: 18, borderRadius: 14, border: `3px solid ${P.rose}` }}>
+                        <Img src={staticFile('brand-icons/netflix.svg')} style={{ width: 160, height: 'auto', display: 'block', margin: '0 auto' }} />
+                    </div>
+                    <div style={{ fontSize: 22, color: P.muted, marginTop: 10 }}>米国本社</div>
+                </div>
+                {/* 矢印1 */}
+                <svg viewBox="0 0 140 60" width={140} height={60} style={{ opacity: fade(f, 14) }}>
+                    <line x1="6" y1="30" x2="120" y2="30" stroke={P.primary} strokeWidth="4" strokeDasharray="8 6" />
+                    <polygon points="120,18 138,30 120,42" fill={P.primary} />
+                    <text x="70" y="22" fontSize="16" fill={P.muted} textAnchor="middle">先回り配信</text>
+                </svg>
+                {/* 中央: ISPの中の箱 */}
+                <div style={{
+                    width: 320, opacity: fade(f, 22), transform: `translateY(${rise(f, 22)}px)`,
+                    textAlign: 'center',
+                }}>
+                    <div style={{ background: P.primaryDeep, color: P.paper, padding: '20px 16px', borderRadius: 14 }}>
+                        <div style={{ fontSize: 22, opacity: 0.85, letterSpacing: 4 }}>NTT / KDDI など</div>
+                        <div style={{ fontSize: 32, fontWeight: 900, marginTop: 6 }}>ISPのビル内</div>
+                        <div style={{
+                            marginTop: 14, padding: '14px 18px', background: P.rose, borderRadius: 10,
+                            fontSize: 26, fontWeight: 800, letterSpacing: 1,
+                        }}>
+                            <div>📦 Open Connect</div>
+                            <div style={{ fontSize: 18, opacity: 0.85 }}>専用キャッシュ箱</div>
+                        </div>
+                    </div>
+                </div>
+                {/* 矢印2 */}
+                <svg viewBox="0 0 140 60" width={140} height={60} style={{ opacity: fade(f, 32) }}>
+                    <line x1="6" y1="30" x2="120" y2="30" stroke={P.accent} strokeWidth="6" />
+                    <polygon points="120,16 140,30 120,44" fill={P.accent} />
+                    <text x="70" y="22" fontSize="16" fill={P.muted} textAnchor="middle">あなたへ</text>
+                </svg>
+                {/* 右: 視聴者 */}
+                <div style={{
+                    width: 200, opacity: fade(f, 38), textAlign: 'center',
+                    transform: `translateY(${rise(f, 38)}px)`,
+                }}>
+                    <svg viewBox="0 0 120 120" width={100} height={100} style={{ display: 'block', margin: '0 auto' }}>
+                        <rect x="20" y="30" width="80" height="55" rx="6" fill={P.primaryDeep} />
+                        <rect x="26" y="36" width="68" height="42" fill="#0a0a0a" />
+                        <rect x="50" y="85" width="20" height="10" fill={P.muted} />
+                        <rect x="40" y="95" width="40" height="6" fill={P.muted} />
+                    </svg>
+                    <div style={{ fontSize: 24, fontWeight: 800, color: P.ink, marginTop: 8 }}>視聴者</div>
+                </div>
+            </div>
+            <div style={{ textAlign: 'center', marginTop: 32, fontSize: 24, color: P.muted, opacity: fade(f, 50) }}>
+                Netflix → ISPへの設置は<span style={{ color: P.accentDeep, fontWeight: 700 }}>無償</span>。世界の95%がこの仕組みで配信。
+            </div>
+        </div>
+    </Stage>
+);
+
+// ───────────────────────────────────────────────
+// Scene 15: 物理層も分散 — ケーブル所有
+// ───────────────────────────────────────────────
+const Scene15: React.FC<SceneProps> = ({ localFrame: f }) => (
+    <Stage>
+        <div style={{ width: 1380 }}>
+            <div style={{ textAlign: 'center', fontSize: 32, fontWeight: 800, color: P.ink, marginBottom: 24, opacity: fade(f, 2) }}>
+                ケーブルもCDNも、<span style={{ color: P.primary }}>多数の会社で分担</span>
+            </div>
+            <div style={{ display: 'flex', gap: 30, justifyContent: 'center' }}>
+                <Card style={{
+                    width: 600, padding: '24px 28px',
+                    opacity: fade(f, 6), transform: `translateY(${rise(f, 6)}px)`,
+                    borderTop: `6px solid ${P.cyan}`,
+                }}>
+                    <div style={{ fontSize: 24, color: P.cyanDeep, fontWeight: 800, letterSpacing: 4, marginBottom: 12 }}>
+                        海底ケーブル所有
+                    </div>
+                    <div style={{ fontSize: 22, color: P.ink, marginBottom: 12 }}>
+                        ＊各国通信会社の<span style={{ fontWeight: 700 }}>共同所有</span>が基本
+                    </div>
+                    <div style={{
+                        background: '#F0FAFF', borderRadius: 12, padding: '16px 20px',
+                        opacity: fade(f, 18),
+                    }}>
+                        <div style={{ fontSize: 20, color: P.muted, marginBottom: 10 }}>近年は巨大IT企業も参入</div>
+                        <div style={{ display: 'flex', gap: 14, alignItems: 'center', flexWrap: 'wrap' }}>
+                            {['google', 'meta', 'microsoft', 'amazon'].map((b, i) => (
+                                <div key={b} style={{
+                                    background: P.paper, padding: '10px 16px', borderRadius: 10,
+                                    border: `2px solid ${P.border}`,
+                                    opacity: fade(f, 22 + i * 3),
+                                }}>
+                                    <Img src={staticFile(`brand-icons/${b}.svg`)} style={{ width: 70, height: 28, objectFit: 'contain', display: 'block' }} />
+                                </div>
+                            ))}
+                        </div>
+                        <div style={{ fontSize: 22, color: P.primaryDeep, fontWeight: 800, marginTop: 14, opacity: fade(f, 38) }}>
+                            Google だけで世界の<span style={{ fontSize: 32 }}>8.5%</span>に関与
+                        </div>
+                    </div>
+                </Card>
+                <Card style={{
+                    width: 600, padding: '24px 28px',
+                    opacity: fade(f, 28), transform: `translateY(${rise(f, 28)}px)`,
+                    borderTop: `6px solid ${P.violet}`,
+                }}>
+                    <div style={{ fontSize: 24, color: P.violet, fontWeight: 800, letterSpacing: 4, marginBottom: 12 }}>
+                        CDN（中継網）
+                    </div>
+                    <div style={{ fontSize: 22, color: P.ink, marginBottom: 16 }}>
+                        コンテンツを世界中に分散配信する仕組み
+                    </div>
+                    <div style={{ display: 'flex', gap: 16, opacity: fade(f, 40) }}>
+                        <div style={{ flex: 1, padding: '20px 16px', background: '#FAF5FF', border: `2px solid ${P.violet}`, borderRadius: 12, textAlign: 'center' }}>
+                            <Img src={staticFile('brand-icons/cloudflare.svg')} style={{ width: 130, height: 36, objectFit: 'contain', display: 'block', margin: '0 auto 8px' }} />
+                            <div style={{ fontSize: 20, color: P.muted }}>Cloudflare</div>
+                        </div>
+                        <div style={{ flex: 1, padding: '20px 16px', background: '#FAF5FF', border: `2px solid ${P.violet}`, borderRadius: 12, textAlign: 'center' }}>
+                            <Img src={staticFile('brand-icons/akamai.svg')} style={{ width: 130, height: 36, objectFit: 'contain', display: 'block', margin: '0 auto 8px' }} />
+                            <div style={{ fontSize: 20, color: P.muted }}>Akamai</div>
+                        </div>
+                    </div>
+                    <div style={{ marginTop: 16, fontSize: 22, color: P.ink, opacity: fade(f, 50) }}>
+                        他にも数社で分担。一社独占はない。
+                    </div>
+                </Card>
+            </div>
+        </div>
+    </Stage>
+);
+
+// ───────────────────────────────────────────────
+// Scene 16: 国単位では止まる
+// ───────────────────────────────────────────────
+const Scene16: React.FC<SceneProps> = ({ localFrame: f }) => (
+    <Stage>
+        <div style={{ width: 1200, textAlign: 'center' }}>
+            <div style={{
+                fontSize: 30, color: P.muted, fontWeight: 700, marginBottom: 16,
+                opacity: fade(f, 2),
+            }}>
+                では「インターネットは止められる？」
+            </div>
+            <div style={{
+                fontSize: 76, fontWeight: 900, color: P.ink, lineHeight: 1.25,
+                opacity: fade(f, 8), transform: `translateY(${rise(f, 8)}px)`,
+            }}>
+                国単位なら、<br />
+                <span style={{
+                    background: `linear-gradient(transparent 60%, ${P.amber}88 60%)`,
+                    color: P.rose,
+                }}>しょっちゅう止まっている</span>
+            </div>
+            <div style={{ marginTop: 28, fontSize: 26, color: P.muted, opacity: fade(f, 32) }}>
+                自国のISPに命令すれば、<span style={{ color: P.ink, fontWeight: 700 }}>国の中の扉は閉められる</span>
+            </div>
+        </div>
+    </Stage>
+);
+
+// ───────────────────────────────────────────────
+// Scene 17: Access Nowの数字
+// ───────────────────────────────────────────────
+const Scene17: React.FC<SceneProps> = ({ localFrame: f }) => (
+    <Stage>
+        <div style={{ width: 1380 }}>
+            <div style={{ textAlign: 'center', fontSize: 28, color: P.muted, marginBottom: 16, opacity: fade(f, 2), letterSpacing: 4 }}>
+                Access Now調べ・2025年
+            </div>
+            <div style={{ display: 'flex', gap: 24, justifyContent: 'center', marginBottom: 30 }}>
+                {[
+                    { v: '313', sub: '件の遮断', color: P.rose, delay: 8 },
+                    { v: '52', sub: 'か国で実施', color: P.amberDeep, delay: 16 },
+                    { v: '46億人', sub: '影響を受けた', color: P.primaryDeep, delay: 24 },
+                ].map((s) => (
+                    <Card key={s.sub} style={{
+                        width: 320, textAlign: 'center', padding: '24px 16px',
+                        opacity: fade(f, s.delay), transform: `translateY(${rise(f, s.delay)}px)`,
+                        borderTop: `6px solid ${s.color}`,
+                    }}>
+                        <div style={{ fontSize: 80, fontWeight: 900, color: s.color, lineHeight: 1 }}>{s.v}</div>
+                        <div style={{ fontSize: 24, color: P.muted, marginTop: 8 }}>{s.sub}</div>
+                    </Card>
+                ))}
+            </div>
+            <div style={{
+                background: P.paper, border: `2px solid ${P.border}`, borderRadius: 16,
+                padding: '20px 32px', width: 1100, margin: '0 auto',
+                opacity: fade(f, 40),
+            }}>
+                <div style={{ fontSize: 22, color: P.muted, marginBottom: 12, fontWeight: 700 }}>独自の運用も登場</div>
+                <div style={{ display: 'flex', gap: 24, justifyContent: 'space-around' }}>
+                    {[
+                        { country: '中国', name: 'Great Firewall', delay: 44 },
+                        { country: 'ロシア', name: 'RuNet', delay: 50 },
+                        { country: 'イラン', name: 'NIN', delay: 56 },
+                    ].map((c) => (
+                        <div key={c.country} style={{ textAlign: 'center', opacity: fade(f, c.delay) }}>
+                            <div style={{ fontSize: 22, color: P.muted }}>{c.country}</div>
+                            <div style={{ fontSize: 30, fontWeight: 800, color: P.rose }}>{c.name}</div>
+                        </div>
+                    ))}
+                </div>
+            </div>
+        </div>
+    </Stage>
+);
+
+// ───────────────────────────────────────────────
+// Scene 18: 世界全体は止められない
+// ───────────────────────────────────────────────
+const Scene18: React.FC<SceneProps> = ({ localFrame: f }) => (
+    <Stage>
+        <div style={{ width: 1380 }}>
+            <div style={{ textAlign: 'center', fontSize: 36, fontWeight: 800, color: P.ink, marginBottom: 8, opacity: fade(f, 2) }}>
+                世界全体を止めるスイッチは
+            </div>
+            <div style={{ textAlign: 'center', fontSize: 56, fontWeight: 900, color: P.accent, marginBottom: 28, opacity: fade(f, 8) }}>
+                存在しない
+            </div>
+            {/* 4層のレイヤー：分散の理由を縦に並べる */}
+            <div style={{ width: 1200, margin: '0 auto' }}>
+                {[
+                    { layer: '組織', detail: 'ICANN / IETF / RIR / W3C', color: P.amber, delay: 14 },
+                    { layer: '物理', detail: '海底ケーブル — 各国・各社の共同所有', color: P.primary, delay: 24 },
+                    { layer: '名前解決', detail: 'DNSルートサーバ — 12組織・約2000インスタンス', color: P.cyan, delay: 34 },
+                    { layer: '経路', detail: 'BGP — 各ネットワークが自分で経路を決める', color: P.violet, delay: 44 },
+                ].map((row) => (
+                    <div key={row.layer} style={{
+                        display: 'flex', alignItems: 'center', gap: 18, marginBottom: 14,
+                        background: P.paper, border: `2px solid ${P.border}`, borderRadius: 12,
+                        padding: '14px 20px', borderLeft: `8px solid ${row.color}`,
+                        opacity: fade(f, row.delay), transform: `translateX(${interpolate(f, [row.delay, row.delay + 18], [-20, 0], { extrapolateRight: 'clamp' })}px)`,
+                    }}>
+                        <div style={{
+                            width: 130, fontSize: 26, fontWeight: 900, color: row.color,
+                        }}>{row.layer}</div>
+                        <div style={{ flex: 1, fontSize: 24, color: P.ink }}>{row.detail}</div>
+                        <div style={{
+                            background: row.color, color: P.paper,
+                            padding: '6px 14px', borderRadius: 999, fontSize: 18, fontWeight: 800,
+                        }}>分散</div>
+                    </div>
+                ))}
+            </div>
+            <div style={{ textAlign: 'center', marginTop: 24, fontSize: 26, color: P.muted, opacity: fade(f, 60) }}>
+                全体停止の命令を「受け取る主体」が、そもそも存在しない
+            </div>
+        </div>
+    </Stage>
+);
+
+// ───────────────────────────────────────────────
+// Scene 19: 設計思想が先 — End-to-End
+// ───────────────────────────────────────────────
+const Scene19: React.FC<SceneProps> = ({ localFrame: f }) => (
+    <Stage>
+        <div style={{ width: 1380 }}>
+            <div style={{ textAlign: 'center', fontSize: 28, color: P.muted, marginBottom: 8, opacity: fade(f, 2), letterSpacing: 3 }}>
+                Saltzer / Reed / Clark — 1984
+            </div>
+            <div style={{ textAlign: 'center', fontSize: 38, fontWeight: 900, color: P.primaryDeep, marginBottom: 28, opacity: fade(f, 6) }}>
+                End-to-End 原則
+            </div>
+            {/* 比較：電話 vs インターネット */}
+            <div style={{ display: 'flex', gap: 32, justifyContent: 'center' }}>
+                <Card style={{
+                    width: 580, padding: '24px 28px',
+                    opacity: fade(f, 14), transform: `translateY(${rise(f, 14)}px)`,
+                    borderTop: `6px solid ${P.muted}`,
+                    background: 'rgba(255,255,255,0.7)',
+                }}>
+                    <div style={{ fontSize: 22, color: P.muted, fontWeight: 800, letterSpacing: 4, marginBottom: 14 }}>
+                        従来の電話網
+                    </div>
+                    <svg viewBox="0 0 480 130" width={480} height={130} style={{ display: 'block', margin: '0 auto' }}>
+                        {/* 電話機（ばか） */}
+                        <rect x="20" y="60" width="60" height="40" rx="6" fill={P.muted} />
+                        <text x="50" y="125" fontSize="14" fill={P.muted} textAnchor="middle">単純</text>
+                        <rect x="400" y="60" width="60" height="40" rx="6" fill={P.muted} />
+                        <text x="430" y="125" fontSize="14" fill={P.muted} textAnchor="middle">単純</text>
+                        {/* 中央の交換機（賢い） */}
+                        <rect x="180" y="20" width="120" height="100" rx="10" fill={P.amber} stroke={P.ink} strokeWidth="3" />
+                        <text x="240" y="64" fontSize="20" fontWeight="900" fill={P.paper} textAnchor="middle">交換機</text>
+                        <text x="240" y="92" fontSize="16" fill={P.paper} textAnchor="middle">（賢い）</text>
+                        <line x1="80" y1="80" x2="180" y2="70" stroke={P.ink} strokeWidth="2" />
+                        <line x1="300" y1="70" x2="400" y2="80" stroke={P.ink} strokeWidth="2" />
+                    </svg>
+                    <div style={{ fontSize: 22, color: P.ink, marginTop: 8, textAlign: 'center' }}>
+                        賢さは<span style={{ color: P.amberDeep, fontWeight: 800 }}>真ん中</span>
+                    </div>
+                </Card>
+                <Card style={{
+                    width: 580, padding: '24px 28px',
+                    opacity: fade(f, 28), transform: `translateY(${rise(f, 28)}px)`,
+                    borderTop: `6px solid ${P.accent}`,
+                }}>
+                    <div style={{ fontSize: 22, color: P.accentDeep, fontWeight: 800, letterSpacing: 4, marginBottom: 14 }}>
+                        インターネット
+                    </div>
+                    <svg viewBox="0 0 480 130" width={480} height={130} style={{ display: 'block', margin: '0 auto' }}>
+                        {/* スマホ（賢い） */}
+                        <rect x="10" y="40" width="80" height="80" rx="10" fill={P.accent} stroke={P.ink} strokeWidth="3" />
+                        <rect x="20" y="50" width="60" height="55" rx="3" fill={P.paper} />
+                        <text x="50" y="138" fontSize="14" fill={P.accentDeep} textAnchor="middle" fontWeight="800">賢い</text>
+                        {/* サーバー（賢い） */}
+                        <rect x="390" y="40" width="80" height="80" rx="6" fill={P.accent} stroke={P.ink} strokeWidth="3" />
+                        <line x1="400" y1="60" x2="460" y2="60" stroke={P.paper} strokeWidth="3" />
+                        <line x1="400" y1="80" x2="460" y2="80" stroke={P.paper} strokeWidth="3" />
+                        <line x1="400" y1="100" x2="460" y2="100" stroke={P.paper} strokeWidth="3" />
+                        <text x="430" y="138" fontSize="14" fill={P.accentDeep} textAnchor="middle" fontWeight="800">賢い</text>
+                        {/* 中央：土管 */}
+                        <rect x="120" y="64" width="240" height="32" rx="4" fill={P.muted} opacity="0.5" />
+                        <text x="240" y="86" fontSize="20" fontWeight="800" fill={P.muted} textAnchor="middle">ただの土管</text>
+                    </svg>
+                    <div style={{ fontSize: 22, color: P.ink, marginTop: 8, textAlign: 'center' }}>
+                        賢さは<span style={{ color: P.accentDeep, fontWeight: 800 }}>端末</span>側
+                    </div>
+                </Card>
+            </div>
+            <div style={{
+                textAlign: 'center', marginTop: 22, fontSize: 24, color: P.muted, opacity: fade(f, 50),
+            }}>
+                例：暗号化もメッセージアプリもブラウザの鍵も、すべて<span style={{ color: P.ink, fontWeight: 700 }}>端末側</span>で処理
+            </div>
+        </div>
+    </Stage>
+);
+
+// ───────────────────────────────────────────────
+// Scene 20: 最初の問いに戻る
+// ───────────────────────────────────────────────
+const Scene20: React.FC<SceneProps> = ({ localFrame: f }) => (
+    <Stage>
+        <div style={{ width: 1280 }}>
+            <div style={{ textAlign: 'center', fontSize: 36, fontWeight: 800, color: P.ink, marginBottom: 28, opacity: fade(f, 2) }}>
+                改めて — <span style={{ color: P.primaryDeep }}>誰が作ったのか？</span>
+            </div>
+            <div style={{ width: 1100, margin: '0 auto' }}>
+                {[
+                    { who: 'Vint Cerf / Bob Kahn', what: 'TCP/IP（通信の文法）', color: P.primary, delay: 8 },
+                    { who: 'Tim Berners-Lee', what: 'WWW（Webアプリの土台）', color: P.violet, delay: 16 },
+                    { who: 'ARPA', what: '最初の予算', color: P.amber, delay: 24 },
+                    { who: 'RFCを書いた数千人', what: '仕様書を積み上げ', color: P.cyan, delay: 32 },
+                    { who: 'ISP の現場技術者', what: '日々の運用', color: P.accent, delay: 40 },
+                    { who: '海底ケーブル敷設の船員', what: '物理層', color: P.cyanDeep, delay: 48 },
+                ].map((r) => (
+                    <div key={r.who} style={{
+                        display: 'flex', alignItems: 'center', gap: 20, padding: '12px 24px',
+                        marginBottom: 8, background: P.paper, border: `2px solid ${P.border}`,
+                        borderRadius: 12, borderLeft: `8px solid ${r.color}`,
+                        opacity: fade(f, r.delay), transform: `translateX(${interpolate(f, [r.delay, r.delay + 16], [-16, 0], { extrapolateRight: 'clamp' })}px)`,
+                    }}>
+                        <div style={{ width: 480, fontSize: 26, fontWeight: 800, color: P.ink }}>{r.who}</div>
+                        <div style={{ flex: 1, fontSize: 24, color: P.muted }}>{r.what}</div>
+                    </div>
+                ))}
+            </div>
+            <div style={{ textAlign: 'center', marginTop: 24, fontSize: 28, fontWeight: 800, color: P.primaryDeep, opacity: fade(f, 60) }}>
+                誰か一人ではなく、全員で。
+            </div>
+        </div>
+    </Stage>
+);
+
+// ───────────────────────────────────────────────
+// Scene 21: Berners-Leeの懸念
+// ───────────────────────────────────────────────
+const Scene21: React.FC<SceneProps> = ({ localFrame: f }) => (
+    <Stage>
+        <div style={{ width: 1280 }}>
+            <div style={{
+                background: P.paper, border: `3px solid ${P.violet}`, borderRadius: 18,
+                padding: '40px 56px', position: 'relative',
+                opacity: fade(f, 4), transform: `translateY(${rise(f, 4)}px)`,
+            }}>
+                <span style={{
+                    position: 'absolute', top: -18, left: 32, background: P.violet, color: P.paper,
+                    padding: '6px 18px', borderRadius: 8, fontSize: 22, fontWeight: 800, letterSpacing: 2,
+                }}>
+                    Tim Berners-Lee — 2024年末
+                </span>
+                <div style={{ fontSize: 36, color: P.ink, fontWeight: 700, lineHeight: 1.6, fontStyle: 'italic' }}>
+                    「この10年、ウェブは人類を<span style={{ background: 'linear-gradient(transparent 60%, #FECDD3 60%)' }}>力づけるどころか</span>、<br />
+                    <span style={{ background: 'linear-gradient(transparent 60%, #FECDD3 60%)' }}>価値を浸食する側に回った</span>」
+                </div>
+            </div>
+            {/* 設計思想 vs 現実 */}
+            <div style={{ display: 'flex', gap: 32, justifyContent: 'center', marginTop: 24, opacity: fade(f, 28) }}>
+                <div style={{ flex: 1, padding: '16px 24px', background: '#F0F9FF', borderRadius: 12, borderLeft: `6px solid ${P.primary}`, maxWidth: 500 }}>
+                    <div style={{ fontSize: 22, fontWeight: 800, color: P.primaryDeep }}>設計思想</div>
+                    <div style={{ fontSize: 24, color: P.ink, marginTop: 4 }}>誰でも許可なく繋いでいい</div>
+                </div>
+                <div style={{ flex: 1, padding: '16px 24px', background: '#FEF2F2', borderRadius: 12, borderLeft: `6px solid ${P.rose}`, maxWidth: 500 }}>
+                    <div style={{ fontSize: 22, fontWeight: 800, color: P.rose }}>現実の傾向</div>
+                    <div style={{ fontSize: 24, color: P.ink, marginTop: 4 }}>数社のサービスへの依存</div>
+                </div>
+            </div>
+            <div style={{ textAlign: 'center', marginTop: 22, fontSize: 24, color: P.muted, opacity: fade(f, 48) }}>
+                作った本人が、警鐘を鳴らしている
+            </div>
+        </div>
+    </Stage>
+);
+
+// ───────────────────────────────────────────────
+// Scene 22: 綱引きは終わらない
+// ───────────────────────────────────────────────
+const Scene22: React.FC<SceneProps> = ({ localFrame: f }) => (
+    <Stage>
+        <div style={{ width: 1280 }}>
+            <div style={{
+                background: P.paper, border: `3px solid ${P.primary}`, borderRadius: 18,
+                padding: '32px 48px', position: 'relative',
+                opacity: fade(f, 2), transform: `translateY(${rise(f, 2)}px)`,
+                marginBottom: 32,
+            }}>
+                <span style={{
+                    position: 'absolute', top: -18, left: 32, background: P.primary, color: P.paper,
+                    padding: '6px 18px', borderRadius: 8, fontSize: 22, fontWeight: 800, letterSpacing: 2,
+                }}>
+                    David Clark — 2018
+                </span>
+                <div style={{ fontSize: 30, color: P.ink, fontWeight: 600, lineHeight: 1.55, fontStyle: 'italic' }}>
+                    「利害の<span style={{ color: P.amberDeep, fontWeight: 800 }}>綱引きは必ず起きる</span>。<br />
+                    設計者は<span style={{ color: P.primaryDeep, fontWeight: 800 }}>平地を傾けることしかできず</span>、<br />
+                    綱引き自体はなくせない」
+                </div>
+            </div>
+            {/* 綱引きの図 */}
+            <svg viewBox="0 0 1100 200" width={1100} height={200} style={{ display: 'block', margin: '0 auto', opacity: fade(f, 22) }}>
+                {/* 左陣営 */}
+                <g>
+                    {[0, 1, 2].map(i => (
+                        <circle key={i} cx={60 + i * 50} cy={110} r={20 + i * 4} fill={P.primary} opacity={0.5 + i * 0.15} />
+                    ))}
+                    <text x={150} y={170} fontSize="22" fontWeight="800" fill={P.primaryDeep} textAnchor="middle">分散・自由</text>
+                </g>
+                {/* 綱 */}
+                <line x1={210} y1={110} x2={890} y2={110} stroke={P.amberDeep} strokeWidth="10" strokeLinecap="round" />
+                {[330, 460, 600, 730].map((x, i) => (
+                    <circle key={i} cx={x} cy={110} r="8" fill={P.amberDeep}
+                        opacity={fade(f, 30 + i * 4)} />
+                ))}
+                {/* 中央フラッグ */}
+                <line x1={550} y1={70} x2={550} y2={150} stroke={P.ink} strokeWidth="3" />
+                <polygon points="550,70 580,80 550,90" fill={P.rose} opacity={fade(f, 44)} />
+                {/* 右陣営 */}
+                <g>
+                    {[0, 1, 2].map(i => (
+                        <circle key={i} cx={1040 - i * 50} cy={110} r={20 + i * 4} fill={P.violet} opacity={0.5 + i * 0.15} />
+                    ))}
+                    <text x={950} y={170} fontSize="22" fontWeight="800" fill={P.violet} textAnchor="middle">集中・効率</text>
+                </g>
+            </svg>
+            <div style={{ textAlign: 'center', marginTop: 16, fontSize: 26, color: P.ink, fontWeight: 700, opacity: fade(f, 50) }}>
+                誰も管理してない設計が残る限り、<span style={{ color: P.primaryDeep }}>綱引きに参加する余地は誰にでもある</span>
+            </div>
+        </div>
+    </Stage>
+);
+
+export const SCENE_COMPONENTS: React.FC<SceneProps>[] = [
+    Scene0, Scene1, Scene2, Scene3, Scene4, Scene5, Scene6, Scene7, Scene8, Scene9,
+    Scene10, Scene11, Scene12, Scene13, Scene14, Scene15, Scene16, Scene17, Scene18, Scene19,
+    Scene20, Scene21, Scene22,
+];
+
+export const SCENE_TITLES: string[] = [
+    '質問からスタート', '今日話すこと', '1969年のUCLA', '発注者と実装者', '核戦争説の訂正',
+    'TCP/IPの発明者', 'WWWは別の発明', '1995年に政府が手を引いた', 'ICANNの仕事', 'IETFの意思決定',
+    'RIRの地域分散', 'W3Cとまとめ', 'クラウドの実体', '漁船で切れる', 'Netflixの配信',
+    '物理層も分散', '国単位では止まる', 'Access Nowの数字', '世界全体は止められない', '設計思想が先',
+    '最初の問いに戻る', 'Berners-Leeの懸念', '綱引きは終わらない',
+];

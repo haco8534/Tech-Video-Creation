@@ -6,7 +6,14 @@
       "Bash(powershell -Command \"Get-Process | Where-Object { $_.Modules.FileName -like ''*git*'' -or $_.ProcessName -like ''*git*'' -or $_.ProcessName -like ''*node*'' } | Select-Object Id, ProcessName | Format-Table -AutoSize\")",
       "Bash(powershell -Command \"try { [System.IO.File]::Delete\\(''D:\\\\myfolder\\\\動画生成\\\\技術解説\\\\.git\\\\index.lock''\\) } catch { Write-Host $_.Exception.Message }\")",
       "Bash(powershell -Command \"Stop-Process -Id 8480 -Force; Stop-Process -Id 29932 -Force; Stop-Process -Id 31992 -Force\")",
-      "Bash(powershell -Command \"& { Set-Location ''D:\\\\myfolder\\\\動画生成\\\\技術解説''; git add -A 2>&1; git commit -m ''chore: gitignoreに画像ファイルを追加、重いメディアをトラッキングから除外'' 2>&1 }\")"
+      "Bash(powershell -Command \"& { Set-Location ''D:\\\\myfolder\\\\動画生成\\\\技術解説''; git add -A 2>&1; git commit -m ''chore: gitignoreに画像ファイルを追加、重いメディアをトラッキングから除外'' 2>&1 }\")",
+      "Bash(npx hyperframes*)",
+      "Bash(npx --yes hyperframes*)",
+      "Bash(npx skills*)",
+      "PowerShell(Test-Path *)",
+      "PowerShell(Get-WmiObject *)",
+      "PowerShell(try { [System.IO.Directory]::Delete\\(\"D:\\\\myfolder\\\\動画生成\\\\技術解説\\\\hyperframes_engine\\\\projects\", $true\\); Write-Output \"OK: Deleted via .NET\" } catch { Write-Output \"Failed: $_\" }; Start-Sleep -Seconds 1; Get-ChildItem \"D:\\\\myfolder\\\\動画生成\\\\技術解説\\\\hyperframes_engine\\\\\")",
+      "Bash(ffprobe -v error -show_entries format=duration,bit_rate,size -show_entries stream=codec_name,codec_type,width,height,r_frame_rate -of default \"D:/myfolder/動画生成/技術解説/jGoXOvK8SY2UkNtq.mp4\")"
     ]
   }
 }

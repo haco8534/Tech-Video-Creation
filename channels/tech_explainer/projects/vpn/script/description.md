@@ -1,29 +1,35 @@
-# VPNの広告ってなんでこんなに多いの？
+VPN広告はなぜこんなに多いのか？仕組みとお金の流れを解剖
 
-NordVPNだけで4万4千本以上のスポンサー動画。なぜVPN企業はこれほどの広告費を出せるのか？
+YouTubeを観ていれば必ず遭遇する「空港のWi-Fiは危険」「軍事レベルの暗号化」VPN広告。なぜどのチャンネルでも、なぜセリフまでそっくりなのか？本動画では「高LTVサブスク × 異常値のアフィリエイト報酬 × YouTube特化 × 業界2強寡占」という4つの構造を、一次情報ベースで解剖します。最後に広告の多さと商品の質の関係についても冷静に整理します。
 
-その答えは「VPNビジネスが儲かるから」。粗利益率70〜90%超のSaaS構造、初月売上100%のアフィリエイト報酬、恐怖×シンプルな価値提案の組み合わせ。この動画では、VPN広告の裏にあるビジネスモデルを解剖し、VPNが本当に守れるもの・守れないものを中立的に検証します。
-
-## 目次
+【目次】
 {{TIMESTAMPS}}
 
-## 参考文献
-- ResearchAndMarkets「VPN市場レポート2024」(BusinessWire)
-- Consumer Reports「VPN Testing Reveals Poor Privacy Practices」(2022)
-- Akgul et al.「Investigating Influencer VPN Ads on YouTube」IEEE S&P 2022
-- NordVPN Affiliate Program 公式ページ
-- EFF「Virtually Private Network – NordVPN's Breach and the Limitations of VPNs」(2019)
-- Privacy Guides「VPN Overview」
-- W3Techs HTTPS普及率統計
-- CyberInsider「IPVanish Provides Logs to Authorities」/ PureVPN事件報道
-- PCWorld「Hola VPN Botnet事件」(2015)
-- CSIRO「An Analysis of the Privacy and Security Risks of Android VPN Permission-enabled Apps」(2016)
-- The Register「NordVPN ASA行政指導」(2019)
-- Cloudwards「NordVPN and Surfshark Merger」(2022)
-- Tom's Guide「Kape Technologies Buys ExpressVPN」(2021)
-- Fingerprint.com「Why VPNs are ineffective against browser fingerprinting」
+【参考文献・出典】
+- Grand View Research, "Virtual Private Network Market Size & Share Analysis"
+  https://www.grandviewresearch.com/industry-analysis/virtual-private-network-market
+- NordVPN Affiliate Program (公式)
+  https://nordvpn.com/affiliate/
+- ExpressVPN Influencer Program (公式)
+  https://www.expressvpn.com/influencers
+- Kape Technologies - Wikipedia / RNS announcements
+  https://en.wikipedia.org/wiki/Kape_Technologies
+- PR Newswire, "Nord Security and Surfshark Join Forces" (2022)
+  https://www.prnewswire.com/news-releases/nord-security-and-surfshark-join-forces-to-strengthen-positions-in-the-cybersecurity-industry-301473286.html
+- CyberInsider, "Kape Technologies Owns ExpressVPN, CyberGhost, PIA, ZenMate and VPN Review Sites"
+  https://cyberinsider.com/kape-technologies-owns-expressvpn-cyberghost-pia-zenmate-vpn-review-sites/
+- TechRadar, "There's no such thing as military-grade encryption"
+  https://www.techradar.com/vpn/theres-no-such-thing-as-military-grade-encryption
+- Consumer Reports, "Is Using Public WiFi Still a Bad Idea?"
+  https://www.consumerreports.org/electronics/digital-security/is-using-public-wifi-still-a-bad-idea-a8476049516/
+- Consumer Reports, "Mullvad, IVPN, Mozilla VPN Top Testing"
+  https://www.consumerreports.org/electronics-computers/vpn-services/mullvad-ivpn-mozilla-vpn-top-consumer-reports-vpn-testing-a9588707317/
+- Electronic Frontier Foundation, "Choosing the VPN That's Right for You"
+  https://ssd.eff.org/module/choosing-vpn-thats-right-you
+- ThoughtLeaders, "VPN Providers Influencer Marketing Strategy"
+  https://www.thoughtleaders.io/blog/vpn-providers-that-nailed-their-influencer-marketing-strategy
 
 📘 このチャンネルについて
 一次情報と研究データに基づきながら、難しいテーマをずんだもんとめたんの対話で楽しくわかりやすく解説するチャンネルです。
 
-#VPN #NordVPN #セキュリティ #プライバシー #ずんだもん解説
+#VPN #NordVPN #ExpressVPN #Surfshark #アフィリエイト

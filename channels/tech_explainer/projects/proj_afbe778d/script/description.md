@@ -1,34 +1,22 @@
-プログラミングって「英語みたいな文字をカタカタ打つこと」だと思っていませんか？
+プログラマは結局何をしているのか？3つの素朴な誤解を一気に崩す
 
-実はプログラマーがコードを書いている時間は業務全体のたった16%。
-しかもそのうち半分はバグ探し。純粋にコードを生み出しているのは全体の8%しかありません。
-じゃあ残りの92%は何をしているのか？
+「プログラミング＝機械に命令を与えること」という素朴なイメージは、実はほぼ全部ズレている、というお話です。プログラマの1日のうち「コードを書く時間」は1〜2割しかない。現代のCPUは書いた順に動いていない。そして最初のプログラマは文字すら打っていなかった——。3つの違和感を順に解いていき、業界のレジェンドたちが定義した「本当は何をしているのか」に辿り着きます。
 
-この動画では靴ひもの結び方や自動販売機の設計など、
-身近な例を通じて「プログラミングの正体」を
-ずんだもんとめたんが一緒に解き明かします。
-
-## 目次
 {{TIMESTAMPS}}
 
-## 参考文献・出典
-- IDC, "Developer Experience Survey 2024" (InfoWorld報道)
-  https://www.infoworld.com/article/3831759/developers-spend-most-of-their-time-not-coding-idc-report.html
-- University of Cambridge / Undo Software, "Debugging Study"
-  https://totalview.io/press-releases/university-cambridge-study-failure-adopt-reverse-debugging-costs-global-economy-41
-- Jeannette Wing, "Computational Thinking", Communications of the ACM, 2006
-  https://www.cs.cmu.edu/~15110-s13/Wing06-ct.pdf
-- Edsger W. Dijkstra, "Go To Statement Considered Harmful", 1968
-- Donald Knuth, Wikiquote
-  https://en.wikiquote.org/wiki/Donald_Knuth
-- SlashData, "Global Developer Population Trends 2025"
-  https://www.slashdata.co/post/global-developer-population-trends-2025-how-many-developers-are-there
-- Stackscale, "Linux kernel surpasses 40 million lines of code"
-  https://www.stackscale.com/blog/linux-kernel-surpasses-40-million-lines-code/
-- Computer History Museum, "The FORTRAN Automatic Coding System"
-  https://www.computerhistory.org/revolution/birth-of-the-computer/4/78
+📖 参考文献
+・Knuth "Computer Programming as an Art" (1974 ACM Turing Award Lecture)
+・Abelson & Sussman『Structure and Interpretation of Computer Programs』MIT Press, 1984
+・Dijkstra "Notes on Structured Programming", 1972
+・Peter Naur "Programming as Theory Building", 1985
+・Fred Brooks "No Silver Bullet — Essence and Accident in Software Engineering", 1986
+・John Backus "Can Programming Be Liberated from the von Neumann Style?", 1978 Turing Award Lecture (ACM)
+・Coralogix Research: Developer Activity Breakdown
+・Wikipedia「Out-of-order execution」「Speculative execution」「Jean Bartik」「Kathleen Booth」「History of programming languages」
+・IBM History: FORTRAN
+・arXiv 2302.06590: The Impact of GitHub Copilot on Developer Productivity
 
 📘 このチャンネルについて
 一次情報と研究データに基づきながら、難しいテーマをずんだもんとめたんの対話で楽しくわかりやすく解説するチャンネルです。
 
-#プログラミング #プログラミング入門 #ずんだもん #計算論的思考 #IT解説
+#プログラミング #プログラマの仕事 #コンピュータサイエンス #ずんだもん #めたん

@@ -12,6 +12,7 @@ export default function RenderControl({ channelId, projectId, hasVideo, hasThumb
   const [queued, setQueued] = useState(false);
   const [queuePosition, setQueuePosition] = useState(0);
   const [progress, setProgress] = useState(null);
+  const [lastLog, setLastLog] = useState("");
   const [renderComplete, setRenderComplete] = useState(false);
   const [uploading, setUploading] = useState(false);
 
@@ -27,6 +28,7 @@ export default function RenderControl({ channelId, projectId, hasVideo, hasThumb
         setRendering(true);
         setQueued(false);
         setProgress(null);
+        setLastLog("");
         setRenderComplete(false);
         break;
       case "render-queued":
@@ -36,8 +38,12 @@ export default function RenderControl({ channelId, projectId, hasVideo, hasThumb
       case "render-progress":
         setProgress({ current: msg.current, total: msg.total, percent: msg.percent });
         break;
+      case "render-log":
+        if (msg.text) setLastLog(msg.text);
+        break;
       case "render-complete":
         setRendering(false);
+        setLastLog("");
         setRenderComplete(msg.success);
         if (msg.success) {
           toast("レンダリング完了", "success");
@@ -48,6 +54,7 @@ export default function RenderControl({ channelId, projectId, hasVideo, hasThumb
       case "render-cancelled":
         setRendering(false);
         setQueued(false);
+        setLastLog("");
         break;
     }
   }, [toast]);
@@ -155,10 +162,13 @@ export default function RenderControl({ channelId, projectId, hasVideo, hasThumb
             </div>
             <span className="render-progress-text">
               {progress
-                ? `${progress.current}/${progress.total} frames (${progress.percent}%)`
+                ? `${progress.current ?? "-"}/${progress.total ?? "-"} frames (${progress.percent}%)`
                 : "準備中..."
               }
             </span>
+            {lastLog && (
+              <span className="render-progress-log" title={lastLog}>{lastLog}</span>
+            )}
           </div>
         )}
 

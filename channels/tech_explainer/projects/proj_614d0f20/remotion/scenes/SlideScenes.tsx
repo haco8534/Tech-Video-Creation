@@ -1,924 +1,1192 @@
-import React from "react";
-import { AbsoluteFill, staticFile } from "remotion";
-import "./slides.css";
+import React from 'react';
+import { interpolate } from 'remotion';
+import { SceneProps } from '@components/layouts/FigureLayout';
+import { BASE_COLORS } from '@components/theme';
 
-export const Scene0: React.FC = () => (
-    <AbsoluteFill>
-        <div className="scene" id="scene-0">
-    <div className="content center-layout">
-        <div className="svg-diagram">
-            <svg width="200" height="200" viewBox="0 0 200 200">
-                {/*  */}
-                <circle cx="100" cy="100" r="60" fill="none" stroke="var(--primary)" strokeWidth="4"/>
-                <circle cx="100" cy="100" r="42" fill="var(--primary-light)" stroke="var(--primary)" strokeWidth="2"/>
-                {/*  */}
-                <g fill="var(--primary)">
-                    <rect x="94" y="30" width="12" height="18" rx="3"/>
-                    <rect x="94" y="152" width="12" height="18" rx="3"/>
-                    <rect x="30" y="94" width="18" height="12" rx="3"/>
-                    <rect x="152" y="94" width="18" height="12" rx="3"/>
-                    <rect x="48" y="48" width="14" height="12" rx="3" transform="rotate(-45 55 54)"/>
-                    <rect x="138" y="48" width="14" height="12" rx="3" transform="rotate(45 145 54)"/>
-                    <rect x="48" y="140" width="14" height="12" rx="3" transform="rotate(45 55 146)"/>
-                    <rect x="138" y="140" width="14" height="12" rx="3" transform="rotate(-45 145 146)"/>
-                </g>
-                {/*  */}
-                <polyline points="80,105 95,120 125,85" fill="none" stroke="var(--primary)" strokeWidth="6" strokeLinecap="round" stroke-linejoin="round"/>
-            </svg>
-        </div>
-        <div className="title-large">「アルゴリズム」って<br />結局なんなのか</div>
-        <div className="title-sub">手順じゃない。「保証」だ。</div>
-    </div>
-</div>
-    </AbsoluteFill>
+export type { SceneProps };
+
+const YouTubeIcon: React.FC<{ width: number }> = ({ width }) => (
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 180" width={width} height={width * (180 / 256)} style={{ display: 'block' }}>
+        <path fill="#FF0000" d="M250.346 28.075A32.18 32.18 0 0 0 227.69 5.418C207.824 0 127.87 0 127.87 0S47.912.164 28.046 5.582A32.18 32.18 0 0 0 5.39 28.24c-6.009 35.298-8.34 89.084.165 122.97a32.18 32.18 0 0 0 22.656 22.657c19.866 5.418 99.822 5.418 99.822 5.418s79.955 0 99.82-5.418a32.18 32.18 0 0 0 22.657-22.657c6.338-35.348 8.291-89.1-.164-123.134Z" />
+        <path fill="#FFFFFF" d="m102.421 128.06 66.328-38.418-66.328-38.418z" />
+    </svg>
 );
 
-export const Scene1: React.FC = () => (
-    <AbsoluteFill>
-        <div className="scene" id="scene-1">
-    <div className="content center-layout">
-        <div className="scene-title">料理のレシピはアルゴリズムか？</div>
-        <div className="svg-diagram">
-            <svg width="780" height="220" viewBox="0 0 780 220">
-                {/*  */}
-                <rect x="240" y="10" width="300" height="180" rx="12" fill="var(--card-bg)" stroke="var(--border)" strokeWidth="2"/>
-                <text x="390" y="50" textAnchor="middle" fontSize="22" fontWeight="900" fill="var(--primary)">レシピ</text>
-                <line x1="270" y1="62" x2="510" y2="62" stroke="var(--border)" strokeWidth="1"/>
-                <text x="290" y="90" fontSize="18" fontWeight="700" fill="var(--text)">1. 材料を切る</text>
-                <text x="290" y="118" fontSize="18" fontWeight="700" fill="var(--text)">2. 塩を<tspan fill="var(--coral)" fontWeight="900">少々</tspan>加える</text>
-                <text x="290" y="146" fontSize="18" fontWeight="700" fill="var(--text)">3. <tspan fill="var(--coral)" fontWeight="900">柔らかくなるまで</tspan>煮る</text>
-                <text x="290" y="174" fontSize="18" fontWeight="700" fill="var(--text)">4. 盛り付ける</text>
-                {/*  */}
-                <text x="620" y="120" fontSize="80" fontWeight="900" fill="var(--amber)" opacity="0.6">?</text>
-                {/*  */}
-                <ellipse cx="130" cy="100" rx="35" ry="22" fill="none" stroke="var(--teal)" strokeWidth="3"/>
-                <line x1="130" y1="122" x2="130" y2="200" stroke="var(--teal)" strokeWidth="3" strokeLinecap="round"/>
-                <text x="130" y="90" textAnchor="middle" fontSize="18" fontWeight="900" fill="var(--teal)">塩</text>
-                <text x="130" y="110" textAnchor="middle" fontSize="18" fontWeight="900" fill="var(--coral)">少々?</text>
-            </svg>
-        </div>
-        <div className="big-statement">「手順が書いてあるから<span className="accent-primary">アルゴリズム</span>」<br />...本当にそうだろうか？</div>
-    </div>
-</div>
-    </AbsoluteFill>
-);
-
-export const Scene2: React.FC = () => (
-    <AbsoluteFill>
-        <div className="scene" id="scene-2">
-    <div className="content center-layout">
-        <div className="scene-title">レシピが抱える2つの致命的欠陥</div>
-        <div className="svg-diagram">
-            <svg width="780" height="230" viewBox="0 0 780 230">
-                {/*  */}
-                <rect x="30" y="20" width="340" height="190" rx="12" fill="var(--coral-light)" stroke="var(--coral)" strokeWidth="2"/>
-                <text x="200" y="55" textAnchor="middle" fontSize="20" fontWeight="900" fill="var(--coral)">曖昧な指示</text>
-                {/*  */}
-                <circle cx="120" cy="140" r="40" fill="none" stroke="var(--coral)" strokeWidth="3"/>
-                <circle cx="120" cy="140" r="3" fill="var(--coral)"/>
-                <line x1="120" y1="140" x2="120" y2="110" stroke="var(--coral)" strokeWidth="3" strokeLinecap="round"/>
-                <line x1="120" y1="140" x2="140" y2="150" stroke="var(--coral)" strokeWidth="2" strokeLinecap="round"/>
-                <text x="120" y="200" textAnchor="middle" fontSize="18" fontWeight="700" fill="var(--coral)">いつ終わる?</text>
-                {/*  */}
-                <text x="280" y="100" textAnchor="middle" fontSize="18" fontWeight="700" fill="var(--coral)">「塩少々」</text>
-                <text x="280" y="130" textAnchor="middle" fontSize="40" fontWeight="900" fill="var(--coral)">???</text>
-                <text x="280" y="170" textAnchor="middle" fontSize="18" fontWeight="700" fill="var(--coral)">何グラム?</text>
-                {/*  */}
-                <rect x="410" y="20" width="340" height="190" rx="12" fill="var(--teal-light)" stroke="var(--teal)" strokeWidth="2"/>
-                <text x="580" y="55" textAnchor="middle" fontSize="20" fontWeight="900" fill="var(--teal)">明確な指示</text>
-                {/*  */}
-                <circle cx="500" cy="140" r="40" fill="none" stroke="var(--teal)" strokeWidth="3"/>
-                <circle cx="500" cy="140" r="3" fill="var(--teal)"/>
-                <line x1="500" y1="140" x2="500" y2="110" stroke="var(--teal)" strokeWidth="3" strokeLinecap="round"/>
-                <line x1="500" y1="140" x2="520" y2="150" stroke="var(--teal)" strokeWidth="2" strokeLinecap="round"/>
-                <text x="500" y="200" textAnchor="middle" fontSize="18" fontWeight="900" fill="var(--teal)">10分間</text>
-                {/*  */}
-                <text x="660" y="100" textAnchor="middle" fontSize="18" fontWeight="700" fill="var(--teal)">「塩3g」</text>
-                <text x="660" y="140" textAnchor="middle" fontSize="36" fontWeight="900" fill="var(--teal)">3g</text>
-                <text x="660" y="170" textAnchor="middle" fontSize="18" fontWeight="900" fill="var(--teal)">明確!</text>
-            </svg>
-        </div>
-        <div className="big-statement"><span className="accent-coral">「いつ終わるか分からない」</span>と<span className="accent-coral">「人によって違う」</span><br />この2点がレシピとアルゴリズムを分ける壁</div>
-    </div>
-</div>
-    </AbsoluteFill>
-);
-
-export const Scene3: React.FC = () => (
-    <AbsoluteFill>
-        <div className="scene" id="scene-3">
-    <div className="content center-layout">
-        <div className="photo-text-row">
-            <figure className="photo-frame">
-                <img src={staticFile("images/proj_614d0f20/knuth.jpg")} alt="ドナルド・クヌース" />
-            </figure>
-            <div className="photo-text-side">
-                <div className="scene-title">クヌースの5条件</div>
-                <div className="svg-diagram">
-                    <svg width="520" height="240" viewBox="0 0 520 240">
-                        {/*  */}
-                        <g>
-                            <rect x="10" y="5" width="500" height="40" rx="6" fill="var(--primary-light)" stroke="var(--primary)" strokeWidth="2"/>
-                            <circle cx="35" cy="25" r="12" fill="var(--primary)"/>
-                            <text x="35" y="30" textAnchor="middle" fontSize="14" fontWeight="900" fill="#fff">1</text>
-                            <text x="60" y="30" fontSize="18" fontWeight="900" fill="var(--text)">有限性 ─ 必ず有限回で終了する</text>
-                        </g>
-                        <g>
-                            <rect x="10" y="52" width="500" height="40" rx="6" fill="var(--primary-light)" stroke="var(--primary)" strokeWidth="2"/>
-                            <circle cx="35" cy="72" r="12" fill="var(--primary)"/>
-                            <text x="35" y="77" textAnchor="middle" fontSize="14" fontWeight="900" fill="#fff">2</text>
-                            <text x="60" y="77" fontSize="18" fontWeight="900" fill="var(--text)">明確性 ─ 各ステップが曖昧さなく定義</text>
-                        </g>
-                        <g>
-                            <rect x="10" y="99" width="500" height="40" rx="6" fill="var(--teal-light)" stroke="var(--teal)" strokeWidth="2"/>
-                            <circle cx="35" cy="119" r="12" fill="var(--teal)"/>
-                            <text x="35" y="124" textAnchor="middle" fontSize="14" fontWeight="900" fill="#fff">3</text>
-                            <text x="60" y="124" fontSize="18" fontWeight="900" fill="var(--text)">入力 ─ 0個以上の入力を受け取る</text>
-                        </g>
-                        <g>
-                            <rect x="10" y="146" width="500" height="40" rx="6" fill="var(--teal-light)" stroke="var(--teal)" strokeWidth="2"/>
-                            <circle cx="35" cy="166" r="12" fill="var(--teal)"/>
-                            <text x="35" y="171" textAnchor="middle" fontSize="14" fontWeight="900" fill="#fff">4</text>
-                            <text x="60" y="171" fontSize="18" fontWeight="900" fill="var(--text)">出力 ─ 1個以上の結果を返す</text>
-                        </g>
-                        <g>
-                            <rect x="10" y="193" width="500" height="40" rx="6" fill="var(--amber-light)" stroke="var(--amber)" strokeWidth="2"/>
-                            <circle cx="35" cy="213" r="12" fill="var(--amber)"/>
-                            <text x="35" y="218" textAnchor="middle" fontSize="14" fontWeight="900" fill="#fff">5</text>
-                            <text x="60" y="218" fontSize="18" fontWeight="900" fill="var(--text)">有効性 ─ 紙と鉛筆で実行可能</text>
-                        </g>
-                    </svg>
-                </div>
-            </div>
-        </div>
-        <div className="source">出典: Donald Knuth『The Art of Computer Programming』Vol.1（累計100万部超）</div>
-    </div>
-</div>
-    </AbsoluteFill>
-);
-
-export const Scene4: React.FC = () => (
-    <AbsoluteFill>
-        <div className="scene" id="scene-4">
-    <div className="content center-layout">
-        <div className="scene-title">明確性と有効性</div>
-        <div className="two-col">
-            <div className="compare-card border-coral">
-                <div className="compare-title accent-coral">レシピの例</div>
-                <div className="compare-body">
-                    「<span className="accent-coral">塩少々</span>加える」<br />
-                    → 人によって量が変わる<br /><br />
-                    「<span className="accent-coral">柔らかくなるまで</span>煮る」<br />
-                    → 終了条件が不明確
-                </div>
-            </div>
-            <div className="compare-card border-teal">
-                <div className="compare-title accent-teal">アルゴリズムなら</div>
-                <div className="compare-body">
-                    「<span className="accent-teal">塩を3g</span>加える」<br />
-                    → 誰がやっても同じ<br /><br />
-                    「<span className="accent-teal">10分間</span>加熱する」<br />
-                    → 必ず終了する
-                </div>
-            </div>
-        </div>
-        <div className="big-statement">アルゴリズムは<span className="accent-primary">コンピュータのためのもの</span>ではない<br />紙と鉛筆で人間にも実行できることが条件</div>
-    </div>
-</div>
-    </AbsoluteFill>
-);
-
-export const Scene5: React.FC = () => (
-    <AbsoluteFill>
-        <div className="scene" id="scene-5">
-    <div className="content center-layout">
-        <div className="scene-title">道案内で考えるアルゴリズム</div>
-        <div className="svg-diagram">
-            <svg width="780" height="240" viewBox="0 0 780 240">
-                {/*  */}
-                <text x="190" y="25" textAnchor="middle" fontSize="20" fontWeight="900" fill="var(--coral)">曖昧な道案内</text>
-                {/*  */}
-                <rect x="50" y="50" width="80" height="40" rx="6" fill="var(--coral-light)" stroke="var(--coral)" strokeWidth="2"/>
-                <text x="90" y="75" textAnchor="middle" fontSize="18" fontWeight="900" fill="var(--coral)">駅</text>
-                {/*  */}
-                <path d="M135 70 C200 70 180 120 240 100 S280 140 320 130" fill="none" stroke="var(--coral)" strokeWidth="3" strokeDasharray="8 4"/>
-                <text x="230" y="90" fontSize="18" fontWeight="700" fill="var(--coral)">なんとなく右…</text>
-                {/*  */}
-                <circle cx="340" cy="130" r="14" fill="var(--coral)"/>
-                <path d="M320 148 C320 137 360 137 360 148 L360 160 Q340 168 320 160 Z" fill="var(--coral)"/>
-                <text x="340" y="195" textAnchor="middle" fontSize="18" fontWeight="900" fill="var(--coral)">迷子!</text>
-                {/*  */}
-                <text x="590" y="25" textAnchor="middle" fontSize="20" fontWeight="900" fill="var(--teal)">明確な道案内</text>
-                {/*  */}
-                <rect x="440" y="50" width="80" height="40" rx="6" fill="var(--teal-light)" stroke="var(--teal)" strokeWidth="2"/>
-                <text x="480" y="75" textAnchor="middle" fontSize="18" fontWeight="900" fill="var(--teal)">北口</text>
-                {/*  */}
-                <line x1="525" y1="70" x2="580" y2="70" stroke="var(--teal)" strokeWidth="3"/>
-                <text x="553" y="60" textAnchor="middle" fontSize="18" fontWeight="700" fill="var(--teal)">右50m</text>
-                <line x1="585" y1="70" x2="585" y2="130" stroke="var(--teal)" strokeWidth="3"/>
-                {/*  */}
-                <circle cx="585" cy="70" r="4" fill="var(--teal)"/>
-                <text x="610" y="105" fontSize="18" fontWeight="700" fill="var(--teal)">3つ目</text>
-                <line x1="585" y1="135" x2="680" y2="135" stroke="var(--teal)" strokeWidth="3"/>
-                <text x="630" y="125" fontSize="18" fontWeight="700" fill="var(--teal)">左折</text>
-                {/*  */}
-                <rect x="685" y="115" width="70" height="40" rx="6" fill="var(--teal-light)" stroke="var(--teal)" strokeWidth="2"/>
-                <text x="720" y="140" textAnchor="middle" fontSize="18" fontWeight="900" fill="var(--teal)">到着!</text>
-                {/*  */}
-                <line x1="720" y1="160" x2="720" y2="200" stroke="var(--teal)" strokeWidth="2"/>
-                <polygon points="720,160 750,170 720,180" fill="var(--teal)"/>
-            </svg>
-        </div>
-        <div className="big-statement">アルゴリズムの本質は「手順」ではなく<span className="accent-primary">「保証」</span><br />ステップが有限・指示が明確・<span className="accent-teal">必ず目的地に着く</span></div>
-    </div>
-</div>
-    </AbsoluteFill>
-);
-
-export const Scene6: React.FC = () => (
-    <AbsoluteFill>
-        <div className="scene" id="scene-6">
-    <div className="content center-layout">
-        <div className="scene-title">100万件を並べ替える</div>
-        <div className="big-statement">素朴な方法「<span className="accent-coral">バブルソート</span>」</div>
-        <div className="svg-diagram">
-            <svg width="780" height="180" viewBox="0 0 780 180">
-                {/*  */}
-                <g>
-                    <rect x="60" y="30" width="60" height="60" rx="8" fill="var(--coral-light)" stroke="var(--coral)" strokeWidth="2"/>
-                    <text x="90" y="68" textAnchor="middle" fontSize="24" fontWeight="900" fill="var(--coral)">8</text>
-                    <rect x="140" y="30" width="60" height="60" rx="8" fill="var(--coral-light)" stroke="var(--coral)" strokeWidth="2"/>
-                    <text x="170" y="68" textAnchor="middle" fontSize="24" fontWeight="900" fill="var(--coral)">3</text>
-                    {/*  */}
-                    <path d="M100 95 C100 115 160 115 160 95" fill="none" stroke="var(--coral)" strokeWidth="2" marker-end="url(#arrCoral)"/>
-                    <path d="M160 95 C160 115 100 115 100 95" fill="none" stroke="var(--coral)" strokeWidth="2" marker-start="url(#arrCoralL)"/>
-                    <text x="130" y="135" textAnchor="middle" fontSize="18" fontWeight="700" fill="var(--coral)">交換!</text>
-                </g>
-                <defs>
-                    <marker id="arrCoral" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0L10 5L0 10Z" fill="var(--coral)"/></marker>
-                    <marker id="arrCoralL" viewBox="0 0 10 10" refX="0" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M10 0L0 5L10 10Z" fill="var(--coral)"/></marker>
-                </defs>
-                {/*  */}
-                <rect x="220" y="30" width="60" height="60" rx="8" fill="var(--primary-light)" stroke="var(--border)" strokeWidth="2"/>
-                <text x="250" y="68" textAnchor="middle" fontSize="24" fontWeight="900" fill="var(--text)">5</text>
-                <rect x="300" y="30" width="60" height="60" rx="8" fill="var(--primary-light)" stroke="var(--border)" strokeWidth="2"/>
-                <text x="330" y="68" textAnchor="middle" fontSize="24" fontWeight="900" fill="var(--text)">1</text>
-                <rect x="380" y="30" width="60" height="60" rx="8" fill="var(--primary-light)" stroke="var(--border)" strokeWidth="2"/>
-                <text x="410" y="68" textAnchor="middle" fontSize="24" fontWeight="900" fill="var(--text)">7</text>
-                {/*  */}
-                <text x="490" y="68" fontSize="30" fontWeight="900" fill="var(--border)">...</text>
-                {/*  */}
-                <rect x="560" y="20" width="180" height="140" rx="8" fill="none" stroke="var(--amber)" strokeWidth="2"/>
-                <text x="650" y="55" textAnchor="middle" fontSize="18" fontWeight="900" fill="var(--amber)">本棚の整理</text>
-                <rect x="580" y="70" width="20" height="70" rx="2" fill="var(--amber-light)" stroke="var(--amber)" strokeWidth="1"/>
-                <rect x="608" y="80" width="20" height="60" rx="2" fill="var(--amber-light)" stroke="var(--amber)" strokeWidth="1"/>
-                <rect x="636" y="60" width="20" height="80" rx="2" fill="var(--amber-light)" stroke="var(--amber)" strokeWidth="1"/>
-                <rect x="664" y="75" width="20" height="65" rx="2" fill="var(--amber-light)" stroke="var(--amber)" strokeWidth="1"/>
-                <rect x="692" y="90" width="20" height="50" rx="2" fill="var(--amber-light)" stroke="var(--amber)" strokeWidth="1"/>
-                <text x="650" y="165" textAnchor="middle" fontSize="18" fontWeight="700" fill="var(--amber)">行ったり来たり...</text>
-            </svg>
-        </div>
-        <div className="big-statement">隣同士を比べて大きい方を後ろへ送る<br /><span className="accent-coral">力ずくの全チェック</span></div>
-    </div>
-</div>
-    </AbsoluteFill>
-);
-
-export const Scene7: React.FC = () => (
-    <AbsoluteFill>
-        <div className="scene" id="scene-7">
-    <div className="content center-layout">
-        <div className="scene-title">同じ問題、違うアルゴリズム</div>
-        <div className="svg-diagram">
-            <svg width="860" height="340" viewBox="0 0 860 340">
-                {/* バブルソート側 */}
-                <rect x="20" y="20" width="350" height="200" rx="16" fill="var(--coral-light)" stroke="var(--coral)" strokeWidth="2.5"/>
-                <text x="195" y="58" textAnchor="middle" fontSize="22" fontWeight="700" fill="var(--coral)">バブルソート</text>
-                <text x="195" y="110" textAnchor="middle" fontSize="56" fontWeight="900" fill="var(--coral)">1兆回</text>
-                <text x="195" y="148" textAnchor="middle" fontSize="18" fontWeight="600" fill="var(--coral)" opacity="0.8">O(n²) の比較回数</text>
-                {/* バー（長い） */}
-                <rect x="40" y="170" width="310" height="28" rx="14" fill="var(--coral)" opacity="0.35"/>
-                <rect x="40" y="170" width="310" height="28" rx="14" fill="var(--coral)" opacity="0.7"/>
-
-                {/* VS */}
-                <text x="430" y="135" textAnchor="middle" fontSize="40" fontWeight="900" fill="var(--text)" opacity="0.5">VS</text>
-
-                {/* クイックソート側 */}
-                <rect x="490" y="20" width="350" height="200" rx="16" fill="var(--teal-light)" stroke="var(--teal)" strokeWidth="2.5"/>
-                <text x="665" y="58" textAnchor="middle" fontSize="22" fontWeight="700" fill="var(--teal)">クイックソート</text>
-                <text x="665" y="110" textAnchor="middle" fontSize="56" fontWeight="900" fill="var(--teal)">2000万回</text>
-                <text x="665" y="148" textAnchor="middle" fontSize="18" fontWeight="600" fill="var(--teal)" opacity="0.8">O(n log n) の比較回数</text>
-                {/* バー（短い＝速い） */}
-                <rect x="510" y="170" width="310" height="28" rx="14" fill="var(--teal)" opacity="0.15"/>
-                <rect x="510" y="170" width="6" height="28" rx="3" fill="var(--teal)" opacity="0.9"/>
-
-                {/* 差分ハイライト */}
-                <rect x="220" y="250" width="420" height="72" rx="16" fill="var(--amber-light)" stroke="var(--amber)" strokeWidth="2.5"/>
-                <text x="430" y="280" textAnchor="middle" fontSize="18" fontWeight="700" fill="var(--text)">100万件のデータで</text>
-                <text x="430" y="310" textAnchor="middle" fontSize="32" fontWeight="900" fill="var(--amber)">約 50,000 倍の差</text>
-            </svg>
-        </div>
-    </div>
-</div>
-    </AbsoluteFill>
-);
-
-export const Scene8: React.FC = () => (
-    <AbsoluteFill>
-        <div className="scene" id="scene-8">
-    <div className="content center-layout">
-        <div className="scene-title">ハードウェア vs アルゴリズム</div>
-        <div className="svg-diagram">
-            <svg width="780" height="240" viewBox="0 0 780 240">
-                {/*  */}
-                <rect x="30" y="30" width="320" height="180" rx="12" fill="var(--coral-light)" stroke="var(--coral)" strokeWidth="2"/>
-                <text x="190" y="65" textAnchor="middle" fontSize="20" fontWeight="900" fill="var(--coral)">世界最速スパコン</text>
-                {/*  */}
-                <rect x="80" y="80" width="80" height="100" rx="4" fill="var(--card-bg)" stroke="var(--coral)" strokeWidth="2"/>
-                <line x1="85" y1="100" x2="155" y2="100" stroke="var(--coral)" strokeWidth="1"/>
-                <line x1="85" y1="120" x2="155" y2="120" stroke="var(--coral)" strokeWidth="1"/>
-                <line x1="85" y1="140" x2="155" y2="140" stroke="var(--coral)" strokeWidth="1"/>
-                <line x1="85" y1="160" x2="155" y2="160" stroke="var(--coral)" strokeWidth="1"/>
-                <circle cx="100" cy="90" r="3" fill="var(--coral)"/>
-                <circle cx="100" cy="110" r="3" fill="var(--coral)"/>
-                <circle cx="100" cy="130" r="3" fill="var(--coral)"/>
-                <circle cx="100" cy="150" r="3" fill="var(--coral)"/>
-                <circle cx="100" cy="170" r="3" fill="var(--coral)"/>
-                <text x="250" y="115" textAnchor="middle" fontSize="18" fontWeight="700" fill="var(--coral)">バブルソート</text>
-                <text x="250" y="145" textAnchor="middle" fontSize="18" fontWeight="900" fill="var(--coral)">O(n&sup2;)</text>
-                <text x="250" y="175" textAnchor="middle" fontSize="18" fontWeight="700" fill="var(--coral)">遅い...</text>
-                {/*  */}
-                <text x="390" y="135" textAnchor="middle" fontSize="36" fontWeight="900" fill="var(--primary)">VS</text>
-                {/*  */}
-                <rect x="430" y="30" width="320" height="180" rx="12" fill="var(--teal-light)" stroke="var(--teal)" strokeWidth="2"/>
-                <text x="590" y="65" textAnchor="middle" fontSize="20" fontWeight="900" fill="var(--teal)">普通のノートPC</text>
-                {/*  */}
-                <rect x="480" y="85" width="80" height="55" rx="4" fill="var(--card-bg)" stroke="var(--teal)" strokeWidth="2"/>
-                <rect x="470" y="145" width="100" height="8" rx="4" fill="var(--teal)" opacity="0.5"/>
-                <text x="650" y="115" textAnchor="middle" fontSize="18" fontWeight="700" fill="var(--teal)">クイックソート</text>
-                <text x="650" y="145" textAnchor="middle" fontSize="18" fontWeight="900" fill="var(--teal)">O(n log n)</text>
-                <text x="650" y="175" textAnchor="middle" fontSize="18" fontWeight="900" fill="var(--teal)">勝利!</text>
-            </svg>
-        </div>
-        <div className="big-statement"><span className="accent-teal">ノートPC</span>が<span className="accent-coral">スパコン</span>に勝つ ── 「<span className="accent-primary">どう計算するか</span>」が鍵</div>
-    </div>
-</div>
-    </AbsoluteFill>
-);
-
-export const Scene9: React.FC = () => (
-    <AbsoluteFill>
-        <div className="scene" id="scene-9">
-    <div className="content center-layout">
-        <div className="scene-title">O記法 ── 計算量の増え方</div>
-        <div className="svg-diagram">
-            <svg width="780" height="240" viewBox="0 0 780 240">
-                {/*  */}
-                <line x1="80" y1="220" x2="740" y2="220" stroke="var(--text)" strokeWidth="2"/>
-                <line x1="80" y1="220" x2="80" y2="20" stroke="var(--text)" strokeWidth="2"/>
-                <text x="420" y="240" textAnchor="middle" fontSize="18" fontWeight="700" fill="var(--text)">データ量 n</text>
-                <text x="40" y="120" textAnchor="middle" fontSize="18" fontWeight="700" fill="var(--text)" transform="rotate(-90 40 120)">計算量</text>
-                {/*  */}
-                <path d="M80 220 Q200 215 300 180 Q400 120 480 40" fill="none" stroke="var(--coral)" strokeWidth="4"/>
-                <text x="490" y="38" fontSize="20" fontWeight="900" fill="var(--coral)">O(n&sup2;)</text>
-                <text x="490" y="60" fontSize="18" fontWeight="700" fill="var(--coral)">10倍 → 100倍</text>
-                {/*  */}
-                <path d="M80 220 Q200 210 350 185 Q500 165 700 140" fill="none" stroke="var(--teal)" strokeWidth="4"/>
-                <text x="710" y="138" fontSize="20" fontWeight="900" fill="var(--teal)">O(n log n)</text>
-                <text x="710" y="160" fontSize="18" fontWeight="700" fill="var(--teal)">10倍 → 13倍</text>
-                {/*  */}
-                <path d="M300 180 Q400 120 480 40 L700 140 Q500 165 350 185 Z" fill="var(--amber)" opacity="0.1"/>
-                <text x="500" y="110" textAnchor="middle" fontSize="20" fontWeight="900" fill="var(--amber)">差は拡大し続ける</text>
-            </svg>
-        </div>
-        <div className="big-statement">データが増えるほど<span className="accent-coral">アルゴリズムの差</span>がハードの差を飲み込む</div>
-        <div className="source">注: O記法は定数倍を無視する。データが少ないときはバブルソートが速い場合もある（ノーフリーランチ定理）</div>
-    </div>
-</div>
-    </AbsoluteFill>
-);
-
-export const Scene10: React.FC = () => (
-    <AbsoluteFill>
-        <div className="scene" id="scene-10">
-    <div className="content center-layout">
-        <div className="scene-title">アルゴリズム 4000年の歴史</div>
-        <div className="flow-chain">
-            <div className="fc-node highlight border-amber">
-                <div className="fc-node-title"><span className="year-badge">BC 1600</span></div>
-                <div className="fc-node-sub">バビロニア<br />平方根の手順</div>
-            </div>
-            <div className="fc-arr">→</div>
-            <div className="fc-node border-amber">
-                <div className="fc-node-title"><span className="year-badge">BC 300</span></div>
-                <div className="fc-node-sub">ユークリッド<br />互除法</div>
-            </div>
-            <div className="fc-arr">→</div>
-            <div className="fc-node border-amber">
-                <div className="fc-node-title"><span className="year-badge">9世紀</span></div>
-                <div className="fc-node-sub">アル＝フワーリズミー<br />語源の人</div>
-            </div>
-            <div className="fc-arr">→</div>
-            <div className="fc-node border-primary">
-                <div className="fc-node-title"><span className="year-badge">1936</span></div>
-                <div className="fc-node-sub">チューリング<br />数学的定義</div>
-            </div>
-            <div className="fc-arr">→</div>
-            <div className="fc-node border-teal">
-                <div className="fc-node-title"><span className="year-badge">現代</span></div>
-                <div className="fc-node-sub">AI・検索・暗号<br />あらゆる場所に</div>
-            </div>
-        </div>
-        <div className="big-statement">アルゴリズムは<span className="accent-amber">コンピュータより遥かに古い</span></div>
-    </div>
-</div>
-    </AbsoluteFill>
-);
-
-export const Scene11: React.FC = () => (
-    <AbsoluteFill>
-        <div className="scene" id="scene-11">
-    <div className="content center-layout">
-        <div className="scene-title">古代のアルゴリズム</div>
-        <div className="two-col">
-            <div className="compare-card border-amber">
-                <div className="compare-title accent-amber">バビロニアの粘土板</div>
-                <div className="svg-diagram">
-                    <svg width="200" height="140" viewBox="0 0 200 140">
-                        {/*  */}
-                        <rect x="20" y="10" width="160" height="120" rx="8" fill="#e8dcc8" stroke="var(--amber)" strokeWidth="2"/>
-                        {/*  */}
-                        <g fill="var(--amber)" opacity="0.8">
-                            <polygon points="50,30 60,35 50,40"/>
-                            <polygon points="70,30 80,35 70,40"/>
-                            <polygon points="90,30 100,35 90,40"/>
-                            <line x1="110" y1="30" x2="130" y2="40" stroke="var(--amber)" strokeWidth="2"/>
-                            <polygon points="50,55 60,60 50,65"/>
-                            <polygon points="70,55 80,60 70,65"/>
-                            <line x1="90" y1="55" x2="110" y2="65" stroke="var(--amber)" strokeWidth="2"/>
-                            <polygon points="50,80 60,85 50,90"/>
-                            <line x1="70" y1="80" x2="90" y2="90" stroke="var(--amber)" strokeWidth="2"/>
-                            <polygon points="100,80 110,85 100,90"/>
-                        </g>
-                        <text x="100" y="120" textAnchor="middle" fontSize="18" fontWeight="700" fill="var(--amber)">&#8730; 平方根</text>
-                    </svg>
-                </div>
-                <div className="compare-body">
-                    紀元前1600年<br />
-                    60進法・小数点以下6桁<br />
-                    手のひらサイズ
-                </div>
-            </div>
-            <div className="compare-card border-teal">
-                <div className="compare-title accent-teal">ユークリッドの互除法</div>
-                <div className="svg-diagram">
-                    <svg width="200" height="140" viewBox="0 0 200 140">
-                        {/*  */}
-                        <text x="100" y="30" textAnchor="middle" fontSize="18" fontWeight="900" fill="var(--teal)">GCD(48, 18)</text>
-                        <text x="100" y="55" textAnchor="middle" fontSize="18" fontWeight="700" fill="var(--text)">48 = 18 × 2 + 12</text>
-                        <text x="100" y="78" textAnchor="middle" fontSize="18" fontWeight="700" fill="var(--text)">18 = 12 × 1 + 6</text>
-                        <text x="100" y="101" textAnchor="middle" fontSize="18" fontWeight="700" fill="var(--text)">12 = 6 × 2 + 0</text>
-                        <text x="100" y="130" textAnchor="middle" fontSize="20" fontWeight="900" fill="var(--teal)">答え: 6</text>
-                    </svg>
-                </div>
-                <div className="compare-body">
-                    紀元前300年<br />
-                    「全アルゴリズムの祖父」<br />
-                    現代の暗号技術の基礎
-                </div>
-            </div>
-        </div>
-        <div className="source">出典: Knuth "The Art of Computer Programming" Vol.1 / YBC 7289（イェール大学蔵）</div>
-    </div>
-</div>
-    </AbsoluteFill>
-);
-
-export const Scene12: React.FC = () => (
-    <AbsoluteFill>
-        <div className="scene" id="scene-12">
-    <div className="content center-layout">
-        <div className="photo-text-row">
-            <figure className="photo-frame">
-                <img src={staticFile("images/proj_614d0f20/khwarizmi.jpg")} alt="アル＝フワーリズミー像" />
-            </figure>
-            <div className="photo-text-side">
-                <div className="scene-title" style={{whiteSpace:'nowrap'}}><span className="year-badge">9世紀</span> アル＝フワーリズミー</div>
-                <div className="big-statement">
-                    ラテン語名 <span className="accent-primary">Algoritmi</span> が<br />
-                    「アルゴリズム」の語源
-                </div>
-                <div className="tag-row">
-                    <span className="tag"><span className="accent-primary">Algorithm</span> の語源</span>
-                    <span className="tag"><span className="accent-amber">Algebra</span> の語源</span>
-                </div>
-            </div>
-        </div>
-        <div className="source">当時のイスラム圏の数学文化全体の成果でもある</div>
-    </div>
-</div>
-    </AbsoluteFill>
-);
-
-export const Scene13: React.FC = () => (
-    <AbsoluteFill>
-        <div className="scene" id="scene-13">
-    <div className="content center-layout">
-        <div className="photo-text-row">
-            <figure className="photo-frame">
-                <img src={staticFile("images/proj_614d0f20/turing.jpg")} alt="アラン・チューリング" />
-            </figure>
-            <div className="photo-text-side">
-                <div className="scene-title">1936年 ── 最大の転換点</div>
-                <div className="big-statement">
-                    アラン・チューリングが<br />
-                    「<span className="accent-primary">アルゴリズムとは何か</span>」を<br />
-                    数学的に厳密に定義した
-                </div>
-            </div>
-        </div>
-        <div className="svg-diagram">
-            <svg width="780" height="140" viewBox="0 0 780 140">
-                {/*  */}
-                {/*  */}
-                <rect x="40" y="20" width="700" height="50" rx="4" fill="var(--primary-light)" stroke="var(--primary)" strokeWidth="2"/>
-                {/*  */}
-                <line x1="140" y1="20" x2="140" y2="70" stroke="var(--primary)" strokeWidth="1" opacity="0.4"/>
-                <line x1="240" y1="20" x2="240" y2="70" stroke="var(--primary)" strokeWidth="1" opacity="0.4"/>
-                <line x1="340" y1="20" x2="340" y2="70" stroke="var(--primary)" strokeWidth="1" opacity="0.4"/>
-                <line x1="440" y1="20" x2="440" y2="70" stroke="var(--primary)" strokeWidth="1" opacity="0.4"/>
-                <line x1="540" y1="20" x2="540" y2="70" stroke="var(--primary)" strokeWidth="1" opacity="0.4"/>
-                <line x1="640" y1="20" x2="640" y2="70" stroke="var(--primary)" strokeWidth="1" opacity="0.4"/>
-                {/*  */}
-                <text x="90" y="52" textAnchor="middle" fontSize="22" fontWeight="900" fill="var(--primary)">0</text>
-                <text x="190" y="52" textAnchor="middle" fontSize="22" fontWeight="900" fill="var(--primary)">1</text>
-                <text x="290" y="52" textAnchor="middle" fontSize="22" fontWeight="900" fill="var(--primary)">1</text>
-                <text x="390" y="52" textAnchor="middle" fontSize="22" fontWeight="900" fill="var(--coral)">0</text>
-                <text x="490" y="52" textAnchor="middle" fontSize="22" fontWeight="900" fill="var(--primary)">1</text>
-                <text x="590" y="52" textAnchor="middle" fontSize="22" fontWeight="900" fill="var(--primary)">0</text>
-                <text x="690" y="52" textAnchor="middle" fontSize="22" fontWeight="900" fill="var(--primary)">...</text>
-                {/*  */}
-                <text x="20" y="52" textAnchor="middle" fontSize="22" fontWeight="900" fill="var(--primary)">...</text>
-                {/*  */}
-                <polygon points="370,75 390,95 410,75" fill="var(--coral)"/>
-                <rect x="360" y="95" width="60" height="35" rx="6" fill="var(--coral)" stroke="var(--coral)" strokeWidth="2"/>
-                <text x="390" y="118" textAnchor="middle" fontSize="18" fontWeight="900" fill="#fff">HEAD</text>
-            </svg>
-        </div>
-        <div className="source">Turing, A. M. (1936). On Computable Numbers</div>
-    </div>
-</div>
-    </AbsoluteFill>
-);
-
-export const Scene14: React.FC = () => (
-    <AbsoluteFill>
-        <div className="scene" id="scene-14">
-    <div className="content center-layout">
-        <div className="scene-title">チューリングが証明した衝撃の事実</div>
-        <div className="big-statement">
-            「どんなアルゴリズムでも<br />
-            <span className="accent-coral">絶対に解けない問題</span>が存在する」
-        </div>
-        <div className="metric-card border-coral">
-            <div className="metric-label">停止問題（Halting Problem）</div>
-            <div className="metric-value accent-coral">解けない</div>
-            <div className="metric-sub">あるプログラムが終了するか永遠に動き続けるかを判定する問題</div>
-        </div>
-        <div className="big-statement">コンピュータの性能が上がっても<br /><span className="accent-coral">原理的に不可能</span> ── 数学的証明</div>
-    </div>
-</div>
-    </AbsoluteFill>
-);
-
-export const Scene15: React.FC = () => (
-    <AbsoluteFill>
-        <div className="scene" id="scene-15">
-    <div className="content center-layout">
-        <div className="scene-title">停止問題の構造</div>
-        <div className="svg-diagram">
-            <svg width="780" height="240" viewBox="0 0 780 240">
-                {/*  */}
-                <rect x="40" y="60" width="140" height="60" rx="10" fill="var(--primary-light)" stroke="var(--primary)" strokeWidth="3"/>
-                <text x="110" y="85" textAnchor="middle" fontSize="20" fontWeight="900" fill="var(--primary)">プログラムP</text>
-                <text x="110" y="108" textAnchor="middle" fontSize="18" fontWeight="700" fill="var(--text)">+ 入力</text>
-                {/*  */}
-                <line x1="185" y1="90" x2="270" y2="90" stroke="var(--primary)" strokeWidth="3" marker-end="url(#arrBlue)"/>
-                <defs><marker id="arrBlue" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0 0L10 5L0 10Z" fill="var(--primary)"/></marker></defs>
-                {/*  */}
-                <rect x="275" y="50" width="180" height="80" rx="10" fill="var(--amber-light)" stroke="var(--amber)" strokeWidth="3"/>
-                <text x="365" y="80" textAnchor="middle" fontSize="20" fontWeight="900" fill="var(--amber)">判定器 H</text>
-                <text x="365" y="105" textAnchor="middle" fontSize="18" fontWeight="700" fill="var(--amber)">（存在すると仮定）</text>
-                {/*  */}
-                <line x1="460" y1="70" x2="560" y2="40" stroke="var(--teal)" strokeWidth="3" marker-end="url(#arrTeal)"/>
-                <line x1="460" y1="110" x2="560" y2="160" stroke="var(--coral)" strokeWidth="3" marker-end="url(#arrRed)"/>
-                <defs>
-                    <marker id="arrTeal" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0 0L10 5L0 10Z" fill="var(--teal)"/></marker>
-                    <marker id="arrRed" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0 0L10 5L0 10Z" fill="var(--coral)"/></marker>
-                </defs>
-                {/*  */}
-                <rect x="565" y="15" width="120" height="50" rx="8" fill="var(--teal-light)" stroke="var(--teal)" strokeWidth="2"/>
-                <text x="625" y="45" textAnchor="middle" fontSize="20" fontWeight="900" fill="var(--teal)">停止する</text>
-                {/*  */}
-                <rect x="565" y="140" width="140" height="50" rx="8" fill="var(--coral-light)" stroke="var(--coral)" strokeWidth="2"/>
-                <text x="635" y="170" textAnchor="middle" fontSize="20" fontWeight="900" fill="var(--coral)">停止しない</text>
-                {/*  */}
-                <path d="M625 65 L625 105 C625 130 700 130 700 105 L700 65" fill="none" stroke="var(--border)" strokeWidth="2" strokeDasharray="6 3"/>
-                <text x="665" y="100" textAnchor="middle" fontSize="18" fontWeight="700" fill="var(--text)">∞?</text>
-                {/*  */}
-                <text x="390" y="180" textAnchor="middle" fontSize="22" fontWeight="900" fill="var(--coral)">事前に判定できるか?</text>
-                <text x="390" y="215" textAnchor="middle" fontSize="22" fontWeight="900" fill="var(--text)">→ 原理的に不可能</text>
-            </svg>
-        </div>
-        <div className="big-statement">無限ループしないか<span className="accent-coral">事前に判定する方法</span>は存在しない</div>
-    </div>
-</div>
-    </AbsoluteFill>
-);
-
-export const Scene16: React.FC = () => (
-    <AbsoluteFill>
-        <div className="scene" id="scene-16">
-    <div className="content center-layout">
-        <div className="scene-title">背理法による証明</div>
-        <div className="svg-diagram">
-            <svg width="780" height="240" viewBox="0 0 780 240">
-                {/*  */}
-                <rect x="280" y="5" width="220" height="40" rx="8" fill="var(--amber-light)" stroke="var(--amber)" strokeWidth="2"/>
-                <text x="390" y="30" textAnchor="middle" fontSize="18" fontWeight="900" fill="var(--amber)">仮定: H が存在する</text>
-                {/*  */}
-                <line x1="390" y1="48" x2="390" y2="65" stroke="var(--text)" strokeWidth="2" marker-end="url(#arrBlk)"/>
-                <defs><marker id="arrBlk" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0 0L10 5L0 10Z" fill="var(--text)"/></marker></defs>
-                {/*  */}
-                <rect x="280" y="68" width="220" height="40" rx="8" fill="var(--primary-light)" stroke="var(--primary)" strokeWidth="2"/>
-                <text x="390" y="93" textAnchor="middle" fontSize="18" fontWeight="900" fill="var(--primary)">D = H を使ったプログラム</text>
-                {/*  */}
-                <line x1="310" y1="112" x2="180" y2="145" stroke="var(--teal)" strokeWidth="2" marker-end="url(#arrTeal2)"/>
-                <line x1="470" y1="112" x2="600" y2="145" stroke="var(--coral)" strokeWidth="2" marker-end="url(#arrRed2)"/>
-                <defs>
-                    <marker id="arrTeal2" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0 0L10 5L0 10Z" fill="var(--teal)"/></marker>
-                    <marker id="arrRed2" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0 0L10 5L0 10Z" fill="var(--coral)"/></marker>
-                </defs>
-                {/*  */}
-                <rect x="60" y="148" width="240" height="35" rx="6" fill="var(--teal-light)" stroke="var(--teal)" strokeWidth="2"/>
-                <text x="180" y="171" textAnchor="middle" fontSize="18" fontWeight="700" fill="var(--teal)">H「停止する」と判定</text>
-                <line x1="180" y1="186" x2="180" y2="205" stroke="var(--teal)" strokeWidth="2" marker-end="url(#arrTeal2)"/>
-                <rect x="80" y="208" width="200" height="30" rx="6" fill="var(--coral-light)" stroke="var(--coral)" strokeWidth="2"/>
-                <text x="180" y="228" textAnchor="middle" fontSize="18" fontWeight="900" fill="var(--coral)">D → 無限ループ!</text>
-                {/*  */}
-                <rect x="480" y="148" width="240" height="35" rx="6" fill="var(--coral-light)" stroke="var(--coral)" strokeWidth="2"/>
-                <text x="600" y="171" textAnchor="middle" fontSize="18" fontWeight="700" fill="var(--coral)">H「停止しない」と判定</text>
-                <line x1="600" y1="186" x2="600" y2="205" stroke="var(--coral)" strokeWidth="2" marker-end="url(#arrRed2)"/>
-                <rect x="490" y="208" width="220" height="30" rx="6" fill="var(--teal-light)" stroke="var(--teal)" strokeWidth="2"/>
-                <text x="600" y="228" textAnchor="middle" fontSize="18" fontWeight="900" fill="var(--teal)">D → 即座に停止!</text>
-                {/*  */}
-                <text x="390" y="175" textAnchor="middle" fontSize="28" fontWeight="900" fill="var(--coral)">矛盾!</text>
-            </svg>
-        </div>
-        <div className="big-statement">どちらの場合もHの判定と<span className="accent-coral">矛盾</span>する<br />→ <span className="accent-primary">H は存在できない</span></div>
-    </div>
-</div>
-    </AbsoluteFill>
-);
-
-export const Scene17: React.FC = () => (
-    <AbsoluteFill>
-        <div className="scene" id="scene-17">
-    <div className="content center-layout">
-        <div className="scene-title">P ≠ NP 問題</div>
-        <div className="two-col">
-            <div className="compare-card border-teal">
-                <div className="compare-title accent-teal">P（簡単に解ける）</div>
-                <div className="compare-body">
-                    答えを<span className="accent-teal">見つける</span>のも<br />
-                    確認するのも簡単
-                </div>
-            </div>
-            <div className="compare-card border-coral">
-                <div className="compare-title accent-coral">NP（確認は簡単）</div>
-                <div className="compare-body">
-                    答えが正しいか<span className="accent-teal">確認</span>は簡単<br />
-                    でも見つけるのは<span className="accent-coral">激ムズ</span>
-                </div>
-            </div>
-        </div>
-        <div className="metric-card border-amber">
-            <div className="metric-label">クレイ数学研究所 ミレニアム懸賞問題</div>
-            <div className="metric-value accent-amber">$1,000,000</div>
-            <div className="metric-sub">証明できれば100万ドルの懸賞金</div>
-        </div>
-        <div className="source">研究者の88%がP≠NPだと信じているが、誰も証明できていない（Gasarch 2019 調査）</div>
-    </div>
-</div>
-    </AbsoluteFill>
-);
-
-export const Scene18: React.FC = () => (
-    <AbsoluteFill>
-        <div className="scene" id="scene-18">
-    <div className="content center-layout">
-        <div className="scene-title">限界があるからこそ価値がある</div>
-        <div className="big-statement">
-            「解けないこと」を<span className="accent-teal">逆手に取る</span>発想
-        </div>
-        <div className="two-col">
-            <div className="compare-card border-primary">
-                <div className="compare-title accent-primary">RSA暗号</div>
-                <div className="compare-body">
-                    素因数分解の<span className="accent-coral">困難さ</span>で<br />
-                    <span className="accent-teal">安全性を確保</span>
-                </div>
-            </div>
-            <div className="compare-card border-teal">
-                <div className="compare-title accent-teal">限界を知ること</div>
-                <div className="compare-body">
-                    解けない範囲を知れば<br />
-                    <span className="accent-primary">できることの輪郭</span>が見える
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-    </AbsoluteFill>
-);
-
-export const Scene19: React.FC = () => (
-    <AbsoluteFill>
-        <div className="scene" id="scene-19">
-    <div className="content center-layout">
-        <div className="scene-title">毎日アルゴリズムに囲まれている</div>
-        <div className="three-col">
-            <div className="arch-card border-primary">
-                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/google/google-original.svg" alt="Google" />
-                <div className="card-title">Google検索</div>
-                <div className="card-body">PageRankアルゴリズムで<br />最適な検索結果を表示</div>
-            </div>
-            <div className="arch-card border-teal">
-                <img src="https://api.iconify.design/mdi/map-marker-path.svg?color=%230d9488&width=48&height=48" alt="GPS" />
-                <div className="card-title">GPSナビ</div>
-                <div className="card-body">ダイクストラ法で<br />最短経路を計算</div>
-            </div>
-            <div className="arch-card border-amber">
-                <img src="https://api.iconify.design/mdi/video-outline.svg?color=%23d97706&width=48&height=48" alt="動画" />
-                <div className="card-title">動画のおすすめ</div>
-                <div className="card-body">推薦アルゴリズムで<br />次に見る動画を提案</div>
-            </div>
-            <div className="arch-card border-coral">
-                <img src="https://api.iconify.design/mdi/lock-outline.svg?color=%23dc2626&width=48&height=48" alt="暗号" />
-                <div className="card-title">暗号・セキュリティ</div>
-                <div className="card-body">RSA・AESなど<br />通信を守るアルゴリズム</div>
-            </div>
-        </div>
-        <div className="big-statement">スマホを開くたびに<span className="accent-primary">アルゴリズム</span>のお世話になっている</div>
-    </div>
-</div>
-    </AbsoluteFill>
-);
-
-export const Scene20: React.FC = () => (
-    <AbsoluteFill>
-        <div className="scene" id="scene-20">
-    <div className="content center-layout">
-        <div className="scene-title">アルゴリズムの光と影</div>
-        <div className="two-col">
-            <div className="compare-card border-teal">
-                <div className="compare-title accent-teal">光</div>
-                <div className="compare-body">
-                    医療診断の精度向上<br />
-                    渋滞の最適化<br />
-                    科学研究の加速
-                </div>
-            </div>
-            <div className="compare-card border-coral">
-                <div className="compare-title accent-coral">影</div>
-                <div className="compare-body">
-                    犯罪予測AIが人種で偏った判定<br /><br />
-                    <span className="accent-coral">データに偏り</span>があると<br />
-                    差別的な結果を生む
-                </div>
-            </div>
-        </div>
-        <div className="big-statement">仕組みを理解せず<span className="accent-coral">ブラックボックスのまま使うのは危険</span></div>
-        <div className="source">出典: ProPublica "Machine Bias" (2016) - COMPAS 再犯予測アルゴリズムの偏り報告</div>
-    </div>
-</div>
-    </AbsoluteFill>
-);
-
-export const Scene21: React.FC = () => (
-    <AbsoluteFill>
-        <div className="scene" id="scene-21">
-    <div className="content center-layout">
-        <div className="scene-title">最初の問いに戻る</div>
-        <div className="big-statement">
-            料理のレシピはアルゴリズムか？ → <span className="accent-coral">No</span>
-        </div>
-        <div className="quote-block">
-            <div className="quote-mark">"</div>
-            <div className="quote-body">
-                アルゴリズムとはただの手順ではない。<br />
-                <span className="accent-primary">「保証」</span>こそがアルゴリズムの本質。
-            </div>
-        </div>
-    </div>
-</div>
-    </AbsoluteFill>
-);
-
-export const Scene22: React.FC = () => (
-    <AbsoluteFill>
-        <div className="scene" id="scene-22">
-    <div className="content center-layout">
-        <div className="photo-text-row">
-            <figure className="photo-frame">
-                <img src={staticFile("images/proj_614d0f20/dijkstra.jpg")} alt="ダイクストラ" />
-            </figure>
-            <div className="photo-text-side">
-                <div className="scene-title">アルゴリズムを学ぶ意味</div>
-                <div className="quote-block">
-                    <div className="quote-mark">"</div>
-                    <div className="quote-body">
-                        単純さは偉大な美徳だが、<br />
-                        それを達成するには<span className="accent-primary">努力</span>が必要だ
-                    </div>
-                    <div className="quote-source">── エドガー・ダイクストラ</div>
-                </div>
-            </div>
-        </div>
-        <div className="big-statement">
-            アルゴリズム的思考は<span className="accent-primary">専門家だけのもの</span>ではなくなった
-        </div>
-    </div>
-</div>
-    </AbsoluteFill>
-);
-
-export const Scene23: React.FC = () => (
-    <AbsoluteFill>
-        <div className="scene" id="scene-23">
-    <div className="content center-layout">
-        <div className="svg-diagram">
-            <svg width="200" height="200" viewBox="0 0 200 200">
-                <circle cx="100" cy="100" r="60" fill="none" stroke="var(--primary)" strokeWidth="4"/>
-                <circle cx="100" cy="100" r="42" fill="var(--primary-light)" stroke="var(--primary)" strokeWidth="2"/>
-                <g fill="var(--primary)">
-                    <rect x="94" y="30" width="12" height="18" rx="3"/>
-                    <rect x="94" y="152" width="12" height="18" rx="3"/>
-                    <rect x="30" y="94" width="18" height="12" rx="3"/>
-                    <rect x="152" y="94" width="18" height="12" rx="3"/>
-                </g>
-                <polyline points="80,105 95,120 125,85" fill="none" stroke="var(--primary)" strokeWidth="6" strokeLinecap="round" stroke-linejoin="round"/>
-            </svg>
-        </div>
-        <div className="title-large">ご視聴ありがとうございました</div>
-        <div className="enterprise-grid">
-            <div className="enterprise-card border-primary">
-                <div className="card-title">チャンネル登録</div>
-                <div className="card-body">次回もお楽しみに</div>
-            </div>
-            <div className="enterprise-card border-teal">
-                <div className="card-title">高評価</div>
-                <div className="card-body">励みになります</div>
-            </div>
-            <div className="enterprise-card border-amber">
-                <div className="card-title">コメント</div>
-                <div className="card-body">感想お待ちしています</div>
-            </div>
-            <div className="enterprise-card border-coral">
-                <div className="card-title">共有</div>
-                <div className="card-body">友達にもシェア</div>
-            </div>
-        </div>
-    </div>
-</div>
-    </AbsoluteFill>
-);
-
-export const SCENE_COMPONENTS: Record<number, React.FC> = {
-    0: Scene0,
-    1: Scene1,
-    2: Scene2,
-    3: Scene3,
-    4: Scene4,
-    5: Scene5,
-    6: Scene6,
-    7: Scene7,
-    8: Scene8,
-    9: Scene9,
-    10: Scene10,
-    11: Scene11,
-    12: Scene12,
-    13: Scene13,
-    14: Scene14,
-    15: Scene15,
-    16: Scene16,
-    17: Scene17,
-    18: Scene18,
-    19: Scene19,
-    20: Scene20,
-    21: Scene21,
-    22: Scene22,
-    23: Scene23,
+// Palette: 青=論理/CS, 琥珀=人間の直感, エメラルド=正しさ, ローズ=誤り, 紫=思想, 金=時を超える
+const P = {
+    ...BASE_COLORS,
+    primary: '#1D4ED8',
+    primaryDeep: '#1E3A8A',
+    primaryGlow: 'rgba(29, 78, 216, 0.22)',
+    accent: '#F59E0B',
+    accentDeep: '#B45309',
+    warm: '#FB923C',
+    rose: '#E11D48',
+    emerald: '#059669',
+    violet: '#7C3AED',
+    gold: '#CA8A04',
+    ink: '#0F172A',
+    paper: '#FFFFFF',
+    muted: '#94A3B8',
+    panel: 'rgba(255,255,255,0.92)',
+    border: 'rgba(15, 23, 42, 0.10)',
+    gridLine: 'rgba(30, 58, 138, 0.10)',
 };
 
-export const TOTAL_SCENE_COUNT = 24;
+const fade = (f: number, from: number, to = from + 18) =>
+    interpolate(f, [from, to], [0, 1], { extrapolateLeft: 'clamp', extrapolateRight: 'clamp' });
+const rise = (f: number, from: number, to = from + 18, dist = 18) =>
+    interpolate(f, [from, to], [dist, 0], { extrapolateLeft: 'clamp', extrapolateRight: 'clamp' });
+
+const Stage: React.FC<React.PropsWithChildren<{ align?: string }>> = ({ children, align = 'center' }) => (
+    <div style={{
+        position: 'absolute', inset: 0,
+        paddingTop: 150, paddingBottom: 260,
+        paddingLeft: 80, paddingRight: 80,
+        display: 'flex', alignItems: align as any, justifyContent: 'center',
+    }}>{children}</div>
+);
+
+const Card: React.FC<React.PropsWithChildren<{ style?: React.CSSProperties; opacity?: number }>> = ({ children, style, opacity = 1 }) => (
+    <div style={{
+        background: P.panel, border: `2px solid ${P.border}`,
+        borderRadius: 24, padding: '32px 40px',
+        boxShadow: '0 18px 44px rgba(15, 23, 42, 0.08)',
+        opacity,
+        ...style,
+    }}>{children}</div>
+);
+
+// ───────────────────────────────────────────────
+// Scene 0: Opening
+// ───────────────────────────────────────────────
+const Scene0: React.FC<SceneProps> = ({ localFrame: f }) => (
+    <Stage>
+        <div style={{ textAlign: 'center', opacity: fade(f, 4), transform: `translateY(${rise(f, 4, 28, 28)}px)` }}>
+            <div style={{ fontSize: 52, color: P.muted, letterSpacing: 10, marginBottom: 28 }}>今日のテーマ</div>
+            <div style={{
+                fontSize: 108, fontWeight: 900, letterSpacing: 2,
+                background: `linear-gradient(135deg, ${P.primary} 0%, ${P.violet} 100%)`,
+                WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent',
+                lineHeight: 1.15,
+            }}>
+                アルゴリズムって<br />結局なんなのか
+            </div>
+            <div style={{ marginTop: 48, display: 'flex', gap: 28, justifyContent: 'center', opacity: fade(f, 26) }}>
+                {['古典', '定義', '誤解', '速さ'].map((t, i) => (
+                    <div key={t} style={{
+                        padding: '20px 40px', borderRadius: 999,
+                        background: P.paper, border: `2px solid ${P.border}`,
+                        fontSize: 46, fontWeight: 700, color: P.primaryDeep,
+                        opacity: fade(f, 30 + i * 6),
+                    }}>{t}</div>
+                ))}
+            </div>
+        </div>
+    </Stage>
+);
+
+// ───────────────────────────────────────────────
+// Scene 1: 3つのアルゴリズム
+// ───────────────────────────────────────────────
+const Scene1: React.FC<SceneProps> = ({ localFrame: f }) => {
+    const items = [
+        { era: '2020年代', label: '推薦システム', icon: 'yt', color: P.rose, sub: 'YouTubeのおすすめ' },
+        { era: '紀元前 300 年', label: '互除法', icon: 'scroll', color: P.gold, sub: 'Euclidの手順' },
+        { era: '入門書にある', label: '並び替え', icon: 'code', color: P.primary, sub: 'sort のアルゴリズム' },
+    ];
+    return (
+        <Stage>
+            <div>
+                <div style={{ textAlign: 'center', fontSize: 48, fontWeight: 800, color: P.ink, marginBottom: 40, opacity: fade(f, 2) }}>
+                    全部「アルゴリズム」と呼ばれている
+                </div>
+                <div style={{ display: 'flex', gap: 36, alignItems: 'stretch', justifyContent: 'center' }}>
+                    {items.map((it, i) => (
+                        <Card key={it.label} style={{
+                            width: 360, textAlign: 'center',
+                            transform: `translateY(${rise(f, 10 + i * 10)}px)`,
+                            opacity: fade(f, 10 + i * 10),
+                            borderTop: `6px solid ${it.color}`,
+                        }}>
+                            <div style={{ fontSize: 28, color: P.muted, marginBottom: 14 }}>{it.era}</div>
+                            <div style={{ height: 140, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                                {it.icon === 'yt' && <YouTubeIcon width={140} />}
+                                {it.icon === 'scroll' && (
+                                    <svg viewBox="0 0 140 140" width={140} height={140}>
+                                        <rect x="22" y="18" width="96" height="104" rx="6" fill="#F3E8D2" stroke={P.gold} strokeWidth="3" />
+                                        {[40, 56, 72, 88, 104].map(y => (
+                                            <line key={y} x1="34" y1={y} x2="106" y2={y} stroke={P.accentDeep} strokeWidth="2" opacity="0.6" />
+                                        ))}
+                                    </svg>
+                                )}
+                                {it.icon === 'code' && (
+                                    <svg viewBox="0 0 160 140" width={160} height={140}>
+                                        <rect x="10" y="14" width="140" height="112" rx="10" fill={P.primaryDeep} />
+                                        <circle cx="28" cy="30" r="5" fill="#EF4444" />
+                                        <circle cx="44" cy="30" r="5" fill="#F59E0B" />
+                                        <circle cx="60" cy="30" r="5" fill="#10B981" />
+                                        {[52, 66, 80, 94, 108].map((y, j) => (
+                                            <rect key={y} x="24" y={y} width={[60, 90, 50, 80, 40][j]} height="6" rx="3" fill={['#60A5FA', '#FCD34D', '#A5F3FC', '#FCA5A5', '#C4B5FD'][j]} />
+                                        ))}
+                                    </svg>
+                                )}
+                            </div>
+                            <div style={{ fontSize: 38, fontWeight: 800, color: it.color, marginTop: 14 }}>{it.label}</div>
+                            <div style={{ fontSize: 26, color: P.muted, marginTop: 8 }}>{it.sub}</div>
+                        </Card>
+                    ))}
+                </div>
+            </div>
+        </Stage>
+    );
+};
+
+// ───────────────────────────────────────────────
+// Scene 2: 今日の見取り図
+// ───────────────────────────────────────────────
+const Scene2: React.FC<SceneProps> = ({ localFrame: f }) => {
+    const routes = [
+        { n: 1, title: '語源と歴史', sub: '人の名前・紀元前の手順', color: P.gold },
+        { n: 2, title: '厳密な定義', sub: 'Knuth の5性質', color: P.primary },
+        { n: 3, title: 'よくある誤解', sub: 'レシピ・コード・YouTube', color: P.rose },
+        { n: 4, title: '速さの測り方', sub: '計算量という物差し', color: P.emerald },
+    ];
+    return (
+        <Stage>
+            <div>
+                <div style={{ textAlign: 'center', fontSize: 46, fontWeight: 800, color: P.ink, marginBottom: 44, opacity: fade(f, 2) }}>
+                    今日の順路
+                </div>
+                <div style={{ display: 'flex', gap: 24, alignItems: 'center', justifyContent: 'center' }}>
+                    {routes.map((r, i) => (
+                        <React.Fragment key={r.n}>
+                            <Card style={{
+                                width: 280, textAlign: 'center', padding: '28px 24px',
+                                transform: `translateY(${rise(f, 12 + i * 8)}px)`,
+                                opacity: fade(f, 12 + i * 8),
+                            }}>
+                                <div style={{
+                                    width: 64, height: 64, borderRadius: '50%',
+                                    background: r.color, color: P.paper,
+                                    display: 'flex', alignItems: 'center', justifyContent: 'center',
+                                    fontSize: 42, fontWeight: 900, margin: '0 auto 16px',
+                                }}>{r.n}</div>
+                                <div style={{ fontSize: 34, fontWeight: 800, color: r.color }}>{r.title}</div>
+                                <div style={{ fontSize: 24, color: P.muted, marginTop: 8 }}>{r.sub}</div>
+                            </Card>
+                            {i < routes.length - 1 && (
+                                <div style={{
+                                    fontSize: 46, color: P.muted,
+                                    opacity: fade(f, 18 + i * 8),
+                                }}>›</div>
+                            )}
+                        </React.Fragment>
+                    ))}
+                </div>
+            </div>
+        </Stage>
+    );
+};
+
+// ───────────────────────────────────────────────
+// Scene 3: 人の名前だった
+// ───────────────────────────────────────────────
+const Scene3: React.FC<SceneProps> = ({ localFrame: f }) => (
+    <Stage>
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 28 }}>
+            <div style={{ fontSize: 42, color: P.muted, opacity: fade(f, 2) }}>語源は、一人の人の名前</div>
+            <Card style={{
+                padding: '40px 56px', textAlign: 'center',
+                borderTop: `6px solid ${P.gold}`,
+                transform: `translateY(${rise(f, 10)}px)`, opacity: fade(f, 10),
+            }}>
+                <div style={{ fontSize: 32, color: P.muted, marginBottom: 16 }}>9世紀 バグダード・知恵の館</div>
+                <div style={{ fontSize: 62, fontWeight: 800, color: P.accentDeep, letterSpacing: 1, lineHeight: 1.2 }}>
+                    Muhammad ibn Musa<br />al-Khwarizmi
+                </div>
+                <div style={{ fontSize: 30, color: P.muted, marginTop: 14 }}>c. 780 – c. 850</div>
+            </Card>
+            <div style={{ fontSize: 58, color: P.primary, opacity: fade(f, 30) }}>↓ 12世紀ラテン訳</div>
+            <Card style={{
+                padding: '24px 56px', textAlign: 'center',
+                transform: `translateY(${rise(f, 36)}px)`, opacity: fade(f, 36),
+            }}>
+                <div style={{ fontSize: 50, fontWeight: 800, color: P.primaryDeep, fontFamily: 'Georgia, serif', fontStyle: 'italic' }}>Algoritmi</div>
+            </Card>
+        </div>
+    </Stage>
+);
+
+// ───────────────────────────────────────────────
+// Scene 4: 代数との兄弟関係
+// ───────────────────────────────────────────────
+const Scene4: React.FC<SceneProps> = ({ localFrame: f }) => (
+    <Stage>
+        <svg viewBox="0 0 1200 540" width="100%" height="100%" style={{ maxWidth: 1200 }}>
+            <defs>
+                <marker id="arrS4" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+                    <path d="M0,0 L10,5 L0,10 z" fill={P.muted} />
+                </marker>
+            </defs>
+            {/* Root person */}
+            <g opacity={fade(f, 2)}>
+                <rect x="470" y="40" width="260" height="110" rx="18" fill={P.paper} stroke={P.gold} strokeWidth="3" />
+                <text x="600" y="85" fontSize="28" textAnchor="middle" fill={P.accentDeep} fontWeight="700">al-Khwarizmi</text>
+                <text x="600" y="120" fontSize="22" textAnchor="middle" fill={P.muted}>9世紀 ペルシャの数学者</text>
+            </g>
+            {/* Branches */}
+            <g opacity={fade(f, 18)}>
+                <line x1="600" y1="150" x2="300" y2="290" stroke={P.muted} strokeWidth="2" markerEnd="url(#arrS4)" />
+                <line x1="600" y1="150" x2="900" y2="290" stroke={P.muted} strokeWidth="2" markerEnd="url(#arrS4)" />
+            </g>
+            {/* Left: Al-Jabr → algebra */}
+            <g opacity={fade(f, 22)} transform={`translate(0,${rise(f, 22, 40, 14)})`}>
+                <rect x="130" y="300" width="340" height="140" rx="18" fill={P.paper} stroke={P.violet} strokeWidth="3" />
+                <text x="300" y="340" fontSize="26" textAnchor="middle" fill={P.muted} fontStyle="italic">著作 "Al-Jabr"</text>
+                <text x="300" y="395" fontSize="44" textAnchor="middle" fill={P.violet} fontWeight="800">algebra</text>
+                <text x="300" y="425" fontSize="22" textAnchor="middle" fill={P.muted}>代数</text>
+            </g>
+            {/* Right: name → algorithm */}
+            <g opacity={fade(f, 30)} transform={`translate(0,${rise(f, 30, 48, 14)})`}>
+                <rect x="730" y="300" width="340" height="140" rx="18" fill={P.paper} stroke={P.primary} strokeWidth="3" />
+                <text x="900" y="340" fontSize="26" textAnchor="middle" fill={P.muted}>名前のラテン音写</text>
+                <text x="900" y="395" fontSize="44" textAnchor="middle" fill={P.primary} fontWeight="800">algorithm</text>
+                <text x="900" y="425" fontSize="22" textAnchor="middle" fill={P.muted}>手続き一般</text>
+            </g>
+            {/* Caption */}
+            <text x="600" y="500" fontSize="30" textAnchor="middle" fill={P.ink} fontWeight="700" opacity={fade(f, 44)}>
+                代数とアルゴリズムは「兄弟語」
+            </text>
+        </svg>
+    </Stage>
+);
+
+// ───────────────────────────────────────────────
+// Scene 5: 紀元前300年の手順
+// ───────────────────────────────────────────────
+const Scene5: React.FC<SceneProps> = ({ localFrame: f }) => (
+    <Stage>
+        <div style={{ width: '100%' }}>
+            <div style={{ textAlign: 'center', fontSize: 44, fontWeight: 800, color: P.ink, marginBottom: 50, opacity: fade(f, 2) }}>
+                記録された最古の非自明なアルゴリズム
+            </div>
+            <div style={{ position: 'relative', margin: '0 60px', height: 240 }}>
+                {/* Timeline line */}
+                <div style={{
+                    position: 'absolute', left: 0, right: 0, top: 120, height: 6,
+                    background: `linear-gradient(90deg, ${P.gold}, ${P.primary})`, borderRadius: 3,
+                    opacity: fade(f, 10),
+                }} />
+                {/* Left label: -300 */}
+                <div style={{ position: 'absolute', left: 0, top: 0, width: 260, opacity: fade(f, 16) }}>
+                    <div style={{ fontSize: 60, fontWeight: 900, color: P.gold }}>紀元前 300</div>
+                    <div style={{ fontSize: 28, color: P.muted, marginTop: 8 }}>Euclid『原論』第7巻</div>
+                </div>
+                {/* Right label: 2026 */}
+                <div style={{ position: 'absolute', right: 0, top: 0, width: 260, textAlign: 'right', opacity: fade(f, 24) }}>
+                    <div style={{ fontSize: 60, fontWeight: 900, color: P.primary }}>2026</div>
+                    <div style={{ fontSize: 28, color: P.muted, marginTop: 8 }}>今もスマホの中で動作</div>
+                </div>
+                {/* Dots */}
+                <div style={{
+                    position: 'absolute', left: 36, top: 105, width: 36, height: 36, borderRadius: '50%',
+                    background: P.gold, opacity: fade(f, 12),
+                    boxShadow: `0 0 0 8px ${P.gold}33`,
+                }} />
+                <div style={{
+                    position: 'absolute', right: 36, top: 105, width: 36, height: 36, borderRadius: '50%',
+                    background: P.primary, opacity: fade(f, 20),
+                    boxShadow: `0 0 0 8px ${P.primary}33`,
+                }} />
+                {/* Middle tick */}
+                <div style={{
+                    position: 'absolute', left: '50%', top: 180, transform: 'translateX(-50%)',
+                    textAlign: 'center', opacity: fade(f, 32),
+                }}>
+                    <div style={{ fontSize: 46, fontWeight: 800, color: P.emerald }}>2,300 年</div>
+                    <div style={{ fontSize: 28, color: P.muted, marginTop: 4 }}>現役の手順</div>
+                </div>
+            </div>
+        </div>
+    </Stage>
+);
+
+// ───────────────────────────────────────────────
+// Scene 6: 互除法は今も現役
+// ───────────────────────────────────────────────
+const Scene6: React.FC<SceneProps> = ({ localFrame: f }) => (
+    <Stage>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 60 }}>
+            {/* Left: 互除法の手順 */}
+            <Card style={{
+                padding: '32px 40px', minWidth: 420,
+                borderTop: `6px solid ${P.gold}`,
+                transform: `translateY(${rise(f, 4)}px)`, opacity: fade(f, 4),
+            }}>
+                <div style={{ fontSize: 32, color: P.muted, marginBottom: 14 }}>Euclid の互除法</div>
+                <div style={{ fontSize: 38, fontFamily: 'Georgia, serif', lineHeight: 1.7, color: P.ink }}>
+                    <div>56 = 4 × 12 + <span style={{ color: P.rose }}>8</span></div>
+                    <div>12 = 1 × 8 + <span style={{ color: P.rose }}>4</span></div>
+                    <div>8 = 2 × 4 + <span style={{ color: P.emerald }}>0</span></div>
+                </div>
+                <div style={{ marginTop: 16, fontSize: 30, color: P.emerald, fontWeight: 700 }}>→ GCD = 4</div>
+            </Card>
+            <div style={{ fontSize: 66, color: P.muted, opacity: fade(f, 20) }}>→</div>
+            {/* Right: RSA padlock */}
+            <div style={{ textAlign: 'center', opacity: fade(f, 26), transform: `translateY(${rise(f, 26)}px)` }}>
+                <svg viewBox="0 0 160 180" width={140} height={160}>
+                    <rect x="30" y="70" width="100" height="90" rx="12" fill={P.primary} />
+                    <path d="M50,70 V45 a30,30 0 0 1 60,0 V70" fill="none" stroke={P.primary} strokeWidth="10" />
+                    <circle cx="80" cy="115" r="10" fill={P.paper} />
+                    <rect x="76" y="115" width="8" height="22" fill={P.paper} />
+                </svg>
+                <div style={{ fontSize: 42, fontWeight: 800, color: P.primaryDeep, marginTop: 12 }}>RSA 暗号</div>
+                <div style={{ fontSize: 26, color: P.muted, marginTop: 6 }}>鍵生成で互除法が動く</div>
+            </div>
+        </div>
+    </Stage>
+);
+
+// ───────────────────────────────────────────────
+// Scene 7: Knuth登場
+// ───────────────────────────────────────────────
+const Scene7: React.FC<SceneProps> = ({ localFrame: f }) => (
+    <Stage>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 60 }}>
+            {/* Book */}
+            <div style={{ opacity: fade(f, 4), transform: `translateY(${rise(f, 4)}px)` }}>
+                <svg viewBox="0 0 260 340" width={240} height={320}>
+                    <rect x="20" y="10" width="220" height="320" rx="8" fill={P.primaryDeep} />
+                    <rect x="26" y="16" width="208" height="308" rx="6" fill="#1e3a8a" opacity="0.55" />
+                    <text x="130" y="90" fontSize="18" fill={P.gold} textAnchor="middle" fontWeight="700">The Art of</text>
+                    <text x="130" y="118" fontSize="18" fill={P.gold} textAnchor="middle" fontWeight="700">Computer</text>
+                    <text x="130" y="146" fontSize="18" fill={P.gold} textAnchor="middle" fontWeight="700">Programming</text>
+                    <line x1="50" y1="170" x2="210" y2="170" stroke={P.gold} strokeWidth="2" opacity="0.6" />
+                    <text x="130" y="210" fontSize="14" fill="#E5E7EB" textAnchor="middle">VOLUME 1</text>
+                    <text x="130" y="280" fontSize="16" fill="#E5E7EB" textAnchor="middle">Donald E. Knuth</text>
+                </svg>
+            </div>
+            <div style={{ opacity: fade(f, 20) }}>
+                <div style={{ fontSize: 36, color: P.muted, marginBottom: 12 }}>1968年初版・今なお刊行中</div>
+                <div style={{ fontSize: 70, fontWeight: 900, color: P.primaryDeep, lineHeight: 1.2 }}>
+                    Donald Knuth
+                </div>
+                <div style={{ fontSize: 34, color: P.ink, marginTop: 14 }}>
+                    CSの重鎮が示した <span style={{ color: P.emerald, fontWeight: 800 }}>5つの性質</span>
+                </div>
+            </div>
+        </div>
+    </Stage>
+);
+
+// ───────────────────────────────────────────────
+// Scene 8: 5つの性質
+// ───────────────────────────────────────────────
+const Scene8: React.FC<SceneProps> = ({ localFrame: f }) => {
+    const items = [
+        { en: 'Finiteness', ja: '有限性', color: P.primary },
+        { en: 'Definiteness', ja: '明確性', color: P.violet },
+        { en: 'Input', ja: '入力', color: P.emerald },
+        { en: 'Output', ja: '出力', color: P.accentDeep },
+        { en: 'Effectiveness', ja: '実行可能性', color: P.rose },
+    ];
+    return (
+        <Stage>
+            <div>
+                <div style={{ textAlign: 'center', fontSize: 44, fontWeight: 800, color: P.ink, marginBottom: 48, opacity: fade(f, 2) }}>
+                    アルゴリズムが満たすべき 5 性質
+                </div>
+                <div style={{ display: 'flex', gap: 20, justifyContent: 'center' }}>
+                    {items.map((it, i) => (
+                        <Card key={it.en} style={{
+                            width: 220, padding: '26px 20px', textAlign: 'center',
+                            borderTop: `6px solid ${it.color}`,
+                            transform: `translateY(${rise(f, 8 + i * 6)}px)`,
+                            opacity: fade(f, 8 + i * 6),
+                        }}>
+                            <div style={{
+                                width: 62, height: 62, borderRadius: '50%',
+                                background: it.color, color: P.paper,
+                                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                                fontSize: 36, fontWeight: 900, margin: '0 auto 14px',
+                            }}>{i + 1}</div>
+                            <div style={{ fontSize: 26, color: it.color, fontWeight: 700, letterSpacing: 1 }}>{it.en}</div>
+                            <div style={{ fontSize: 32, color: P.ink, fontWeight: 800, marginTop: 4 }}>{it.ja}</div>
+                        </Card>
+                    ))}
+                </div>
+            </div>
+        </Stage>
+    );
+};
+
+// ───────────────────────────────────────────────
+// Scene 9: 有限性
+// ───────────────────────────────────────────────
+const Scene9: React.FC<SceneProps> = ({ localFrame: f }) => (
+    <Stage>
+        <div style={{ display: 'flex', gap: 80, alignItems: 'center' }}>
+            {/* Bad: infinite loop */}
+            <Card style={{
+                textAlign: 'center', padding: '36px 44px', width: 380,
+                borderTop: `6px solid ${P.rose}`,
+                transform: `translateY(${rise(f, 4)}px)`, opacity: fade(f, 4),
+            }}>
+                <div style={{ fontSize: 32, color: P.rose, fontWeight: 700, marginBottom: 20 }}>✕ 無限ループ</div>
+                <svg viewBox="0 0 160 160" width={160} height={160} style={{ margin: '0 auto', display: 'block' }}>
+                    <path d="M80,40 a40,40 0 1,1 -0.01,0" fill="none" stroke={P.rose} strokeWidth="10" strokeDasharray="10 6">
+                        <animateTransform attributeName="transform" type="rotate" from="0 80 80" to="360 80 80" dur="3s" repeatCount="indefinite" />
+                    </path>
+                </svg>
+                <div style={{ fontSize: 28, color: P.muted, marginTop: 14 }}>永遠に止まらない</div>
+            </Card>
+            <div style={{ fontSize: 44, color: P.muted, opacity: fade(f, 18) }}>vs</div>
+            {/* Good: halts */}
+            <Card style={{
+                textAlign: 'center', padding: '36px 44px', width: 380,
+                borderTop: `6px solid ${P.emerald}`,
+                transform: `translateY(${rise(f, 22)}px)`, opacity: fade(f, 22),
+            }}>
+                <div style={{ fontSize: 32, color: P.emerald, fontWeight: 700, marginBottom: 20 }}>✓ 有限ステップで停止</div>
+                <svg viewBox="0 0 200 160" width={200} height={160} style={{ margin: '0 auto', display: 'block' }}>
+                    {[0, 1, 2, 3, 4].map(i => (
+                        <g key={i}>
+                            <circle cx={30 + i * 35} cy={80} r="12" fill={i === 4 ? P.emerald : P.primary} />
+                            {i < 4 && <line x1={42 + i * 35} y1={80} x2={53 + i * 35} y2={80} stroke={P.muted} strokeWidth="3" markerEnd="" />}
+                        </g>
+                    ))}
+                    <text x={30 + 4 * 35} y="125" textAnchor="middle" fontSize="14" fill={P.emerald} fontWeight="700">STOP</text>
+                </svg>
+                <div style={{ fontSize: 28, color: P.muted, marginTop: 14 }}>ちゃんと終わる</div>
+            </Card>
+        </div>
+    </Stage>
+);
+
+// ───────────────────────────────────────────────
+// Scene 10: 明確性
+// ───────────────────────────────────────────────
+const Scene10: React.FC<SceneProps> = ({ localFrame: f }) => (
+    <Stage>
+        <div style={{ display: 'flex', gap: 60, alignItems: 'stretch' }}>
+            <Card style={{
+                width: 420, padding: '34px 36px',
+                borderTop: `6px solid ${P.rose}`,
+                transform: `translateY(${rise(f, 4)}px)`, opacity: fade(f, 4),
+            }}>
+                <div style={{ fontSize: 30, color: P.rose, fontWeight: 700, marginBottom: 20 }}>✕ 明確性 落第</div>
+                <div style={{ fontSize: 36, color: P.ink, lineHeight: 1.8 }}>
+                    <div>・塩を <span style={{ background: '#FEE2E2', padding: '2px 8px', borderRadius: 4, color: P.rose }}>適度に</span></div>
+                    <div>・肉を <span style={{ background: '#FEE2E2', padding: '2px 8px', borderRadius: 4, color: P.rose }}>美味しそうな色まで</span></div>
+                    <div>・火を <span style={{ background: '#FEE2E2', padding: '2px 8px', borderRadius: 4, color: P.rose }}>弱火で</span></div>
+                </div>
+                <div style={{ fontSize: 26, color: P.muted, marginTop: 18 }}>人間の判断が必要</div>
+            </Card>
+            <div style={{ display: 'flex', alignItems: 'center', fontSize: 56, color: P.muted, opacity: fade(f, 18) }}>→</div>
+            <Card style={{
+                width: 420, padding: '34px 36px',
+                borderTop: `6px solid ${P.emerald}`,
+                transform: `translateY(${rise(f, 22)}px)`, opacity: fade(f, 22),
+            }}>
+                <div style={{ fontSize: 30, color: P.emerald, fontWeight: 700, marginBottom: 20 }}>✓ 明確性 合格</div>
+                <div style={{ fontSize: 36, color: P.ink, lineHeight: 1.8 }}>
+                    <div>・塩 <span style={{ background: '#D1FAE5', padding: '2px 8px', borderRadius: 4, color: P.emerald, fontWeight: 700 }}>5g</span></div>
+                    <div>・中心温度 <span style={{ background: '#D1FAE5', padding: '2px 8px', borderRadius: 4, color: P.emerald, fontWeight: 700 }}>65℃</span></div>
+                    <div>・ <span style={{ background: '#D1FAE5', padding: '2px 8px', borderRadius: 4, color: P.emerald, fontWeight: 700 }}>180W</span> 加熱</div>
+                </div>
+                <div style={{ fontSize: 26, color: P.muted, marginTop: 18 }}>誰が読んでも同じ結果</div>
+            </Card>
+        </div>
+    </Stage>
+);
+
+// ───────────────────────────────────────────────
+// Scene 11: 入力と出力（自販機モデル）
+// ───────────────────────────────────────────────
+const Scene11: React.FC<SceneProps> = ({ localFrame: f }) => (
+    <Stage>
+        <svg viewBox="0 0 1000 420" width="100%" height="100%" style={{ maxWidth: 1100 }}>
+            <defs>
+                <marker id="arrS11" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto">
+                    <path d="M0,0 L10,5 L0,10 z" fill={P.primary} />
+                </marker>
+            </defs>
+            {/* Input */}
+            <g opacity={fade(f, 4)} transform={`translate(${-rise(f, 4, 22, 20)},0)`}>
+                <rect x="30" y="150" width="200" height="120" rx="16" fill={P.paper} stroke={P.emerald} strokeWidth="3" />
+                <text x="130" y="180" fontSize="22" textAnchor="middle" fill={P.emerald} fontWeight="700">INPUT</text>
+                <text x="130" y="220" fontSize="26" textAnchor="middle" fill={P.ink}>お金・ボタン</text>
+                <text x="130" y="252" fontSize="22" textAnchor="middle" fill={P.muted}>材料</text>
+            </g>
+            {/* Arrow 1 */}
+            <line x1="240" y1="210" x2="370" y2="210" stroke={P.primary} strokeWidth="4" markerEnd="url(#arrS11)" opacity={fade(f, 16)} />
+            {/* Process - vending machine */}
+            <g opacity={fade(f, 22)} transform={`translate(0,${-rise(f, 22, 40, 14)})`}>
+                <rect x="380" y="110" width="240" height="200" rx="16" fill={P.primaryDeep} />
+                <rect x="400" y="130" width="200" height="90" rx="8" fill="#1e3a8a" opacity="0.6" />
+                {[0, 1, 2].map(r => [0, 1, 2].map(c => (
+                    <rect key={`${r}${c}`} x={410 + c * 60} y={140 + r * 28} width="50" height="22" rx="3" fill="#60A5FA" opacity={0.4 + r * 0.2} />
+                )))}
+                <rect x="400" y="240" width="200" height="50" rx="6" fill="#334155" />
+                <text x="500" y="273" fontSize="20" textAnchor="middle" fill={P.gold} fontWeight="700">ALGORITHM</text>
+            </g>
+            {/* Arrow 2 */}
+            <line x1="630" y1="210" x2="760" y2="210" stroke={P.primary} strokeWidth="4" markerEnd="url(#arrS11)" opacity={fade(f, 32)} />
+            {/* Output */}
+            <g opacity={fade(f, 36)} transform={`translate(${rise(f, 36, 54, 20)},0)`}>
+                <rect x="770" y="150" width="200" height="120" rx="16" fill={P.paper} stroke={P.accentDeep} strokeWidth="3" />
+                <text x="870" y="180" fontSize="22" textAnchor="middle" fill={P.accentDeep} fontWeight="700">OUTPUT</text>
+                <text x="870" y="220" fontSize="26" textAnchor="middle" fill={P.ink}>飲み物</text>
+                <text x="870" y="252" fontSize="22" textAnchor="middle" fill={P.muted}>答え</text>
+            </g>
+        </svg>
+    </Stage>
+);
+
+// ───────────────────────────────────────────────
+// Scene 12: 実行可能性
+// ───────────────────────────────────────────────
+const Scene12: React.FC<SceneProps> = ({ localFrame: f }) => (
+    <Stage>
+        <div style={{ display: 'flex', gap: 60, alignItems: 'center' }}>
+            <Card style={{
+                width: 360, textAlign: 'center', padding: '36px 32px',
+                borderTop: `6px solid ${P.emerald}`,
+                transform: `translateY(${rise(f, 4)}px)`, opacity: fade(f, 4),
+            }}>
+                <svg viewBox="0 0 140 120" width={140} height={120} style={{ margin: '0 auto' }}>
+                    <rect x="20" y="30" width="80" height="70" rx="3" fill="#F8FAFC" stroke={P.muted} strokeWidth="2" />
+                    {[45, 58, 71, 84].map(y => <line key={y} x1="30" y1={y} x2="90" y2={y} stroke={P.muted} strokeWidth="1" opacity="0.5" />)}
+                    <path d="M100,20 L120,30 L115,52 L95,42 Z" fill={P.gold} />
+                </svg>
+                <div style={{ fontSize: 32, color: P.emerald, fontWeight: 700, marginTop: 16 }}>✓ 紙と鉛筆</div>
+                <div style={{ fontSize: 26, color: P.muted, marginTop: 8 }}>手で再現できる基本性</div>
+            </Card>
+            <div style={{ fontSize: 48, color: P.muted, opacity: fade(f, 18) }}>vs</div>
+            <Card style={{
+                width: 360, textAlign: 'center', padding: '36px 32px',
+                borderTop: `6px solid ${P.rose}`,
+                transform: `translateY(${rise(f, 22)}px)`, opacity: fade(f, 22),
+            }}>
+                <svg viewBox="0 0 140 120" width={140} height={120} style={{ margin: '0 auto' }}>
+                    <circle cx="70" cy="50" r="22" fill={P.accent} opacity="0.4" />
+                    <circle cx="70" cy="50" r="14" fill={P.accent} />
+                    {[0, 45, 90, 135, 180, 225, 270, 315].map(a => {
+                        const rad = (a * Math.PI) / 180;
+                        return <line key={a} x1={70 + Math.cos(rad) * 28} y1={50 + Math.sin(rad) * 28} x2={70 + Math.cos(rad) * 40} y2={50 + Math.sin(rad) * 40} stroke={P.accent} strokeWidth="3" />;
+                    })}
+                    <text x="70" y="105" fontSize="14" textAnchor="middle" fill={P.rose}>「お告げ」</text>
+                </svg>
+                <div style={{ fontSize: 32, color: P.rose, fontWeight: 700, marginTop: 16 }}>✕ 神のお告げ</div>
+                <div style={{ fontSize: 26, color: P.muted, marginTop: 8 }}>再現できない超能力</div>
+            </Card>
+        </div>
+    </Stage>
+);
+
+// ───────────────────────────────────────────────
+// Scene 13: 同じ問題、複数の手順
+// ───────────────────────────────────────────────
+const Scene13: React.FC<SceneProps> = ({ localFrame: f }) => {
+    const bars = [3, 7, 1, 9, 4, 6, 2, 8, 5];
+    const sorts = [
+        { name: 'bubble sort', desc: '隣どうし交換', tint: P.primary },
+        { name: 'quick sort', desc: '基準で二分', tint: P.violet },
+        { name: 'merge sort', desc: '半分にして合流', tint: P.emerald },
+    ];
+    return (
+        <Stage>
+            <div>
+                <div style={{ textAlign: 'center', fontSize: 42, fontWeight: 800, color: P.ink, marginBottom: 40, opacity: fade(f, 2) }}>
+                    同じ問題に、複数のアルゴリズム
+                </div>
+                <div style={{ display: 'flex', gap: 28, justifyContent: 'center' }}>
+                    {sorts.map((s, i) => (
+                        <Card key={s.name} style={{
+                            width: 300, padding: '24px 22px',
+                            borderTop: `6px solid ${s.tint}`,
+                            transform: `translateY(${rise(f, 10 + i * 10)}px)`,
+                            opacity: fade(f, 10 + i * 10),
+                        }}>
+                            <div style={{ fontSize: 32, color: s.tint, fontWeight: 800, textAlign: 'center', fontFamily: 'Georgia, serif', fontStyle: 'italic' }}>{s.name}</div>
+                            <div style={{ fontSize: 26, color: P.muted, textAlign: 'center', marginTop: 4 }}>{s.desc}</div>
+                            <svg viewBox="0 0 260 140" width="100%" height={130} style={{ marginTop: 14 }}>
+                                {bars.map((h, j) => (
+                                    <rect key={j} x={14 + j * 28} y={140 - h * 13} width="22" height={h * 13} rx="3" fill={s.tint} opacity={0.3 + (j / bars.length) * 0.65} />
+                                ))}
+                            </svg>
+                        </Card>
+                    ))}
+                </div>
+                <div style={{ textAlign: 'center', fontSize: 30, color: P.muted, marginTop: 32, opacity: fade(f, 50) }}>
+                    → どれも答えは同じ。速さと向きが違う
+                </div>
+            </div>
+        </Stage>
+    );
+};
+
+// ───────────────────────────────────────────────
+// Scene 14: Knuth本人の留保
+// ───────────────────────────────────────────────
+const Scene14: React.FC<SceneProps> = ({ localFrame: f }) => (
+    <Stage>
+        <Card style={{
+            maxWidth: 900, padding: '48px 60px',
+            borderLeft: `8px solid ${P.gold}`,
+            transform: `translateY(${rise(f, 4)}px)`, opacity: fade(f, 4),
+        }}>
+            <div style={{ fontSize: 32, color: P.gold, fontWeight: 700, marginBottom: 14 }}>— Knuth 本人の留保</div>
+            <div style={{ fontSize: 50, color: P.ink, fontWeight: 700, lineHeight: 1.5, fontFamily: 'Georgia, serif' }}>
+                "my description of an algorithm<br />
+                <span style={{ color: P.rose }}>lacks formal rigor</span>."
+            </div>
+            <div style={{ fontSize: 32, color: P.muted, marginTop: 22, lineHeight: 1.5 }}>
+                直観的にはクリアでも、<br />
+                「厳密に定義された」の「厳密に」とは何か、<br />
+                完全には答えきれていない
+            </div>
+        </Card>
+    </Stage>
+);
+
+// ───────────────────────────────────────────────
+// Scene 15: 3つの誤解
+// ───────────────────────────────────────────────
+const Scene15: React.FC<SceneProps> = ({ localFrame: f }) => {
+    const items = [
+        { q: 'レシピのこと？', color: P.warm, icon: '🍳' },
+        { q: 'コードのこと？', color: P.primary, icon: '{ }' },
+        { q: 'YouTube のあれ？', color: P.rose, icon: 'yt' },
+    ];
+    return (
+        <Stage>
+            <div>
+                <div style={{ textAlign: 'center', fontSize: 46, fontWeight: 800, color: P.ink, marginBottom: 44, opacity: fade(f, 2) }}>
+                    よくある 3 つの誤解
+                </div>
+                <div style={{ display: 'flex', gap: 36, justifyContent: 'center' }}>
+                    {items.map((it, i) => (
+                        <Card key={it.q} style={{
+                            width: 320, padding: '36px 30px', textAlign: 'center',
+                            borderTop: `6px solid ${it.color}`,
+                            transform: `translateY(${rise(f, 12 + i * 12)}px)`,
+                            opacity: fade(f, 12 + i * 12),
+                        }}>
+                            <div style={{ fontSize: 32, color: it.color, fontWeight: 900, marginBottom: 18 }}>誤解 #{i + 1}</div>
+                            <div style={{ height: 80, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                                {it.icon === 'yt' ? (
+                                    <YouTubeIcon width={90} />
+                                ) : (
+                                    <div style={{ fontSize: 70 }}>{it.icon}</div>
+                                )}
+                            </div>
+                            <div style={{ fontSize: 32, color: P.ink, fontWeight: 700, marginTop: 12 }}>{it.q}</div>
+                        </Card>
+                    ))}
+                </div>
+            </div>
+        </Stage>
+    );
+};
+
+// ───────────────────────────────────────────────
+// Scene 16: レシピとの違い
+// ───────────────────────────────────────────────
+const Scene16: React.FC<SceneProps> = ({ localFrame: f }) => (
+    <Stage>
+        <div style={{ display: 'flex', gap: 50, alignItems: 'center' }}>
+            <Card style={{
+                width: 420, padding: '32px 32px',
+                borderTop: `6px solid ${P.warm}`,
+                transform: `translateY(${rise(f, 4)}px)`, opacity: fade(f, 4),
+            }}>
+                <div style={{ fontSize: 32, color: P.warm, fontWeight: 700, marginBottom: 18 }}>レシピ</div>
+                <div style={{ fontSize: 28, color: P.ink, lineHeight: 1.8 }}>
+                    <div>• 塩少々</div>
+                    <div>• 弱火で</div>
+                    <div>• 焦げない程度</div>
+                    <div>• 美味しそうになるまで</div>
+                </div>
+                <div style={{ marginTop: 18, padding: '10px 14px', background: '#FFF7ED', borderRadius: 10, fontSize: 26, color: P.accentDeep }}>
+                    読み手の判断に依存
+                </div>
+            </Card>
+            <div style={{ fontSize: 44, color: P.muted, opacity: fade(f, 20) }}>≠</div>
+            <Card style={{
+                width: 420, padding: '32px 32px',
+                borderTop: `6px solid ${P.primary}`,
+                transform: `translateY(${rise(f, 24)}px)`, opacity: fade(f, 24),
+            }}>
+                <div style={{ fontSize: 32, color: P.primary, fontWeight: 700, marginBottom: 18 }}>アルゴリズム</div>
+                <div style={{ fontSize: 28, color: P.ink, lineHeight: 1.8, fontFamily: 'Georgia, serif' }}>
+                    <div>if x &lt; 100 then ...</div>
+                    <div>for i := 1 to n do ...</div>
+                    <div>return max(a, b)</div>
+                </div>
+                <div style={{ marginTop: 18, padding: '10px 14px', background: '#DBEAFE', borderRadius: 10, fontSize: 26, color: P.primaryDeep }}>
+                    誰が読んでも同じ結果
+                </div>
+            </Card>
+        </div>
+    </Stage>
+);
+
+// ───────────────────────────────────────────────
+// Scene 17: コードとの違い（1つのアルゴリズム→複数言語）
+// ───────────────────────────────────────────────
+const Scene17: React.FC<SceneProps> = ({ localFrame: f }) => {
+    const langs = [
+        { name: 'Python', color: '#3776AB', sample: 'def sort(a):' },
+        { name: 'Java', color: '#E76F00', sample: 'void sort(int[] a)' },
+        { name: 'C++', color: '#659AD2', sample: 'void sort(vector&lt;int&gt;)' },
+    ];
+    return (
+        <Stage>
+            <div>
+                <Card style={{
+                    margin: '0 auto 40px', padding: '22px 40px',
+                    maxWidth: 600, textAlign: 'center',
+                    borderTop: `6px solid ${P.violet}`,
+                    opacity: fade(f, 4),
+                }}>
+                    <div style={{ fontSize: 30, color: P.muted }}>アルゴリズム（抽象）</div>
+                    <div style={{ fontSize: 44, fontWeight: 800, color: P.violet, marginTop: 6 }}>sort: 並び替え手順</div>
+                </Card>
+                <svg viewBox="0 0 900 60" width="100%" height={60} style={{ marginBottom: 20, opacity: fade(f, 16) }}>
+                    <path d="M450,10 L150,55 M450,10 L450,55 M450,10 L750,55" stroke={P.muted} strokeWidth="2" />
+                </svg>
+                <div style={{ display: 'flex', gap: 24, justifyContent: 'center' }}>
+                    {langs.map((l, i) => (
+                        <Card key={l.name} style={{
+                            width: 280, padding: '22px 24px', textAlign: 'center',
+                            borderTop: `6px solid ${l.color}`,
+                            transform: `translateY(${rise(f, 22 + i * 8)}px)`,
+                            opacity: fade(f, 22 + i * 8),
+                        }}>
+                            <div style={{ fontSize: 32, fontWeight: 800, color: l.color, marginBottom: 10 }}>{l.name}</div>
+                            <div style={{ padding: '14px 16px', background: '#0F172A', borderRadius: 8, color: '#F8FAFC', fontSize: 22, fontFamily: 'Consolas, monospace' }} dangerouslySetInnerHTML={{ __html: l.sample }} />
+                            <div style={{ fontSize: 24, color: P.muted, marginTop: 10 }}>実装（コード）</div>
+                        </Card>
+                    ))}
+                </div>
+            </div>
+        </Stage>
+    );
+};
+
+// ───────────────────────────────────────────────
+// Scene 18: YouTubeのあれ
+// ───────────────────────────────────────────────
+const Scene18: React.FC<SceneProps> = ({ localFrame: f }) => (
+    <Stage>
+        <div style={{ textAlign: 'center' }}>
+            <div style={{ display: 'inline-block', opacity: fade(f, 4), transform: `translateY(${rise(f, 4, 22, 20)}px)` }}>
+                <YouTubeIcon width={280} />
+            </div>
+            <div style={{ marginTop: 30, fontSize: 42, color: P.muted, opacity: fade(f, 18) }}>いわゆる</div>
+            <div style={{
+                fontSize: 96, fontWeight: 900, marginTop: 12,
+                background: `linear-gradient(135deg, ${P.rose} 0%, ${P.violet} 100%)`,
+                WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent',
+                opacity: fade(f, 26),
+            }}>
+                「The Algorithm」
+            </div>
+            <div style={{ marginTop: 30, fontSize: 36, color: P.ink, opacity: fade(f, 40) }}>
+                実態は <span style={{ color: P.rose, fontWeight: 800 }}>機械学習モデル</span>
+            </div>
+        </div>
+    </Stage>
+);
+
+// ───────────────────────────────────────────────
+// Scene 19: 古典vs ML
+// ───────────────────────────────────────────────
+const Scene19: React.FC<SceneProps> = ({ localFrame: f }) => (
+    <Stage>
+        <div style={{ display: 'flex', gap: 50, alignItems: 'stretch' }}>
+            <Card style={{
+                width: 420, padding: '28px 32px',
+                borderTop: `6px solid ${P.primary}`,
+                transform: `translateY(${rise(f, 4)}px)`, opacity: fade(f, 4),
+            }}>
+                <div style={{ fontSize: 30, color: P.primary, fontWeight: 800, marginBottom: 18 }}>古典アルゴリズム</div>
+                <svg viewBox="0 0 360 160" width="100%" height={150}>
+                    <rect x="10" y="70" width="90" height="40" rx="8" fill={P.paper} stroke={P.emerald} strokeWidth="2" />
+                    <text x="55" y="95" textAnchor="middle" fontSize="16" fill={P.emerald}>入力</text>
+                    <line x1="100" y1="90" x2="135" y2="90" stroke={P.muted} strokeWidth="2" />
+                    <rect x="135" y="60" width="100" height="60" rx="8" fill={P.primaryDeep} />
+                    <text x="185" y="95" textAnchor="middle" fontSize="14" fill={P.gold} fontWeight="700">人間が書いた手順</text>
+                    <line x1="235" y1="90" x2="270" y2="90" stroke={P.muted} strokeWidth="2" />
+                    <rect x="270" y="70" width="80" height="40" rx="8" fill={P.paper} stroke={P.accentDeep} strokeWidth="2" />
+                    <text x="310" y="95" textAnchor="middle" fontSize="16" fill={P.accentDeep}>出力</text>
+                </svg>
+                <div style={{ fontSize: 24, color: P.muted, marginTop: 8, textAlign: 'center' }}>同じ入力 → 必ず同じ出力</div>
+            </Card>
+            <div style={{ display: 'flex', alignItems: 'center', fontSize: 44, color: P.muted, opacity: fade(f, 18) }}>vs</div>
+            <Card style={{
+                width: 420, padding: '28px 32px',
+                borderTop: `6px solid ${P.rose}`,
+                transform: `translateY(${rise(f, 22)}px)`, opacity: fade(f, 22),
+            }}>
+                <div style={{ fontSize: 30, color: P.rose, fontWeight: 800, marginBottom: 18 }}>機械学習モデル</div>
+                <svg viewBox="0 0 360 160" width="100%" height={150}>
+                    <rect x="10" y="70" width="90" height="40" rx="8" fill={P.paper} stroke={P.emerald} strokeWidth="2" />
+                    <text x="55" y="95" textAnchor="middle" fontSize="16" fill={P.emerald}>入力</text>
+                    <line x1="100" y1="90" x2="135" y2="90" stroke={P.muted} strokeWidth="2" />
+                    <rect x="135" y="40" width="100" height="100" rx="8" fill={P.rose} opacity="0.85" />
+                    <text x="185" y="75" textAnchor="middle" fontSize="14" fill={P.paper} fontWeight="700">過去データ</text>
+                    <text x="185" y="95" textAnchor="middle" fontSize="14" fill={P.paper} fontWeight="700">学習済み</text>
+                    <text x="185" y="115" textAnchor="middle" fontSize="14" fill={P.paper} fontWeight="700">パラメータ</text>
+                    <line x1="235" y1="90" x2="270" y2="90" stroke={P.muted} strokeWidth="2" />
+                    <rect x="270" y="70" width="80" height="40" rx="8" fill={P.paper} stroke={P.accentDeep} strokeWidth="2" />
+                    <text x="310" y="95" textAnchor="middle" fontSize="16" fill={P.accentDeep}>推定</text>
+                </svg>
+                <div style={{ fontSize: 24, color: P.muted, marginTop: 8, textAlign: 'center' }}>学習内容で挙動が変わる</div>
+            </Card>
+        </div>
+    </Stage>
+);
+
+// ───────────────────────────────────────────────
+// Scene 20: 速さの測り方
+// ───────────────────────────────────────────────
+const Scene20: React.FC<SceneProps> = ({ localFrame: f }) => (
+    <Stage>
+        <div>
+            <div style={{ textAlign: 'center', fontSize: 42, fontWeight: 800, color: P.ink, marginBottom: 30, opacity: fade(f, 2) }}>
+                速さの物差し = 「入力が増えたとき、時間はどう伸びるか」
+            </div>
+            <svg viewBox="0 0 900 400" width="100%" height={400}>
+                {/* Axes */}
+                <line x1="80" y1="350" x2="850" y2="350" stroke={P.ink} strokeWidth="2" />
+                <line x1="80" y1="40" x2="80" y2="350" stroke={P.ink} strokeWidth="2" />
+                <text x="860" y="355" fontSize="20" fill={P.muted}>n</text>
+                <text x="40" y="50" fontSize="20" fill={P.muted}>時間</text>
+                {/* O(n²) */}
+                <path d="M80,350 Q 300,340 500,200 T 830,50" fill="none" stroke={P.rose} strokeWidth="5" opacity={fade(f, 10)} />
+                <text x="780" y="80" fontSize="26" fill={P.rose} fontWeight="800" opacity={fade(f, 10)}>O(n²)</text>
+                {/* O(n) */}
+                <line x1="80" y1="350" x2="830" y2="150" stroke={P.accent} strokeWidth="5" opacity={fade(f, 22)} />
+                <text x="780" y="180" fontSize="26" fill={P.accent} fontWeight="800" opacity={fade(f, 22)}>O(n)</text>
+                {/* O(log n) */}
+                <path d="M80,350 Q 200,290 500,270 T 830,255" fill="none" stroke={P.emerald} strokeWidth="5" opacity={fade(f, 34)} />
+                <text x="780" y="245" fontSize="26" fill={P.emerald} fontWeight="800" opacity={fade(f, 34)}>O(log n)</text>
+                {/* O(1) */}
+                <line x1="80" y1="320" x2="830" y2="320" stroke={P.primary} strokeWidth="5" strokeDasharray="8 6" opacity={fade(f, 46)} />
+                <text x="780" y="310" fontSize="26" fill={P.primary} fontWeight="800" opacity={fade(f, 46)}>O(1)</text>
+            </svg>
+        </div>
+    </Stage>
+);
+
+// ───────────────────────────────────────────────
+// Scene 21: Big Oの直感（A vs B）
+// ───────────────────────────────────────────────
+const Scene21: React.FC<SceneProps> = ({ localFrame: f }) => (
+    <Stage>
+        <div style={{ display: 'flex', gap: 60, alignItems: 'center' }}>
+            {['A', 'B'].map((label, i) => {
+                const color = i === 0 ? P.accent : P.rose;
+                const mult = i === 0 ? '2' : '4';
+                const notation = i === 0 ? 'O(n)' : 'O(n²)';
+                return (
+                    <Card key={label} style={{
+                        width: 420, padding: '36px 40px', textAlign: 'center',
+                        borderTop: `6px solid ${color}`,
+                        transform: `translateY(${rise(f, 6 + i * 14)}px)`, opacity: fade(f, 6 + i * 14),
+                    }}>
+                        <div style={{ fontSize: 32, color: P.muted }}>アルゴリズム</div>
+                        <div style={{ fontSize: 80, fontWeight: 900, color: color }}>{label}</div>
+                        <div style={{ fontSize: 30, color: P.ink, marginTop: 16, lineHeight: 1.5 }}>
+                            データが 100 → 200 で
+                        </div>
+                        <div style={{ fontSize: 54, fontWeight: 900, color: color, marginTop: 8 }}>
+                            {mult} 倍の時間
+                        </div>
+                        <div style={{ marginTop: 18, padding: '8px 18px', background: '#F1F5F9', borderRadius: 10, display: 'inline-block', fontSize: 34, fontFamily: 'Georgia, serif', color: color, fontWeight: 700 }}>
+                            {notation}
+                        </div>
+                    </Card>
+                );
+            })}
+        </div>
+    </Stage>
+);
+
+// ───────────────────────────────────────────────
+// Scene 22: 爆発する差
+// ───────────────────────────────────────────────
+const Scene22: React.FC<SceneProps> = ({ localFrame: f }) => (
+    <Stage>
+        <div style={{ textAlign: 'center' }}>
+            <div style={{ fontSize: 38, color: P.muted, opacity: fade(f, 2) }}>データが 100 万個のとき</div>
+            <div style={{ display: 'flex', gap: 80, justifyContent: 'center', marginTop: 40, alignItems: 'flex-end' }}>
+                <div style={{ opacity: fade(f, 10) }}>
+                    <div style={{ fontSize: 32, color: P.accent, fontWeight: 700 }}>A: O(n)</div>
+                    <div style={{ fontSize: 88, fontWeight: 900, color: P.accent, marginTop: 10 }}>1,000,000</div>
+                    <div style={{ fontSize: 28, color: P.muted, marginTop: 4 }}>ステップ / 一瞬</div>
+                </div>
+                <div style={{ fontSize: 66, color: P.muted, alignSelf: 'center', opacity: fade(f, 24) }}>vs</div>
+                <div style={{ opacity: fade(f, 28) }}>
+                    <div style={{ fontSize: 32, color: P.rose, fontWeight: 700 }}>B: O(n²)</div>
+                    <div style={{ fontSize: 88, fontWeight: 900, color: P.rose, marginTop: 10 }}>1,000,000,000,000</div>
+                    <div style={{ fontSize: 28, color: P.muted, marginTop: 4 }}>ステップ / 何日も</div>
+                </div>
+            </div>
+            <div style={{ marginTop: 42, fontSize: 36, color: P.emerald, fontWeight: 800, opacity: fade(f, 46) }}>
+                100 万倍の差
+            </div>
+        </div>
+    </Stage>
+);
+
+// ───────────────────────────────────────────────
+// Scene 23: 二分探索
+// ───────────────────────────────────────────────
+const Scene23: React.FC<SceneProps> = ({ localFrame: f }) => {
+    // Each step shrinks the range in half
+    const steps = [
+        { l: 0, r: 1000000, label: '1,000,000 語' },
+        { l: 500000, r: 1000000, label: '半分に' },
+        { l: 750000, r: 1000000, label: 'また半分' },
+        { l: 875000, r: 937500, label: 'さらに半分' },
+        { l: 910000, r: 920000, label: '...' },
+    ];
+    return (
+        <Stage>
+            <div>
+                <div style={{ textAlign: 'center', fontSize: 42, fontWeight: 800, color: P.ink, marginBottom: 30, opacity: fade(f, 2) }}>
+                    <span style={{ color: P.emerald, fontFamily: 'Georgia, serif', fontStyle: 'italic' }}>binary search</span>　半分に絞り続ける
+                </div>
+                <div style={{ padding: '0 30px' }}>
+                    {steps.map((s, i) => {
+                        const barW = ((s.r - s.l) / 1000000) * 700;
+                        const barX = (s.l / 1000000) * 700;
+                        return (
+                            <div key={i} style={{
+                                display: 'flex', alignItems: 'center', gap: 20, marginBottom: 16,
+                                opacity: fade(f, 8 + i * 8),
+                                transform: `translateX(${-rise(f, 8 + i * 8, 26 + i * 8, 18)}px)`,
+                            }}>
+                                <div style={{ width: 180, fontSize: 26, color: P.muted, textAlign: 'right' }}>{s.label}</div>
+                                <svg viewBox="0 0 720 36" width={720} height={36}>
+                                    <rect x="0" y="10" width="700" height="18" rx="4" fill="#E5E7EB" />
+                                    <rect x={barX} y="10" width={barW} height="18" rx="4" fill={P.emerald} />
+                                </svg>
+                            </div>
+                        );
+                    })}
+                </div>
+                <div style={{ textAlign: 'center', marginTop: 20, fontSize: 36, color: P.emerald, fontWeight: 800, opacity: fade(f, 56) }}>
+                    100 万語でも約 20 回で到達
+                </div>
+            </div>
+        </Stage>
+    );
+};
+
+// ───────────────────────────────────────────────
+// Scene 24: 身近なアルゴリズム（Dijkstra）
+// ───────────────────────────────────────────────
+const Scene24: React.FC<SceneProps> = ({ localFrame: f }) => {
+    // graph nodes
+    const nodes = [
+        { id: 'S', x: 120, y: 220, label: 'START' },
+        { id: 'A', x: 320, y: 100 },
+        { id: 'B', x: 320, y: 340 },
+        { id: 'C', x: 540, y: 100 },
+        { id: 'D', x: 540, y: 340 },
+        { id: 'G', x: 740, y: 220, label: 'GOAL' },
+    ];
+    return (
+        <Stage>
+            <div>
+                <div style={{ textAlign: 'center', fontSize: 42, fontWeight: 800, color: P.ink, marginBottom: 20, opacity: fade(f, 2) }}>
+                    Dijkstra の最短経路アルゴリズム
+                </div>
+                <div style={{ fontSize: 26, textAlign: 'center', color: P.muted, marginBottom: 18, opacity: fade(f, 6) }}>1956年に喫茶店で20分、今も地図アプリで現役</div>
+                <svg viewBox="0 0 900 440" width="100%" height={400}>
+                    {/* edges */}
+                    {[
+                        ['S', 'A'], ['S', 'B'], ['A', 'C'], ['B', 'D'], ['A', 'B'], ['C', 'G'], ['D', 'G'], ['C', 'D'],
+                    ].map(([a, b], i) => {
+                        const na = nodes.find(n => n.id === a)!;
+                        const nb = nodes.find(n => n.id === b)!;
+                        // Highlight SA-AC-CG as shortest
+                        const isPath = (a === 'S' && b === 'A') || (a === 'A' && b === 'C') || (a === 'C' && b === 'G');
+                        return (
+                            <line key={i} x1={na.x} y1={na.y} x2={nb.x} y2={nb.y}
+                                stroke={isPath ? P.emerald : P.muted}
+                                strokeWidth={isPath ? 6 : 3}
+                                opacity={isPath ? fade(f, 28) : fade(f, 12)} />
+                        );
+                    })}
+                    {/* nodes */}
+                    {nodes.map((n, i) => (
+                        <g key={n.id} opacity={fade(f, 8 + i * 4)}>
+                            <circle cx={n.x} cy={n.y} r="28" fill={n.label ? P.primaryDeep : P.paper} stroke={P.primary} strokeWidth="3" />
+                            <text x={n.x} y={n.y + 8} fontSize="22" fontWeight="700" textAnchor="middle" fill={n.label ? P.paper : P.primary}>{n.id}</text>
+                            {n.label && <text x={n.x} y={n.y - 40} fontSize="20" fontWeight="700" textAnchor="middle" fill={P.primaryDeep}>{n.label}</text>}
+                        </g>
+                    ))}
+                </svg>
+                <div style={{ textAlign: 'center', fontSize: 32, color: P.emerald, fontWeight: 800, marginTop: 6, opacity: fade(f, 40) }}>
+                    カーナビの裏側で動いている手順
+                </div>
+            </div>
+        </Stage>
+    );
+};
+
+// ───────────────────────────────────────────────
+// Scene 25: 正しさが最優先
+// ───────────────────────────────────────────────
+const Scene25: React.FC<SceneProps> = ({ localFrame: f }) => (
+    <Stage>
+        <div style={{ textAlign: 'center' }}>
+            <div style={{ fontSize: 42, color: P.muted, opacity: fade(f, 2) }}>優先順位</div>
+            <div style={{ marginTop: 36, display: 'flex', flexDirection: 'column', gap: 18, alignItems: 'center' }}>
+                {[
+                    { n: 1, label: '正しさ', en: 'correctness', color: P.emerald },
+                    { n: 2, label: '速さ', en: 'speed', color: P.accent },
+                    { n: 3, label: '実装の便宜', en: 'implementation', color: P.muted },
+                ].map((it, i) => (
+                    <Card key={it.n} style={{
+                        width: 580, display: 'flex', alignItems: 'center', gap: 24,
+                        padding: '22px 32px',
+                        borderLeft: `8px solid ${it.color}`,
+                        transform: `translateX(${-rise(f, 8 + i * 10, 26 + i * 10, 20)}px)`,
+                        opacity: fade(f, 8 + i * 10),
+                    }}>
+                        <div style={{
+                            width: 64, height: 64, borderRadius: '50%',
+                            background: it.color, color: P.paper,
+                            display: 'flex', alignItems: 'center', justifyContent: 'center',
+                            fontSize: 42, fontWeight: 900,
+                        }}>{it.n}</div>
+                        <div style={{ textAlign: 'left' }}>
+                            <div style={{ fontSize: 44, fontWeight: 800, color: it.color }}>{it.label}</div>
+                            <div style={{ fontSize: 26, color: P.muted, fontFamily: 'Georgia, serif', fontStyle: 'italic' }}>{it.en}</div>
+                        </div>
+                    </Card>
+                ))}
+            </div>
+            <div style={{ marginTop: 24, fontSize: 30, color: P.ink, opacity: fade(f, 48) }}>
+                速くて間違ったやつは、そもそもアルゴリズムじゃない
+            </div>
+        </div>
+    </Stage>
+);
+
+// ───────────────────────────────────────────────
+// Scene 26: コアメッセージ
+// ───────────────────────────────────────────────
+const Scene26: React.FC<SceneProps> = ({ localFrame: f }) => (
+    <Stage>
+        <div style={{ textAlign: 'center' }}>
+            <div style={{ fontSize: 42, color: P.muted, opacity: fade(f, 4) }}>アルゴリズムって、結局</div>
+            <div style={{
+                fontSize: 92, fontWeight: 900, marginTop: 30,
+                background: `linear-gradient(135deg, ${P.primary} 0%, ${P.emerald} 50%, ${P.violet} 100%)`,
+                WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent',
+                opacity: fade(f, 16), transform: `translateY(${rise(f, 16, 36, 20)}px)`,
+                lineHeight: 1.3,
+            }}>
+                問題の解き方の<br />抽象パターン
+            </div>
+            <div style={{ marginTop: 48, display: 'flex', gap: 28, justifyContent: 'center', opacity: fade(f, 36) }}>
+                {[
+                    { l: '≠', sub: 'プログラムのコード' },
+                    { l: '≠', sub: 'レシピ' },
+                    { l: '≠', sub: 'YouTube のあれ' },
+                ].map((x, i) => (
+                    <Card key={i} style={{
+                        padding: '20px 30px',
+                        opacity: fade(f, 38 + i * 6),
+                    }}>
+                        <div style={{ fontSize: 46, color: P.rose, textAlign: 'center' }}>{x.l}</div>
+                        <div style={{ fontSize: 26, color: P.muted, textAlign: 'center', marginTop: 4 }}>{x.sub}</div>
+                    </Card>
+                ))}
+            </div>
+        </div>
+    </Stage>
+);
+
+// ───────────────────────────────────────────────
+// Scene 27: なぜ時間を超えるか
+// ───────────────────────────────────────────────
+const Scene27: React.FC<SceneProps> = ({ localFrame: f }) => (
+    <Stage>
+        <div style={{ textAlign: 'center' }}>
+            <div style={{ fontSize: 44, fontWeight: 800, color: P.ink, opacity: fade(f, 2) }}>
+                なぜ、紀元前の手順が今も動くのか
+            </div>
+            <div style={{ marginTop: 42, display: 'flex', gap: 30, alignItems: 'center', justifyContent: 'center' }}>
+                <Card style={{
+                    padding: '30px 36px', borderTop: `6px solid ${P.violet}`,
+                    opacity: fade(f, 10), transform: `translateY(${rise(f, 10)}px)`,
+                }}>
+                    <div style={{ fontSize: 30, color: P.muted }}>アルゴリズム =</div>
+                    <div style={{ fontSize: 46, fontWeight: 800, color: P.violet, marginTop: 8 }}>言語・ハード非依存</div>
+                    <div style={{ fontSize: 26, color: P.muted, marginTop: 8 }}>抽象の手順</div>
+                </Card>
+                <div style={{ fontSize: 56, color: P.muted, opacity: fade(f, 22) }}>→</div>
+                <Card style={{
+                    padding: '30px 36px', borderTop: `6px solid ${P.gold}`,
+                    opacity: fade(f, 28), transform: `translateY(${rise(f, 28)}px)`,
+                }}>
+                    <div style={{ fontSize: 30, color: P.muted }}>だから</div>
+                    <div style={{ fontSize: 46, fontWeight: 800, color: P.gold, marginTop: 8 }}>道具が変わっても生き残る</div>
+                    <div style={{ fontSize: 26, color: P.muted, marginTop: 8 }}>2,300 年現役</div>
+                </Card>
+            </div>
+            <div style={{ marginTop: 40, fontSize: 30, color: P.ink, opacity: fade(f, 44) }}>
+                一人の人の名前 / 紀元前の手順 / YouTube のあれ — 全部親戚
+            </div>
+        </div>
+    </Stage>
+);
+
+// ───────────────────────────────────────────────
+// Scene 28: エンディング
+// ───────────────────────────────────────────────
+const Scene28: React.FC<SceneProps> = ({ localFrame: f }) => (
+    <Stage>
+        <div style={{ textAlign: 'center' }}>
+            <div style={{
+                fontSize: 88, fontWeight: 900,
+                background: `linear-gradient(135deg, ${P.primary} 0%, ${P.violet} 100%)`,
+                WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent',
+                opacity: fade(f, 4), transform: `translateY(${rise(f, 4, 24, 20)}px)`,
+            }}>
+                ご視聴ありがとうございました
+            </div>
+            <div style={{ marginTop: 40, fontSize: 44, color: P.ink, opacity: fade(f, 26) }}>
+                次に「アルゴリズム」を見たら、少し立ち止まってみてください
+            </div>
+            <div style={{ marginTop: 44, display: 'flex', gap: 20, justifyContent: 'center', opacity: fade(f, 44) }}>
+                <Card style={{ padding: '16px 28px', fontSize: 30, color: P.rose, fontWeight: 700 }}>🔔 チャンネル登録</Card>
+                <Card style={{ padding: '16px 28px', fontSize: 30, color: P.primary, fontWeight: 700 }}>👍 高評価</Card>
+            </div>
+        </div>
+    </Stage>
+);
+
+export const SCENE_COMPONENTS: React.FC<SceneProps>[] = [
+    Scene0, Scene1, Scene2, Scene3, Scene4, Scene5, Scene6, Scene7, Scene8, Scene9,
+    Scene10, Scene11, Scene12, Scene13, Scene14, Scene15, Scene16, Scene17, Scene18, Scene19,
+    Scene20, Scene21, Scene22, Scene23, Scene24, Scene25, Scene26, Scene27, Scene28,
+];
+
+export const SCENE_TITLES: string[] = [
+    'オープニング', '3つのアルゴリズム', '今日の見取り図',
+    '人の名前だった', '代数との兄弟関係', '紀元前300年の手順', '互除法は今も現役',
+    'Knuth登場', '5つの性質', '有限性', '明確性', '入力と出力', '実行可能性', '同じ問題 複数の手順', 'Knuth本人の留保',
+    '3つの誤解', 'レシピとの違い', 'コードとの違い', 'YouTubeのあれ', 'MLモデルとの違い',
+    '速さの測り方', 'Big Oの直感', '爆発する差', '二分探索の発想', '身近なアルゴリズム', '正しさが最優先',
+    '回収', 'なぜ時間を超えるか', 'エンディング',
+];

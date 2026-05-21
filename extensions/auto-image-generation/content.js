@@ -1,379 +1,275 @@
 /**
  * Gemini Image Auto Generator - Content Script
- * GeminiのWebページ上で動作し、プロンプトの自動入力・送信・完了検知を行う
- * 
- * 実際のGemini DOM構造に基づいたセレクタを使用
+ * Gemini Web 上でプロンプトを入力・送信し、生成完了を検知する。
  */
 
 (() => {
     'use strict';
 
-    // ===== DOM Selectors =====
-    // 実際のGemini DOM構造から特定したセレクタ
     const SELECTORS = {
-        // チャット入力欄（Quillエディタ or 初期textarea）
         inputField: [
             'rich-textarea .ql-editor[contenteditable="true"]',
             '.ql-editor[contenteditable="true"]',
             'div.ql-editor.textarea',
             '.initial-input-area-container > textarea',
         ],
-        // 送信ボタン（日本語・英語両対応）
         sendButton: [
             'button[aria-label="メッセージを送信"]',
             'button[aria-label="Send message"]',
             'button.send-button',
             '.send-button-container button',
         ],
-        // レスポンスブロック（カスタム要素）
         responseBlock: 'model-response',
-        // 会話コンテナ
-        conversationContainer: '.conversation-container',
-        // レスポンス本文のmarkdownコンテナ（aria-busyで完了判定に使う）
         markdownContent: '.markdown.markdown-main-panel',
-        // message-content要素
-        messageContent: 'message-content',
-        // レスポンスフッター（completeクラスで完了判定）
         responseFooter: '.response-footer',
-        // アバタースピナー（生成中はvisibility: visibleになる）
         avatarSpinner: '.avatar_spinner_animation',
-        // 処理状態ヘッダー
-        processingState: '.response-container-header-processing-state',
-        // 停止されたレスポンス
-        stoppedMessage: '.stopped-draft-message',
-        // ローディングスピナー（mat-progress-spinner）
-        loadingSpinner: 'mat-progress-spinner[mode="indeterminate"]',
     };
 
-    // ===== State =====
-    let isProcessing = false;
-    let currentItemId = null;
     let abortController = null;
+    let currentItemId = null;
 
-    // ===== Message Handling =====
     chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
         switch (message.type) {
             case 'PROCESS_PROMPT':
-                handleProcessPrompt(message);
+                // 即座に ack を返し、本処理は非同期で走らせる（完了は ITEM_COMPLETED で通知）
                 sendResponse({ ok: true });
+                handleProcessPrompt(message);
                 break;
             case 'STOP':
                 handleStop();
                 sendResponse({ ok: true });
                 break;
+            default:
+                sendResponse({ ok: false });
         }
         return true;
     });
 
-    // Content Scriptの準備完了を通知
-    chrome.runtime.sendMessage({ type: 'CONTENT_READY' }).catch(() => { });
-
-    // ===== Core Processing =====
+    chrome.runtime.sendMessage({ type: 'CONTENT_READY' }).catch(() => {});
 
     async function handleProcessPrompt(message) {
-        const { prompt, prefix, itemId, timeout, delay } = message;
-        // プレフィックスをプロンプトの先頭に結合
-        const fullPrompt = prefix ? `${prefix}\n\n${prompt}` : prompt;
-        isProcessing = true;
-        currentItemId = itemId;
+        const { prompt, prefix, itemId, jobId, timeout } = message;
+
+        // 前の処理が残っていたら中断（高速な再開や再ロード対策）
+        if (abortController) abortController.abort();
         abortController = new AbortController();
+        currentItemId = itemId;
+
+        const fullPrompt = prefix ? `${prefix}\n\n${prompt}` : prompt;
 
         try {
-            // 1. 現在のmodel-responseの数を記録
-            const initialResponseCount = document.querySelectorAll(SELECTORS.responseBlock).length;
-            console.log(`[GeminiAuto] Processing: "${prompt.substring(0, 50)}..."`,
-                `Initial model-response count: ${initialResponseCount}`);
+            const initialCount = document.querySelectorAll(SELECTORS.responseBlock).length;
+            console.log(`[GeminiAuto] → ${itemId}: ${prompt.substring(0, 60)}... (initial model-response count: ${initialCount})`);
 
-            // 2. 入力欄にプロンプトを設定（prefix込み）
             await typePrompt(fullPrompt);
-            await sleep(500);
+            await sleep(300);
+            await sendPromptMessage();
+            await waitForCompletion(initialCount, timeout || 300000);
 
-            // 3. 送信
-            await sendMessage();
-            await sleep(1500); // 送信後少し待つ
-
-            // 4. 画像生成の完了を待機
-            await waitForCompletion(initialResponseCount, timeout || 300000);
-
-            // 5. 完了通知
-            console.log(`[GeminiAuto] ✅ Completed: "${prompt.substring(0, 50)}..."`);
+            console.log(`[GeminiAuto] ✓ ${itemId} completed`);
             chrome.runtime.sendMessage({
                 type: 'ITEM_COMPLETED',
-                itemId: itemId,
-            });
-
+                jobId,
+                itemId,
+            }).catch(() => {});
         } catch (err) {
-            console.error(`[GeminiAuto] ❌ Error:`, err);
-            if (err.name !== 'AbortError') {
-                chrome.runtime.sendMessage({
-                    type: 'ITEM_ERROR',
-                    itemId: itemId,
-                    error: err.message,
-                });
+            if (err.name === 'AbortError') {
+                console.log(`[GeminiAuto] aborted ${itemId}`);
+                return;
             }
+            console.error('[GeminiAuto] ✗', err);
+            chrome.runtime.sendMessage({
+                type: 'ITEM_ERROR',
+                jobId,
+                itemId,
+                error: err.message,
+            }).catch(() => {});
         } finally {
-            isProcessing = false;
-            currentItemId = null;
-            abortController = null;
+            if (currentItemId === itemId) {
+                currentItemId = null;
+                abortController = null;
+            }
         }
     }
 
     function handleStop() {
-        if (abortController) {
-            abortController.abort();
-        }
-        isProcessing = false;
+        if (abortController) abortController.abort();
     }
 
-    // ===== DOM Interaction =====
+    // ===== DOM interaction =====
 
-    /**
-     * 入力欄にプロンプトを入力する
-     */
     async function typePrompt(text) {
         const inputEl = findElement(SELECTORS.inputField);
-        if (!inputEl) {
-            throw new Error('入力欄が見つかりません。Geminiのチャット画面を開いているか確認してください。');
-        }
+        if (!inputEl) throw new Error('入力欄が見つかりません。Geminiのチャット画面を開いてください。');
 
-        console.log(`[GeminiAuto] Input element found: <${inputEl.tagName}> contentEditable=${inputEl.contentEditable}`);
+        const isCE = inputEl.contentEditable === 'true' || inputEl.getAttribute('contenteditable') === 'true';
 
-        if (inputEl.contentEditable === 'true' || inputEl.getAttribute('contenteditable') === 'true') {
-            // Quill Editorの場合（contenteditable div）
+        if (isCE) {
             inputEl.focus();
-            await sleep(100);
-
-            // 既存テキストをクリア
+            await sleep(80);
             inputEl.innerHTML = '';
-
-            // テキストを行ごとに<p>タグで設定（Quillの形式に合わせる）
-            // 複数行プロンプト（YAML等）に対応
-            const lines = text.split('\n');
-            lines.forEach(line => {
+            for (const line of text.split('\n')) {
                 const p = document.createElement('p');
-                p.textContent = line;
+                if (line.length === 0) {
+                    p.appendChild(document.createElement('br'));
+                } else {
+                    p.textContent = line;
+                }
                 inputEl.appendChild(p);
-            });
-
-            // input イベントを発火してAngularの状態を更新
+            }
             dispatchInputEvents(inputEl);
-
         } else if (inputEl.tagName === 'TEXTAREA' || inputEl.tagName === 'INPUT') {
-            // 初期入力エリア（textarea）の場合
             inputEl.focus();
-            await sleep(100);
-
-            const nativeSetter = Object.getOwnPropertyDescriptor(
+            await sleep(80);
+            const setter = Object.getOwnPropertyDescriptor(
                 window.HTMLTextAreaElement.prototype, 'value'
             )?.set;
-
-            if (nativeSetter) {
-                nativeSetter.call(inputEl, text);
-            } else {
-                inputEl.value = text;
-            }
-
+            if (setter) setter.call(inputEl, text);
+            else inputEl.value = text;
             dispatchInputEvents(inputEl);
         }
 
         await sleep(200);
-        console.log('[GeminiAuto] ✅ Prompt typed');
     }
 
-    /**
-     * 送信ボタンをクリック or Enterキー送信
-     */
-    async function sendMessage() {
-        await sleep(300);
-
-        const sendBtn = findElement(SELECTORS.sendButton);
-        if (sendBtn && !sendBtn.disabled) {
-            sendBtn.click();
-            console.log('[GeminiAuto] ✅ Send button clicked');
-            return;
-        }
-
-        // フォールバック: Enterキーで送信
-        const inputEl = findElement(SELECTORS.inputField);
-        if (inputEl) {
-            const enterEvent = new KeyboardEvent('keydown', {
-                key: 'Enter',
-                code: 'Enter',
-                keyCode: 13,
-                which: 13,
-                bubbles: true,
-                cancelable: true,
-            });
-            inputEl.dispatchEvent(enterEvent);
-            console.log('[GeminiAuto] ✅ Enter key dispatched (fallback)');
-        } else {
-            throw new Error('送信ボタンも入力欄も見つかりません。');
-        }
-    }
-
-    /**
-     * レスポンスの完了を待機する
-     * 
-     * 検知方法:
-     * 1. 新しい model-response 要素が出現したか
-     * 2. 最後の .markdown の aria-busy が "false" か
-     * 3. .response-footer に "complete" クラスがあるか
-     * 4. アバタースピナーが非表示か
-     */
-    function waitForCompletion(initialResponseCount, timeout) {
-        return new Promise((resolve, reject) => {
-            const signal = abortController?.signal;
-            if (signal?.aborted) {
-                reject(new DOMException('Aborted', 'AbortError'));
+    async function sendPromptMessage() {
+        // 送信ボタンが有効化されるまで最大10秒待機
+        for (let i = 0; i < 50; i++) {
+            checkAbort();
+            const btn = findElement(SELECTORS.sendButton);
+            if (btn && !btn.disabled && btn.getAttribute('aria-disabled') !== 'true') {
+                btn.click();
+                console.log('[GeminiAuto] send button clicked');
                 return;
             }
-
-            let timeoutId;
-            let checkInterval;
-            let observer;
-
-            const cleanup = () => {
-                if (timeoutId) clearTimeout(timeoutId);
-                if (checkInterval) clearInterval(checkInterval);
-                if (observer) observer.disconnect();
-            };
-
-            // タイムアウト
-            timeoutId = setTimeout(() => {
-                cleanup();
-                const currentCount = document.querySelectorAll(SELECTORS.responseBlock).length;
-                if (currentCount > initialResponseCount) {
-                    console.log('[GeminiAuto] ⚠ Timeout but response exists, treating as complete');
-                    resolve();
-                } else {
-                    reject(new Error(`タイムアウト（${timeout / 1000}秒）: レスポンスが検出されませんでした`));
-                }
-            }, timeout);
-
-            // 中断ハンドラ
-            if (signal) {
-                signal.addEventListener('abort', () => {
-                    cleanup();
-                    reject(new DOMException('Aborted', 'AbortError'));
-                });
-            }
-
-            // 完了チェック関数
-            const checkCompletion = () => {
-                // 1. 新しいmodel-responseが追加されたか
-                const currentResponseCount = document.querySelectorAll(SELECTORS.responseBlock).length;
-                if (currentResponseCount <= initialResponseCount) {
-                    return false; // まだレスポンスが来ていない
-                }
-
-                // 2. 最後のmodel-response内のmarkdownのaria-busyを確認
-                const allMarkdowns = document.querySelectorAll(SELECTORS.markdownContent);
-                if (allMarkdowns.length > 0) {
-                    const lastMarkdown = allMarkdowns[allMarkdowns.length - 1];
-                    const ariaBusy = lastMarkdown.getAttribute('aria-busy');
-                    if (ariaBusy === 'true') {
-                        console.log('[GeminiAuto] ⏳ aria-busy is still true, waiting...');
-                        return false; // まだ生成中
-                    }
-                }
-
-                // 3. response-footerにcompleteクラスがあるか確認
-                const allFooters = document.querySelectorAll(SELECTORS.responseFooter);
-                if (allFooters.length > 0) {
-                    const lastFooter = allFooters[allFooters.length - 1];
-                    if (!lastFooter.classList.contains('complete')) {
-                        console.log('[GeminiAuto] ⏳ Response footer not complete yet...');
-                        return false;
-                    }
-                }
-
-                // 4. アバタースピナーが非表示か確認
-                const spinners = document.querySelectorAll(SELECTORS.avatarSpinner);
-                for (const spinner of spinners) {
-                    const style = window.getComputedStyle(spinner);
-                    if (style.visibility === 'visible' && style.opacity !== '0') {
-                        console.log('[GeminiAuto] ⏳ Avatar spinner still visible...');
-                        return false;
-                    }
-                }
-
-                // すべての条件をクリア → 完了
-                return true;
-            };
-
-            // 2秒ごとにチェック
-            checkInterval = setInterval(() => {
-                if (checkCompletion()) {
-                    console.log('[GeminiAuto] ✅ Response completed!');
-                    cleanup();
-                    resolve();
-                }
-            }, 2000);
-
-            // MutationObserverでDOMの変化も監視（チェック間隔の補助）
-            observer = new MutationObserver(() => {
-                // DOM変化があったら即座にチェック（ただし連続呼び出しを防ぐためデバウンス）
-                // setIntervalで十分なので、ここでは特に何もしない
-                // ただし、DOMに大きな変化があった場合のログ用
-            });
-
-            observer.observe(document.body, {
-                childList: true,
-                subtree: true,
-                attributes: true,
-                attributeFilter: ['aria-busy', 'class', 'style'],
-            });
-        });
+            await sleep(200);
+        }
+        throw new Error('送信ボタンが有効になりません。入力が反映されていない可能性があります。');
     }
 
-    // ===== Helper Functions =====
-
     /**
-     * セレクタリストから最初にマッチする要素を返す
+     * レスポンス完了を待機する。
+     *
+     * 完了条件（以下がすべて満たされ、かつ STABLE_TICKS 回連続で成立すること）:
+     *  1) 新規 model-response が出現している
+     *  2) 最新 model-response の .markdown の aria-busy が "true" ではない
+     *  3) .response-footer に "complete" クラスが付いている
+     *  4) アバタースピナーが可視でない
+     *
+     * 注意点:
+     *  - aria-busy が最初から false のままだと「送信前の古い状態」と誤検知するリスクがあるため、
+     *    新規レスポンス出現後一定時間は "busy=true を一度見る" までは完了判定を保留する。
+     *  - タイムアウト時でも新規レスポンスが存在すれば完了扱い（保守的に進める）。
      */
-    function findElement(selectorList) {
-        if (typeof selectorList === 'string') {
-            return document.querySelector(selectorList);
-        }
-        for (const selector of selectorList) {
-            try {
-                const el = document.querySelector(selector);
-                if (el) return el;
-            } catch (e) {
-                // Invalid selectorは無視
+    async function waitForCompletion(initialCount, timeout) {
+        const POLL_MS = 1500;
+        const STABLE_TICKS = 3;             // 3回連続 = 約4.5秒の安定が必要
+        const MAX_WAIT_FOR_BUSY_MS = 45000; // レスポンス出現から busy=true を待つ最大時間
+        const startTime = Date.now();
+
+        let sawAriaBusyTrue = false;
+        let newResponseFirstSeenAt = null;
+        let stable = 0;
+
+        while (true) {
+            checkAbort();
+
+            if (Date.now() - startTime > timeout) {
+                const cur = document.querySelectorAll(SELECTORS.responseBlock).length;
+                if (cur > initialCount) {
+                    console.warn('[GeminiAuto] timeout but new response exists — treating as complete');
+                    return;
+                }
+                throw new Error(`タイムアウト（${Math.round(timeout / 1000)}秒）: レスポンスが検出されませんでした`);
             }
+
+            const responses = document.querySelectorAll(SELECTORS.responseBlock);
+            const count = responses.length;
+
+            if (count <= initialCount) {
+                stable = 0;
+                await sleep(POLL_MS);
+                continue;
+            }
+
+            if (newResponseFirstSeenAt === null) {
+                newResponseFirstSeenAt = Date.now();
+            }
+
+            const last = responses[count - 1];
+
+            const markdown = last.querySelector(SELECTORS.markdownContent);
+            const ariaBusy = markdown?.getAttribute('aria-busy');
+            if (ariaBusy === 'true') sawAriaBusyTrue = true;
+
+            const footer = last.querySelector(SELECTORS.responseFooter);
+            const footerComplete = !!footer && footer.classList.contains('complete');
+
+            const spinners = last.querySelectorAll(SELECTORS.avatarSpinner);
+            let spinnerVisible = false;
+            for (const s of spinners) {
+                const style = window.getComputedStyle(s);
+                if (style.visibility === 'visible' && style.opacity !== '0') {
+                    spinnerVisible = true;
+                    break;
+                }
+            }
+
+            const busyOff = ariaBusy !== 'true';
+            const conditionsMet = busyOff && footerComplete && !spinnerVisible;
+
+            // aria-busy=true を一度も見ていないうちに完了条件が揃っていても、
+            // 最初期の「まだ何も起きていない」状態の可能性があるため暫く待つ
+            const waitingForBusyConfirmation =
+                !sawAriaBusyTrue &&
+                (Date.now() - newResponseFirstSeenAt) < MAX_WAIT_FOR_BUSY_MS;
+
+            if (conditionsMet && !waitingForBusyConfirmation) {
+                stable++;
+                if (stable >= STABLE_TICKS) {
+                    console.log(`[GeminiAuto] completion stable (${stable}), sawBusy=${sawAriaBusyTrue}`);
+                    return;
+                }
+            } else {
+                stable = 0;
+            }
+
+            await sleep(POLL_MS);
+        }
+    }
+
+    // ===== Helpers =====
+
+    function checkAbort() {
+        if (abortController?.signal?.aborted) {
+            throw new DOMException('Aborted', 'AbortError');
+        }
+    }
+
+    function findElement(selectorList) {
+        if (typeof selectorList === 'string') return document.querySelector(selectorList);
+        for (const sel of selectorList) {
+            try {
+                const el = document.querySelector(sel);
+                if (el) return el;
+            } catch {}
         }
         return null;
     }
 
-    /**
-     * 入力イベントをディスパッチ（Angular/Reactの状態同期用）
-     */
     function dispatchInputEvents(element) {
         const events = [
             new Event('input', { bubbles: true, cancelable: true }),
             new Event('change', { bubbles: true, cancelable: true }),
-            new InputEvent('input', {
-                bubbles: true,
-                cancelable: true,
-                inputType: 'insertText',
-            }),
+            new InputEvent('input', { bubbles: true, cancelable: true, inputType: 'insertText' }),
         ];
-
-        events.forEach(event => {
-            try {
-                element.dispatchEvent(event);
-            } catch (e) {
-                // ignore
-            }
-        });
+        for (const ev of events) {
+            try { element.dispatchEvent(ev); } catch {}
+        }
     }
 
-    /**
-     * 指定ミリ秒待機
-     */
     function sleep(ms) {
-        return new Promise(resolve => setTimeout(resolve, ms));
+        return new Promise(r => setTimeout(r, ms));
     }
 
     console.log('[GeminiAuto] Content script loaded on', window.location.href);

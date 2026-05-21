@@ -16,6 +16,7 @@
     "paths": {
       "@channels/*": ["../channels/*"],
       "@components/*": ["src/components/*"],
+      "@sandbox/*": ["../sandbox/*"],
       "react": ["node_modules/react"],
       "react/*": ["node_modules/react/*"],
       "remotion": ["node_modules/remotion"],
@@ -27,7 +28,8 @@
   },
   "include": [
     "src/**/*",
-    "../channels/*/projects/*/remotion/**/*"
+    "../channels/*/projects/*/remotion/**/*",
+    "../sandbox/**/*"
   ],
   "exclude": [
     "remotion.config.ts",

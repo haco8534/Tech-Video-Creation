@@ -1,37 +1,101 @@
-import { useState, useEffect, useRef } from "react";
-import { fetchChannels, fetchThumbnailCandidates, fetchThumbnailPrompts, createClaudeWs } from "../api";
+import { useState, useEffect } from "react";
+import { fetchThumbnailCandidates, createClaudeWs } from "../api";
 import { useToast } from "../components/ToastContext";
 import { CheckIcon, ImageIcon, StopIcon, SparklesIcon } from "../icons";
 
 const CHANNEL_ID = "tech_explainer";
 
-export default function ThumbnailTab() {
+// v3 compact: 1タイトル → 1 YAML。各 YAML はネスト構造で、
+// `image_generation_prompt.prompt` に英語の完成プロンプトが入る。
+// ChatGPT 拡張に渡すのはこの英文プロンプトだけ。
+function parseYamlBlocks(text) {
+  const blocks = [];
+  const fenceMatches = [...text.matchAll(/```ya?ml\s*\n([\s\S]*?)\n```/g)];
+  for (const m of fenceMatches) {
+    const yaml = m[1];
+    const titleMatch = yaml.match(/^title:\s*"?(.+?)"?\s*$/m);
+    if (!titleMatch) continue;
+    const title = titleMatch[1].trim().replace(/^"|"$/g, "");
+    const imagePrompt = extractImagePrompt(yaml);
+    blocks.push({ raw: yaml, title, imagePrompt });
+  }
+  return blocks;
+}
+
+// `image_generation_prompt:` 内の `prompt: |` ブロック本文を抽出する
+function extractImagePrompt(yaml) {
+  const lines = yaml.split("\n");
+  let inParent = false;
+  let promptIndent = -1;
+  let collecting = false;
+  const collected = [];
+
+  for (const line of lines) {
+    if (!inParent) {
+      if (/^image_generation_prompt:\s*$/.test(line)) inParent = true;
+      continue;
+    }
+
+    if (!collecting) {
+      const m = line.match(/^(\s+)prompt:\s*\|\s*$/);
+      if (m) {
+        promptIndent = m[1].length;
+        collecting = true;
+        continue;
+      }
+      // 親ブロックを抜けた（インデント0で別キーが来た）
+      if (/^\S/.test(line)) return "";
+      continue;
+    }
+
+    if (line.trim() === "") {
+      collected.push("");
+      continue;
+    }
+    const lineIndent = (line.match(/^(\s*)/) || ["", ""])[1].length;
+    if (lineIndent <= promptIndent) break;
+    collected.push(line.slice(promptIndent + 2));
+  }
+
+  while (collected.length && collected[collected.length - 1] === "") collected.pop();
+  return collected.join("\n");
+}
+
+function blockKey(b) {
+  return b.title;
+}
+
+function mergeBlocks(prev, next) {
+  const map = new Map(prev.map((b) => [blockKey(b), b]));
+  for (const b of next) map.set(blockKey(b), b);
+  return Array.from(map.values());
+}
+
+export default function ThumbnailTab({ visible = true }) {
   const toast = useToast();
   const [candidates, setCandidates] = useState([]);
   const [selectedIds, setSelectedIds] = useState(new Set());
   const [generating, setGenerating] = useState(false);
-  const [promptBlocks, setPromptBlocks] = useState([]);
+  const [promptBlocks, setPromptBlocks] = useState([]); // セッション内メモリのみ。ディスクには保存しない
   const [copied, setCopied] = useState(false);
   const [ws, setWs] = useState(null);
-  const bottomRef = useRef(null);
+  const [generatingTitles, setGeneratingTitles] = useState([]); // 今回の生成リクエスト分のタイトル
 
   useEffect(() => {
-    loadData();
+    fetchThumbnailCandidates(CHANNEL_ID)
+      .then((data) => setCandidates(data.candidates || []))
+      .catch(() => {});
   }, []);
-
-  async function loadData() {
-    try {
-      const candData = await fetchThumbnailCandidates(CHANNEL_ID);
-      setCandidates(candData.candidates || []);
-    } catch {}
-    try {
-      const promptData = await fetchThumbnailPrompts();
-      setPromptBlocks(promptData.blocks || []);
-    } catch {}
-  }
 
   // 既にプロンプト生成済みのタイトル
   const existingTitles = new Set(promptBlocks.map((b) => b.title));
+
+  // 進捗（今回のリクエスト分、1タイトル=1プロンプト）
+  const generatingTitleSet = new Set(generatingTitles);
+  const progressDone = promptBlocks.filter(
+    (b) => generatingTitleSet.has(b.title) && b.imagePrompt
+  ).length;
+  const progressTotal = generatingTitles.length;
 
   // サムネなしのプロジェクト
   const noThumb = candidates.filter((c) => !c.hasThumbnail);
@@ -57,8 +121,11 @@ export default function ThumbnailTab() {
   // 選択プロジェクトに対応する既存プロンプトブロック
   const selectedBlocks = promptBlocks.filter((b) => selectedTitles.has(b.title));
 
-  // --- 区切りの一括コピー用テキスト
-  const bulkYaml = selectedBlocks.map((b) => b.raw).join("\n---\n");
+  // --- 区切りの一括コピー用テキスト（ChatGPT拡張に渡す英文プロンプトのみ）
+  const bulkYaml = selectedBlocks
+    .map((b) => b.imagePrompt)
+    .filter(Boolean)
+    .join("\n---\n");
 
   async function handleCopy() {
     if (!bulkYaml) {
@@ -77,7 +144,11 @@ export default function ThumbnailTab() {
       .map((c) => c.title);
     if (titles.length === 0) return;
 
+    // 再生成: 対象タイトルの過去プロンプトを破棄してから始める
+    setPromptBlocks((prev) => prev.filter((b) => !titles.includes(b.title)));
     setGenerating(true);
+    setGeneratingTitles(titles);
+    let accumulated = "";
 
     const socket = createClaudeWs();
     setWs(socket);
@@ -91,12 +162,25 @@ export default function ThumbnailTab() {
 
     socket.onmessage = (e) => {
       const msg = JSON.parse(e.data);
-      if (msg.type === "session-end") {
+      if (msg.type === "claude-event") {
+        const data = msg.data;
+        if (data?.type === "assistant" && data.message?.content) {
+          for (const block of data.message.content) {
+            if (block.type === "text" && block.text) {
+              accumulated += block.text;
+            }
+          }
+          const blocks = parseYamlBlocks(accumulated);
+          if (blocks.length > 0) {
+            setPromptBlocks((prev) => mergeBlocks(prev, blocks));
+          }
+        }
+      } else if (msg.type === "session-end") {
         setGenerating(false);
         socket.close();
-        // 生成完了後にプロンプトを再読込
-        fetchThumbnailPrompts().then((data) => setPromptBlocks(data.blocks || []));
-        toast("プロンプト生成完了", "success");
+        const blocks = parseYamlBlocks(accumulated);
+        setPromptBlocks((prev) => mergeBlocks(prev, blocks));
+        toast(`プロンプト生成完了 (${blocks.length}件)`, "success");
       } else if (msg.type === "claude-error") {
         toast("生成エラー", "error");
       }
@@ -116,7 +200,7 @@ export default function ThumbnailTab() {
   }
 
   return (
-    <div className="thumb-tab">
+    <div className="thumb-tab" style={visible ? undefined : { display: "none" }}>
       <div className="thumb-tab-header">
         <h2>サムネイル画像プロンプト</h2>
         <p className="thumb-tab-desc">
@@ -173,9 +257,23 @@ export default function ThumbnailTab() {
 
           <div className="thumb-generate-bar">
             {generating ? (
-              <button className="btn btn-sm btn-danger" onClick={handleStop}>
-                <StopIcon /> 停止
-              </button>
+              <>
+                <div className="thumb-progress">
+                  <div className="thumb-progress-label">
+                    <span className="upload-spinner" />
+                    生成中 {progressDone}/{progressTotal}件
+                  </div>
+                  <div className="thumb-progress-track">
+                    <div
+                      className="thumb-progress-fill"
+                      style={{ width: progressTotal ? `${(progressDone / progressTotal) * 100}%` : "0%" }}
+                    />
+                  </div>
+                </div>
+                <button className="btn btn-sm btn-danger" onClick={handleStop}>
+                  <StopIcon /> 停止
+                </button>
+              </>
             ) : (
               <button
                 className="btn btn-sm btn-ghost"

@@ -10,6 +10,7 @@ import projectsRouter from "./routes/projects.js";
 import themesRouter from "./routes/themes.js";
 import calendarRouter from "./routes/calendar.js";
 import thumbnailsRouter from "./routes/thumbnails.js";
+import templatesRouter from "./routes/templates.js";
 import { handleClaudeWs, getActiveSessions } from "./ws/claude-handler.js";
 import { handleRenderWs } from "./ws/render-handler.js";
 import { startStudio, getStudioStatus, stopStudio } from "./lib/remotion-runner.js";
@@ -38,6 +39,7 @@ app.use("/api/projects", projectsRouter);
 app.use("/api/themes", themesRouter);
 app.use("/api/calendar", calendarRouter);
 app.use("/api/thumbnails", thumbnailsRouter);
+app.use("/api/templates", templatesRouter);
 
 // セッション状態API
 app.get("/api/sessions/active", (req, res) => {

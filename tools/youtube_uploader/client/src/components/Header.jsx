@@ -1,4 +1,5 @@
-import { CalendarIcon, SparklesIcon, FilmIcon, ImageIcon } from "../icons";
+import { useState, useEffect } from "react";
+import { CalendarIcon, SparklesIcon, FilmIcon, ImageIcon, SunIcon, MoonIcon } from "../icons";
 
 const TABS = [
   { id: "calendar", label: "カレンダー", icon: <CalendarIcon /> },
@@ -7,7 +8,26 @@ const TABS = [
   { id: "thumbnail", label: "サムネイル", icon: <ImageIcon /> },
 ];
 
+function getInitialTheme() {
+  try {
+    const t = localStorage.getItem("theme");
+    if (t === "dark" || t === "light") return t;
+  } catch (_) {}
+  return "light";
+}
+
 export default function Header({ activeTab, setActiveTab }) {
+  const [theme, setTheme] = useState(getInitialTheme);
+
+  useEffect(() => {
+    document.documentElement.dataset.theme = theme;
+    try { localStorage.setItem("theme", theme); } catch (_) {}
+  }, [theme]);
+
+  function toggleTheme() {
+    setTheme((t) => (t === "dark" ? "light" : "dark"));
+  }
+
   return (
     <header className="header">
       <div className="header-left">
@@ -28,6 +48,15 @@ export default function Header({ activeTab, setActiveTab }) {
             <span>{tab.label}</span>
           </button>
         ))}
+        <button
+          type="button"
+          className="theme-toggle"
+          onClick={toggleTheme}
+          title={theme === "dark" ? "ライトモードに切替" : "ダークモードに切替"}
+          aria-label="テーマ切替"
+        >
+          {theme === "dark" ? <SunIcon /> : <MoonIcon />}
+        </button>
       </nav>
     </header>
   );

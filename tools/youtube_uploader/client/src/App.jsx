@@ -32,9 +32,7 @@ export default function App() {
               onClearNavigation={() => setNavigationTarget(null)}
             />
           )}
-          {activeTab === "thumbnail" && (
-            <ThumbnailTab />
-          )}
+          <ThumbnailTab visible={activeTab === "thumbnail"} />
         </main>
       </div>
     </ToastProvider>

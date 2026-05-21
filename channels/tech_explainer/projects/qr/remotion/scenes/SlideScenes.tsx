@@ -1,1059 +1,1750 @@
 import React from 'react';
-import { AbsoluteFill, staticFile } from 'remotion';
-import './slides.css';
+import { interpolate } from 'remotion';
+import { SceneProps } from '@components/layouts/FigureLayout';
+import { BASE_COLORS } from '@components/theme';
 
-export const Scene0: React.FC = () => (
-    <AbsoluteFill>
-        <div className="scene" id="scene-0">
-    <div className="content center-layout">
-        <div className="svg-diagram">
-            <svg viewBox="0 0 780 300" width="780" height="300">
-                {/* QR code stylized structure */}
-                <rect x="220" y="20" width="340" height="260" rx="12" fill="#fff" stroke="#1e40af" strokeWidth="3"/>
-                {/* Finder patterns */}
-                <rect x="240" y="40" width="70" height="70" rx="4" fill="#1a1d23"/>
-                <rect x="248" y="48" width="54" height="54" rx="3" fill="#fff"/>
-                <rect x="258" y="58" width="34" height="34" rx="2" fill="#1a1d23"/>
-                <rect x="470" y="40" width="70" height="70" rx="4" fill="#1a1d23"/>
-                <rect x="478" y="48" width="54" height="54" rx="3" fill="#fff"/>
-                <rect x="488" y="58" width="34" height="34" rx="2" fill="#1a1d23"/>
-                <rect x="240" y="190" width="70" height="70" rx="4" fill="#1a1d23"/>
-                <rect x="248" y="198" width="54" height="54" rx="3" fill="#fff"/>
-                <rect x="258" y="208" width="34" height="34" rx="2" fill="#1a1d23"/>
-                {/* Data dots */}
-                <rect x="335" y="45" width="12" height="12" fill="#1a1d23" rx="1"/>
-                <rect x="355" y="45" width="12" height="12" fill="#1a1d23" rx="1"/>
-                <rect x="395" y="45" width="12" height="12" fill="#1a1d23" rx="1"/>
-                <rect x="335" y="65" width="12" height="12" fill="#1a1d23" rx="1"/>
-                <rect x="375" y="65" width="12" height="12" fill="#1a1d23" rx="1"/>
-                <rect x="415" y="65" width="12" height="12" fill="#1a1d23" rx="1"/>
-                <rect x="345" y="85" width="12" height="12" fill="#1a1d23" rx="1"/>
-                <rect x="385" y="85" width="12" height="12" fill="#1a1d23" rx="1"/>
-                <rect x="345" y="130" width="12" height="12" fill="#1a1d23" rx="1"/>
-                <rect x="365" y="130" width="12" height="12" fill="#1a1d23" rx="1"/>
-                <rect x="405" y="130" width="12" height="12" fill="#1a1d23" rx="1"/>
-                <rect x="425" y="150" width="12" height="12" fill="#1a1d23" rx="1"/>
-                <rect x="335" y="150" width="12" height="12" fill="#1a1d23" rx="1"/>
-                <rect x="375" y="170" width="12" height="12" fill="#1a1d23" rx="1"/>
-                <rect x="415" y="170" width="12" height="12" fill="#1a1d23" rx="1"/>
-                <rect x="335" y="200" width="12" height="12" fill="#1a1d23" rx="1"/>
-                <rect x="375" y="200" width="12" height="12" fill="#1a1d23" rx="1"/>
-                <rect x="395" y="220" width="12" height="12" fill="#1a1d23" rx="1"/>
-                <rect x="445" y="200" width="12" height="12" fill="#1a1d23" rx="1"/>
-                <rect x="465" y="220" width="12" height="12" fill="#1a1d23" rx="1"/>
-                <rect x="485" y="200" width="12" height="12" fill="#1a1d23" rx="1"/>
-                <rect x="505" y="180" width="12" height="12" fill="#1a1d23" rx="1"/>
-                <rect x="505" y="220" width="12" height="12" fill="#1a1d23" rx="1"/>
-            </svg>
-        </div>
-        <div className="title-large">QRコードはなぜあの模様で<br />読み取れるのか</div>
-    </div>
-</div>
-    </AbsoluteFill>
-);
+export type { SceneProps };
 
-export const Scene1: React.FC = () => (
-    <AbsoluteFill>
-        <div className="scene" id="scene-1">
-    <div className="content center-layout">
-        <div className="scene-title">QRコードの利用者数</div>
-        <div className="metric-card">
-            <div className="metric-value accent-primary">22<span style={{ fontSize: '48px' }}>億人+</span></div>
-            <div className="metric-label">世界の日常的QRコード利用者</div>
-            <div className="metric-sub">全スマホユーザーの約29%が日常利用</div>
-        </div>
-        <div className="source">出典: QR Code Chimp Statistics 2025</div>
-    </div>
-</div>
-    </AbsoluteFill>
-);
-
-export const Scene2: React.FC = () => (
-    <AbsoluteFill>
-        <div className="scene" id="scene-2">
-    <div className="content center-layout">
-        <div className="scene-title">思考実験</div>
-        <div className="svg-diagram">
-            <svg viewBox="0 0 780 260" width="780" height="260">
-                {/* Left: damaged QR */}
-                <text x="150" y="28" textAnchor="middle" fontSize="22" fontWeight="700" fill="#1a1d23">30%破損</text>
-                <rect x="30" y="40" width="240" height="210" rx="8" fill="#fff" stroke="#dc2626" strokeWidth="2"/>
-                <rect x="48" y="58" width="50" height="50" rx="3" fill="#1a1d23"/>
-                <rect x="54" y="64" width="38" height="38" rx="2" fill="#fff"/>
-                <rect x="62" y="72" width="22" height="22" rx="1" fill="#1a1d23"/>
-                <rect x="202" y="58" width="50" height="50" rx="3" fill="#1a1d23"/>
-                <rect x="208" y="64" width="38" height="38" rx="2" fill="#fff"/>
-                <rect x="216" y="72" width="22" height="22" rx="1" fill="#1a1d23"/>
-                <rect x="48" y="182" width="50" height="50" rx="3" fill="#1a1d23"/>
-                <rect x="54" y="188" width="38" height="38" rx="2" fill="#fff"/>
-                <rect x="62" y="196" width="22" height="22" rx="1" fill="#1a1d23"/>
-                {/* Damage overlay */}
-                <rect x="90" y="100" width="120" height="100" rx="6" fill="#dc2626" opacity="0.7"/>
-                <text x="150" y="158" textAnchor="middle" fontSize="28" fontWeight="900" fill="#fff">×</text>
-                {/* Arrow */}
-                <text x="340" y="165" textAnchor="middle" fontSize="40" fontWeight="900" fill="#0d9488">→</text>
-                {/* Right: still readable */}
-                <text x="550" y="28" textAnchor="middle" fontSize="22" fontWeight="700" fill="#0d9488">読み取り成功！</text>
-                <rect x="430" y="40" width="240" height="210" rx="8" fill="#fff" stroke="#0d9488" strokeWidth="2"/>
-                <rect x="448" y="58" width="50" height="50" rx="3" fill="#1a1d23"/>
-                <rect x="454" y="64" width="38" height="38" rx="2" fill="#fff"/>
-                <rect x="462" y="72" width="22" height="22" rx="1" fill="#1a1d23"/>
-                <rect x="602" y="58" width="50" height="50" rx="3" fill="#1a1d23"/>
-                <rect x="608" y="64" width="38" height="38" rx="2" fill="#fff"/>
-                <rect x="616" y="72" width="22" height="22" rx="1" fill="#1a1d23"/>
-                <rect x="448" y="182" width="50" height="50" rx="3" fill="#1a1d23"/>
-                <rect x="454" y="188" width="38" height="38" rx="2" fill="#fff"/>
-                <rect x="462" y="196" width="22" height="22" rx="1" fill="#1a1d23"/>
-                <text x="550" y="155" textAnchor="middle" fontSize="22" fontWeight="900" fill="#0d9488">https://...</text>
-            </svg>
-        </div>
-        <div className="big-statement"><span className="accent-primary">見つける</span> × <span className="accent-teal">直す</span> × <span className="accent-amber">読む</span></div>
-    </div>
-</div>
-    </AbsoluteFill>
-);
-
-export const Scene3: React.FC = () => (
-    <AbsoluteFill>
-        <div className="scene" id="scene-3">
-    <div className="content center-layout">
-        <div className="scene-title">バーコード vs QRコード</div>
-        <div className="svg-diagram">
-            <svg viewBox="0 0 780 220" width="780" height="220">
-                {/* Barcode */}
-                <text x="180" y="28" textAnchor="middle" fontSize="22" fontWeight="900" fill="#1a1d23">1Dバーコード</text>
-                <rect x="40" y="40" width="280" height="120" rx="6" fill="#fff" stroke="#d1d5db" strokeWidth="2"/>
-                <rect x="60" y="55" width="3" height="90" fill="#1a1d23"/>
-                <rect x="68" y="55" width="2" height="90" fill="#1a1d23"/>
-                <rect x="76" y="55" width="4" height="90" fill="#1a1d23"/>
-                <rect x="86" y="55" width="2" height="90" fill="#1a1d23"/>
-                <rect x="94" y="55" width="3" height="90" fill="#1a1d23"/>
-                <rect x="104" y="55" width="5" height="90" fill="#1a1d23"/>
-                <rect x="116" y="55" width="2" height="90" fill="#1a1d23"/>
-                <rect x="124" y="55" width="3" height="90" fill="#1a1d23"/>
-                <rect x="134" y="55" width="4" height="90" fill="#1a1d23"/>
-                <rect x="144" y="55" width="2" height="90" fill="#1a1d23"/>
-                <rect x="152" y="55" width="3" height="90" fill="#1a1d23"/>
-                <rect x="162" y="55" width="5" height="90" fill="#1a1d23"/>
-                <rect x="174" y="55" width="2" height="90" fill="#1a1d23"/>
-                <rect x="182" y="55" width="3" height="90" fill="#1a1d23"/>
-                <rect x="192" y="55" width="4" height="90" fill="#1a1d23"/>
-                <rect x="202" y="55" width="2" height="90" fill="#1a1d23"/>
-                <rect x="210" y="55" width="5" height="90" fill="#1a1d23"/>
-                <rect x="222" y="55" width="3" height="90" fill="#1a1d23"/>
-                <rect x="232" y="55" width="2" height="90" fill="#1a1d23"/>
-                <rect x="240" y="55" width="4" height="90" fill="#1a1d23"/>
-                <rect x="252" y="55" width="2" height="90" fill="#1a1d23"/>
-                <rect x="260" y="55" width="3" height="90" fill="#1a1d23"/>
-                <rect x="270" y="55" width="5" height="90" fill="#1a1d23"/>
-                <rect x="282" y="55" width="2" height="90" fill="#1a1d23"/>
-                <rect x="290" y="55" width="3" height="90" fill="#1a1d23"/>
-                <text x="180" y="180" textAnchor="middle" fontSize="20" fontWeight="700" fill="#dc2626">最大20文字</text>
-                <text x="180" y="208" textAnchor="middle" fontSize="18" fontWeight="700" fill="#1a1d23">一方向スキャン</text>
-                {/* QR */}
-                <text x="580" y="28" textAnchor="middle" fontSize="22" fontWeight="900" fill="#1a1d23">2D QRコード</text>
-                <rect x="480" y="40" width="200" height="120" rx="6" fill="#fff" stroke="#1e40af" strokeWidth="2"/>
-                <rect x="494" y="54" width="36" height="36" rx="2" fill="#1a1d23"/>
-                <rect x="498" y="58" width="28" height="28" rx="1" fill="#fff"/>
-                <rect x="504" y="64" width="16" height="16" fill="#1a1d23"/>
-                <rect x="630" y="54" width="36" height="36" rx="2" fill="#1a1d23"/>
-                <rect x="634" y="58" width="28" height="28" rx="1" fill="#fff"/>
-                <rect x="640" y="64" width="16" height="16" fill="#1a1d23"/>
-                <rect x="494" y="110" width="36" height="36" rx="2" fill="#1a1d23"/>
-                <rect x="498" y="114" width="28" height="28" rx="1" fill="#fff"/>
-                <rect x="504" y="120" width="16" height="16" fill="#1a1d23"/>
-                <rect x="545" y="58" width="8" height="8" fill="#1a1d23"/>
-                <rect x="561" y="58" width="8" height="8" fill="#1a1d23"/>
-                <rect x="553" y="74" width="8" height="8" fill="#1a1d23"/>
-                <rect x="569" y="90" width="8" height="8" fill="#1a1d23"/>
-                <rect x="545" y="106" width="8" height="8" fill="#1a1d23"/>
-                <rect x="569" y="106" width="8" height="8" fill="#1a1d23"/>
-                <rect x="553" y="122" width="8" height="8" fill="#1a1d23"/>
-                <rect x="553" y="138" width="8" height="8" fill="#1a1d23"/>
-                <rect x="637" y="106" width="8" height="8" fill="#1a1d23"/>
-                <rect x="653" y="106" width="8" height="8" fill="#1a1d23"/>
-                <rect x="645" y="122" width="8" height="8" fill="#1a1d23"/>
-                <text x="580" y="180" textAnchor="middle" fontSize="20" fontWeight="700" fill="#0d9488">最大7,089桁</text>
-                <text x="580" y="208" textAnchor="middle" fontSize="18" fontWeight="700" fill="#1a1d23">360度 + 誤り訂正</text>
-            </svg>
-        </div>
-        <div className="big-statement">情報量 <span className="accent-primary">約350倍</span></div>
-    </div>
-</div>
-    </AbsoluteFill>
-);
-
-export const Scene4: React.FC = () => (
-    <AbsoluteFill>
-        <div className="scene" id="scene-4">
-    <div className="content center-layout">
-        <div className="scene-title">1次元 → 2次元</div>
-        <div className="svg-diagram">
-            <svg viewBox="0 0 780 220" width="780" height="220">
-                {/* 1D bookshelf: single row */}
-                <text x="180" y="28" textAnchor="middle" fontSize="20" fontWeight="700" fill="#1a1d23">棚1段の本棚</text>
-                <rect x="40" y="40" width="280" height="70" rx="6" fill="#fff" stroke="#d1d5db" strokeWidth="2"/>
-                <rect x="55" y="50" width="18" height="50" rx="2" fill="#dbeafe"/>
-                <rect x="80" y="50" width="18" height="50" rx="2" fill="#dbeafe"/>
-                <rect x="105" y="50" width="18" height="50" rx="2" fill="#dbeafe"/>
-                <rect x="130" y="50" width="18" height="50" rx="2" fill="#dbeafe"/>
-                <rect x="155" y="50" width="18" height="50" rx="2" fill="#dbeafe"/>
-                <rect x="180" y="50" width="18" height="50" rx="2" fill="#dbeafe"/>
-                <rect x="205" y="50" width="18" height="50" rx="2" fill="#dbeafe"/>
-                <rect x="230" y="50" width="18" height="50" rx="2" fill="#dbeafe"/>
-                <rect x="255" y="50" width="18" height="50" rx="2" fill="#dbeafe"/>
-                <rect x="280" y="50" width="18" height="50" rx="2" fill="#dbeafe"/>
-                <text x="180" y="140" textAnchor="middle" fontSize="18" fontWeight="700" fill="#dc2626">= バーコード（横一列）</text>
-                {/* Arrow */}
-                <text x="390" y="90" textAnchor="middle" fontSize="36" fontWeight="900" fill="#1e40af">→</text>
-                {/* 2D bookshelf: grid */}
-                <text x="590" y="28" textAnchor="middle" fontSize="20" fontWeight="700" fill="#1a1d23">多段の本棚</text>
-                <rect x="460" y="40" width="260" height="170" rx="6" fill="#fff" stroke="#1e40af" strokeWidth="2"/>
-                <rect x="475" y="50" width="16" height="40" rx="2" fill="#dbeafe"/>
-                <rect x="496" y="50" width="16" height="40" rx="2" fill="#dbeafe"/>
-                <rect x="517" y="50" width="16" height="40" rx="2" fill="#dbeafe"/>
-                <rect x="538" y="50" width="16" height="40" rx="2" fill="#dbeafe"/>
-                <rect x="559" y="50" width="16" height="40" rx="2" fill="#dbeafe"/>
-                <rect x="580" y="50" width="16" height="40" rx="2" fill="#dbeafe"/>
-                <rect x="601" y="50" width="16" height="40" rx="2" fill="#dbeafe"/>
-                <rect x="622" y="50" width="16" height="40" rx="2" fill="#dbeafe"/>
-                <rect x="643" y="50" width="16" height="40" rx="2" fill="#dbeafe"/>
-                <rect x="664" y="50" width="16" height="40" rx="2" fill="#dbeafe"/>
-                <rect x="475" y="98" width="16" height="40" rx="2" fill="#ccfbf1"/>
-                <rect x="496" y="98" width="16" height="40" rx="2" fill="#ccfbf1"/>
-                <rect x="517" y="98" width="16" height="40" rx="2" fill="#ccfbf1"/>
-                <rect x="538" y="98" width="16" height="40" rx="2" fill="#ccfbf1"/>
-                <rect x="559" y="98" width="16" height="40" rx="2" fill="#ccfbf1"/>
-                <rect x="580" y="98" width="16" height="40" rx="2" fill="#ccfbf1"/>
-                <rect x="601" y="98" width="16" height="40" rx="2" fill="#ccfbf1"/>
-                <rect x="622" y="98" width="16" height="40" rx="2" fill="#ccfbf1"/>
-                <rect x="643" y="98" width="16" height="40" rx="2" fill="#ccfbf1"/>
-                <rect x="664" y="98" width="16" height="40" rx="2" fill="#ccfbf1"/>
-                <rect x="475" y="146" width="16" height="40" rx="2" fill="#fef3c7"/>
-                <rect x="496" y="146" width="16" height="40" rx="2" fill="#fef3c7"/>
-                <rect x="517" y="146" width="16" height="40" rx="2" fill="#fef3c7"/>
-                <rect x="538" y="146" width="16" height="40" rx="2" fill="#fef3c7"/>
-                <rect x="559" y="146" width="16" height="40" rx="2" fill="#fef3c7"/>
-                <rect x="580" y="146" width="16" height="40" rx="2" fill="#fef3c7"/>
-                <rect x="601" y="146" width="16" height="40" rx="2" fill="#fef3c7"/>
-                <rect x="622" y="146" width="16" height="40" rx="2" fill="#fef3c7"/>
-                <rect x="643" y="146" width="16" height="40" rx="2" fill="#fef3c7"/>
-                <rect x="664" y="146" width="16" height="40" rx="2" fill="#fef3c7"/>
-                <text x="590" y="220" textAnchor="middle" fontSize="18" fontWeight="700" fill="#0d9488">= QRコード（縦横に展開）</text>
-            </svg>
-        </div>
-    </div>
-</div>
-    </AbsoluteFill>
-);
-
-export const Scene5: React.FC = () => (
-    <AbsoluteFill>
-        <div className="scene" id="scene-5">
-    <div className="content center-layout">
-        <div className="scene-title">QRコードの誕生</div>
-        <div className="photo-text-row">
-            <figure className="photo-frame">
-                <img src={staticFile("images/masahiro_hara.jpg")} alt="原昌宏" />
-            </figure>
-            <div className="photo-text-side">
-                <div className="quote-block">
-                    <div className="quote-mark">"</div>
-                    <div className="quote-body">昼休みに打っていた囲碁の<br />白と黒の石から着想を得た</div>
-                    <div className="quote-source">原昌宏氏（1994年・デンソーウェーブ）</div>
-                </div>
-            </div>
-        </div>
-        <div className="source">出典: IEEE Spectrum 2020 / デンソーウェーブ公式</div>
-    </div>
-</div>
-    </AbsoluteFill>
-);
-
-export const Scene6: React.FC = () => (
-    <AbsoluteFill>
-        <div className="scene" id="scene-6">
-    <div className="content center-layout">
-        <div className="scene-title">QRコードの構造</div>
-        <div className="svg-diagram">
-            <svg viewBox="0 0 780 300" width="780" height="300">
-                {/* QR code base */}
-                <rect x="220" y="10" width="280" height="280" rx="6" fill="#fff" stroke="#d1d5db" strokeWidth="2"/>
-                {/* Finder patterns with labels */}
-                <rect x="236" y="26" width="60" height="60" rx="3" fill="#1e40af"/>
-                <rect x="242" y="32" width="48" height="48" rx="2" fill="#fff"/>
-                <rect x="250" y="40" width="32" height="32" rx="1" fill="#1e40af"/>
-                <rect x="424" y="26" width="60" height="60" rx="3" fill="#1e40af"/>
-                <rect x="430" y="32" width="48" height="48" rx="2" fill="#fff"/>
-                <rect x="438" y="40" width="32" height="32" rx="1" fill="#1e40af"/>
-                <rect x="236" y="214" width="60" height="60" rx="3" fill="#1e40af"/>
-                <rect x="242" y="220" width="48" height="48" rx="2" fill="#fff"/>
-                <rect x="250" y="228" width="32" height="32" rx="1" fill="#1e40af"/>
-                {/* Timing pattern */}
-                <rect x="302" y="42" width="8" height="8" fill="#0d9488"/>
-                <rect x="318" y="42" width="8" height="8" fill="#0d9488"/>
-                <rect x="334" y="42" width="8" height="8" fill="#0d9488"/>
-                <rect x="350" y="42" width="8" height="8" fill="#0d9488"/>
-                <rect x="366" y="42" width="8" height="8" fill="#0d9488"/>
-                <rect x="382" y="42" width="8" height="8" fill="#0d9488"/>
-                <rect x="398" y="42" width="8" height="8" fill="#0d9488"/>
-                <rect x="414" y="42" width="8" height="8" fill="#0d9488"/>
-                {/* Vertical timing */}
-                <rect x="250" y="92" width="8" height="8" fill="#0d9488"/>
-                <rect x="250" y="108" width="8" height="8" fill="#0d9488"/>
-                <rect x="250" y="124" width="8" height="8" fill="#0d9488"/>
-                <rect x="250" y="140" width="8" height="8" fill="#0d9488"/>
-                <rect x="250" y="156" width="8" height="8" fill="#0d9488"/>
-                <rect x="250" y="172" width="8" height="8" fill="#0d9488"/>
-                <rect x="250" y="188" width="8" height="8" fill="#0d9488"/>
-                <rect x="250" y="204" width="8" height="8" fill="#0d9488"/>
-                {/* Alignment pattern */}
-                <rect x="434" y="218" width="22" height="22" rx="2" fill="#d97706"/>
-                <rect x="438" y="222" width="14" height="14" rx="1" fill="#fff"/>
-                <rect x="441" y="225" width="8" height="8" fill="#d97706"/>
-                {/* Data area dots */}
-                <rect x="320" y="100" width="10" height="10" fill="#1a1d23" opacity="0.3"/>
-                <rect x="340" y="110" width="10" height="10" fill="#1a1d23" opacity="0.3"/>
-                <rect x="360" y="100" width="10" height="10" fill="#1a1d23" opacity="0.3"/>
-                <rect x="380" y="120" width="10" height="10" fill="#1a1d23" opacity="0.3"/>
-                <rect x="400" y="110" width="10" height="10" fill="#1a1d23" opacity="0.3"/>
-                <rect x="320" y="140" width="10" height="10" fill="#1a1d23" opacity="0.3"/>
-                <rect x="360" y="140" width="10" height="10" fill="#1a1d23" opacity="0.3"/>
-                <rect x="400" y="140" width="10" height="10" fill="#1a1d23" opacity="0.3"/>
-                <rect x="340" y="160" width="10" height="10" fill="#1a1d23" opacity="0.3"/>
-                <rect x="380" y="160" width="10" height="10" fill="#1a1d23" opacity="0.3"/>
-                <rect x="320" y="180" width="10" height="10" fill="#1a1d23" opacity="0.3"/>
-                <rect x="360" y="180" width="10" height="10" fill="#1a1d23" opacity="0.3"/>
-                <rect x="400" y="180" width="10" height="10" fill="#1a1d23" opacity="0.3"/>
-                {/* Labels */}
-                <line x1="170" y1="56" x2="232" y2="56" stroke="#1e40af" strokeWidth="2"/>
-                <text x="40" y="52" fontSize="18" fontWeight="700" fill="#1e40af">ファインダー</text>
-                <text x="40" y="72" fontSize="18" fontWeight="700" fill="#1e40af">パターン</text>
-                <line x1="550" y1="46" x2="510" y2="46" stroke="#0d9488" strokeWidth="2"/>
-                <text x="560" y="42" fontSize="18" fontWeight="700" fill="#0d9488">タイミング</text>
-                <text x="560" y="62" fontSize="18" fontWeight="700" fill="#0d9488">パターン</text>
-                <line x1="550" y1="230" x2="460" y2="230" stroke="#d97706" strokeWidth="2"/>
-                <text x="560" y="226" fontSize="18" fontWeight="700" fill="#d97706">アライメント</text>
-                <text x="560" y="246" fontSize="18" fontWeight="700" fill="#d97706">パターン</text>
-                <text x="560" y="150" fontSize="18" fontWeight="700" fill="#1a1d23">データ +</text>
-                <text x="560" y="170" fontSize="18" fontWeight="700" fill="#1a1d23">誤り訂正</text>
-            </svg>
-        </div>
-    </div>
-</div>
-    </AbsoluteFill>
-);
-
-export const Scene7: React.FC = () => (
-    <AbsoluteFill>
-        <div className="scene" id="scene-7">
-    <div className="content center-layout">
-        <div className="scene-title">ファインダーパターンの役割</div>
-        <div className="svg-diagram">
-            <svg viewBox="0 0 780 240" width="780" height="240">
-                {/* Camera view with QR code among other stuff */}
-                <rect x="40" y="10" width="300" height="220" rx="8" fill="#e5e7eb" stroke="#d1d5db" strokeWidth="2"/>
-                <text x="52" y="40" fontSize="16" fontWeight="700" fill="#1a1d23">カメラの映像</text>
-                {/* Random text/noise in background */}
-                <text x="60" y="70" fontSize="14" fill="#9ca3af">Menu Price</text>
-                <text x="60" y="90" fontSize="14" fill="#9ca3af">コーヒー ¥500</text>
-                {/* Small QR code */}
-                <rect x="120" y="110" width="100" height="100" rx="3" fill="#fff" stroke="#1e40af" strokeWidth="2"/>
-                <rect x="128" y="118" width="24" height="24" rx="2" fill="#1e40af"/>
-                <rect x="131" y="121" width="18" height="18" fill="#fff"/>
-                <rect x="135" y="125" width="10" height="10" fill="#1e40af"/>
-                <rect x="188" y="118" width="24" height="24" rx="2" fill="#1e40af"/>
-                <rect x="191" y="121" width="18" height="18" fill="#fff"/>
-                <rect x="195" y="125" width="10" height="10" fill="#1e40af"/>
-                <rect x="128" y="178" width="24" height="24" rx="2" fill="#1e40af"/>
-                <rect x="131" y="181" width="18" height="18" fill="#fff"/>
-                <rect x="135" y="185" width="10" height="10" fill="#1e40af"/>
-                <text x="240" y="180" fontSize="14" fill="#9ca3af">Table 5</text>
-                {/* Arrow */}
-                <text x="400" y="130" textAnchor="middle" fontSize="36" fontWeight="900" fill="#1e40af">→</text>
-                {/* Detected: 3 points define position */}
-                <rect x="460" y="30" width="280" height="200" rx="8" fill="#fff" stroke="#1e40af" strokeWidth="2"/>
-                <text x="600" y="22" textAnchor="middle" fontSize="18" fontWeight="700" fill="#1e40af">位置・大きさ・傾きを特定</text>
-                <rect x="488" y="54" width="40" height="40" rx="3" fill="#1e40af"/>
-                <rect x="493" y="59" width="30" height="30" fill="#fff"/>
-                <rect x="499" y="65" width="18" height="18" fill="#1e40af"/>
-                <rect x="668" y="54" width="40" height="40" rx="3" fill="#1e40af"/>
-                <rect x="673" y="59" width="30" height="30" fill="#fff"/>
-                <rect x="679" y="65" width="18" height="18" fill="#1e40af"/>
-                <rect x="488" y="166" width="40" height="40" rx="3" fill="#1e40af"/>
-                <rect x="493" y="171" width="30" height="30" fill="#fff"/>
-                <rect x="499" y="177" width="18" height="18" fill="#1e40af"/>
-                {/* Connecting lines */}
-                <line x1="508" y1="94" x2="688" y2="94" stroke="#dc2626" strokeWidth="2" strokeDasharray="6"/>
-                <line x1="508" y1="94" x2="508" y2="206" stroke="#dc2626" strokeWidth="2" strokeDasharray="6"/>
-                <line x1="508" y1="206" x2="688" y2="94" stroke="#dc2626" strokeWidth="2" strokeDasharray="6"/>
-            </svg>
-        </div>
-    </div>
-</div>
-    </AbsoluteFill>
-);
-
-export const Scene8: React.FC = () => (
-    <AbsoluteFill>
-        <div className="scene" id="scene-8">
-    <div className="content center-layout">
-        <div className="scene-title">1:1:3:1:1 の秘密</div>
-        <div className="svg-diagram">
-            <svg viewBox="0 0 780 260" width="780" height="260">
-                {/* Finder pattern zoomed in */}
-                <rect x="200" y="10" width="180" height="180" rx="4" fill="#1a1d23"/>
-                <rect x="220" y="30" width="140" height="140" fill="#fff"/>
-                <rect x="250" y="60" width="80" height="80" fill="#1a1d23"/>
-                {/* Scan line */}
-                <line x1="170" y1="100" x2="410" y2="100" stroke="#dc2626" strokeWidth="3"/>
-                <polygon points="410,95 420,100 410,105" fill="#dc2626"/>
-                {/* Ratio markers below */}
-                <rect x="200" y="200" width="20" height="30" fill="#1a1d23"/>
-                <rect x="220" y="200" width="20" height="30" fill="#fff" stroke="#d1d5db" strokeWidth="1"/>
-                <rect x="240" y="200" width="60" height="30" fill="#1a1d23"/>
-                <rect x="300" y="200" width="20" height="30" fill="#fff" stroke="#d1d5db" strokeWidth="1"/>
-                <rect x="320" y="200" width="20" height="30" fill="#1a1d23"/>
-                <text x="210" y="252" textAnchor="middle" fontSize="20" fontWeight="900" fill="#1e40af">1</text>
-                <text x="230" y="252" textAnchor="middle" fontSize="20" fontWeight="900" fill="#1e40af">1</text>
-                <text x="270" y="252" textAnchor="middle" fontSize="20" fontWeight="900" fill="#1e40af">3</text>
-                <text x="310" y="252" textAnchor="middle" fontSize="20" fontWeight="900" fill="#1e40af">1</text>
-                <text x="330" y="252" textAnchor="middle" fontSize="20" fontWeight="900" fill="#1e40af">1</text>
-                {/* Right side: explanation */}
-                <text x="500" y="60" textAnchor="middle" fontSize="22" fontWeight="900" fill="#1a1d23">膨大な印刷物を調査</text>
-                <text x="500" y="100" textAnchor="middle" fontSize="20" fontWeight="700" fill="#1a1d23">チラシ・雑誌・段ボール…</text>
-                <text x="500" y="160" textAnchor="middle" fontSize="22" fontWeight="900" fill="#1e40af">「最も出現しない比率」</text>
-                <text x="500" y="200" textAnchor="middle" fontSize="22" fontWeight="900" fill="#1e40af">を発見</text>
-            </svg>
-        </div>
-    </div>
-</div>
-    </AbsoluteFill>
-);
-
-export const Scene9: React.FC = () => (
-    <AbsoluteFill>
-        <div className="scene" id="scene-9">
-    <div className="content center-layout">
-        <div className="scene-title">他の模様と絶対に間違えない</div>
-        <div className="svg-diagram">
-            <svg viewBox="0 0 780 200" width="780" height="200">
-                {/* Characters that DON'T have this ratio */}
-                <text x="100" y="50" textAnchor="middle" fontSize="56" fill="#d1d5db">漢</text>
-                <text x="220" y="50" textAnchor="middle" fontSize="56" fill="#d1d5db">A</text>
-                <text x="340" y="50" textAnchor="middle" fontSize="56" fill="#d1d5db">한</text>
-                <text x="460" y="50" textAnchor="middle" fontSize="56" fill="#d1d5db">9</text>
-                <text x="580" y="50" textAnchor="middle" fontSize="56" fill="#d1d5db">@</text>
-                <text x="700" y="50" textAnchor="middle" fontSize="56" fill="#d1d5db">%</text>
-                {/* X marks */}
-                <text x="100" y="90" textAnchor="middle" fontSize="24" fontWeight="900" fill="#dc2626">×</text>
-                <text x="220" y="90" textAnchor="middle" fontSize="24" fontWeight="900" fill="#dc2626">×</text>
-                <text x="340" y="90" textAnchor="middle" fontSize="24" fontWeight="900" fill="#dc2626">×</text>
-                <text x="460" y="90" textAnchor="middle" fontSize="24" fontWeight="900" fill="#dc2626">×</text>
-                <text x="580" y="90" textAnchor="middle" fontSize="24" fontWeight="900" fill="#dc2626">×</text>
-                <text x="700" y="90" textAnchor="middle" fontSize="24" fontWeight="900" fill="#dc2626">×</text>
-                {/* The ratio itself */}
-                <rect x="240" y="120" width="30" height="40" fill="#1a1d23"/>
-                <rect x="270" y="120" width="30" height="40" fill="#fff" stroke="#d1d5db" strokeWidth="1"/>
-                <rect x="300" y="120" width="90" height="40" fill="#1a1d23"/>
-                <rect x="390" y="120" width="30" height="40" fill="#fff" stroke="#d1d5db" strokeWidth="1"/>
-                <rect x="420" y="120" width="30" height="40" fill="#1a1d23"/>
-                <text x="390" y="190" textAnchor="middle" fontSize="24" fontWeight="900" fill="#0d9488">→ 誤検出ゼロ</text>
-            </svg>
-        </div>
-    </div>
-</div>
-    </AbsoluteFill>
-);
-
-export const Scene10: React.FC = () => (
-    <AbsoluteFill>
-        <div className="scene" id="scene-10">
-    <div className="content center-layout">
-        <div className="scene-title">360度どこからでも読める</div>
-        <div className="svg-diagram">
-            <svg viewBox="0 0 780 260" width="780" height="260">
-                {/* Center: finder pattern */}
-                <rect x="310" y="60" width="160" height="160" rx="4" fill="#fff" stroke="#1e40af" strokeWidth="2"/>
-                <rect x="324" y="74" width="40" height="40" rx="3" fill="#1e40af"/>
-                <rect x="329" y="79" width="30" height="30" fill="#fff"/>
-                <rect x="335" y="85" width="18" height="18" fill="#1e40af"/>
-                {/* Scan arrows from all directions */}
-                <line x1="390" y1="10" x2="390" y2="55" stroke="#dc2626" strokeWidth="3"/>
-                <polygon points="385,55 395,55 390,65" fill="#dc2626"/>
-                <text x="390" y="8" textAnchor="middle" fontSize="18" fontWeight="700" fill="#dc2626">↓</text>
-                <line x1="520" y1="80" x2="475" y2="100" stroke="#dc2626" strokeWidth="3"/>
-                <line x1="260" y1="200" x2="305" y2="180" stroke="#dc2626" strokeWidth="3"/>
-                <line x1="390" y1="260" x2="390" y2="225" stroke="#dc2626" strokeWidth="3"/>
-                <line x1="260" y1="80" x2="305" y2="100" stroke="#dc2626" strokeWidth="3"/>
-                <line x1="520" y1="200" x2="475" y2="180" stroke="#dc2626" strokeWidth="3"/>
-                {/* Labels for each direction */}
-                <text x="390" y="256" textAnchor="middle" fontSize="18" fontWeight="700" fill="#dc2626">↑</text>
-                <text x="240" y="78" textAnchor="middle" fontSize="18" fontWeight="700" fill="#dc2626">↗</text>
-                <text x="540" y="78" textAnchor="middle" fontSize="18" fontWeight="700" fill="#dc2626">↙</text>
-                <text x="240" y="210" textAnchor="middle" fontSize="18" fontWeight="700" fill="#dc2626">↗</text>
-                <text x="540" y="210" textAnchor="middle" fontSize="18" fontWeight="700" fill="#dc2626">↙</text>
-                {/* Ratio readouts */}
-                <text x="160" y="140" textAnchor="end" fontSize="20" fontWeight="900" fill="#1e40af">1:1:3:1:1</text>
-                <text x="620" y="140" fontSize="20" fontWeight="900" fill="#1e40af">1:1:3:1:1</text>
-                <text x="390" y="30" textAnchor="middle" fontSize="20" fontWeight="900" fill="#1e40af">1:1:3:1:1</text>
-            </svg>
-        </div>
-    </div>
-</div>
-    </AbsoluteFill>
-);
-
-export const Scene11: React.FC = () => (
-    <AbsoluteFill>
-        <div className="scene" id="scene-11">
-    <div className="content center-layout">
-        <div className="scene-title">静寂ゾーン（Quiet Zone）</div>
-        <div className="svg-diagram">
-            <svg viewBox="0 0 780 240" width="780" height="240">
-                {/* Left: no quiet zone (bad) */}
-                <text x="180" y="24" textAnchor="middle" fontSize="20" fontWeight="700" fill="#dc2626">余白なし → 読取失敗</text>
-                <text x="60" y="70" fontSize="18" fill="#1a1d23">TEXT</text>
-                <rect x="100" y="45" width="160" height="160" rx="4" fill="#fff" stroke="#dc2626" strokeWidth="2"/>
-                <rect x="110" y="55" width="30" height="30" rx="2" fill="#1a1d23"/>
-                <rect x="114" y="59" width="22" height="22" fill="#fff"/>
-                <rect x="118" y="63" width="14" height="14" fill="#1a1d23"/>
-                <rect x="220" y="55" width="30" height="30" rx="2" fill="#1a1d23"/>
-                <rect x="224" y="59" width="22" height="22" fill="#fff"/>
-                <rect x="228" y="63" width="14" height="14" fill="#1a1d23"/>
-                <rect x="110" y="165" width="30" height="30" rx="2" fill="#1a1d23"/>
-                <rect x="114" y="169" width="22" height="22" fill="#fff"/>
-                <rect x="118" y="173" width="14" height="14" fill="#1a1d23"/>
-                <text x="270" y="160" fontSize="18" fill="#1a1d23">ABC</text>
-                {/* Arrow */}
-                <text x="390" y="130" textAnchor="middle" fontSize="28" fontWeight="900" fill="#1a1d23">vs</text>
-                {/* Right: with quiet zone (good) */}
-                <text x="580" y="24" textAnchor="middle" fontSize="20" fontWeight="700" fill="#0d9488">余白4セル → 読取成功</text>
-                <rect x="450" y="35" width="200" height="200" rx="8" fill="#ccfbf1" stroke="#0d9488" strokeWidth="2" strokeDasharray="6"/>
-                <rect x="470" y="55" width="160" height="160" rx="4" fill="#fff" stroke="#0d9488" strokeWidth="2"/>
-                <rect x="480" y="65" width="30" height="30" rx="2" fill="#1a1d23"/>
-                <rect x="484" y="69" width="22" height="22" fill="#fff"/>
-                <rect x="488" y="73" width="14" height="14" fill="#1a1d23"/>
-                <rect x="590" y="65" width="30" height="30" rx="2" fill="#1a1d23"/>
-                <rect x="594" y="69" width="22" height="22" fill="#fff"/>
-                <rect x="598" y="73" width="14" height="14" fill="#1a1d23"/>
-                <rect x="480" y="175" width="30" height="30" rx="2" fill="#1a1d23"/>
-                <rect x="484" y="179" width="22" height="22" fill="#fff"/>
-                <rect x="488" y="183" width="14" height="14" fill="#1a1d23"/>
-            </svg>
-        </div>
-    </div>
-</div>
-    </AbsoluteFill>
-);
-
-export const Scene12: React.FC = () => (
-    <AbsoluteFill>
-        <div className="scene" id="scene-12">
-    <div className="content center-layout">
-        <div className="scene-title">もし誤り訂正がなかったら？</div>
-        <div className="svg-diagram">
-            <svg viewBox="0 0 780 220" width="780" height="220">
-                {/* Factory scene with oil stain */}
-                <rect x="40" y="20" width="300" height="180" rx="8" fill="#fff" stroke="#d1d5db" strokeWidth="2"/>
-                <text x="190" y="50" textAnchor="middle" fontSize="18" fontWeight="700" fill="#1a1d23">工場の部品ラベル</text>
-                {/* QR on a part */}
-                <rect x="120" y="70" width="80" height="80" rx="4" fill="#fff" stroke="#1a1d23" strokeWidth="1"/>
-                <rect x="128" y="78" width="16" height="16" fill="#1a1d23"/>
-                <rect x="176" y="78" width="16" height="16" fill="#1a1d23"/>
-                <rect x="128" y="126" width="16" height="16" fill="#1a1d23"/>
-                {/* Oil stain over QR */}
-                <ellipse cx="165" cy="115" rx="35" ry="25" fill="#92400e" opacity="0.6"/>
-                <text x="165" y="120" textAnchor="middle" fontSize="14" fontWeight="900" fill="#fff">油汚れ</text>
-                {/* Result */}
-                <text x="190" y="175" textAnchor="middle" fontSize="22" fontWeight="900" fill="#dc2626">読取不能！</text>
-                {/* Arrow */}
-                <text x="390" y="120" textAnchor="middle" fontSize="28" fontWeight="900" fill="#1a1d23">→</text>
-                {/* With error correction */}
-                <rect x="440" y="20" width="300" height="180" rx="8" fill="#fff" stroke="#0d9488" strokeWidth="2"/>
-                <text x="590" y="50" textAnchor="middle" fontSize="18" fontWeight="700" fill="#1a1d23">誤り訂正ありなら</text>
-                <rect x="520" y="70" width="80" height="80" rx="4" fill="#fff" stroke="#0d9488" strokeWidth="1"/>
-                <rect x="528" y="78" width="16" height="16" fill="#1a1d23"/>
-                <rect x="576" y="78" width="16" height="16" fill="#1a1d23"/>
-                <rect x="528" y="126" width="16" height="16" fill="#1a1d23"/>
-                <ellipse cx="565" cy="115" rx="35" ry="25" fill="#92400e" opacity="0.3"/>
-                <text x="590" y="175" textAnchor="middle" fontSize="22" fontWeight="900" fill="#0d9488">復元成功！</text>
-            </svg>
-        </div>
-    </div>
-</div>
-    </AbsoluteFill>
-);
-
-export const Scene13: React.FC = () => (
-    <AbsoluteFill>
-        <div className="scene" id="scene-13">
-    <div className="content center-layout">
-        <div className="scene-title">リード・ソロモン符号の直感</div>
-        <div className="svg-diagram">
-            <svg viewBox="0 0 780 220" width="780" height="220">
-                {/* Number sequence: 1, 3, ?, 7 */}
-                <text x="390" y="28" textAnchor="middle" fontSize="20" fontWeight="700" fill="#1a1d23">規則があれば欠損を復元できる</text>
-                {/* Original sequence */}
-                <text x="100" y="80" textAnchor="end" fontSize="18" fontWeight="700" fill="#1a1d23">元データ:</text>
-                <rect x="130" y="55" width="60" height="40" rx="6" fill="#dbeafe" stroke="#1e40af" strokeWidth="2"/>
-                <text x="160" y="82" textAnchor="middle" fontSize="24" fontWeight="900" fill="#1e40af">1</text>
-                <rect x="210" y="55" width="60" height="40" rx="6" fill="#dbeafe" stroke="#1e40af" strokeWidth="2"/>
-                <text x="240" y="82" textAnchor="middle" fontSize="24" fontWeight="900" fill="#1e40af">3</text>
-                <rect x="290" y="55" width="60" height="40" rx="6" fill="#dbeafe" stroke="#1e40af" strokeWidth="2"/>
-                <text x="320" y="82" textAnchor="middle" fontSize="24" fontWeight="900" fill="#1e40af">5</text>
-                <rect x="370" y="55" width="60" height="40" rx="6" fill="#dbeafe" stroke="#1e40af" strokeWidth="2"/>
-                <text x="400" y="82" textAnchor="middle" fontSize="24" fontWeight="900" fill="#1e40af">7</text>
-                {/* Rule indicator */}
-                <text x="520" y="82" fontSize="20" fontWeight="700" fill="#0d9488">← +2ずつ増える規則</text>
-                {/* Damaged sequence */}
-                <text x="100" y="150" textAnchor="end" fontSize="18" fontWeight="700" fill="#1a1d23">壊れた:</text>
-                <rect x="130" y="125" width="60" height="40" rx="6" fill="#dbeafe" stroke="#1e40af" strokeWidth="2"/>
-                <text x="160" y="152" textAnchor="middle" fontSize="24" fontWeight="900" fill="#1e40af">1</text>
-                <rect x="210" y="125" width="60" height="40" rx="6" fill="#fee2e2" stroke="#dc2626" strokeWidth="2"/>
-                <text x="240" y="152" textAnchor="middle" fontSize="24" fontWeight="900" fill="#dc2626">?</text>
-                <rect x="290" y="125" width="60" height="40" rx="6" fill="#dbeafe" stroke="#1e40af" strokeWidth="2"/>
-                <text x="320" y="152" textAnchor="middle" fontSize="24" fontWeight="900" fill="#1e40af">5</text>
-                <rect x="370" y="125" width="60" height="40" rx="6" fill="#dbeafe" stroke="#1e40af" strokeWidth="2"/>
-                <text x="400" y="152" textAnchor="middle" fontSize="24" fontWeight="900" fill="#1e40af">7</text>
-                {/* Recovery */}
-                <text x="520" y="152" fontSize="20" fontWeight="900" fill="#0d9488">→ ?=3 と復元！</text>
-                {/* Bottom note */}
-                <text x="390" y="200" textAnchor="middle" fontSize="18" fontWeight="700" fill="#1a1d23">QRコードもデータに数学的な規則を付け足している</text>
-            </svg>
-        </div>
-    </div>
-</div>
-    </AbsoluteFill>
-);
-
-export const Scene14: React.FC = () => (
-    <AbsoluteFill>
-        <div className="scene" id="scene-14">
-    <div className="content center-layout">
-        <div className="scene-title">同じ数学、異なる世界</div>
-        <div className="three-col">
-            <div className="arch-card border-teal">
-                <div className="svg-diagram">
-                    <svg viewBox="0 0 80 80" width="60" height="60">
-                        <circle cx="40" cy="40" r="36" fill="none" stroke="#0d9488" strokeWidth="3"/>
-                        <circle cx="40" cy="40" r="14" fill="none" stroke="#0d9488" strokeWidth="2"/>
-                        <circle cx="40" cy="40" r="4" fill="#0d9488"/>
-                    </svg>
-                </div>
-                <div className="card-title">CD / DVD</div>
-                <div className="card-body">傷がついても<br />音が飛ばない</div>
-            </div>
-            <div className="arch-card border-primary">
-                <div className="svg-diagram">
-                    <svg viewBox="0 0 80 80" width="60" height="60">
-                        <rect x="8" y="8" width="64" height="64" rx="4" fill="#fff" stroke="#1e40af" strokeWidth="2"/>
-                        <rect x="14" y="14" width="18" height="18" rx="2" fill="#1e40af"/>
-                        <rect x="48" y="14" width="18" height="18" rx="2" fill="#1e40af"/>
-                        <rect x="14" y="48" width="18" height="18" rx="2" fill="#1e40af"/>
-                    </svg>
-                </div>
-                <div className="card-title">QRコード</div>
-                <div className="card-body">汚れても<br />データを復元</div>
-            </div>
-            <div className="arch-card border-amber">
-                <img src="https://api.iconify.design/simple-icons/nasa.svg?color=%23E03C31&width=72&height=72" alt="NASA" />
-                <div className="card-title">ボイジャー</div>
-                <div className="card-body">何十億km先から<br />信号を復元</div>
-            </div>
-        </div>
-        <div className="big-statement">すべて<span className="accent-primary">リード・ソロモン符号</span></div>
-    </div>
-</div>
-    </AbsoluteFill>
-);
-
-export const Scene15: React.FC = () => (
-    <AbsoluteFill>
-        <div className="scene" id="scene-15">
-    <div className="content center-layout">
-        <div className="scene-title">インターリーブ（交互配置）</div>
-        <div className="svg-diagram">
-            <svg viewBox="0 0 780 240" width="780" height="240">
-                {/* Without interleave */}
-                <text x="190" y="24" textAnchor="middle" fontSize="18" fontWeight="700" fill="#dc2626">順番に配置（危険）</text>
-                <rect x="40" y="35" width="80" height="35" rx="4" fill="#dbeafe" stroke="#1e40af" strokeWidth="2"/>
-                <text x="80" y="58" textAnchor="middle" fontSize="14" fontWeight="700" fill="#1e40af">A A A A</text>
-                <rect x="130" y="35" width="80" height="35" rx="4" fill="#ccfbf1" stroke="#0d9488" strokeWidth="2"/>
-                <text x="170" y="58" textAnchor="middle" fontSize="14" fontWeight="700" fill="#0d9488">B B B B</text>
-                <rect x="220" y="35" width="80" height="35" rx="4" fill="#fef3c7" stroke="#d97706" strokeWidth="2"/>
-                <text x="260" y="58" textAnchor="middle" fontSize="14" fontWeight="700" fill="#d97706">C C C C</text>
-                {/* Damage over block A */}
-                <rect x="40" y="35" width="80" height="35" rx="4" fill="#dc2626" opacity="0.5"/>
-                <text x="80" y="58" textAnchor="middle" fontSize="16" fontWeight="900" fill="#fff">全滅</text>
-                <text x="190" y="95" textAnchor="middle" fontSize="16" fontWeight="700" fill="#dc2626">→ ブロックA復元不能</text>
-                {/* With interleave */}
-                <text x="580" y="24" textAnchor="middle" fontSize="18" fontWeight="700" fill="#0d9488">交互に配置（安全）</text>
-                <rect x="430" y="35" width="26" height="35" rx="3" fill="#dbeafe" stroke="#1e40af" strokeWidth="1"/>
-                <text x="443" y="58" textAnchor="middle" fontSize="12" fontWeight="700" fill="#1e40af">A</text>
-                <rect x="460" y="35" width="26" height="35" rx="3" fill="#ccfbf1" stroke="#0d9488" strokeWidth="1"/>
-                <text x="473" y="58" textAnchor="middle" fontSize="12" fontWeight="700" fill="#0d9488">B</text>
-                <rect x="490" y="35" width="26" height="35" rx="3" fill="#fef3c7" stroke="#d97706" strokeWidth="1"/>
-                <text x="503" y="58" textAnchor="middle" fontSize="12" fontWeight="700" fill="#d97706">C</text>
-                <rect x="520" y="35" width="26" height="35" rx="3" fill="#dbeafe" stroke="#1e40af" strokeWidth="1"/>
-                <text x="533" y="58" textAnchor="middle" fontSize="12" fontWeight="700" fill="#1e40af">A</text>
-                <rect x="550" y="35" width="26" height="35" rx="3" fill="#ccfbf1" stroke="#0d9488" strokeWidth="1"/>
-                <text x="563" y="58" textAnchor="middle" fontSize="12" fontWeight="700" fill="#0d9488">B</text>
-                <rect x="580" y="35" width="26" height="35" rx="3" fill="#fef3c7" stroke="#d97706" strokeWidth="1"/>
-                <text x="593" y="58" textAnchor="middle" fontSize="12" fontWeight="700" fill="#d97706">C</text>
-                <rect x="610" y="35" width="26" height="35" rx="3" fill="#dbeafe" stroke="#1e40af" strokeWidth="1"/>
-                <text x="623" y="58" textAnchor="middle" fontSize="12" fontWeight="700" fill="#1e40af">A</text>
-                <rect x="640" y="35" width="26" height="35" rx="3" fill="#ccfbf1" stroke="#0d9488" strokeWidth="1"/>
-                <text x="653" y="58" textAnchor="middle" fontSize="12" fontWeight="700" fill="#0d9488">B</text>
-                <rect x="670" y="35" width="26" height="35" rx="3" fill="#fef3c7" stroke="#d97706" strokeWidth="1"/>
-                <text x="683" y="58" textAnchor="middle" fontSize="12" fontWeight="700" fill="#d97706">C</text>
-                <rect x="700" y="35" width="26" height="35" rx="3" fill="#dbeafe" stroke="#1e40af" strokeWidth="1"/>
-                <text x="713" y="58" textAnchor="middle" fontSize="12" fontWeight="700" fill="#1e40af">A</text>
-                {/* Damage spread across blocks */}
-                <rect x="430" y="35" width="86" height="35" rx="3" fill="#dc2626" opacity="0.4"/>
-                <text x="580" y="95" textAnchor="middle" fontSize="16" fontWeight="700" fill="#0d9488">→ 各ブロック少量の損傷 → 全復元可能</text>
-                {/* Bottom: visual comparison */}
-                <text x="190" y="140" textAnchor="middle" fontSize="18" fontWeight="700" fill="#1a1d23">コーヒーをこぼした場面</text>
-                <rect x="60" y="155" width="260" height="60" rx="8" fill="#fff" stroke="#d1d5db" strokeWidth="1"/>
-                <ellipse cx="120" cy="185" rx="50" ry="20" fill="#92400e" opacity="0.4"/>
-                <text x="190" y="230" textAnchor="middle" fontSize="16" fontWeight="700" fill="#1a1d23">被害が1ブロックに集中</text>
-                <text x="580" y="140" textAnchor="middle" fontSize="18" fontWeight="700" fill="#1a1d23">同じコーヒーのシミでも</text>
-                <rect x="450" y="155" width="260" height="60" rx="8" fill="#fff" stroke="#d1d5db" strokeWidth="1"/>
-                <ellipse cx="510" cy="185" rx="50" ry="20" fill="#92400e" opacity="0.4"/>
-                <text x="580" y="230" textAnchor="middle" fontSize="16" fontWeight="700" fill="#0d9488">被害が3ブロックに分散 → 復元OK</text>
-            </svg>
-        </div>
-    </div>
-</div>
-    </AbsoluteFill>
-);
-
-export const Scene16: React.FC = () => (
-    <AbsoluteFill>
-        <div className="scene" id="scene-16">
-    <div className="content center-layout">
-        <div className="scene-title">ロゴ入りQRコードの秘密</div>
-        <div className="svg-diagram">
-            <svg viewBox="0 0 780 240" width="780" height="240">
-                {/* Error correction levels */}
-                <text x="390" y="24" textAnchor="middle" fontSize="20" fontWeight="700" fill="#1a1d23">誤り訂正レベル</text>
-                {/* Level bars */}
-                <text x="130" y="62" textAnchor="end" fontSize="18" fontWeight="700" fill="#1a1d23">L</text>
-                <rect x="140" y="45" width="400" height="24" rx="4" fill="#e5e7eb"/>
-                <rect x="140" y="45" width="28" height="24" rx="4" fill="#dbeafe"/>
-                <text x="180" y="62" fontSize="14" fontWeight="700" fill="#1e40af">7%</text>
-                <text x="130" y="96" textAnchor="end" fontSize="18" fontWeight="700" fill="#1a1d23">M</text>
-                <rect x="140" y="79" width="400" height="24" rx="4" fill="#e5e7eb"/>
-                <rect x="140" y="79" width="60" height="24" rx="4" fill="#ccfbf1"/>
-                <text x="210" y="96" fontSize="14" fontWeight="700" fill="#0d9488">15%</text>
-                <text x="130" y="130" textAnchor="end" fontSize="18" fontWeight="700" fill="#1a1d23">Q</text>
-                <rect x="140" y="113" width="400" height="24" rx="4" fill="#e5e7eb"/>
-                <rect x="140" y="113" width="100" height="24" rx="4" fill="#fef3c7"/>
-                <text x="250" y="130" fontSize="14" fontWeight="700" fill="#d97706">25%</text>
-                <text x="130" y="164" textAnchor="end" fontSize="18" fontWeight="900" fill="#1e40af">H</text>
-                <rect x="140" y="147" width="400" height="24" rx="4" fill="#e5e7eb"/>
-                <rect x="140" y="147" width="120" height="24" rx="4" fill="#1e40af"/>
-                <text x="270" y="164" fontSize="14" fontWeight="900" fill="#1e40af">30%</text>
-                {/* Design QR illustration */}
-                <rect x="600" y="50" width="140" height="140" rx="6" fill="#fff" stroke="#1e40af" strokeWidth="2"/>
-                <rect x="612" y="62" width="28" height="28" rx="2" fill="#1a1d23"/>
-                <rect x="616" y="66" width="20" height="20" fill="#fff"/>
-                <rect x="620" y="70" width="12" height="12" fill="#1a1d23"/>
-                <rect x="700" y="62" width="28" height="28" rx="2" fill="#1a1d23"/>
-                <rect x="704" y="66" width="20" height="20" fill="#fff"/>
-                <rect x="708" y="70" width="12" height="12" fill="#1a1d23"/>
-                <rect x="612" y="150" width="28" height="28" rx="2" fill="#1a1d23"/>
-                <rect x="616" y="154" width="20" height="20" fill="#fff"/>
-                <rect x="620" y="158" width="12" height="12" fill="#1a1d23"/>
-                {/* Logo in center */}
-                <rect x="646" y="96" width="48" height="48" rx="8" fill="#1e40af"/>
-                <text x="670" y="128" textAnchor="middle" fontSize="20" fontWeight="900" fill="#fff">LOGO</text>
-                {/* Bottom */}
-                <text x="390" y="218" textAnchor="middle" fontSize="20" fontWeight="700" fill="#1a1d23">レベルH: 30%壊しても読める → ロゴを置ける</text>
-            </svg>
-        </div>
-    </div>
-</div>
-    </AbsoluteFill>
-);
-
-export const Scene17: React.FC = () => (
-    <AbsoluteFill>
-        <div className="scene" id="scene-17">
-    <div className="content center-layout">
-        <div className="scene-title">読み取りの6ステップ</div>
-        <div className="flow-chain">
-            <div className="fc-node">
-                <div className="fc-node-title">撮影</div>
-                <div className="fc-node-sub">カメラ画像</div>
-            </div>
-            <div className="fc-arr">→</div>
-            <div className="fc-node">
-                <div className="fc-node-title">二値化</div>
-                <div className="fc-node-sub">白黒変換</div>
-            </div>
-            <div className="fc-arr">→</div>
-            <div className="fc-node highlight">
-                <div className="fc-node-title">位置検出</div>
-                <div className="fc-node-sub">1:1:3:1:1</div>
-            </div>
-            <div className="fc-arr">→</div>
-            <div className="fc-node">
-                <div className="fc-node-title">座標特定</div>
-                <div className="fc-node-sub">タイミング</div>
-            </div>
-            <div className="fc-arr">→</div>
-            <div className="fc-node">
-                <div className="fc-node-title">データ復号</div>
-                <div className="fc-node-sub">0と1を読む</div>
-            </div>
-            <div className="fc-arr">→</div>
-            <div className="fc-node highlight">
-                <div className="fc-node-title">誤り訂正</div>
-                <div className="fc-node-sub">RS符号</div>
-            </div>
-        </div>
-    </div>
-</div>
-    </AbsoluteFill>
-);
-
-export const Scene18: React.FC = () => (
-    <AbsoluteFill>
-        <div className="scene" id="scene-18">
-    <div className="content center-layout">
-        <div className="scene-title">4つのエンコードモード</div>
-        <div className="svg-diagram">
-            <svg viewBox="0 0 780 220" width="780" height="220">
-                {/* Mode cards */}
-                <rect x="20" y="20" width="170" height="120" rx="8" fill="#fff" stroke="#1e40af" strokeWidth="2"/>
-                <text x="105" y="55" textAnchor="middle" fontSize="20" fontWeight="900" fill="#1e40af">数字</text>
-                <text x="105" y="85" textAnchor="middle" fontSize="18" fontWeight="700" fill="#1a1d23">0-9</text>
-                <text x="105" y="115" textAnchor="middle" fontSize="16" fontWeight="700" fill="#0d9488">10bit / 3桁</text>
-                <text x="105" y="160" textAnchor="middle" fontSize="14" fontWeight="700" fill="#1a1d23">電話番号など</text>
-                <rect x="210" y="20" width="170" height="120" rx="8" fill="#fff" stroke="#0d9488" strokeWidth="2"/>
-                <text x="295" y="55" textAnchor="middle" fontSize="20" fontWeight="900" fill="#0d9488">英数字</text>
-                <text x="295" y="85" textAnchor="middle" fontSize="18" fontWeight="700" fill="#1a1d23">A-Z, 0-9, 記号</text>
-                <text x="295" y="115" textAnchor="middle" fontSize="16" fontWeight="700" fill="#0d9488">11bit / 2文字</text>
-                <text x="295" y="160" textAnchor="middle" fontSize="14" fontWeight="700" fill="#1a1d23">URLなど</text>
-                <rect x="400" y="20" width="170" height="120" rx="8" fill="#fff" stroke="#d97706" strokeWidth="2"/>
-                <text x="485" y="55" textAnchor="middle" fontSize="20" fontWeight="900" fill="#d97706">バイト</text>
-                <text x="485" y="85" textAnchor="middle" fontSize="18" fontWeight="700" fill="#1a1d23">ISO 8859-1</text>
-                <text x="485" y="115" textAnchor="middle" fontSize="16" fontWeight="700" fill="#0d9488">8bit / 1文字</text>
-                <text x="485" y="160" textAnchor="middle" fontSize="14" fontWeight="700" fill="#1a1d23">バイナリデータ</text>
-                <rect x="590" y="20" width="170" height="120" rx="8" fill="#fff" stroke="#dc2626" strokeWidth="2"/>
-                <text x="675" y="55" textAnchor="middle" fontSize="20" fontWeight="900" fill="#dc2626">漢字</text>
-                <text x="675" y="85" textAnchor="middle" fontSize="18" fontWeight="700" fill="#1a1d23">Shift JIS</text>
-                <text x="675" y="115" textAnchor="middle" fontSize="16" fontWeight="700" fill="#0d9488">13bit / 1文字</text>
-                <text x="675" y="160" textAnchor="middle" fontSize="14" fontWeight="700" fill="#1a1d23">日本語テキスト</text>
-                {/* Bottom */}
-                <text x="390" y="200" textAnchor="middle" fontSize="18" fontWeight="700" fill="#1a1d23">内容に応じて最も効率的なモードを自動選択</text>
-            </svg>
-        </div>
-    </div>
-</div>
-    </AbsoluteFill>
-);
-
-export const Scene19: React.FC = () => (
-    <AbsoluteFill>
-        <div className="scene" id="scene-19">
-    <div className="content center-layout">
-        <div className="scene-title">マスクパターン</div>
-        <div className="svg-diagram">
-            <svg viewBox="0 0 780 240" width="780" height="240">
-                {/* Before mask: biased */}
-                <text x="170" y="24" textAnchor="middle" fontSize="18" fontWeight="700" fill="#dc2626">マスク前（偏りあり）</text>
-                {/* Grid with heavy black concentration */}
-                <rect x="60" y="35" width="220" height="160" rx="6" fill="#fff" stroke="#d1d5db" strokeWidth="1"/>
-                <rect x="70" y="45" width="18" height="18" fill="#1a1d23"/>
-                <rect x="92" y="45" width="18" height="18" fill="#1a1d23"/>
-                <rect x="114" y="45" width="18" height="18" fill="#1a1d23"/>
-                <rect x="136" y="45" width="18" height="18" fill="#1a1d23"/>
-                <rect x="158" y="45" width="18" height="18" fill="#1a1d23"/>
-                <rect x="70" y="67" width="18" height="18" fill="#1a1d23"/>
-                <rect x="92" y="67" width="18" height="18" fill="#1a1d23"/>
-                <rect x="114" y="67" width="18" height="18" fill="#1a1d23"/>
-                <rect x="136" y="67" width="18" height="18" fill="#1a1d23"/>
-                <rect x="158" y="67" width="18" height="18" fill="#1a1d23"/>
-                <rect x="70" y="89" width="18" height="18" fill="#1a1d23"/>
-                <rect x="92" y="89" width="18" height="18" fill="#1a1d23"/>
-                <rect x="114" y="89" width="18" height="18" fill="#1a1d23"/>
-                <rect x="180" y="111" width="18" height="18" fill="#1a1d23"/>
-                <rect x="202" y="111" width="18" height="18" fill="#1a1d23"/>
-                <rect x="224" y="111" width="18" height="18" fill="#1a1d23"/>
-                <rect x="246" y="111" width="18" height="18" fill="#1a1d23"/>
-                {/* Arrow */}
-                <text x="390" y="110" textAnchor="middle" fontSize="28" fontWeight="900" fill="#1e40af">XOR</text>
-                <text x="390" y="135" textAnchor="middle" fontSize="18" fontWeight="700" fill="#1a1d23">マスク適用</text>
-                {/* After mask: balanced */}
-                <text x="610" y="24" textAnchor="middle" fontSize="18" fontWeight="700" fill="#0d9488">マスク後（バランス良）</text>
-                <rect x="500" y="35" width="220" height="160" rx="6" fill="#fff" stroke="#0d9488" strokeWidth="1"/>
-                {/* Checker-like balanced pattern */}
-                <rect x="510" y="45" width="18" height="18" fill="#1a1d23"/>
-                <rect x="554" y="45" width="18" height="18" fill="#1a1d23"/>
-                <rect x="598" y="45" width="18" height="18" fill="#1a1d23"/>
-                <rect x="642" y="45" width="18" height="18" fill="#1a1d23"/>
-                <rect x="686" y="45" width="18" height="18" fill="#1a1d23"/>
-                <rect x="532" y="67" width="18" height="18" fill="#1a1d23"/>
-                <rect x="576" y="67" width="18" height="18" fill="#1a1d23"/>
-                <rect x="620" y="67" width="18" height="18" fill="#1a1d23"/>
-                <rect x="664" y="67" width="18" height="18" fill="#1a1d23"/>
-                <rect x="510" y="89" width="18" height="18" fill="#1a1d23"/>
-                <rect x="554" y="89" width="18" height="18" fill="#1a1d23"/>
-                <rect x="598" y="89" width="18" height="18" fill="#1a1d23"/>
-                <rect x="642" y="89" width="18" height="18" fill="#1a1d23"/>
-                <rect x="532" y="111" width="18" height="18" fill="#1a1d23"/>
-                <rect x="576" y="111" width="18" height="18" fill="#1a1d23"/>
-                <rect x="620" y="111" width="18" height="18" fill="#1a1d23"/>
-                <rect x="664" y="111" width="18" height="18" fill="#1a1d23"/>
-                <rect x="510" y="133" width="18" height="18" fill="#1a1d23"/>
-                <rect x="554" y="133" width="18" height="18" fill="#1a1d23"/>
-                <rect x="598" y="133" width="18" height="18" fill="#1a1d23"/>
-                <rect x="642" y="133" width="18" height="18" fill="#1a1d23"/>
-                <rect x="686" y="133" width="18" height="18" fill="#1a1d23"/>
-                <rect x="532" y="155" width="18" height="18" fill="#1a1d23"/>
-                <rect x="576" y="155" width="18" height="18" fill="#1a1d23"/>
-                <rect x="620" y="155" width="18" height="18" fill="#1a1d23"/>
-                <rect x="664" y="155" width="18" height="18" fill="#1a1d23"/>
-                {/* Bottom */}
-                <text x="390" y="220" textAnchor="middle" fontSize="18" fontWeight="700" fill="#1a1d23">8種類から最もバランスが良いパターンを自動選択</text>
-            </svg>
-        </div>
-    </div>
-</div>
-    </AbsoluteFill>
-);
-
-export const Scene20: React.FC = () => (
-    <AbsoluteFill>
-        <div className="scene" id="scene-20">
-    <div className="content center-layout">
-        <div className="scene-title">読み取り速度</div>
-        <div className="metric-card">
-            <div className="metric-value accent-primary">32<span style={{ fontSize: '48px' }}>ms</span></div>
-            <div className="metric-label">英数字100文字以下の読み取り時間</div>
-            <div className="metric-sub">まばたき（約300ms）の10分の1</div>
-        </div>
-        <div className="big-statement"><span className="accent-primary">Quick Response</span> は伊達じゃない</div>
-    </div>
-</div>
-    </AbsoluteFill>
-);
-
-export const Scene21: React.FC = () => (
-    <AbsoluteFill>
-        <div className="scene" id="scene-21">
-    <div className="content center-layout">
-        <div className="scene-title">オープン・クローズ戦略</div>
-        <div className="two-col">
-            <div className="compare-card border-teal">
-                <div className="text-badge" style={{ background: 'var(--teal)' }}>OPEN</div>
-                <div className="compare-title">QRコード仕様</div>
-                <div className="compare-body">誰でも無料で使える<br />→ 爆発的普及</div>
-            </div>
-            <div className="compare-card border-coral">
-                <div className="text-badge" style={{ background: 'var(--coral)' }}>CLOSE</div>
-                <div className="compare-title">読取装置の特許</div>
-                <div className="compare-body">デンソーウェーブが保持<br />→ 収益化</div>
-            </div>
-        </div>
-    </div>
-</div>
-    </AbsoluteFill>
-);
-
-export const Scene22: React.FC = () => (
-    <AbsoluteFill>
-        <div className="scene" id="scene-22">
-    <div className="content center-layout">
-        <div className="scene-title">普及の3つの波</div>
-        <div className="flow-chain">
-            <div className="fc-node border-primary">
-                <div className="year-badge">2002年〜</div>
-                <div className="fc-node-title">日本</div>
-                <div className="fc-node-sub">携帯電話にQRリーダー搭載</div>
-            </div>
-            <div className="fc-arr">→</div>
-            <div className="fc-node border-teal">
-                <div className="year-badge">2010年代</div>
-                <div className="fc-node-title">中国</div>
-                <div className="fc-node-sub">
-                    <img src="https://api.iconify.design/simple-icons/alipay.svg?color=%231677FF&width=72&height=72" style={{ verticalAlign: 'middle' }} alt="Alipay" />
-                    <img src="https://api.iconify.design/simple-icons/wechat.svg?color=%2307C160&width=72&height=72" style={{ verticalAlign: 'middle' }} alt="WeChat" />
-                </div>
-            </div>
-            <div className="fc-arr">→</div>
-            <div className="fc-node border-amber">
-                <div className="year-badge">2020年〜</div>
-                <div className="fc-node-title">欧米</div>
-                <div className="fc-node-sub">コロナ禍で非接触ニーズ</div>
-            </div>
-        </div>
-        <div className="source">出典: デンソーウェーブ公式 / 日経ビジネス</div>
-    </div>
-</div>
-    </AbsoluteFill>
-);
-
-export const Scene23: React.FC = () => (
-    <AbsoluteFill>
-        <div className="scene" id="scene-23">
-    <div className="content center-layout">
-        <div className="svg-diagram">
-            <svg viewBox="0 0 780 200" width="780" height="200">
-                {/* Three pillars */}
-                <rect x="60" y="30" width="200" height="80" rx="8" fill="#dbeafe" stroke="#1e40af" strokeWidth="2"/>
-                <text x="160" y="62" textAnchor="middle" fontSize="22" fontWeight="900" fill="#1e40af">見つける</text>
-                <text x="160" y="92" textAnchor="middle" fontSize="16" fontWeight="700" fill="#1a1d23">1:1:3:1:1</text>
-                <rect x="290" y="30" width="200" height="80" rx="8" fill="#ccfbf1" stroke="#0d9488" strokeWidth="2"/>
-                <text x="390" y="62" textAnchor="middle" fontSize="22" fontWeight="900" fill="#0d9488">直す</text>
-                <text x="390" y="92" textAnchor="middle" fontSize="16" fontWeight="700" fill="#1a1d23">リード・ソロモン</text>
-                <rect x="520" y="30" width="200" height="80" rx="8" fill="#fef3c7" stroke="#d97706" strokeWidth="2"/>
-                <text x="620" y="62" textAnchor="middle" fontSize="22" fontWeight="900" fill="#d97706">読む</text>
-                <text x="620" y="92" textAnchor="middle" fontSize="16" fontWeight="700" fill="#1a1d23">4モード + マスク</text>
-                {/* Connecting arrows down to QR */}
-                <line x1="160" y1="110" x2="390" y2="150" stroke="#d1d5db" strokeWidth="2"/>
-                <line x1="390" y1="110" x2="390" y2="150" stroke="#d1d5db" strokeWidth="2"/>
-                <line x1="620" y1="110" x2="390" y2="150" stroke="#d1d5db" strokeWidth="2"/>
-                {/* Small QR icon */}
-                <rect x="370" y="150" width="40" height="40" rx="4" fill="#fff" stroke="#1a1d23" strokeWidth="2"/>
-                <rect x="376" y="156" width="10" height="10" fill="#1a1d23"/>
-                <rect x="394" y="156" width="10" height="10" fill="#1a1d23"/>
-                <rect x="376" y="174" width="10" height="10" fill="#1a1d23"/>
-            </svg>
-        </div>
-        <div className="big-statement">1ドットも無駄のない<span className="accent-primary">精緻な設計図</span></div>
-    </div>
-</div>
-    </AbsoluteFill>
-);
-
-export const SCENE_COMPONENTS: Record<number, React.FC> = {
-    0: Scene0,
-    1: Scene1,
-    2: Scene2,
-    3: Scene3,
-    4: Scene4,
-    5: Scene5,
-    6: Scene6,
-    7: Scene7,
-    8: Scene8,
-    9: Scene9,
-    10: Scene10,
-    11: Scene11,
-    12: Scene12,
-    13: Scene13,
-    14: Scene14,
-    15: Scene15,
-    16: Scene16,
-    17: Scene17,
-    18: Scene18,
-    19: Scene19,
-    20: Scene20,
-    21: Scene21,
-    22: Scene22,
-    23: Scene23,
+// ============================================================
+// Palette — QR code: deep-navy x crimson-scan x warm accents
+// ============================================================
+const PALETTE = {
+    ...BASE_COLORS,
+    primary: '#1E40AF',
+    primaryDeep: '#1E3A8A',
+    primaryGlow: 'rgba(30,64,175,0.28)',
+    accent: '#DC2626',
+    accentGlow: 'rgba(220,38,38,0.30)',
+    warm: '#F59E0B',
+    amber: '#D97706',
+    teal: '#0D9488',
+    violet: '#7C3AED',
+    ink: '#0F172A',
+    paper: '#FFFFFF',
+    paperDim: '#F1F5F9',
+    line: 'rgba(15,23,42,0.10)',
 };
 
-export const TOTAL_SCENE_COUNT = 24;
+const fade = (f: number, from: number, to = from + 18) =>
+    interpolate(f, [from, to], [0, 1], { extrapolateLeft: 'clamp', extrapolateRight: 'clamp' });
+
+const riseY = (f: number, from: number, to = from + 18, dist = 16) =>
+    interpolate(f, [from, to], [dist, 0], { extrapolateLeft: 'clamp', extrapolateRight: 'clamp' });
+
+const Stage: React.FC<React.PropsWithChildren> = ({ children }) => (
+    <div style={{
+        position: 'absolute', inset: 0,
+        paddingTop: 150, paddingBottom: 260,
+        paddingLeft: 80, paddingRight: 80,
+        display: 'flex', alignItems: 'center', justifyContent: 'center',
+    }}>{children}</div>
+);
+
+// Deterministic PRNG for producing QR-like cell patterns
+const qrCells = (size: number, seed = 0.37): boolean[] => {
+    const out: boolean[] = [];
+    let h = seed;
+    for (let i = 0; i < size * size; i++) {
+        h = (h * 9301 + 49297) % 233280;
+        out.push((h / 233280) > 0.5);
+    }
+    return out;
+};
+
+const isFinder = (x: number, y: number, size: number) =>
+    (x < 7 && y < 7) || (x >= size - 7 && y < 7) || (x < 7 && y >= size - 7);
+
+// Reusable QR module: finder + body
+const QRModule: React.FC<{
+    size: number; cellPx: number; seed?: number; ink?: string;
+    skipCells?: (x: number, y: number) => boolean;
+}> = ({ size, cellPx, seed = 0.37, ink = PALETTE.ink, skipCells }) => {
+    const cells = qrCells(size, seed);
+    const finders: [number, number][] = [[0, 0], [size - 7, 0], [0, size - 7]];
+    return (
+        <>
+            {cells.map((on, i) => {
+                const x = i % size, y = Math.floor(i / size);
+                if (isFinder(x, y, size)) return null;
+                if (skipCells && skipCells(x, y)) return null;
+                if (!on) return null;
+                return <rect key={i} x={x * cellPx} y={y * cellPx} width={cellPx - 1} height={cellPx - 1} fill={ink} />;
+            })}
+            {finders.map(([fx, fy], i) => (
+                <g key={`f-${i}`} transform={`translate(${fx * cellPx},${fy * cellPx})`}>
+                    <rect width={7 * cellPx} height={7 * cellPx} fill={ink} />
+                    <rect x={cellPx} y={cellPx} width={5 * cellPx} height={5 * cellPx} fill={PALETTE.paper} />
+                    <rect x={2 * cellPx} y={2 * cellPx} width={3 * cellPx} height={3 * cellPx} fill={ink} />
+                </g>
+            ))}
+        </>
+    );
+};
+
+// ============================================================
+// Scene 0 — QRコードの秘密: 3つの finder が浮かび上がる
+// ============================================================
+const Scene0: React.FC<SceneProps> = ({ localFrame: f }) => {
+    const size = 25;
+    const cellPx = 16;
+    const qrSize = size * cellPx;
+    const ringScale = interpolate(f, [40, 90], [2.2, 1], { extrapolateLeft: 'clamp', extrapolateRight: 'clamp' });
+    const ringOp = fade(f, 40, 80);
+    const pulseR = interpolate(f % 80, [0, 40, 80], [1, 1.08, 1], { extrapolateLeft: 'clamp', extrapolateRight: 'clamp' });
+
+    return (
+        <Stage>
+            <div style={{
+                opacity: fade(f, 0),
+                display: 'flex', alignItems: 'center', gap: 80,
+            }}>
+                <div style={{
+                    padding: 40, background: PALETTE.paper,
+                    borderRadius: 28, border: `1px solid ${PALETTE.line}`,
+                    boxShadow: '0 20px 60px rgba(15,23,42,0.10)',
+                }}>
+                    <svg width={qrSize} height={qrSize}>
+                        <QRModule size={size} cellPx={cellPx} seed={0.37} />
+                        {[[0, 0], [size - 7, 0], [0, size - 7]].map(([fx, fy], i) => {
+                            const cx = fx * cellPx + 3.5 * cellPx;
+                            const cy = fy * cellPx + 3.5 * cellPx;
+                            return (
+                                <g key={i}>
+                                    <circle cx={cx} cy={cy} r={3.8 * cellPx * ringScale * pulseR}
+                                        fill="none" stroke={PALETTE.accent} strokeWidth={4}
+                                        opacity={ringOp * 0.9} />
+                                    <circle cx={cx} cy={cy} r={3.8 * cellPx * ringScale * pulseR * 1.3}
+                                        fill="none" stroke={PALETTE.accent} strokeWidth={2}
+                                        opacity={ringOp * 0.3} />
+                                </g>
+                            );
+                        })}
+                    </svg>
+                </div>
+
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 18, maxWidth: 440 }}>
+                    <div style={{
+                        opacity: fade(f, 20), fontSize: 32, letterSpacing: '0.3em',
+                        color: PALETTE.accent, fontWeight: 700,
+                    }}>
+                        3 FINDER PATTERNS
+                    </div>
+                    <div style={{
+                        opacity: fade(f, 40), fontSize: 34, fontWeight: 700, color: PALETTE.text, lineHeight: 1.5,
+                    }}>
+                        隅の3つの四角。<br />
+                        これが<span style={{ color: PALETTE.primary }}>すべての鍵</span>。
+                    </div>
+                    <div style={{
+                        opacity: fade(f, 110),
+                        marginTop: 14, padding: '14px 22px', borderRadius: 14,
+                        border: `1px solid ${PALETTE.line}`, background: PALETTE.paperDim,
+                        fontSize: 26, color: PALETTE.textDim, letterSpacing: '0.08em',
+                    }}>
+                        QR = Quick Response Code
+                    </div>
+                </div>
+            </div>
+        </Stage>
+    );
+};
+
+// ============================================================
+// Scene 1 — 22億人の日常: 数値強調 + 人物アイコングリッド
+// ============================================================
+const Scene1: React.FC<SceneProps> = ({ localFrame: f }) => {
+    const cols = 24, rows = 10;
+    const total = cols * rows;
+
+    return (
+        <Stage>
+            <div style={{ width: 1600, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 44 }}>
+                <div style={{
+                    opacity: fade(f, 0), fontSize: 30, letterSpacing: '0.3em', color: PALETTE.textDim,
+                }}>世界の日常的 QR 利用者</div>
+
+                <div style={{
+                    opacity: fade(f, 10), transform: `translateY(${riseY(f, 10)}px)`,
+                    display: 'flex', alignItems: 'baseline', gap: 16,
+                }}>
+                    <div style={{
+                        fontSize: 220, fontWeight: 800, color: PALETTE.primary, lineHeight: 1,
+                        textShadow: `0 0 32px ${PALETTE.primaryGlow}`,
+                    }}>2.2</div>
+                    <div style={{ fontSize: 80, fontWeight: 700, color: PALETTE.primary }}>billion+</div>
+                </div>
+
+                <div style={{
+                    display: 'grid',
+                    gridTemplateColumns: `repeat(${cols}, 1fr)`,
+                    gap: 10, width: 1200,
+                }}>
+                    {Array.from({ length: total }).map((_, i) => {
+                        const col = i % cols, row = Math.floor(i / cols);
+                        const delay = 60 + (col + row) * 1.2;
+                        return (
+                            <svg key={i} viewBox="0 0 40 46" width="100%"
+                                style={{ opacity: fade(f, delay, delay + 10) }}>
+                                <circle cx="20" cy="14" r="9" fill={PALETTE.primary} />
+                                <path d="M4 46 C4 30, 36 30, 36 46 Z" fill={PALETTE.primary} />
+                            </svg>
+                        );
+                    })}
+                </div>
+
+                <div style={{
+                    opacity: fade(f, 160),
+                    fontSize: 28, color: PALETTE.textDim,
+                }}>
+                    出典: QR Code Chimp Statistics 2025
+                </div>
+            </div>
+        </Stage>
+    );
+};
+
+// ============================================================
+// Scene 2 — 3割消えても読める: クリーン vs 30%破損
+// ============================================================
+const Scene2: React.FC<SceneProps> = ({ localFrame: f }) => {
+    const size = 21, cellPx = 12;
+    const qrPx = size * cellPx;
+    const damagedCells = (x: number, y: number) => {
+        // damage a rectangle in the middle-left
+        return x >= 8 && x < 15 && y >= 7 && y < 14;
+    };
+    const damageFill = interpolate(f, [20, 60], [0, 1], { extrapolateLeft: 'clamp', extrapolateRight: 'clamp' });
+
+    const Panel: React.FC<{ title: string; color: string; damaged?: boolean; tick?: boolean; appear: number; }> = ({
+        title, color, damaged, tick, appear,
+    }) => (
+        <div style={{
+            opacity: fade(f, appear),
+            transform: `translateY(${riseY(f, appear)}px)`,
+            display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 18,
+            padding: 36,
+            background: PALETTE.paper,
+            border: `2px solid ${color}`,
+            borderRadius: 22,
+            boxShadow: `0 0 32px ${color}33`,
+        }}>
+            <div style={{
+                fontSize: 28, letterSpacing: '0.2em', color, fontWeight: 700,
+            }}>{title}</div>
+            <svg width={qrPx} height={qrPx} style={{ background: PALETTE.paper }}>
+                <QRModule size={size} cellPx={cellPx} seed={0.44}
+                    skipCells={damaged ? damagedCells : undefined} />
+                {damaged && (
+                    <rect x={8 * cellPx} y={7 * cellPx}
+                        width={7 * cellPx} height={7 * cellPx}
+                        fill={PALETTE.accent} opacity={0.55 * damageFill} />
+                )}
+                {damaged && (
+                    <g opacity={damageFill}>
+                        <line x1={8 * cellPx} y1={7 * cellPx} x2={15 * cellPx} y2={14 * cellPx}
+                            stroke={PALETTE.accent} strokeWidth="3" />
+                        <line x1={15 * cellPx} y1={7 * cellPx} x2={8 * cellPx} y2={14 * cellPx}
+                            stroke={PALETTE.accent} strokeWidth="3" />
+                    </g>
+                )}
+            </svg>
+            <div style={{
+                fontSize: 30, color: tick ? PALETTE.teal : PALETTE.text, fontWeight: 700,
+                display: 'flex', alignItems: 'center', gap: 10,
+            }}>
+                {tick && <span style={{ fontSize: 32 }}>✓</span>}
+                {damaged ? '30% 破損 → 読める' : 'クリーン → 読める'}
+            </div>
+        </div>
+    );
+
+    return (
+        <Stage>
+            <div style={{ width: 1500, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 80 }}>
+                <Panel title="ORIGINAL" color={PALETTE.teal} appear={0} tick />
+                <div style={{
+                    opacity: fade(f, 70),
+                    fontSize: 72, color: PALETTE.accent, fontWeight: 300,
+                }}>→</div>
+                <Panel title="DAMAGED" color={PALETTE.accent} damaged appear={40} tick />
+            </div>
+        </Stage>
+    );
+};
+
+// ============================================================
+// Scene 3 — バーコードの限界: 1次元の情報量
+// ============================================================
+const Scene3: React.FC<SceneProps> = ({ localFrame: f }) => {
+    const barWidths = [3, 1, 2, 1, 4, 1, 2, 3, 1, 4, 2, 1, 3, 1, 2, 4, 1, 3, 2, 1, 3, 1, 2, 4, 2, 1, 3];
+    return (
+        <Stage>
+            <div style={{ width: 1500, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 50 }}>
+                <div style={{
+                    opacity: fade(f, 0), fontSize: 32, letterSpacing: '0.25em', color: PALETTE.textDim,
+                }}>1D BARCODE</div>
+
+                <div style={{
+                    opacity: fade(f, 10),
+                    width: 1100, height: 240, padding: 30,
+                    background: PALETTE.paper, borderRadius: 16,
+                    border: `1px solid ${PALETTE.line}`,
+                    display: 'flex', alignItems: 'center', justifyContent: 'center',
+                }}>
+                    <svg width="1000" height="180" viewBox="0 0 1000 180">
+                        {(() => {
+                            let x = 0;
+                            const elts: React.ReactNode[] = [];
+                            const unit = 8;
+                            barWidths.forEach((w, i) => {
+                                if (i % 2 === 0) {
+                                    elts.push(<rect key={i} x={x} y={0} width={w * unit} height={160} fill={PALETTE.ink} />);
+                                }
+                                x += w * unit;
+                            });
+                            return elts;
+                        })()}
+                        <text x="500" y="176" textAnchor="middle" fontSize="22" fill={PALETTE.textDim}
+                            letterSpacing="4">4 9 0 1 2 3 4 5 6 7 8 9 0 1</text>
+                    </svg>
+                </div>
+
+                <div style={{
+                    opacity: fade(f, 80),
+                    display: 'flex', gap: 60, alignItems: 'center',
+                }}>
+                    <div style={{
+                        padding: '20px 36px', borderRadius: 18,
+                        background: `${PALETTE.accent}15`, border: `1px solid ${PALETTE.accent}55`,
+                    }}>
+                        <div style={{ fontSize: 24, color: PALETTE.textDim, letterSpacing: '0.2em' }}>MAX 容量</div>
+                        <div style={{ fontSize: 64, fontWeight: 800, color: PALETTE.accent }}>
+                            20<span style={{ fontSize: 30, marginLeft: 8 }}>文字</span>
+                        </div>
+                    </div>
+                    <div style={{ fontSize: 32, color: PALETTE.textDim }}>
+                        URL すら入らない
+                    </div>
+                </div>
+            </div>
+        </Stage>
+    );
+};
+
+// ============================================================
+// Scene 4 — 1次元から2次元へ: 容量 ×350
+// ============================================================
+const Scene4: React.FC<SceneProps> = ({ localFrame: f }) => {
+    const size1D = 18; // 1 row of 18 cells
+    const size2D = 21;
+    const cellPx = 14;
+    const cells1D = qrCells(size1D * 1, 0.55).slice(0, size1D);
+    const cells2D = qrCells(size2D, 0.61);
+
+    return (
+        <Stage>
+            <div style={{ width: 1600, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 80 }}>
+                {/* 1D */}
+                <div style={{
+                    opacity: fade(f, 0), display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 20,
+                }}>
+                    <div style={{ fontSize: 28, color: PALETTE.textDim, letterSpacing: '0.2em' }}>1 DIMENSION</div>
+                    <div style={{
+                        padding: 20, background: PALETTE.paper, borderRadius: 14,
+                        border: `1px solid ${PALETTE.line}`,
+                    }}>
+                        <svg width={size1D * cellPx} height={cellPx}>
+                            {cells1D.map((on, i) => on ? (
+                                <rect key={i} x={i * cellPx} y={0} width={cellPx - 1} height={cellPx} fill={PALETTE.ink} />
+                            ) : null)}
+                        </svg>
+                    </div>
+                    <div style={{ fontSize: 28, fontWeight: 700, color: PALETTE.text }}>約 20 文字</div>
+                </div>
+
+                <div style={{
+                    opacity: fade(f, 40),
+                    display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 8,
+                }}>
+                    <div style={{ fontSize: 56, color: PALETTE.primary, fontWeight: 300 }}>→</div>
+                    <div style={{
+                        fontSize: 28, color: PALETTE.primary, fontWeight: 800, letterSpacing: '0.1em',
+                    }}>×350</div>
+                </div>
+
+                {/* 2D */}
+                <div style={{
+                    opacity: fade(f, 60), display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 20,
+                }}>
+                    <div style={{ fontSize: 28, color: PALETTE.primary, letterSpacing: '0.2em' }}>2 DIMENSIONS</div>
+                    <div style={{
+                        padding: 20, background: PALETTE.paper, borderRadius: 14,
+                        border: `1px solid ${PALETTE.line}`,
+                    }}>
+                        <svg width={size2D * cellPx} height={size2D * cellPx}>
+                            <QRModule size={size2D} cellPx={cellPx} seed={0.61} />
+                        </svg>
+                    </div>
+                    <div style={{ fontSize: 28, fontWeight: 700, color: PALETTE.primary }}>最大 7,089 桁</div>
+                </div>
+            </div>
+        </Stage>
+    );
+};
+
+// ============================================================
+// Scene 5 — 囲碁からの着想: 碁盤 → QR
+// ============================================================
+const Scene5: React.FC<SceneProps> = ({ localFrame: f }) => {
+    const goN = 9;
+    const goSize = 400;
+    const goSpacing = goSize / (goN - 1);
+    // Placement of stones
+    const stones: [number, number, 'black' | 'white'][] = [
+        [2, 2, 'black'], [4, 2, 'white'], [6, 2, 'black'],
+        [3, 3, 'white'], [5, 3, 'black'],
+        [2, 4, 'black'], [4, 4, 'white'], [6, 4, 'white'],
+        [3, 5, 'black'], [5, 5, 'white'],
+        [2, 6, 'white'], [4, 6, 'black'], [6, 6, 'black'],
+    ];
+    const qrSize = 21, cellPx = 18;
+
+    const morphProgress = interpolate(f, [60, 180], [0, 1], { extrapolateLeft: 'clamp', extrapolateRight: 'clamp' });
+
+    return (
+        <Stage>
+            <div style={{ width: 1500, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 70 }}>
+                <div style={{ opacity: fade(f, 0), display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 18 }}>
+                    <div style={{ fontSize: 28, color: PALETTE.amber, letterSpacing: '0.25em' }}>囲碁</div>
+                    <div style={{
+                        width: goSize + 60, height: goSize + 60,
+                        background: '#E8C78A', borderRadius: 8,
+                        padding: 30, position: 'relative',
+                    }}>
+                        <svg width={goSize} height={goSize}>
+                            {Array.from({ length: goN }).map((_, i) => (
+                                <line key={`h-${i}`} x1={0} y1={i * goSpacing} x2={goSize} y2={i * goSpacing} stroke="#6B4423" strokeWidth={1.5} />
+                            ))}
+                            {Array.from({ length: goN }).map((_, i) => (
+                                <line key={`v-${i}`} x1={i * goSpacing} y1={0} x2={i * goSpacing} y2={goSize} stroke="#6B4423" strokeWidth={1.5} />
+                            ))}
+                            {stones.map(([gx, gy, color], i) => (
+                                <circle key={i}
+                                    cx={gx * goSpacing} cy={gy * goSpacing} r={goSpacing / 2 - 3}
+                                    fill={color === 'black' ? '#1a1d23' : '#f7f4ea'}
+                                    stroke={color === 'white' ? '#aaa' : 'none'}
+                                    strokeWidth={1}
+                                    opacity={fade(f, 10 + i * 3)}
+                                />
+                            ))}
+                        </svg>
+                    </div>
+                </div>
+
+                <div style={{
+                    opacity: fade(f, 60),
+                    fontSize: 52, color: PALETTE.primary, fontWeight: 300,
+                    transform: `translateX(${interpolate(f, [60, 120], [-20, 0], { extrapolateLeft: 'clamp', extrapolateRight: 'clamp' })}px)`,
+                }}>→</div>
+
+                <div style={{ opacity: morphProgress, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 18 }}>
+                    <div style={{ fontSize: 28, color: PALETTE.primary, letterSpacing: '0.25em' }}>QR コード</div>
+                    <div style={{
+                        padding: 22,
+                        background: PALETTE.paper, borderRadius: 12,
+                        border: `1px solid ${PALETTE.line}`,
+                    }}>
+                        <svg width={qrSize * cellPx} height={qrSize * cellPx}>
+                            <QRModule size={qrSize} cellPx={cellPx} seed={0.71} />
+                        </svg>
+                    </div>
+                </div>
+            </div>
+        </Stage>
+    );
+};
+
+// ============================================================
+// Scene 6 — QRコードの全体像: 5パーツのラベル
+// ============================================================
+const Scene6: React.FC<SceneProps> = ({ localFrame: f }) => {
+    const size = 25, cellPx = 16;
+    const qrPx = size * cellPx;
+
+    const labels: { x: number; y: number; color: string; text: string; px: number; py: number; appear: number; }[] = [
+        { x: 3.5 * cellPx, y: 3.5 * cellPx, color: PALETTE.accent, text: 'ファインダー', px: -260, py: -20, appear: 10 },
+        { x: 12 * cellPx, y: 12 * cellPx, color: PALETTE.primary, text: 'データ + 誤り訂正', px: qrPx + 40, py: 4 * cellPx, appear: 50 },
+        { x: (size - 3.5) * cellPx, y: 6.5 * cellPx, color: PALETTE.teal, text: 'タイミング', px: qrPx + 40, py: -20, appear: 90 },
+        { x: 18 * cellPx, y: 18 * cellPx, color: PALETTE.amber, text: 'アライメント', px: qrPx + 40, py: 17 * cellPx, appear: 130 },
+    ];
+
+    return (
+        <Stage>
+            <div style={{ width: 1600, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 60, opacity: fade(f, 0) }}>
+                <div style={{
+                    padding: 32, background: PALETTE.paper, borderRadius: 20,
+                    border: `1px solid ${PALETTE.line}`, position: 'relative',
+                }}>
+                    <svg width={qrPx} height={qrPx} style={{ display: 'block' }}>
+                        <QRModule size={size} cellPx={cellPx} seed={0.82} />
+                        {/* timing line highlight */}
+                        <rect x={0} y={6 * cellPx} width={qrPx} height={cellPx} fill={PALETTE.teal} opacity={fade(f, 90) * 0.22} />
+                        <rect x={6 * cellPx} y={0} width={cellPx} height={qrPx} fill={PALETTE.teal} opacity={fade(f, 90) * 0.22} />
+                        {/* alignment pattern (fake) */}
+                        <rect x={17 * cellPx} y={17 * cellPx} width={5 * cellPx} height={5 * cellPx}
+                            fill="none" stroke={PALETTE.amber} strokeWidth={3} opacity={fade(f, 130)} />
+                    </svg>
+                </div>
+
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 22, minWidth: 380 }}>
+                    {labels.map((l, i) => (
+                        <div key={i} style={{
+                            opacity: fade(f, l.appear),
+                            transform: `translateY(${riseY(f, l.appear)}px)`,
+                            display: 'flex', alignItems: 'center', gap: 16,
+                        }}>
+                            <div style={{
+                                width: 18, height: 18, borderRadius: 4, background: l.color,
+                                boxShadow: `0 0 12px ${l.color}88`,
+                            }} />
+                            <div style={{ fontSize: 28, fontWeight: 700, color: PALETTE.text }}>{l.text}</div>
+                        </div>
+                    ))}
+                </div>
+            </div>
+        </Stage>
+    );
+};
+
+// ============================================================
+// Scene 7 — 3つの四角の正体: カメラ視野で検出
+// ============================================================
+const Scene7: React.FC<SceneProps> = ({ localFrame: f }) => {
+    const viewW = 1000, viewH = 620;
+
+    return (
+        <Stage>
+            <div style={{ opacity: fade(f, 0), position: 'relative' }}>
+                <svg width={viewW} height={viewH} style={{
+                    background: PALETTE.paperDim, borderRadius: 20,
+                    border: `1px solid ${PALETTE.line}`,
+                }}>
+                    {/* noisy background text */}
+                    {Array.from({ length: 40 }).map((_, i) => {
+                        const rx = (i * 73) % (viewW - 80);
+                        const ry = (i * 37) % (viewH - 40);
+                        return (
+                            <text key={i} x={rx} y={ry + 20} fontSize="24"
+                                fill="rgba(15,23,42,0.22)" fontFamily="monospace">
+                                {['CAFE MENU', 'QR code', 'scan me', '$ 4.20', 'open', '//'][i % 6]}
+                            </text>
+                        );
+                    })}
+                    {/* QR in scene */}
+                    <g transform="translate(320,160)">
+                        <rect x={-16} y={-16} width={380} height={330} fill={PALETTE.paper} rx={10} />
+                        <svg x={0} y={0} width={350} height={300} viewBox="0 0 350 300">
+                            <QRModule size={17} cellPx={18} seed={0.33} />
+                        </svg>
+                    </g>
+
+                    {/* Detection marker - corners converging */}
+                    {[[336, 180], [618, 180], [336, 432]].map(([cx, cy], i) => {
+                        const appear = 30 + i * 15;
+                        const boxScale = interpolate(f, [appear, appear + 30], [2.2, 1],
+                            { extrapolateLeft: 'clamp', extrapolateRight: 'clamp' });
+                        const op = fade(f, appear);
+                        const s = 70 * boxScale;
+                        return (
+                            <g key={i} opacity={op}>
+                                <rect x={cx - s / 2} y={cy - s / 2} width={s} height={s}
+                                    fill="none" stroke={PALETTE.accent} strokeWidth={4} strokeDasharray="12 6" />
+                                <circle cx={cx} cy={cy} r="6" fill={PALETTE.accent} />
+                            </g>
+                        );
+                    })}
+
+                    {/* Scan line */}
+                    <line x1={70} y1={interpolate(f % 90, [0, 90], [80, 560])}
+                        x2={930} y2={interpolate(f % 90, [0, 90], [80, 560])}
+                        stroke={PALETTE.accent} strokeWidth={2} opacity={0.5} />
+
+                    <text x="40" y="40" fontSize="28" fontWeight="700" fill={PALETTE.accent} letterSpacing="4">
+                        DETECTING...
+                    </text>
+                </svg>
+            </div>
+        </Stage>
+    );
+};
+
+// ============================================================
+// Scene 8 — 1:1:3:1:1 の発見
+// ============================================================
+const Scene8: React.FC<SceneProps> = ({ localFrame: f }) => {
+    const unit = 60;
+    const parts = [
+        { w: 1, fill: PALETTE.ink, label: '1' },
+        { w: 1, fill: PALETTE.paper, label: '1', stroke: true },
+        { w: 3, fill: PALETTE.ink, label: '3' },
+        { w: 1, fill: PALETTE.paper, label: '1', stroke: true },
+        { w: 1, fill: PALETTE.ink, label: '1' },
+    ];
+    let x = 0;
+
+    return (
+        <Stage>
+            <div style={{ width: 1500, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 36 }}>
+                <div style={{ opacity: fade(f, 0), fontSize: 32, color: PALETTE.textDim, letterSpacing: '0.2em' }}>
+                    FINDER PATTERN — 水平断面
+                </div>
+
+                {/* Visual finder pattern with cross-section line */}
+                <div style={{ opacity: fade(f, 10), position: 'relative' }}>
+                    <svg width="560" height="200" viewBox="0 0 560 200">
+                        {/* finder pattern large */}
+                        <rect x="100" y="0" width="200" height="200" fill={PALETTE.ink} />
+                        <rect x="130" y="30" width="140" height="140" fill={PALETTE.paper} />
+                        <rect x="160" y="60" width="80" height="80" fill={PALETTE.ink} />
+
+                        {/* cross-section line */}
+                        <line x1="100" y1="100" x2="300" y2="100"
+                            stroke={PALETTE.accent} strokeWidth={3} strokeDasharray="8 4"
+                            opacity={fade(f, 40)} />
+
+                        {/* Extract row and visualize proportions on the right */}
+                        <g transform="translate(360,60)" opacity={fade(f, 70)}>
+                            <line x1="-60" y1="40" x2="0" y2="40" stroke={PALETTE.accent} strokeWidth={2} opacity={0.7} />
+                            {parts.map((p, i) => {
+                                const rect = <rect key={i} x={x} y={0} width={p.w * unit} height={80}
+                                    fill={p.fill} stroke={p.stroke ? PALETTE.ink : 'none'} strokeWidth={1} />;
+                                x += p.w * unit;
+                                return rect;
+                            })}
+                        </g>
+                    </svg>
+                </div>
+
+                {/* Ratio display */}
+                <div style={{
+                    opacity: fade(f, 100), transform: `translateY(${riseY(f, 100)}px)`,
+                    display: 'flex', alignItems: 'center', gap: 18,
+                }}>
+                    {['1', '1', '3', '1', '1'].map((n, i) => (
+                        <React.Fragment key={i}>
+                            <div style={{
+                                width: 90, height: 90, borderRadius: 12,
+                                background: i === 2 ? PALETTE.accent : PALETTE.primary,
+                                color: PALETTE.paper,
+                                fontSize: i === 2 ? 56 : 48, fontWeight: 800,
+                                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                                boxShadow: i === 2 ? `0 0 24px ${PALETTE.accentGlow}` : `0 0 16px ${PALETTE.primaryGlow}`,
+                                transform: i === 2 ? 'scale(1.2)' : 'scale(1)',
+                            }}>{n}</div>
+                            {i < 4 && <div style={{ fontSize: 36, color: PALETTE.textDim }}>:</div>}
+                        </React.Fragment>
+                    ))}
+                </div>
+            </div>
+        </Stage>
+    );
+};
+
+// ============================================================
+// Scene 9 — 存在しない比率: 印刷物の中で唯一
+// ============================================================
+const Scene9: React.FC<SceneProps> = ({ localFrame: f }) => {
+    const samples = [
+        { label: 'チラシ', bars: [2, 1, 1, 2, 1, 3] },
+        { label: '雑誌', bars: [1, 2, 2, 1, 3, 1] },
+        { label: '段ボール', bars: [3, 2, 1, 1, 2, 2] },
+        { label: '新聞', bars: [1, 1, 2, 2, 1, 3] },
+        { label: '書籍', bars: [2, 2, 1, 3, 1, 1] },
+        { label: '広告', bars: [1, 3, 1, 2, 2, 1] },
+    ];
+
+    return (
+        <Stage>
+            <div style={{ width: 1600, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 36 }}>
+                <div style={{ opacity: fade(f, 0), fontSize: 32, letterSpacing: '0.25em', color: PALETTE.textDim }}>
+                    印刷物の徹底調査
+                </div>
+
+                <div style={{
+                    display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 20, width: 1400,
+                }}>
+                    {samples.map((s, i) => {
+                        const appear = 10 + i * 10;
+                        return (
+                            <div key={i} style={{
+                                opacity: fade(f, appear),
+                                transform: `translateY(${riseY(f, appear)}px)`,
+                                padding: '20px 28px', borderRadius: 14,
+                                background: PALETTE.paper, border: `1px solid ${PALETTE.line}`,
+                                display: 'flex', flexDirection: 'column', gap: 10,
+                            }}>
+                                <div style={{ fontSize: 26, color: PALETTE.textDim, letterSpacing: '0.15em' }}>{s.label}</div>
+                                <svg width="100%" height="32" viewBox="0 0 400 32">
+                                    {(() => {
+                                        let x = 0; const u = 14;
+                                        return s.bars.map((w, j) => {
+                                            const r = <rect key={j} x={x} y={0} width={w * u} height={32}
+                                                fill={j % 2 === 0 ? PALETTE.ink : PALETTE.paper}
+                                                stroke={j % 2 === 1 ? PALETTE.line : 'none'} />;
+                                            x += w * u;
+                                            return r;
+                                        });
+                                    })()}
+                                </svg>
+                                <div style={{ fontSize: 26, color: PALETTE.accent, fontWeight: 700 }}>
+                                    ✗ 1:1:3:1:1 は現れない
+                                </div>
+                            </div>
+                        );
+                    })}
+                </div>
+
+                <div style={{
+                    opacity: fade(f, 110),
+                    padding: '20px 44px', borderRadius: 18,
+                    background: `${PALETTE.primary}10`, border: `2px solid ${PALETTE.primary}`,
+                    fontSize: 32, fontWeight: 800, color: PALETTE.primary,
+                    boxShadow: `0 0 32px ${PALETTE.primaryGlow}`,
+                }}>
+                    → 世界にたった1つの「識別子」
+                </div>
+            </div>
+        </Stage>
+    );
+};
+
+// ============================================================
+// Scene 10 — 360度読み取り
+// ============================================================
+const Scene10: React.FC<SceneProps> = ({ localFrame: f }) => {
+    const angles = [0, 30, 60, 90, 135, 180, 225, 315];
+    const size = 15, cellPx = 10;
+    const qrPx = size * cellPx;
+
+    return (
+        <Stage>
+            <div style={{ width: 1500, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 36 }}>
+                <div style={{ opacity: fade(f, 0), fontSize: 32, letterSpacing: '0.25em', color: PALETTE.textDim }}>
+                    どの向きからでも読める
+                </div>
+
+                <div style={{
+                    display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 30,
+                    width: 1200,
+                }}>
+                    {angles.map((a, i) => {
+                        const appear = 10 + i * 8;
+                        return (
+                            <div key={i} style={{
+                                opacity: fade(f, appear),
+                                display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 12,
+                                padding: 20,
+                                background: PALETTE.paper, borderRadius: 14,
+                                border: `1px solid ${PALETTE.line}`,
+                            }}>
+                                <div style={{
+                                    width: qrPx + 20, height: qrPx + 20,
+                                    display: 'flex', alignItems: 'center', justifyContent: 'center',
+                                }}>
+                                    <svg width={qrPx} height={qrPx} style={{
+                                        transform: `rotate(${a}deg)`, transformOrigin: 'center',
+                                    }}>
+                                        <QRModule size={size} cellPx={cellPx} seed={0.5} />
+                                    </svg>
+                                </div>
+                                <div style={{
+                                    fontSize: 26, color: PALETTE.teal, fontWeight: 700,
+                                    display: 'flex', alignItems: 'center', gap: 6,
+                                }}>
+                                    <span>✓</span>{a}°
+                                </div>
+                            </div>
+                        );
+                    })}
+                </div>
+            </div>
+        </Stage>
+    );
+};
+
+// ============================================================
+// Scene 11 — 静寂ゾーン: 4セルの余白
+// ============================================================
+const Scene11: React.FC<SceneProps> = ({ localFrame: f }) => {
+    const size = 19, cellPx = 16, quiet = 4;
+    const qrPx = size * cellPx;
+    const totalPx = qrPx + quiet * 2 * cellPx;
+
+    return (
+        <Stage>
+            <div style={{ width: 1500, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 80, opacity: fade(f, 0) }}>
+                <div style={{ position: 'relative' }}>
+                    <svg width={totalPx} height={totalPx}>
+                        {/* quiet zone overlay */}
+                        <rect width={totalPx} height={totalPx} fill={`${PALETTE.accent}10`}
+                            opacity={fade(f, 20)} />
+                        <g transform={`translate(${quiet * cellPx},${quiet * cellPx})`}>
+                            <rect width={qrPx} height={qrPx} fill={PALETTE.paper} />
+                            <QRModule size={size} cellPx={cellPx} seed={0.45} />
+                        </g>
+                        {/* quiet zone border arrow */}
+                        <g opacity={fade(f, 40)}>
+                            <line x1="0" y1={totalPx / 2} x2={quiet * cellPx} y2={totalPx / 2}
+                                stroke={PALETTE.accent} strokeWidth={3} markerEnd="url(#arrow)" />
+                            <line x1={totalPx} y1={totalPx / 2} x2={totalPx - quiet * cellPx} y2={totalPx / 2}
+                                stroke={PALETTE.accent} strokeWidth={3} />
+                        </g>
+                        <defs>
+                            <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+                                <path d="M0,0 L10,5 L0,10 Z" fill={PALETTE.accent} />
+                            </marker>
+                        </defs>
+                    </svg>
+                </div>
+
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 20, maxWidth: 420 }}>
+                    <div style={{
+                        opacity: fade(f, 60),
+                        fontSize: 28, color: PALETTE.accent, letterSpacing: '0.2em', fontWeight: 700,
+                    }}>QUIET ZONE</div>
+                    <div style={{
+                        opacity: fade(f, 90),
+                        fontSize: 32, fontWeight: 700, color: PALETTE.text, lineHeight: 1.5,
+                    }}>
+                        最低 <span style={{ color: PALETTE.accent, fontSize: 56 }}>4</span> セル分の余白
+                    </div>
+                    <div style={{
+                        opacity: fade(f, 130),
+                        padding: '14px 20px', borderRadius: 10,
+                        border: `1px solid ${PALETTE.line}`,
+                        fontSize: 26, color: PALETTE.textDim,
+                    }}>
+                        境界をはっきりさせて誤検出を防ぐ
+                    </div>
+                </div>
+            </div>
+        </Stage>
+    );
+};
+
+// ============================================================
+// Scene 12 — もし訂正がなかったら: 工場の油汚れで即アウト
+// ============================================================
+const Scene12: React.FC<SceneProps> = ({ localFrame: f }) => {
+    const size = 17, cellPx = 14;
+    const qrPx = size * cellPx;
+    const splatAppear = fade(f, 40, 80);
+
+    return (
+        <Stage>
+            <div style={{ width: 1500, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 60, opacity: fade(f, 0) }}>
+                {/* Factory setting illustration */}
+                <div style={{
+                    position: 'relative',
+                    padding: 36, borderRadius: 20,
+                    background: PALETTE.paper, border: `1px solid ${PALETTE.line}`,
+                }}>
+                    <svg width={qrPx} height={qrPx}>
+                        <QRModule size={size} cellPx={cellPx} seed={0.28} />
+                        {/* oil stains */}
+                        <g opacity={splatAppear}>
+                            <ellipse cx={qrPx * 0.3} cy={qrPx * 0.4} rx={qrPx * 0.18} ry={qrPx * 0.13}
+                                fill="#4B3A1E" opacity={0.8} />
+                            <ellipse cx={qrPx * 0.7} cy={qrPx * 0.7} rx={qrPx * 0.14} ry={qrPx * 0.10}
+                                fill="#4B3A1E" opacity={0.75} />
+                            <ellipse cx={qrPx * 0.55} cy={qrPx * 0.3} rx={qrPx * 0.08} ry={qrPx * 0.06}
+                                fill="#4B3A1E" opacity={0.7} />
+                        </g>
+                    </svg>
+                    <div style={{
+                        position: 'absolute', top: -14, right: -14,
+                        padding: '8px 14px', borderRadius: 8,
+                        background: PALETTE.warm, color: PALETTE.paper,
+                        fontSize: 26, fontWeight: 700, letterSpacing: '0.15em',
+                    }}>FACTORY</div>
+                </div>
+
+                <div style={{
+                    opacity: fade(f, 90),
+                    fontSize: 120, color: PALETTE.accent, fontWeight: 900,
+                    textShadow: `0 0 32px ${PALETTE.accentGlow}`,
+                }}>
+                    ×
+                </div>
+
+                <div style={{
+                    opacity: fade(f, 110),
+                    display: 'flex', flexDirection: 'column', gap: 16, maxWidth: 380,
+                }}>
+                    <div style={{
+                        fontSize: 28, color: PALETTE.accent, fontWeight: 800, letterSpacing: '0.2em',
+                    }}>READ FAIL</div>
+                    <div style={{
+                        fontSize: 30, fontWeight: 700, color: PALETTE.text, lineHeight: 1.5,
+                    }}>
+                        工場の油汚れで<br />一発アウト
+                    </div>
+                    <div style={{
+                        padding: '12px 20px', borderRadius: 10,
+                        background: PALETTE.paperDim, fontSize: 26, color: PALETTE.textDim,
+                    }}>
+                        だから "直す" 仕組みが必須だった
+                    </div>
+                </div>
+            </div>
+        </Stage>
+    );
+};
+
+// ============================================================
+// Scene 13 — リード・ソロモンの直感: 規則を足す
+// ============================================================
+const Scene13: React.FC<SceneProps> = ({ localFrame: f }) => {
+    const nums = ['1', '3', '5', '?', '9'];
+    const answerAppear = fade(f, 100, 140);
+
+    return (
+        <Stage>
+            <div style={{ width: 1500, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 44 }}>
+                <div style={{ opacity: fade(f, 0), fontSize: 32, color: PALETTE.textDim, letterSpacing: '0.25em' }}>
+                    規則を付け足すだけで復元できる
+                </div>
+
+                <div style={{
+                    opacity: fade(f, 10),
+                    display: 'flex', alignItems: 'center', gap: 22,
+                }}>
+                    {nums.map((n, i) => (
+                        <React.Fragment key={i}>
+                            <div style={{
+                                width: 120, height: 120, borderRadius: 16,
+                                background: n === '?' ? PALETTE.paperDim : PALETTE.paper,
+                                border: n === '?' ? `3px dashed ${PALETTE.accent}` : `1px solid ${PALETTE.line}`,
+                                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                                position: 'relative',
+                            }}>
+                                <div style={{
+                                    fontSize: n === '?' ? 56 : 64, fontWeight: 800,
+                                    color: n === '?' ? PALETTE.accent : PALETTE.text,
+                                }}>
+                                    {n === '?' ? (
+                                        <>
+                                            <span style={{ opacity: 1 - answerAppear, position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>?</span>
+                                            <span style={{ opacity: answerAppear, color: PALETTE.teal, position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>7</span>
+                                        </>
+                                    ) : n}
+                                </div>
+                            </div>
+                            {i < nums.length - 1 && <div style={{ fontSize: 30, color: PALETTE.textDim }}>,</div>}
+                        </React.Fragment>
+                    ))}
+                </div>
+
+                <div style={{
+                    opacity: fade(f, 50),
+                    padding: '16px 32px', borderRadius: 14,
+                    background: PALETTE.paperDim, border: `1px solid ${PALETTE.line}`,
+                    display: 'flex', gap: 16, alignItems: 'baseline',
+                }}>
+                    <span style={{ fontSize: 26, color: PALETTE.textDim, letterSpacing: '0.15em' }}>規則:</span>
+                    <span style={{ fontSize: 28, fontWeight: 700, color: PALETTE.primary }}>2 ずつ増える</span>
+                </div>
+
+                <div style={{
+                    opacity: fade(f, 140),
+                    display: 'flex', alignItems: 'center', gap: 20,
+                    fontSize: 32, fontWeight: 700, color: PALETTE.teal,
+                }}>
+                    <span style={{ fontSize: 42 }}>✓</span>
+                    欠けた値を数式で復元
+                </div>
+            </div>
+        </Stage>
+    );
+};
+
+// ============================================================
+// Scene 14 — CDもQRも同じ技術: リード・ソロモンの3応用
+// ============================================================
+const Scene14: React.FC<SceneProps> = ({ localFrame: f }) => {
+    const items = [
+        { title: 'CD / DVD', sub: '傷ついても音飛びしない', color: PALETTE.primary,
+          svg: (
+              <svg viewBox="0 0 120 120" width="100" height="100">
+                  <circle cx="60" cy="60" r="55" fill="url(#cd-g)" />
+                  <circle cx="60" cy="60" r="18" fill={PALETTE.paper} />
+                  <circle cx="60" cy="60" r="8" fill={PALETTE.ink} />
+                  <defs>
+                      <radialGradient id="cd-g" cx="0.5" cy="0.5">
+                          <stop offset="0%" stopColor="#C0C4CC" />
+                          <stop offset="50%" stopColor="#E8EDF3" />
+                          <stop offset="100%" stopColor="#8892A0" />
+                      </radialGradient>
+                  </defs>
+              </svg>
+          ) },
+        { title: 'VOYAGER', sub: '数十億kmから届く信号', color: PALETTE.amber,
+          svg: (
+              <svg viewBox="0 0 120 120" width="100" height="100">
+                  <circle cx="60" cy="40" r="28" fill="none" stroke={PALETTE.amber} strokeWidth="3" />
+                  <rect x="56" y="40" width="8" height="40" fill={PALETTE.amber} />
+                  <rect x="30" y="80" width="60" height="18" fill={PALETTE.amber} opacity="0.7" />
+                  <path d="M88 40 L108 20" stroke={PALETTE.amber} strokeWidth="2" />
+                  <circle cx="108" cy="20" r="5" fill={PALETTE.amber} />
+              </svg>
+          ) },
+        { title: 'QR CODE', sub: '30%欠けても復元', color: PALETTE.accent,
+          svg: (
+              <svg viewBox="0 0 120 120" width="100" height="100">
+                  <g transform="translate(10,10)">
+                      <QRModule size={10} cellPx={10} seed={0.33} />
+                  </g>
+              </svg>
+          ) },
+    ];
+
+    return (
+        <Stage>
+            <div style={{ width: 1500, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 40 }}>
+                <div style={{
+                    opacity: fade(f, 0), fontSize: 30, letterSpacing: '0.3em', color: PALETTE.textDim,
+                }}>REED–SOLOMON</div>
+
+                <div style={{ display: 'flex', gap: 40, alignItems: 'stretch', justifyContent: 'center' }}>
+                    {items.map((it, i) => {
+                        const appear = 10 + i * 30;
+                        return (
+                            <div key={i} style={{
+                                opacity: fade(f, appear),
+                                transform: `translateY(${riseY(f, appear)}px)`,
+                                width: 320, padding: 32,
+                                background: PALETTE.paper, borderRadius: 20,
+                                border: `2px solid ${it.color}66`,
+                                boxShadow: `0 12px 32px ${it.color}22`,
+                                display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 16,
+                            }}>
+                                {it.svg}
+                                <div style={{ fontSize: 28, letterSpacing: '0.25em', color: it.color, fontWeight: 800 }}>
+                                    {it.title}
+                                </div>
+                                <div style={{ fontSize: 24, color: PALETTE.textDim, textAlign: 'center', lineHeight: 1.5 }}>
+                                    {it.sub}
+                                </div>
+                            </div>
+                        );
+                    })}
+                </div>
+
+                <div style={{
+                    opacity: fade(f, 130),
+                    fontSize: 28, color: PALETTE.textDim, letterSpacing: '0.15em',
+                }}>
+                    宇宙からポケットまで、同じ数学
+                </div>
+            </div>
+        </Stage>
+    );
+};
+
+// ============================================================
+// Scene 15 — インターリーブ: 分散配置でダメージを軽減
+// ============================================================
+const Scene15: React.FC<SceneProps> = ({ localFrame: f }) => {
+    const unit = 44;
+    const sequential = ['A', 'A', 'A', 'A', 'B', 'B', 'B', 'B', 'C', 'C', 'C', 'C'];
+    const interleaved = ['A', 'B', 'C', 'A', 'B', 'C', 'A', 'B', 'C', 'A', 'B', 'C'];
+    const stainStart = 3, stainEnd = 7;
+    const colorOf = (ch: string) => ch === 'A' ? PALETTE.primary : ch === 'B' ? PALETTE.teal : PALETTE.warm;
+
+    const Row: React.FC<{ label: string; cells: string[]; appear: number }> = ({ label, cells, appear }) => (
+        <div style={{ opacity: fade(f, appear), display: 'flex', alignItems: 'center', gap: 20 }}>
+            <div style={{ width: 230, fontSize: 28, color: PALETTE.textDim, letterSpacing: '0.12em', textAlign: 'right' }}>{label}</div>
+            <div style={{ position: 'relative', display: 'flex', gap: 4 }}>
+                {cells.map((c, i) => {
+                    const damaged = i >= stainStart && i < stainEnd;
+                    return (
+                        <div key={i} style={{
+                            width: unit, height: unit, borderRadius: 6,
+                            background: colorOf(c),
+                            color: PALETTE.paper, fontWeight: 800, fontSize: 28,
+                            display: 'flex', alignItems: 'center', justifyContent: 'center',
+                            opacity: damaged ? 0.25 : 1,
+                            position: 'relative',
+                        }}>
+                            {c}
+                        </div>
+                    );
+                })}
+                {/* coffee stain overlay */}
+                <div style={{
+                    position: 'absolute',
+                    left: stainStart * (unit + 4) - 6,
+                    top: -6,
+                    width: (stainEnd - stainStart) * (unit + 4) - 4 + 12,
+                    height: unit + 12,
+                    borderRadius: '50%',
+                    background: 'radial-gradient(ellipse, rgba(75,58,30,0.6), rgba(75,58,30,0.1) 70%)',
+                    opacity: fade(f, appear + 20),
+                    pointerEvents: 'none',
+                }} />
+            </div>
+        </div>
+    );
+
+    return (
+        <Stage>
+            <div style={{ width: 1500, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 36 }}>
+                <div style={{ opacity: fade(f, 0), fontSize: 32, color: PALETTE.textDim, letterSpacing: '0.2em' }}>
+                    ブロックをバラして配置する
+                </div>
+                <Row label="逐次配置 →" cells={sequential} appear={10} />
+                <div style={{
+                    opacity: fade(f, 50),
+                    padding: '6px 18px', borderRadius: 8,
+                    background: `${PALETTE.accent}15`, color: PALETTE.accent,
+                    fontSize: 24, fontWeight: 700,
+                }}>
+                    ブロック A が全滅 → 復元不能
+                </div>
+                <Row label="インターリーブ →" cells={interleaved} appear={90} />
+                <div style={{
+                    opacity: fade(f, 130),
+                    padding: '8px 22px', borderRadius: 10,
+                    background: `${PALETTE.teal}15`, color: PALETTE.teal, border: `1px solid ${PALETTE.teal}55`,
+                    fontSize: 28, fontWeight: 700,
+                }}>
+                    ✓ 被害が分散 → 全ブロック復元可能
+                </div>
+            </div>
+        </Stage>
+    );
+};
+
+// ============================================================
+// Scene 16 — デザインQRの仕組み: ロゴ埋め込み + レベルH
+// ============================================================
+const Scene16: React.FC<SceneProps> = ({ localFrame: f }) => {
+    const size = 23, cellPx = 16;
+    const qrPx = size * cellPx;
+    const logoSize = 7 * cellPx;
+    const logoX = (size - 7) / 2 * cellPx;
+    const skipLogo = (x: number, y: number) =>
+        x >= (size - 7) / 2 && x < (size + 7) / 2 && y >= (size - 7) / 2 && y < (size + 7) / 2;
+
+    const levels = [
+        { code: 'L', recover: 7, spec: false },
+        { code: 'M', recover: 15, spec: false },
+        { code: 'Q', recover: 25, spec: false },
+        { code: 'H', recover: 30, spec: true },
+    ];
+
+    return (
+        <Stage>
+            <div style={{ width: 1500, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 70, opacity: fade(f, 0) }}>
+                <div style={{
+                    padding: 28, background: PALETTE.paper, borderRadius: 18,
+                    border: `1px solid ${PALETTE.line}`, position: 'relative',
+                }}>
+                    <svg width={qrPx} height={qrPx}>
+                        <QRModule size={size} cellPx={cellPx} seed={0.19} skipCells={skipLogo} />
+                        {/* Logo placeholder */}
+                        <g transform={`translate(${logoX},${logoX})`} opacity={fade(f, 40)}>
+                            <rect width={logoSize} height={logoSize} rx={12}
+                                fill={PALETTE.primary} />
+                            <text x={logoSize / 2} y={logoSize / 2 + 12}
+                                textAnchor="middle" fontSize="40" fontWeight="900" fill={PALETTE.paper}>★</text>
+                        </g>
+                    </svg>
+                </div>
+
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 18, minWidth: 380 }}>
+                    <div style={{
+                        opacity: fade(f, 20), fontSize: 30, color: PALETTE.textDim, letterSpacing: '0.2em',
+                    }}>誤り訂正レベル</div>
+                    {levels.map((l, i) => {
+                        const appear = 40 + i * 20;
+                        return (
+                            <div key={i} style={{
+                                opacity: fade(f, appear),
+                                display: 'grid', gridTemplateColumns: '80px 1fr 120px',
+                                alignItems: 'center', gap: 14,
+                            }}>
+                                <div style={{
+                                    width: 64, height: 64, borderRadius: 12,
+                                    background: l.spec ? PALETTE.accent : PALETTE.paperDim,
+                                    color: l.spec ? PALETTE.paper : PALETTE.text,
+                                    fontSize: 34, fontWeight: 800,
+                                    display: 'flex', alignItems: 'center', justifyContent: 'center',
+                                    boxShadow: l.spec ? `0 0 16px ${PALETTE.accentGlow}` : 'none',
+                                }}>{l.code}</div>
+                                <div style={{
+                                    height: 18, borderRadius: 9,
+                                    background: PALETTE.paperDim, position: 'relative', overflow: 'hidden',
+                                }}>
+                                    <div style={{
+                                        position: 'absolute', inset: 0,
+                                        width: `${(l.recover / 30) * 100}%`,
+                                        background: l.spec ? PALETTE.accent : PALETTE.primary,
+                                        borderRadius: 9,
+                                    }} />
+                                </div>
+                                <div style={{
+                                    fontSize: 28, fontWeight: 700,
+                                    color: l.spec ? PALETTE.accent : PALETTE.text, textAlign: 'right',
+                                }}>{l.recover}%</div>
+                            </div>
+                        );
+                    })}
+                </div>
+            </div>
+        </Stage>
+    );
+};
+
+// ============================================================
+// Scene 17 — 読み取りの全体像: 6ステップのフロー
+// ============================================================
+const Scene17: React.FC<SceneProps> = ({ localFrame: f }) => {
+    const steps = [
+        { n: '1', t: '撮影', s: 'camera' },
+        { n: '2', t: '2値化', s: 'binarize' },
+        { n: '3', t: 'ファインダー', s: 'find' },
+        { n: '4', t: 'タイミング', s: 'grid' },
+        { n: '5', t: 'デコード', s: 'decode' },
+        { n: '6', t: '出力', s: 'output' },
+    ];
+
+    const StepIcon: React.FC<{ kind: string; color: string }> = ({ kind, color }) => {
+        const props = { stroke: color, strokeWidth: 2.5, fill: 'none' } as const;
+        return (
+            <svg width="48" height="48" viewBox="0 0 48 48">
+                {kind === 'camera' && (<>
+                    <rect x="6" y="14" width="36" height="26" rx="4" {...props} />
+                    <circle cx="24" cy="27" r="7" {...props} />
+                    <rect x="18" y="10" width="12" height="6" rx="2" {...props} />
+                </>)}
+                {kind === 'binarize' && (<>
+                    <rect x="6" y="6" width="16" height="36" fill={color} />
+                    <rect x="26" y="6" width="16" height="36" fill="none" stroke={color} strokeWidth="2.5" />
+                </>)}
+                {kind === 'find' && (<>
+                    <rect x="6" y="6" width="14" height="14" fill={color} />
+                    <rect x="28" y="6" width="14" height="14" fill={color} />
+                    <rect x="6" y="28" width="14" height="14" fill={color} />
+                </>)}
+                {kind === 'grid' && (<>
+                    <line x1="4" y1="12" x2="44" y2="12" {...props} />
+                    <line x1="4" y1="24" x2="44" y2="24" {...props} />
+                    <line x1="4" y1="36" x2="44" y2="36" {...props} />
+                    <line x1="12" y1="4" x2="12" y2="44" {...props} />
+                    <line x1="24" y1="4" x2="24" y2="44" {...props} />
+                    <line x1="36" y1="4" x2="36" y2="44" {...props} />
+                </>)}
+                {kind === 'decode' && (<>
+                    <rect x="6" y="10" width="36" height="28" rx="3" {...props} />
+                    <text x="24" y="30" fontSize="20" textAnchor="middle" fill={color} fontWeight="700">01</text>
+                </>)}
+                {kind === 'output' && (<>
+                    <path d="M6 24 L34 24" {...props} strokeLinecap="round" />
+                    <path d="M28 14 L42 24 L28 34" {...props} strokeLinecap="round" strokeLinejoin="round" />
+                </>)}
+            </svg>
+        );
+    };
+
+    return (
+        <Stage>
+            <div style={{ width: 1600, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 36 }}>
+                <div style={{ opacity: fade(f, 0), fontSize: 32, color: PALETTE.textDim, letterSpacing: '0.2em' }}>
+                    READ PIPELINE — 6 STEPS
+                </div>
+
+                <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                    {steps.map((s, i) => {
+                        const appear = 10 + i * 18;
+                        return (
+                            <React.Fragment key={i}>
+                                <div style={{
+                                    opacity: fade(f, appear),
+                                    transform: `translateY(${riseY(f, appear)}px)`,
+                                    width: 200, padding: '22px 14px',
+                                    background: PALETTE.paper, borderRadius: 14,
+                                    border: `1px solid ${PALETTE.primary}33`,
+                                    display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 10,
+                                    boxShadow: `0 4px 18px ${PALETTE.primaryGlow}`,
+                                }}>
+                                    <div style={{
+                                        width: 38, height: 38, borderRadius: '50%',
+                                        background: PALETTE.primary, color: PALETTE.paper,
+                                        fontSize: 24, fontWeight: 800,
+                                        display: 'flex', alignItems: 'center', justifyContent: 'center',
+                                    }}>{s.n}</div>
+                                    <StepIcon kind={s.s} color={PALETTE.primary} />
+                                    <div style={{ fontSize: 28, fontWeight: 700, color: PALETTE.text, whiteSpace: 'nowrap' }}>{s.t}</div>
+                                </div>
+                                {i < steps.length - 1 && (
+                                    <div style={{
+                                        opacity: fade(f, appear + 10),
+                                        fontSize: 32, color: PALETTE.primary, fontWeight: 300,
+                                    }}>→</div>
+                                )}
+                            </React.Fragment>
+                        );
+                    })}
+                </div>
+
+                <div style={{
+                    opacity: fade(f, 140),
+                    padding: '14px 30px', borderRadius: 12,
+                    background: PALETTE.paperDim, fontSize: 28, color: PALETTE.textDim,
+                }}>
+                    カメラ画像 → 白黒 → 位置 → 座標 → データ → 文字列
+                </div>
+            </div>
+        </Stage>
+    );
+};
+
+// ============================================================
+// Scene 18 — 4つのモード: 数字 / 英数字 / バイナリ / 漢字
+// ============================================================
+const Scene18: React.FC<SceneProps> = ({ localFrame: f }) => {
+    const modes = [
+        { name: '数字', sample: '0-9', bits: 10, per: '3桁', color: PALETTE.primary },
+        { name: '英数字', sample: 'A-Z 0-9', bits: 11, per: '2文字', color: PALETTE.teal },
+        { name: 'バイナリ', sample: '0x00-0xFF', bits: 8, per: '1バイト', color: PALETTE.amber },
+        { name: '漢字', sample: 'Shift_JIS', bits: 13, per: '1文字', color: PALETTE.accent },
+    ];
+
+    return (
+        <Stage>
+            <div style={{ width: 1600, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 40 }}>
+                <div style={{ opacity: fade(f, 0), fontSize: 32, color: PALETTE.textDim, letterSpacing: '0.2em' }}>
+                    ENCODING MODES
+                </div>
+
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 24, width: 1480 }}>
+                    {modes.map((m, i) => {
+                        const appear = 10 + i * 15;
+                        return (
+                            <div key={i} style={{
+                                opacity: fade(f, appear),
+                                transform: `translateY(${riseY(f, appear)}px)`,
+                                padding: 28,
+                                background: PALETTE.paper, borderRadius: 18,
+                                border: `2px solid ${m.color}55`,
+                                boxShadow: `0 10px 32px ${m.color}22`,
+                                display: 'flex', flexDirection: 'column', gap: 14,
+                            }}>
+                                <div style={{ fontSize: 32, fontWeight: 800, color: m.color }}>{m.name}</div>
+                                <div style={{
+                                    fontFamily: 'monospace', fontSize: 26,
+                                    padding: '8px 14px', borderRadius: 8,
+                                    background: PALETTE.paperDim, color: PALETTE.text,
+                                }}>{m.sample}</div>
+                                <div style={{ display: 'flex', alignItems: 'baseline', gap: 10, marginTop: 6 }}>
+                                    <div style={{ fontSize: 56, fontWeight: 800, color: m.color }}>{m.bits}</div>
+                                    <div style={{ fontSize: 24, color: PALETTE.textDim }}>bit で</div>
+                                </div>
+                                <div style={{
+                                    padding: '8px 14px', borderRadius: 8,
+                                    background: `${m.color}15`, color: m.color, fontSize: 26, fontWeight: 700,
+                                    textAlign: 'center',
+                                }}>{m.per}</div>
+                            </div>
+                        );
+                    })}
+                </div>
+            </div>
+        </Stage>
+    );
+};
+
+// ============================================================
+// Scene 19 — マスクパターン: 8種から最適を選ぶ
+// ============================================================
+const Scene19: React.FC<SceneProps> = ({ localFrame: f }) => {
+    const maskFn = (idx: number) => {
+        const fns = [
+            (x: number, y: number) => (x + y) % 2 === 0,
+            (x: number, y: number) => y % 2 === 0,
+            (x: number, y: number) => x % 3 === 0,
+            (x: number, y: number) => (x + y) % 3 === 0,
+            (x: number, y: number) => (Math.floor(y / 2) + Math.floor(x / 3)) % 2 === 0,
+            (x: number, y: number) => ((x * y) % 2) + ((x * y) % 3) === 0,
+            (x: number, y: number) => (((x * y) % 2) + ((x * y) % 3)) % 2 === 0,
+            (x: number, y: number) => (((x + y) % 2) + ((x * y) % 3)) % 2 === 0,
+        ];
+        return fns[idx];
+    };
+    const N = 10, cellPx = 10;
+    const tilePx = N * cellPx;
+    const chosen = 3;
+
+    return (
+        <Stage>
+            <div style={{ width: 1500, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 30 }}>
+                <div style={{ opacity: fade(f, 0), fontSize: 32, color: PALETTE.textDim, letterSpacing: '0.2em' }}>
+                    8種類を試して、白黒バランスが最良のものを選ぶ
+                </div>
+
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(8, 1fr)', gap: 12, width: 1400 }}>
+                    {Array.from({ length: 8 }).map((_, i) => {
+                        const appear = 10 + i * 8;
+                        const isChosen = i === chosen;
+                        const fn = maskFn(i);
+                        const cells: [number, number][] = [];
+                        for (let y = 0; y < N; y++) {
+                            for (let x = 0; x < N; x++) {
+                                if (fn(x, y)) cells.push([x, y]);
+                            }
+                        }
+                        return (
+                            <div key={i} style={{
+                                opacity: fade(f, appear),
+                                padding: 14,
+                                background: PALETTE.paper, borderRadius: 12,
+                                border: isChosen ? `3px solid ${PALETTE.accent}` : `1px solid ${PALETTE.line}`,
+                                boxShadow: isChosen ? `0 0 24px ${PALETTE.accentGlow}` : 'none',
+                                display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 8,
+                            }}>
+                                <div style={{ fontSize: 24, color: PALETTE.textDim, letterSpacing: '0.15em' }}>
+                                    #{i}
+                                </div>
+                                <svg width={tilePx} height={tilePx}>
+                                    {cells.map(([x, y], j) => (
+                                        <rect key={j} x={x * cellPx} y={y * cellPx}
+                                            width={cellPx - 1} height={cellPx - 1} fill={PALETTE.ink} />
+                                    ))}
+                                </svg>
+                                {isChosen && (
+                                    <div style={{
+                                        fontSize: 24, fontWeight: 800, color: PALETTE.accent, letterSpacing: '0.12em',
+                                    }}>BEST</div>
+                                )}
+                            </div>
+                        );
+                    })}
+                </div>
+
+                <div style={{
+                    opacity: fade(f, 100),
+                    fontSize: 28, color: PALETTE.textDim, letterSpacing: '0.1em',
+                }}>
+                    あの「ランダムに見える模様」は、実は計算された最適解
+                </div>
+            </div>
+        </Stage>
+    );
+};
+
+// ============================================================
+// Scene 20 — 32ミリ秒の世界
+// ============================================================
+const Scene20: React.FC<SceneProps> = ({ localFrame: f }) => {
+    return (
+        <Stage>
+            <div style={{ width: 1400, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 40 }}>
+                <div style={{ opacity: fade(f, 0), fontSize: 32, color: PALETTE.textDim, letterSpacing: '0.25em' }}>
+                    読み取り完了までの時間
+                </div>
+
+                <div style={{
+                    opacity: fade(f, 10), transform: `translateY(${riseY(f, 10)}px)`,
+                    display: 'flex', alignItems: 'baseline', gap: 20,
+                }}>
+                    <div style={{
+                        fontSize: 280, fontWeight: 800, color: PALETTE.primary, lineHeight: 1,
+                        textShadow: `0 0 40px ${PALETTE.primaryGlow}`,
+                    }}>32</div>
+                    <div style={{ fontSize: 110, fontWeight: 700, color: PALETTE.primary }}>ms</div>
+                </div>
+
+                <div style={{
+                    opacity: fade(f, 90),
+                    display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 60, width: 1000,
+                }}>
+                    <div style={{
+                        padding: '22px 28px', borderRadius: 14,
+                        background: PALETTE.paper, border: `1px solid ${PALETTE.line}`,
+                        display: 'flex', flexDirection: 'column', gap: 10, alignItems: 'center',
+                    }}>
+                        <div style={{ fontSize: 24, color: PALETTE.textDim, letterSpacing: '0.15em' }}>まばたき</div>
+                        <div style={{ fontSize: 42, fontWeight: 800, color: PALETTE.text }}>100〜400 ms</div>
+                    </div>
+                    <div style={{
+                        padding: '22px 28px', borderRadius: 14,
+                        background: `${PALETTE.primary}10`, border: `2px solid ${PALETTE.primary}`,
+                        display: 'flex', flexDirection: 'column', gap: 10, alignItems: 'center',
+                        boxShadow: `0 0 24px ${PALETTE.primaryGlow}`,
+                    }}>
+                        <div style={{ fontSize: 24, color: PALETTE.primary, letterSpacing: '0.15em', fontWeight: 700 }}>QR 読み取り</div>
+                        <div style={{ fontSize: 42, fontWeight: 800, color: PALETTE.primary }}>32 ms</div>
+                    </div>
+                </div>
+
+                <div style={{
+                    opacity: fade(f, 150),
+                    fontSize: 32, color: PALETTE.accent, fontWeight: 800, letterSpacing: '0.15em',
+                }}>
+                    Quick Response は伊達じゃない
+                </div>
+            </div>
+        </Stage>
+    );
+};
+
+// ============================================================
+// Scene 21 — オープン戦略: 仕様は公開、装置は特許
+// ============================================================
+const Scene21: React.FC<SceneProps> = ({ localFrame: f }) => {
+    return (
+        <Stage>
+            <div style={{ width: 1500, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 40 }}>
+                <div style={{
+                    opacity: fade(f, 0), transform: `translateY(${riseY(f, 0)}px)`,
+                    width: 480, height: 420, padding: 40, borderRadius: 22,
+                    background: `${PALETTE.teal}10`, border: `2px solid ${PALETTE.teal}`,
+                    display: 'flex', flexDirection: 'column', gap: 20, alignItems: 'center',
+                    boxShadow: `0 12px 32px ${PALETTE.teal}22`,
+                }}>
+                    <div style={{
+                        fontSize: 28, color: PALETTE.teal, fontWeight: 800, letterSpacing: '0.3em',
+                    }}>OPEN</div>
+                    <svg width="120" height="120" viewBox="0 0 120 120">
+                        <rect x="30" y="55" width="60" height="50" rx="6" fill="none" stroke={PALETTE.teal} strokeWidth="5" />
+                        <path d="M45 55 L45 40 Q45 20 75 25" fill="none" stroke={PALETTE.teal} strokeWidth="5" strokeLinecap="round" />
+                        <circle cx="60" cy="78" r="8" fill={PALETTE.teal} />
+                        <line x1="60" y1="86" x2="60" y2="95" stroke={PALETTE.teal} strokeWidth="4" strokeLinecap="round" />
+                    </svg>
+                    <div style={{ fontSize: 32, fontWeight: 700, color: PALETTE.text, textAlign: 'center' }}>
+                        QRコードの仕様
+                    </div>
+                    <div style={{
+                        padding: '10px 22px', borderRadius: 10,
+                        background: PALETTE.teal, color: PALETTE.paper,
+                        fontSize: 26, fontWeight: 800, letterSpacing: '0.15em',
+                    }}>FREE</div>
+                    <div style={{ fontSize: 24, color: PALETTE.textDim, textAlign: 'center' }}>
+                        誰でも自由に生成できる
+                    </div>
+                </div>
+
+                <div style={{
+                    opacity: fade(f, 40),
+                    fontSize: 32, color: PALETTE.textDim, fontWeight: 700, letterSpacing: '0.2em',
+                }}>vs</div>
+
+                <div style={{
+                    opacity: fade(f, 60), transform: `translateY(${riseY(f, 60)}px)`,
+                    width: 480, height: 420, padding: 40, borderRadius: 22,
+                    background: `${PALETTE.accent}10`, border: `2px solid ${PALETTE.accent}`,
+                    display: 'flex', flexDirection: 'column', gap: 20, alignItems: 'center',
+                    boxShadow: `0 12px 32px ${PALETTE.accent}22`,
+                }}>
+                    <div style={{
+                        fontSize: 28, color: PALETTE.accent, fontWeight: 800, letterSpacing: '0.3em',
+                    }}>PATENTED</div>
+                    <svg width="120" height="120" viewBox="0 0 120 120">
+                        <rect x="30" y="55" width="60" height="50" rx="6" fill="none" stroke={PALETTE.accent} strokeWidth="5" />
+                        <path d="M45 55 L45 40 Q45 20 75 20 Q95 20 95 40 L95 55" fill="none" stroke={PALETTE.accent} strokeWidth="5" strokeLinecap="round" />
+                        <circle cx="60" cy="78" r="8" fill={PALETTE.accent} />
+                    </svg>
+                    <div style={{ fontSize: 32, fontWeight: 700, color: PALETTE.text, textAlign: 'center' }}>
+                        読み取り装置
+                    </div>
+                    <div style={{
+                        padding: '10px 22px', borderRadius: 10,
+                        background: PALETTE.accent, color: PALETTE.paper,
+                        fontSize: 26, fontWeight: 800, letterSpacing: '0.15em',
+                    }}>PATENT</div>
+                    <div style={{ fontSize: 24, color: PALETTE.textDim, textAlign: 'center' }}>
+                        ここでデンソーが収益化
+                    </div>
+                </div>
+            </div>
+        </Stage>
+    );
+};
+
+// ============================================================
+// Scene 22 — 普及の3つの波: 2002 / 2010s / 2020
+// ============================================================
+const Scene22: React.FC<SceneProps> = ({ localFrame: f }) => {
+    const waves = [
+        { year: '2002', title: '日本のケータイ', sub: 'QR リーダー搭載', color: PALETTE.primary, height: 80 },
+        { year: '2010s', title: '中国のQR決済', sub: 'Alipay / WeChat Pay', color: PALETTE.warm, height: 140 },
+        { year: '2020', title: '世界へ', sub: 'コロナ禍で欧米にも', color: PALETTE.accent, height: 200 },
+    ];
+    const lineProg = interpolate(f, [20, 180], [0, 1], { extrapolateLeft: 'clamp', extrapolateRight: 'clamp' });
+
+    return (
+        <Stage>
+            <div style={{ width: 1500, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 40 }}>
+                <div style={{ opacity: fade(f, 0), fontSize: 32, color: PALETTE.textDim, letterSpacing: '0.25em' }}>
+                    3 WAVES OF ADOPTION
+                </div>
+
+                <div style={{ position: 'relative', width: 1400, height: 320 }}>
+                    {/* Baseline */}
+                    <div style={{
+                        position: 'absolute', bottom: 40, left: 80, right: 80,
+                        height: 4, background: PALETTE.line, borderRadius: 2,
+                    }} />
+                    <div style={{
+                        position: 'absolute', bottom: 40, left: 80,
+                        width: `calc((100% - 160px) * ${lineProg})`,
+                        height: 4, background: `linear-gradient(90deg, ${PALETTE.primary}, ${PALETTE.warm}, ${PALETTE.accent})`,
+                        borderRadius: 2, boxShadow: `0 0 12px ${PALETTE.accent}66`,
+                    }} />
+
+                    {waves.map((w, i) => {
+                        const xPct = i / (waves.length - 1);
+                        const appear = 30 + i * 45;
+                        const barHeight = interpolate(f, [appear + 10, appear + 50], [0, w.height],
+                            { extrapolateLeft: 'clamp', extrapolateRight: 'clamp' });
+                        return (
+                            <div key={i} style={{
+                                position: 'absolute',
+                                left: `calc(80px + ${xPct} * (100% - 160px))`,
+                                bottom: 40, transform: 'translateX(-50%)',
+                                width: 280,
+                                display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 14,
+                                opacity: fade(f, appear),
+                            }}>
+                                {/* wave bar */}
+                                <div style={{
+                                    width: 140, height: barHeight, borderRadius: '70px 70px 18px 18px',
+                                    background: `linear-gradient(180deg, ${w.color}dd, ${w.color}77)`,
+                                    boxShadow: `0 0 24px ${w.color}55`,
+                                    marginBottom: -4,
+                                }} />
+                                {/* node */}
+                                <div style={{
+                                    width: 20, height: 20, borderRadius: '50%',
+                                    background: w.color, border: '3px solid #F5F7FB',
+                                    boxShadow: `0 0 12px ${w.color}aa`,
+                                    position: 'absolute', bottom: 32,
+                                }} />
+                                <div style={{ fontSize: 34, fontWeight: 800, color: w.color, marginTop: 18 }}>{w.year}</div>
+                                <div style={{ fontSize: 28, fontWeight: 700, color: PALETTE.text, textAlign: 'center' }}>{w.title}</div>
+                                <div style={{ fontSize: 26, color: PALETTE.textDim, textAlign: 'center' }}>{w.sub}</div>
+                            </div>
+                        );
+                    })}
+                </div>
+            </div>
+        </Stage>
+    );
+};
+
+// ============================================================
+// Scene 23 — あの模様の正体: 3層の設計
+// ============================================================
+const Scene23: React.FC<SceneProps> = ({ localFrame: f }) => {
+    const layers = [
+        { t: '見つける', en: 'FIND', c: PALETTE.accent, desc: '1:1:3:1:1 のファインダー' },
+        { t: '直す', en: 'FIX', c: PALETTE.teal, desc: 'リード・ソロモン + インターリーブ' },
+        { t: '読む', en: 'READ', c: PALETTE.primary, desc: '4モード × マスクパターン' },
+    ];
+    const size = 21, cellPx = 14;
+    const qrPx = size * cellPx;
+
+    return (
+        <Stage>
+            <div style={{ width: 1500, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 70, opacity: fade(f, 0) }}>
+                {/* QR on left */}
+                <div style={{
+                    padding: 28, background: PALETTE.paper, borderRadius: 18,
+                    border: `1px solid ${PALETTE.line}`,
+                    boxShadow: `0 20px 60px rgba(15,23,42,0.10)`,
+                }}>
+                    <svg width={qrPx} height={qrPx}>
+                        <QRModule size={size} cellPx={cellPx} seed={0.65} />
+                    </svg>
+                </div>
+
+                {/* 3 stacked layers */}
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 16, width: 540 }}>
+                    {layers.map((l, i) => {
+                        const appear = 20 + i * 30;
+                        return (
+                            <div key={i} style={{
+                                opacity: fade(f, appear),
+                                transform: `translateY(${riseY(f, appear)}px)`,
+                                padding: '20px 28px', borderRadius: 14,
+                                background: PALETTE.paper,
+                                border: `2px solid ${l.c}`,
+                                boxShadow: `0 6px 24px ${l.c}33`,
+                                display: 'flex', alignItems: 'center', gap: 22,
+                            }}>
+                                <div style={{
+                                    width: 70, height: 70, borderRadius: '50%',
+                                    background: l.c, color: PALETTE.paper,
+                                    fontSize: 24, fontWeight: 800, letterSpacing: '0.1em',
+                                    display: 'flex', alignItems: 'center', justifyContent: 'center',
+                                    flexShrink: 0,
+                                }}>{l.en}</div>
+                                <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
+                                    <div style={{ fontSize: 30, fontWeight: 800, color: l.c }}>{l.t}</div>
+                                    <div style={{ fontSize: 24, color: PALETTE.textDim }}>{l.desc}</div>
+                                </div>
+                            </div>
+                        );
+                    })}
+
+                    <div style={{
+                        opacity: fade(f, 130),
+                        marginTop: 12, padding: '14px 22px', borderRadius: 12,
+                        background: PALETTE.paperDim, border: `1px solid ${PALETTE.line}`,
+                        fontSize: 26, color: PALETTE.textDim, lineHeight: 1.5, textAlign: 'center',
+                    }}>
+                        1 ドットも無駄のない<span style={{ color: PALETTE.primary, fontWeight: 700 }}>精緻な設計図</span>
+                    </div>
+                </div>
+            </div>
+        </Stage>
+    );
+};
+
+// ============================================================
+// Export
+// ============================================================
+export const SCENE_COMPONENTS: React.FC<SceneProps>[] = [
+    Scene0, Scene1, Scene2, Scene3, Scene4, Scene5,
+    Scene6, Scene7, Scene8, Scene9, Scene10, Scene11,
+    Scene12, Scene13, Scene14, Scene15, Scene16, Scene17,
+    Scene18, Scene19, Scene20, Scene21, Scene22, Scene23,
+];
+
+export const SCENE_TITLES: string[] = [
+    'QRコードの秘密',
+    '22億人の日常',
+    '3割消えても読める',
+    'バーコードの限界',
+    '1次元から2次元へ',
+    '囲碁からの着想',
+    'QRコードの全体像',
+    '3つの四角の正体',
+    '1:1:3:1:1の発見',
+    '存在しない比率',
+    '360度読み取り',
+    '静寂ゾーン',
+    'もし訂正がなかったら',
+    'リード・ソロモンの直感',
+    'CDもQRも同じ技術',
+    'インターリーブ',
+    'デザインQRの仕組み',
+    '読み取りの全体像',
+    '4つのモード',
+    'マスクパターン',
+    '32ミリ秒の世界',
+    'オープン戦略',
+    '普及の3つの波',
+    'あの模様の正体',
+];

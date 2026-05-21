@@ -105,27 +105,4 @@ router.post("/import", upload.array("images", 30), async (req, res) => {
   res.json({ results });
 });
 
-// prompts.txt の読み込み
-const PROMPTS_PATH = path.join(ROOT, "thumbnail", "output", "prompts.txt");
-
-router.get("/prompts", (req, res) => {
-  if (!fs.existsSync(PROMPTS_PATH)) {
-    return res.json({ text: "", blocks: [] });
-  }
-  const text = fs.readFileSync(PROMPTS_PATH, "utf-8");
-  // --- 区切りでブロックに分割
-  const blocks = text.split(/^---$/m)
-    .map((b) => b.trim())
-    .filter(Boolean)
-    .map((block) => {
-      const fields = {};
-      for (const line of block.split("\n")) {
-        const m = line.match(/^(\w+):\s*"?(.*?)"?\s*$/);
-        if (m) fields[m[1]] = m[2];
-      }
-      return { raw: block, ...fields };
-    });
-  res.json({ text, blocks });
-});
-
 export default router;

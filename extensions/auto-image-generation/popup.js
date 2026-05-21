@@ -1,9 +1,14 @@
 /**
- * Gemini Image Auto Generator - Popup Script
- * キュー管理、CSV読込、状態管理、Content Scriptとの通信
+ * Gemini Image Auto Generator - Popup
+ *
+ * storage.local が唯一の真実の源。
+ *  - キューの追加/削除/クリアは storage.local.queue に直接書く
+ *  - 処理進捗は storage.local.processingState に Background が書き込む
+ *  - Popup は storage.onChanged で受動的に再描画するため、
+ *    Popup が閉じている間の進捗も閉じ直せば即座に反映される
  */
 
-// ===== DOM References =====
+// ===== DOM =====
 const el = {
   promptInput: document.getElementById('promptInput'),
   addBtn: document.getElementById('addBtn'),
@@ -22,12 +27,10 @@ const el = {
   delayInput: document.getElementById('delayInput'),
   prefixInput: document.getElementById('prefixInput'),
   lineCount: document.getElementById('lineCount'),
-  // Tabs
   tabText: document.getElementById('tabText'),
   tabCsv: document.getElementById('tabCsv'),
   panelText: document.getElementById('panelText'),
   panelCsv: document.getElementById('panelCsv'),
-  // CSV
   dropZone: document.getElementById('dropZone'),
   csvFileInput: document.getElementById('csvFileInput'),
   csvColumnSelect: document.getElementById('csvColumnSelect'),
@@ -38,24 +41,51 @@ const el = {
   csvImportBtn: document.getElementById('csvImportBtn'),
 };
 
-// ===== State =====
+// ===== Reactive state（storage のキャッシュ） =====
 let queue = [];
+let state = { status: 'idle' };
 let csvParsedData = [];
-let state = {
-  status: 'idle',
-  currentIndex: -1,
-  totalCount: 0,
-  completedCount: 0,
-};
 
 // ===== Init =====
 document.addEventListener('DOMContentLoaded', async () => {
-  await loadState();
+  await refreshFromStorage();
+  await loadSettings();
+  updateLineCount();
+  bindEvents();
   renderQueue();
   updateUI();
-  loadSettings();
+});
 
-  // Core Events
+// storage が変わったら再描画（バックグラウンド処理の進捗も popup 再オープンで即同期される）
+chrome.storage.onChanged.addListener((changes, area) => {
+  if (area !== 'local') return;
+  let changed = false;
+  if (changes.queue) {
+    queue = changes.queue.newValue || [];
+    changed = true;
+  }
+  if (changes.processingState) {
+    state = changes.processingState.newValue || { status: 'idle' };
+    changed = true;
+  }
+  if (changed) {
+    renderQueue();
+    updateUI();
+  }
+});
+
+async function refreshFromStorage() {
+  const d = await chrome.storage.local.get(['queue', 'processingState']);
+  queue = d.queue || [];
+  state = d.processingState || { status: 'idle' };
+}
+
+async function saveQueue() {
+  await chrome.storage.local.set({ queue });
+}
+
+// ===== Events =====
+function bindEvents() {
   el.addBtn.addEventListener('click', handleAddPrompts);
   el.startBtn.addEventListener('click', handleStart);
   el.stopBtn.addEventListener('click', handleStop);
@@ -63,16 +93,9 @@ document.addEventListener('DOMContentLoaded', async () => {
   el.timeoutInput.addEventListener('change', saveSettings);
   el.delayInput.addEventListener('change', saveSettings);
   el.prefixInput.addEventListener('change', saveSettings);
-
-  // Line count
   el.promptInput.addEventListener('input', updateLineCount);
-  updateLineCount();
-
-  // Tab switching
   el.tabText.addEventListener('click', () => switchTab('text'));
   el.tabCsv.addEventListener('click', () => switchTab('csv'));
-
-  // CSV drag & drop
   el.dropZone.addEventListener('click', () => el.csvFileInput.click());
   el.csvFileInput.addEventListener('change', handleFileSelect);
   el.dropZone.addEventListener('dragover', handleDragOver);
@@ -81,17 +104,19 @@ document.addEventListener('DOMContentLoaded', async () => {
   el.csvImportBtn.addEventListener('click', handleCsvImport);
   el.csvColumnSelect.addEventListener('change', () => { if (csvParsedData.length) renderCsvPreview(); });
   el.csvHasHeader.addEventListener('change', () => { if (csvParsedData.length) renderCsvPreview(); });
-
-  // Ctrl+Enter for quick add
   el.promptInput.addEventListener('keydown', (e) => {
     if (e.ctrlKey && e.key === 'Enter') handleAddPrompts();
   });
 
-  // Messages from background
-  chrome.runtime.onMessage.addListener(handleMessage);
-});
+  // バックグラウンドからの致命エラー通知（storage 経由で state.errorMessage にも入る）
+  chrome.runtime.onMessage.addListener((msg) => {
+    if (msg.type === 'PROCESSING_ERROR') {
+      setStatus('error', msg.error || 'エラーが発生しました');
+    }
+  });
+}
 
-// ===== Tab Switching =====
+// ===== Tab =====
 function switchTab(tab) {
   el.tabText.classList.toggle('active', tab === 'text');
   el.tabCsv.classList.toggle('active', tab === 'csv');
@@ -99,85 +124,73 @@ function switchTab(tab) {
   el.panelCsv.classList.toggle('active', tab === 'csv');
 }
 
-// ===== Text Input: Add Prompts =====
-function handleAddPrompts() {
+// ===== Add prompts =====
+async function handleAddPrompts() {
   const text = el.promptInput.value.trim();
   if (!text) return;
-
   const prompts = parsePrompts(text);
   if (prompts.length === 0) return;
 
-  prompts.forEach(prompt => {
-    queue.push({
-      id: Date.now() + Math.random(),
-      text: prompt,
-      status: 'pending',
-    });
-  });
-
+  const newItems = prompts.map(p => ({
+    id: generateId(),
+    text: p,
+    status: 'pending',
+  }));
+  queue = [...queue, ...newItems];
+  await saveQueue();
   el.promptInput.value = '';
   updateLineCount();
-  saveQueue();
-  renderQueue();
-  updateUI();
 }
 
 /**
- * テキストをプロンプトの配列に分割する
- * - 「---」区切りが含まれていれば、各ブロックを1プロンプトとして扱う（複数行プロンプト対応）
- * - 「---」がなければ、従来通り1行 = 1プロンプト
+ * テキストを複数プロンプトに分割。
+ *  - どこかの行が "---" のみなら区切りモード（複数行プロンプト対応）
+ *  - そうでなければ 1行 = 1プロンプト
+ * CRLF / CR も正しく扱う。
  */
 function parsePrompts(text) {
-  // --- が独立した行として存在するかチェック
-  const hasDelimiter = text.split('\n').some(line => line.trim() === '---');
+  const normalized = text.replace(/\r\n?/g, '\n');
+  const lines = normalized.split('\n');
+  const hasDelimiter = lines.some(l => l.trim() === '---');
 
   if (hasDelimiter) {
-    // --- 区切りモード: 各ブロックが1プロンプト
-    return text.split(/^---$/m)
-      .map(block => block.trim())
-      .filter(block => block.length > 0);
-  } else {
-    // 従来モード: 1行 = 1プロンプト
-    return text.split('\n')
-      .map(l => l.trim())
-      .filter(l => l.length > 0);
+    const blocks = [];
+    let cur = [];
+    for (const line of lines) {
+      if (line.trim() === '---') {
+        if (cur.length) blocks.push(cur.join('\n').trim());
+        cur = [];
+      } else {
+        cur.push(line);
+      }
+    }
+    if (cur.length) blocks.push(cur.join('\n').trim());
+    return blocks.filter(b => b.length > 0);
   }
+  return lines.map(l => l.trim()).filter(l => l.length > 0);
 }
 
 function updateLineCount() {
   const text = el.promptInput.value.trim();
-  if (!text) {
-    el.lineCount.textContent = '0件';
-    return;
-  }
+  if (!text) { el.lineCount.textContent = '0件'; return; }
   const prompts = parsePrompts(text);
-  const hasDelimiter = text.split('\n').some(line => line.trim() === '---');
+  const hasDelimiter = text.replace(/\r\n?/g, '\n').split('\n').some(l => l.trim() === '---');
   el.lineCount.textContent = hasDelimiter ? `${prompts.length}件（---区切り）` : `${prompts.length}行`;
 }
 
-// ===== CSV Import =====
-function handleDragOver(e) {
-  e.preventDefault();
-  el.dropZone.classList.add('drag-over');
-}
-
-function handleDragLeave(e) {
-  e.preventDefault();
-  el.dropZone.classList.remove('drag-over');
-}
-
+// ===== CSV =====
+function handleDragOver(e) { e.preventDefault(); el.dropZone.classList.add('drag-over'); }
+function handleDragLeave(e) { e.preventDefault(); el.dropZone.classList.remove('drag-over'); }
 function handleDrop(e) {
   e.preventDefault();
   el.dropZone.classList.remove('drag-over');
   const file = e.dataTransfer.files[0];
   if (file) processFile(file);
 }
-
 function handleFileSelect(e) {
   const file = e.target.files[0];
   if (file) processFile(file);
 }
-
 function processFile(file) {
   const reader = new FileReader();
   reader.onload = (e) => {
@@ -188,34 +201,21 @@ function processFile(file) {
   reader.readAsText(file, 'UTF-8');
 }
 
-/**
- * CSVパーサー（ダブルクォート対応）
- */
 function parseCSV(text) {
   const rows = [];
   let current = '';
   let inQuotes = false;
-  const lines = text.split('\n');
-
+  const lines = text.replace(/\r\n?/g, '\n').split('\n');
   for (const line of lines) {
-    if (inQuotes) {
-      current += '\n' + line;
-    } else {
-      current = line;
-    }
-
-    // クォートの数をカウント
+    current = inQuotes ? current + '\n' + line : line;
     const quoteCount = (current.match(/"/g) || []).length;
     inQuotes = quoteCount % 2 !== 0;
-
     if (!inQuotes) {
-      // 行を解析
       const cols = parseCSVLine(current);
       if (cols.length > 0) rows.push(cols);
       current = '';
     }
   }
-
   return rows;
 }
 
@@ -223,27 +223,16 @@ function parseCSVLine(line) {
   const result = [];
   let current = '';
   let inQuotes = false;
-
   for (let i = 0; i < line.length; i++) {
     const char = line[i];
     if (inQuotes) {
-      if (char === '"' && line[i + 1] === '"') {
-        current += '"';
-        i++;
-      } else if (char === '"') {
-        inQuotes = false;
-      } else {
-        current += char;
-      }
+      if (char === '"' && line[i + 1] === '"') { current += '"'; i++; }
+      else if (char === '"') { inQuotes = false; }
+      else { current += char; }
     } else {
-      if (char === '"') {
-        inQuotes = true;
-      } else if (char === ',' || char === '\t') {
-        result.push(current.trim());
-        current = '';
-      } else {
-        current += char;
-      }
+      if (char === '"') inQuotes = true;
+      else if (char === ',' || char === '\t') { result.push(current.trim()); current = ''; }
+      else current += char;
     }
   }
   result.push(current.trim());
@@ -251,17 +240,11 @@ function parseCSVLine(line) {
 }
 
 function renderCsvPreview() {
-  if (csvParsedData.length === 0) {
-    el.csvPreview.style.display = 'none';
-    return;
-  }
-
+  if (csvParsedData.length === 0) { el.csvPreview.style.display = 'none'; return; }
   const hasHeader = el.csvHasHeader.checked;
   const colIndex = el.csvColumnSelect.value;
-
   let dataRows = hasHeader ? csvParsedData.slice(1) : csvParsedData;
 
-  // 自動検出: 最も長い文字列がある列を使う
   let targetCol = parseInt(colIndex);
   if (colIndex === 'auto') {
     if (dataRows.length > 0) {
@@ -270,25 +253,15 @@ function renderCsvPreview() {
       targetCol = 0;
       for (let c = 0; c < colCount; c++) {
         const avgLen = dataRows.reduce((sum, row) => sum + (row[c]?.length || 0), 0) / dataRows.length;
-        if (avgLen > maxAvgLen) {
-          maxAvgLen = avgLen;
-          targetCol = c;
-        }
+        if (avgLen > maxAvgLen) { maxAvgLen = avgLen; targetCol = c; }
       }
-    } else {
-      targetCol = 0;
-    }
+    } else targetCol = 0;
   }
 
-  // プロンプトを抽出
-  const prompts = dataRows
-    .map(row => row[targetCol]?.trim())
-    .filter(p => p && p.length > 0);
-
+  const prompts = dataRows.map(row => row[targetCol]?.trim()).filter(p => p && p.length > 0);
   el.csvPreview.style.display = 'flex';
   el.csvPreviewCount.textContent = `${prompts.length}件`;
 
-  // プレビュー表示（最大20件）
   const previewItems = prompts.slice(0, 20);
   el.csvPreviewList.innerHTML = previewItems.map((p, i) => `
     <div class="csv-preview-item">
@@ -296,7 +269,6 @@ function renderCsvPreview() {
       <span class="csv-preview-item-text" title="${escapeHtml(p)}">${escapeHtml(p)}</span>
     </div>
   `).join('');
-
   if (prompts.length > 20) {
     el.csvPreviewList.innerHTML += `
       <div class="csv-preview-item">
@@ -304,117 +276,54 @@ function renderCsvPreview() {
       </div>
     `;
   }
-
-  // データを保存（インポート用）
   el.csvImportBtn._prompts = prompts;
 }
 
-function handleCsvImport() {
+async function handleCsvImport() {
   const prompts = el.csvImportBtn._prompts;
   if (!prompts || prompts.length === 0) return;
-
-  prompts.forEach(text => {
-    queue.push({
-      id: Date.now() + Math.random(),
-      text: text,
-      status: 'pending',
-    });
-  });
-
-  // リセット
+  const newItems = prompts.map(p => ({ id: generateId(), text: p, status: 'pending' }));
+  queue = [...queue, ...newItems];
   csvParsedData = [];
   el.csvPreview.style.display = 'none';
   el.csvFileInput.value = '';
-
-  saveQueue();
-  renderQueue();
-  updateUI();
+  await saveQueue();
 }
 
-// ===== Queue Management =====
-function handleDeleteItem(id) {
-  queue = queue.filter(item => item.id !== id);
-  saveQueue();
-  renderQueue();
-  updateUI();
+// ===== Queue management =====
+async function handleDeleteItem(id) {
+  queue = queue.filter(i => i.id !== id);
+  await saveQueue();
 }
 
-function handleClear() {
+async function handleClear() {
   if (state.status === 'running') return;
   queue = [];
-  state = { status: 'idle', currentIndex: -1, totalCount: 0, completedCount: 0 };
-  saveQueue();
-  saveState();
+  await chrome.storage.local.set({ queue });
+  await chrome.storage.local.remove('processingState');
+  state = { status: 'idle' };
   renderQueue();
   updateUI();
 }
 
 // ===== Start / Stop =====
 async function handleStart() {
-  const pendingItems = queue.filter(item => item.status === 'pending');
-  if (pendingItems.length === 0) return;
-
+  const hasPending = queue.some(i => i.status === 'pending');
+  if (!hasPending) return;
   const tabs = await chrome.tabs.query({ url: 'https://gemini.google.com/*' });
   if (tabs.length === 0) {
     setStatus('error', 'Geminiのタブが見つかりません');
     return;
   }
-
-  state.status = 'running';
-  state.totalCount = pendingItems.length;
-  state.completedCount = 0;
-  state.currentIndex = 0;
-
-  saveState();
-  updateUI();
-
-  const settings = getSettings();
   chrome.runtime.sendMessage({
     type: 'START_PROCESSING',
-    queue: pendingItems.map(item => ({ id: item.id, text: item.text })),
     tabId: tabs[0].id,
-    settings: settings,
+    settings: getSettings(),
   });
 }
 
 function handleStop() {
   chrome.runtime.sendMessage({ type: 'STOP_PROCESSING' });
-  state.status = 'idle';
-  state.currentIndex = -1;
-  queue.forEach(item => { if (item.status === 'active') item.status = 'pending'; });
-  saveQueue();
-  saveState();
-  renderQueue();
-  updateUI();
-}
-
-// ===== Message Handler =====
-function handleMessage(message) {
-  switch (message.type) {
-    case 'ITEM_STARTED':
-      queue.forEach(item => { if (item.id === message.itemId) item.status = 'active'; });
-      state.currentIndex = message.index;
-      break;
-    case 'ITEM_COMPLETED':
-      queue.forEach(item => { if (item.id === message.itemId) item.status = 'completed'; });
-      state.completedCount++;
-      break;
-    case 'ITEM_ERROR':
-      queue.forEach(item => { if (item.id === message.itemId) item.status = 'error'; });
-      break;
-    case 'ALL_COMPLETED':
-      state.status = 'completed';
-      state.currentIndex = -1;
-      break;
-    case 'PROCESSING_ERROR':
-      state.status = 'error';
-      setStatus('error', message.error || 'エラーが発生しました');
-      break;
-  }
-  saveQueue();
-  saveState();
-  renderQueue();
-  updateUI();
 }
 
 // ===== Rendering =====
@@ -437,9 +346,11 @@ function renderQueue() {
   queue.forEach((item, index) => {
     const div = document.createElement('div');
     div.className = `queue-item ${item.status}`;
-    const icon = item.status === 'active' ? '⏳' : item.status === 'completed' ? '✅' : item.status === 'error' ? '❌' : '';
+    const icon = item.status === 'active' ? '⏳'
+      : item.status === 'completed' ? '✅'
+      : item.status === 'error' ? '❌'
+      : '';
     const canDelete = item.status !== 'active';
-
     div.innerHTML = `
       <span class="queue-item-number">${index + 1}.</span>
       <span class="queue-item-text">${escapeHtml(item.text)}</span>
@@ -450,13 +361,13 @@ function renderQueue() {
   });
 
   container.querySelectorAll('.queue-item-delete').forEach(btn => {
-    btn.addEventListener('click', (e) => handleDeleteItem(parseFloat(e.currentTarget.dataset.id)));
+    btn.addEventListener('click', (e) => handleDeleteItem(e.currentTarget.dataset.id));
   });
 }
 
 function updateUI() {
   const isRunning = state.status === 'running';
-  const hasPending = queue.some(item => item.status === 'pending');
+  const hasPending = queue.some(i => i.status === 'pending');
 
   el.startBtn.disabled = !hasPending || isRunning;
   el.startBtn.style.display = isRunning ? 'none' : 'flex';
@@ -464,6 +375,13 @@ function updateUI() {
   el.clearBtn.disabled = isRunning;
   el.addBtn.disabled = isRunning;
   el.promptInput.disabled = isRunning;
+
+  const total = state.totalCount || 0;
+  const completed = state.completedCount || 0;
+  const errors = state.errorCount || 0;
+  const processed = completed + errors;
+  // 「何番目を処理中か」= 既処理数 + 1（ただし total を超えない）
+  const currentN = isRunning && total > 0 ? Math.min(processed + 1, total) : processed;
 
   const indicator = el.statusIndicator;
   indicator.className = 'status-indicator';
@@ -475,22 +393,27 @@ function updateUI() {
       break;
     case 'running':
       indicator.classList.add('running');
-      setStatus('running', `処理中... (${state.completedCount + 1}/${state.totalCount})`);
+      setStatus('running', `処理中... (${currentN}/${total})`);
       break;
     case 'completed':
       indicator.classList.add('completed');
-      setStatus('completed', `完了！ ${state.completedCount}件処理`);
+      setStatus('completed',
+        errors > 0
+          ? `完了 ✓${completed}件 / ✗${errors}件`
+          : `完了！ ${completed}件処理`
+      );
       break;
     case 'error':
       indicator.classList.add('error');
+      setStatus('error', state.errorMessage || 'エラーが発生しました');
       break;
   }
 
   if (state.status === 'running' || state.status === 'completed') {
     el.progressSection.style.display = 'flex';
-    const pct = state.totalCount > 0 ? (state.completedCount / state.totalCount) * 100 : 0;
+    const pct = total > 0 ? (processed / total) * 100 : 0;
     el.progressFill.style.width = `${pct}%`;
-    el.progressText.textContent = `${state.completedCount} / ${state.totalCount}`;
+    el.progressText.textContent = `${processed} / ${total}`;
   } else {
     el.progressSection.style.display = 'none';
   }
@@ -501,37 +424,28 @@ function setStatus(type, text) {
   el.statusIndicator.className = `status-indicator ${type}`;
 }
 
-// ===== Persistence =====
-async function saveQueue() { await chrome.storage.local.set({ queue }); }
-async function saveState() { await chrome.storage.local.set({ processingState: state }); }
-
-async function loadState() {
-  const data = await chrome.storage.local.get(['queue', 'processingState']);
-  if (data.queue) queue = data.queue;
-  if (data.processingState) {
-    state = data.processingState;
-    if (state.status === 'running') {
-      try {
-        const resp = await chrome.runtime.sendMessage({ type: 'GET_STATUS' });
-        if (!resp || resp.status !== 'running') {
-          state.status = 'idle';
-          queue.forEach(item => { if (item.status === 'active') item.status = 'pending'; });
-        }
-      } catch {
-        state.status = 'idle';
-        queue.forEach(item => { if (item.status === 'active') item.status = 'pending'; });
-      }
-    }
-  }
-}
-
+// ===== Settings =====
 const DEFAULT_PREFIX = `以下のYAML仕様に基づいてYouTube動画のサムネイル画像を1枚生成してください。サムネイルであり、イラスト作品ではありません。
-- direction, mood: 画像の雰囲気。画像内テキストとして描画しない
-- main_catch: 画像内に最も大きく目立つように配置するメインテキスト。サムネの主役
-- sub_text: 画像内に小さく配置するサブテキスト
-- visual_concept: 描画するビジュアル。シンプルに1つの主題
-- style: 画風指示
-重要: テキストが最も目立つこと。ビジュアルは背景やテキストの引き立て役。AIイラスト風の厚塗り・複雑すぎるシーンは禁止。`;
+
+フィールドの意味:
+- title: 動画タイトル。画像内には描画しない（参考情報）
+- angle / core_hook / single_claim: 訴求の意図。絵の一貫した主張を作るための指針
+- visual_event: 画面内で"起きている事件"。これを絵の中心に据える
+- main_subject: 一番大きく目立たせる主役オブジェクト（主題は1つ）
+- secondary_subject: 補助要素。主役を邪魔しない。"none" なら入れない
+- composition: 画角・主役位置・余白・視線誘導
+- thumbnail_text: 画像内に実際に描画するテキスト。色・配置指定も従う。"none" なら文字を入れない
+- palette: 使う色（HEXコード2〜4色）。指定色以外は基本使わない
+- style_direction: 絵柄・質感の方向性（主役ではなく補助）
+- anti_ai_ingredients: 人間感・素材感を出すために必ず混入する要素
+- negative_prompt: 絶対に入れてはいけない要素
+
+重要:
+- 1枚1メッセージ。視覚階層の頂点は常に1つ
+- "事件"を見せる絵にする。整いすぎた説明図や対称的な完璧構図は弱い
+- AI感を徹底排除: 3Dクレイ/ソフト3D/ぷっくり立体/ネオングロー/ブルーム/浮遊アイコン/パープル×シアン×ピンクのグラデは禁止
+- 人物・顔・キャラは使わない。物理的状況で好奇心を作る
+- モバイル表示（160×90px）でも主役が読めること`;
 
 function getSettings() {
   return {
@@ -552,9 +466,13 @@ async function loadSettings() {
   }
 }
 
-// ===== Util =====
+// ===== Utils =====
 function escapeHtml(text) {
   const d = document.createElement('div');
   d.textContent = text;
   return d.innerHTML;
+}
+
+function generateId() {
+  return `${Date.now()}-${Math.random().toString(36).slice(2, 10)}`;
 }

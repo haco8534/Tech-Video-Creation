@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { fetchChannels, fetchWorkflowStatus, registerThemes, deleteProject, fetchActiveSessions } from "../api";
 import WorkflowProgress from "../production/WorkflowProgress";
 import ClaudeChat from "../production/ClaudeChat";
@@ -69,19 +69,32 @@ export default function ProductionTab({ navigationTarget, onClearNavigation }) {
     }
   }, [projectId]);
 
-  // Claude が実行開始されたらそのプロジェクトの確認済みをリセット
+  // 完了検知: 閲覧中のプロジェクトは自動的に確認済み扱い、そうでなければチェックマーク表示
+  const prevDoneRef = useRef({});
   useEffect(() => {
+    const currentKey = projectId ? `${CHANNEL_ID}/${projectId}` : null;
+    const nextDone = {};
+    const risingEdges = [];
     for (const [key, session] of Object.entries(activeSessions)) {
-      if (session.claudeRunning) {
-        setSeenDone((prev) => {
-          if (!prev.has(key)) return prev;
-          const next = new Set(prev);
-          next.delete(key);
-          return next;
-        });
-      }
+      const isDone = !!session?.claudeDone && !session?.claudeRunning;
+      nextDone[key] = isDone;
+      if (isDone && !prevDoneRef.current[key]) risingEdges.push(key);
     }
-  }, [activeSessions]);
+    prevDoneRef.current = nextDone;
+    if (risingEdges.length === 0) return;
+    setSeenDone((prev) => {
+      const next = new Set(prev);
+      let changed = false;
+      for (const key of risingEdges) {
+        if (key === currentKey) {
+          if (!next.has(key)) { next.add(key); changed = true; }
+        } else {
+          if (next.has(key)) { next.delete(key); changed = true; }
+        }
+      }
+      return changed ? next : prev;
+    });
+  }, [activeSessions, projectId]);
 
   // Fetch workflow status with polling
   useEffect(() => {
