@@ -112,14 +112,14 @@ import {
 
 // ===== sandbox（試作） =====
 import {
-  Transformer as SandboxTransformer,
-  TOTAL_FRAMES as SANDBOX_TRANSFORMER_TOTAL_FRAMES,
-} from "@sandbox/experiments/transformer/Composition";
+  PublicKeyCrypto as SandboxPublicKeyCrypto,
+  TOTAL_FRAMES as SANDBOX_PUBLIC_KEY_TOTAL_FRAMES,
+} from "@sandbox/experiments/public_key_crypto/Composition";
 
 import {
-  Diffusion as SandboxDiffusion,
-  TOTAL_FRAMES as SANDBOX_DIFFUSION_TOTAL_FRAMES,
-} from "@sandbox/experiments/diffusion/Composition";
+  ImageGeneration as SandboxImageGeneration,
+  TOTAL_FRAMES as SANDBOX_IMAGE_GENERATION_TOTAL_FRAMES,
+} from "@sandbox/experiments/image_generation/Composition";
 
 import "./index.css";
 
@@ -305,17 +305,17 @@ export const RemotionRoot: React.FC = () => {
       {/* ===== sandbox（試作） ===== */}
 
       <Composition
-        id="sandbox-transformer"
-        component={SandboxTransformer}
-        durationInFrames={SANDBOX_TRANSFORMER_TOTAL_FRAMES}
+        id="sandbox-public-key"
+        component={SandboxPublicKeyCrypto}
+        durationInFrames={SANDBOX_PUBLIC_KEY_TOTAL_FRAMES}
         fps={30}
         width={1920}
         height={1080}
       />
       <Composition
-        id="sandbox-diffusion"
-        component={SandboxDiffusion}
-        durationInFrames={SANDBOX_DIFFUSION_TOTAL_FRAMES}
+        id="sandbox-image-generation"
+        component={SandboxImageGeneration}
+        durationInFrames={SANDBOX_IMAGE_GENERATION_TOTAL_FRAMES}
         fps={30}
         width={1920}
         height={1080}
