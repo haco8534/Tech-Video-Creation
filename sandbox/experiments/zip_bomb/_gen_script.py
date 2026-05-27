@@ -1,193 +1,161 @@
-"""scriptData.ts を生成する。
+# -*- coding: utf-8 -*-
+# script.md -> scriptData.ts 生成。
+# event 名は design_spec.md の event 一覧、SUB はその「紐付くセリフ」の一意な抜粋。
+import io, sys, os
 
-script.md の対話行を抽出し、design_spec.md の event 一覧に従って event を割り当てる。
-event は本文中の一意な部分文字列で機械的に紐付ける。
-"""
+HERE = os.path.dirname(os.path.abspath(__file__))
 
-from __future__ import annotations
-
-import re
-from pathlib import Path
-
-HERE = Path(__file__).parent
-SCRIPT_MD = HERE / "script.md"
-OUT_TS = HERE / "scriptData.ts"
-
-LINE_RE = re.compile(r"^(めたん|ずんだもん)：(.+)$")
-
-# (本文中の一意な部分文字列, event 名)。出現順に並べる
-EVENT_MAP: list[tuple[str, str]] = [
-    # 序論
-    ("ねえずんだもん、これ見て", "scene.intro.in"),
-    ("サイズはたったの 42 キロバイト", "intro.zip.in"),
-    ("4500 兆バイトなのだ", "intro.expand"),
-    ("圧縮率にすると、およそ 1000 億倍", "intro.ratio.flash"),
-    ("有名な zip 爆弾なのだ", "intro.name"),
-    ("「ように見える」って、引っかかる", "intro.like_hint"),
-    ("指示書は軽い、実行は重い", "intro.compare.in"),
-    ("同じ文字を 1 億回書け", "intro.compare.swap"),
-    ("律儀に実行する人は 1 億回手を動かす", "intro.exec_burden"),
-    ("この差を極限まで開いた", "intro.gap"),
-    ("律儀に開けた側だけがしずかに自滅", "intro.malicious"),
-    ("派手じゃない、ねちっこい攻撃", "intro.subtle"),
-    ("意地悪な仕掛け", "intro.mean"),
-    ("圧縮」っていう言葉の中身", "intro.bridge"),
-    # ボディ1
-    ("圧縮って、何をすることか", "scene.body1.in"),
-    ("よく出る文字に短い番号を振る", "body1.naive"),
-    ("前に出てきたものを、もう一度書かない", "body1.no_repeat"),
-    ("ABCABCABCABCABC", "body1.string.in"),
-    ("3 文字前にもどって 3 文字ぶんコピー", "body1.copy.arrow"),
-    ("過去の自分を指さす", "body1.self_ref"),
-    ("LZ77 という呼び名", "body1.lz77.card"),
-    ("ハフマン符号", "body1.deflate.card"),
-    ("a がいちばん出るなら、a に短いビットってこと", "body1.huffman_a"),
-    ("頻度が 50 倍くらい違う", "body1.huffman_freq"),
-    ("数字まで縮めちゃう", "body1.huffman_digit"),
-    ("最大 32 キロバイト", "body1.window"),
-    ("32 キロバイトの「スライド窓", "body1.window_box"),
-    ("窓のサイズは制約", "body1.window_ok"),
-    ("「AAAAA……」を 100 個", "body1.aaaa"),
-    ("A しか出てこないんだから", "body1.zeros_q"),
-    ("12 バイトちょっと", "body1.zeros_naive"),
-    ("10 倍以上 開くのだ", "body1.lz77_wins"),
-    ("繰り返しが多いほどよく縮む", "body1.repeat_wins"),
-    ("ゼロが 10 億バイト並んだファイル", "body1.zeros_billion"),
-    ("258 文字までしか指定できない", "body1.maxlen"),
-    ("258 ずつにブツ切り", "body1.chunk"),
-    ("理論上、DEFLATE 1 段あたりの圧縮率の上限", "body1.limit.card"),
-    ("これがけっこう大事な数", "body1.ceiling_hit"),
-    ("もうひと工夫——というか、ふた工夫", "body1.bridge_body2"),
-    # ボディ2
-    ("圧縮したものをまた圧縮する", "body2.double_q"),
-    ("zip の中に zip を入れて、二重圧縮", "body2.double_no"),
-    ("ランダムは参照型でも縮まない", "body2.random_no"),
-    ("42.zip はどう作っているの", "body2.how_q"),
-    ("ここで、設計が二つに分かれる", "scene.body2.in"),
-    ("再帰展開型は", "body2.recursive_head"),
-    ("1 個の zip の中にたとえば 16 個", "body2.recursive.expand"),
-    ("これを 5 段重ねるのだ", "body2.recursive.dots"),
-    ("16 の 5 乗", "body2.power"),
-    ("100 万個ちょっと", "body2.million"),
-    ("4 ギガバイト", "body2.giga"),
-    ("ほぼ 4.5 ペタバイト", "body2.recursive.result"),
-    ("同じ実体", "body2.same_entity"),
-    ("当時の対策の隙間にきれいに刺さった", "body2.fit"),
-    ("再帰的に展開する深さ", "body2.recursive.defended"),
-    ("3 段までしか中をのぞかない", "body2.depth_limit"),
-    ("もう一つの設計", "body2.into_single"),
-    ("1 回展開しただけで、いきなりとんでもないサイズ", "body2.single_intro"),
-    ("David Fifield", "body2.single.head"),
-    ("ローカルヘッダ", "body2.local_header"),
-    ("本文の小見出しと、巻末の索引", "body2.dual_index"),
-    ("巻末の目次のほうを優先して読む", "body2.trust_index"),
-    ("フロッピーディスクをまたいで分割", "body2.floppy"),
-    ("巻末を信じる」癖を逆手", "body2.flip"),
-    ("ぜんぶ同じ位置を指す", "body2.single.arrows"),
-    ("複数のファイルとして使い回せるよう特殊な切れ目", "body2.cutmarks"),
-    ("再帰してないのに量だけ膨らむ", "body2.no_recursion"),
-    ("どこかで「ここでファイル終わり", "body2.terminator"),
-    ("281 テラバイト", "body2.single.result"),
-    ("深さの上限を 1 にしても、無傷で通り抜ける", "body2.single.bypass"),
-    ("攻撃する立場からするとどっちが「便利」", "body2.compare_q"),
-    ("Fifield の論文には世の中の主要な展開ツール", "body2.tool_table"),
-    ("仕様の解釈の隙間がそのまま攻撃面", "body2.spec_gap"),
-    # ボディ3
-    ("zip 爆弾を受け取って、いちばん困るのは誰", "scene.body3.in"),
-    ("今の OS や展開ソフトはたいてい途中で", "body3.user_safe"),
-    ("自動的に中身を全部展開する側", "body3.targets.in"),
-    ("いったんメモリの上に中身を広げてから", "body3.memory_first"),
-    ("CPU も食われる", "body3.meters.fill"),
-    ("サービスを止める攻撃に分類", "body3.dos"),
-    ("アンチウイルスソフト", "body3.target_av"),
-    ("ファイルアップロード機能のあるウェブサービス", "body3.target_api"),
-    ("攻撃を防ごうとする側がまさにその防ごうとする動作で自滅", "body3.irony"),
-    ("「ちゃんと仕事してる検査」のところで起きる", "body3.serious_self_burn"),
-    ("本物のマルウェアまで通り抜けてしまう", "body3.dilemma"),
-    ("二択を迫られる", "body3.fork"),
-    ("100 メガバイトまで読んだ時点", "body3.size_limit_hint"),
-    ("時間が 30 秒を超えたら", "body3.time_limit_hint"),
-    ("最大展開サイズ", "body3.defense.size"),
-    ("圧縮率そのものを警戒の合図", "body3.defense.ratio"),
-    ("100 倍を超えてたら警告", "body3.ratio_thresh"),
-    ("物差しが振り切れる地点", "body3.ratio_meter"),
-    ("展開しながら同時に検査", "body3.defense.stream"),
-    ("流しそうめんみたいに", "body3.stream_metaphor"),
-    ("ちゃんとしすぎない", "body3.dont_overdo"),
-    ("1996 年には、当時のアンチウイルスへの実演", "body3.history"),
-    ("30 年経った今も形を変えて生き残っている", "body3.alive"),
-    # 結論
-    ("もう一度、最初の数字に戻る", "scene.outro.in"),
-    ("送る側の気遣いの技術", "outro.kindness"),
-    ("やさしさ」の仕組みが受け取る側", "outro.kindness_weapon"),
-    ("Billion Laughs ", "outro.family.lol"),
-    ("合言葉」を定義する機能", "outro.lol_def"),
-    ("これを 9 段", "outro.lol_nest"),
-    ("ReDoS という攻撃", "outro.family.redos"),
-    ("ぜんぶ、同じ家族の攻撃", "outro.family.pulse"),
-    ("指示書を最後まで実行しない", "outro.solution"),
-    ("「ように見える」の意味、分かるのだ", "outro.callback"),
-    ("律儀に最後まで展開しようとした、防御側の手", "outro.self_burn"),
-    ("律儀さを武器に変える攻撃", "outro.final"),
-    ("無数の場面がある", "outro.everywhere"),
+EVENTS = [
+    "scene.intro.in", "intro.size", "intro.expand", "intro.ratio", "intro.name",
+    "intro.notMagic", "intro.asym", "intro.paperEx", "intro.balance",
+    "scene.body1.in", "b1.copy", "b1.example", "b1.rewrite", "b1.lz77",
+    "b1.deflate", "b1.huff", "b1.window", "b1.compare", "b1.gap",
+    "b1.zeros", "b1.cap258", "b1.ceiling",
+    "scene.body2a.in", "b2a.naive", "b2a.split", "b2a.tree", "b2a.five",
+    "b2a.million", "b2a.leaf", "b2a.peta", "b2a.share",
+    "b2a.depthLimit", "b2a.outdated",
+    "scene.body2b.in", "b2b.oneShot", "b2b.fifield", "b2b.struct",
+    "b2b.trustDir", "b2b.samePos", "b2b.splits", "b2b.tera",
+    "b2b.bypass", "b2b.tools",
+    "scene.body3.in", "b3.humanOk", "b3.auto", "b3.ram", "b3.cpu",
+    "b3.av", "b3.mail", "b3.web", "b3.ironic", "b3.lazy",
+    "b3.limitSize", "b3.limitTime", "b3.ratioGuard", "b3.stream",
+    "scene.outro.in", "outro.recap", "outro.kindWeapon", "outro.family",
+    "outro.bil", "outro.bilNest", "outro.redos", "outro.commonDef", "outro.final",
 ]
+SUB = {
+    "scene.intro.in": "画面にファイルがひとつ",
+    "intro.size": "サイズはたったの 42 キロバイト",
+    "intro.expand": "中身を全部展開すると、4.5 ペタバイト",
+    "intro.ratio": "圧縮率にすると、およそ 1000 億倍",
+    "intro.name": "呼ばれる、有名な zip 爆弾",
+    "intro.notMagic": "圧縮率の魔法」じゃない",
+    "intro.asym": "計算の非対称",
+    "intro.paperEx": "同じ文字を 1 億回書け",
+    "intro.balance": "指示書はちっちゃい、実行は天文学的",
+    "scene.body1.in": "正確に説明できる人は案外少ない",
+    "b1.copy": "前に出てきたものを、もう一度書かない",
+    "b1.example": "ABCABCABCABCABC",
+    "b1.rewrite": "3 文字をもう 4 回くりかえせ",
+    "b1.lz77": "1977 年の話",
+    "b1.deflate": "DEFLATE っていう圧縮",
+    "b1.huff": "「ハフマン符号」を組み合わせた",
+    "b1.window": "最大 32 キロバイトまで",
+    "b1.compare": "どっちが小さくなると思うのだ",
+    "b1.gap": "10 倍以上 開くのだ",
+    "b1.zeros": "ゼロが 10 億バイト並んだファイル",
+    "b1.cap258": "最大 258 文字までしか",
+    "b1.ceiling": "おおよそ 1032 倍",
+    "scene.body2a.in": "圧縮したものをまた圧縮する",
+    "b2a.naive": "二重圧縮、三重圧縮",
+    "b2a.split": "古典的な「再帰展開型」と現代的な「単発型」",
+    "b2a.tree": "16 個の同じ zip が入っている",
+    "b2a.five": "5 段重ねるのだ",
+    "b2a.million": "およそ 100 万個",
+    "b2a.leaf": "4 ギガバイトの大きさ",
+    "b2a.peta": "ほぼ 4.5 ペタバイト",
+    "b2a.share": "ぜんぶ「同じ実体」を指している",
+    "b2a.depthLimit": "深さ」に上限",
+    "b2a.outdated": "現代の主流の対策にはもう引っかからない",
+    "scene.body2b.in": "もう一つの設計が出てくるのだ。単発型",
+    "b2b.oneShot": "いきなりとんでもないサイズ",
+    "b2b.fifield": "2019 年に David Fifield",
+    "b2b.struct": "「セントラルディレクトリ」っていう目次",
+    "b2b.trustDir": "巻末の目次のほうを優先",
+    "b2b.samePos": "ぜんぶ同じ位置を指す",
+    "b2b.splits": "特殊な切れ目を仕込んである",
+    "b2b.tera": "10 メガバイトのファイルから 281 テラバイト",
+    "b2b.bypass": "深さの上限を 1 にしても、無傷で通り抜ける",
+    "b2b.tools": "主要な展開ツールがこの単発型をどう扱うかの一覧表",
+    "scene.body3.in": "いちばん困るのは誰だと思う",
+    "b3.humanOk": "意外と、それでは深刻にならない",
+    "b3.auto": "自動的に中身を全部展開する側",
+    "b3.ram": "メモリの上に中身を広げてから",
+    "b3.cpu": "10 億回ぶんの書き込み",
+    "b3.av": "アンチウイルスソフト",
+    "b3.mail": "メールゲートウェイ",
+    "b3.web": "ファイルアップロード機能のあるウェブサービス",
+    "b3.ironic": "防ごうとする動作で自滅",
+    "b3.lazy": "本物のマルウェアまで通り抜けて",
+    "b3.limitSize": "最初の 100 メガバイトまで読んだ時点",
+    "b3.limitTime": "30 秒を超えたら",
+    "b3.ratioGuard": "1000 倍を超えてたらもう中身を見ないで隔離",
+    "b3.stream": "展開しながら同時に検査する",
+    "scene.outro.in": "もう一度、最初の数字に戻る",
+    "outro.recap": "非対称を最大化した",
+    "outro.kindWeapon": "受け取る側の几帳面さを狙う武器に化けた",
+    "outro.family": "zip だけの話じゃない",
+    "outro.bil": "Billion Laughs",
+    "outro.bilNest": "これを 9 段",
+    "outro.redos": "ReDoS という攻撃",
+    "outro.commonDef": "指示書を最後まで実行しない",
+    "outro.final": "律儀さを武器に変える攻撃",
+}
 
-
-def find_event(text: str, used: set[str]) -> str | None:
-    for needle, event in EVENT_MAP:
-        if event in used:
+lines = []
+with io.open(os.path.join(HERE, "script.md"), encoding="utf-8") as fh:
+    for raw in fh:
+        s = raw.rstrip("\n")
+        if not s.strip():
             continue
-        if needle in text:
-            return event
-    return None
+        if s.lstrip().startswith("#"):
+            continue
+        if "：" not in s:
+            continue
+        sp, tx = s.split("：", 1)
+        lines.append((sp.strip(), tx.strip()))
 
+assigned = {}
+script = []
+for idx, (sp, tx) in enumerate(lines):
+    ev = None
+    for e in EVENTS:
+        if SUB[e] in tx:
+            if e in assigned:
+                sys.exit("event 重複: %s (line %d & %d)" % (e, assigned[e], idx))
+            if ev is not None:
+                sys.exit("1行に複数 event: line %d (%s, %s)" % (idx, ev, e))
+            ev = e
+            assigned[e] = idx
+    script.append((sp, tx, ev))
 
-def main() -> None:
-    raw = SCRIPT_MD.read_text(encoding="utf-8")
-    lines: list[tuple[str, str]] = []
-    for line in raw.splitlines():
-        m = LINE_RE.match(line.strip())
-        if m:
-            lines.append((m.group(1), m.group(2).strip()))
+missing = [e for e in EVENTS if e not in assigned]
+if missing:
+    sys.exit("未割り当て event: %s" % missing)
 
-    used: set[str] = set()
-    annotated: list[tuple[str, str, str | None]] = []
-    for speaker, text in lines:
-        e = find_event(text, used)
-        if e is not None:
-            used.add(e)
-        annotated.append((speaker, text, e))
+def esc(t):
+    return t.replace("\\", "\\\\").replace("'", "\\'")
 
-    expected = {e for _, e in EVENT_MAP}
-    missing = expected - used
-    if missing:
-        raise SystemExit(f"event 未割り当て: {sorted(missing)}")
+out = []
+out.append("// このファイルは script.md から _gen_script.py で生成。手で編集しない。")
+out.append("")
+out.append("export type Speaker = 'めたん' | 'ずんだもん';")
+out.append("")
+out.append("export type AnimEvent =")
+for i, e in enumerate(EVENTS):
+    sep = ";" if i == len(EVENTS) - 1 else ""
+    out.append("  | '%s'%s" % (e, sep))
+out.append("")
+out.append("export type ScriptLine = { speaker: Speaker; text: string; event?: AnimEvent };")
+out.append("")
+out.append("export const SCRIPT: ScriptLine[] = [")
+for sp, tx, ev in script:
+    if ev:
+        out.append("  { speaker: '%s', text: '%s', event: '%s' }," % (sp, esc(tx), ev))
+    else:
+        out.append("  { speaker: '%s', text: '%s' }," % (sp, esc(tx)))
+out.append("];")
+out.append("")
 
-    all_events = [e for _, e in EVENT_MAP]
-    union = " | ".join(f"'{e}'" for e in all_events)
+with io.open(os.path.join(HERE, "scriptData.ts"), "w", encoding="utf-8", newline="\n") as fh:
+    fh.write("\n".join(out))
 
-    out: list[str] = []
-    out.append("// 自動生成（手で編集しない）。_gen_script.py から再生成する。")
-    out.append("")
-    out.append("export type Speaker = 'めたん' | 'ずんだもん';")
-    out.append("")
-    out.append("export type AnimEvent =")
-    out.append(f"    {union};")
-    out.append("")
-    out.append("export type ScriptLine = { speaker: Speaker; text: string; event?: AnimEvent };")
-    out.append("")
-    out.append("export const SCRIPT: ScriptLine[] = [")
-    for speaker, text, event in annotated:
-        text_esc = text.replace("\\", "\\\\").replace("'", "\\'")
-        if event:
-            out.append(f"    {{ speaker: '{speaker}', text: '{text_esc}', event: '{event}' }},")
-        else:
-            out.append(f"    {{ speaker: '{speaker}', text: '{text_esc}' }},")
-    out.append("];")
-    out.append("")
-    OUT_TS.write_text("\n".join(out), encoding="utf-8")
-    print(f"wrote {OUT_TS}: {len(annotated)} lines, {len(used)} events")
-
-
-if __name__ == "__main__":
-    main()
+total = sum(len(tx) for _, tx, _ in script)
+content_ev = len([e for e in EVENTS if not e.startswith("scene.")])
+print("セリフ行数:", len(script))
+print("総文字数:", total)
+print("event 全%d (scene 6 / 内容 %d)= 全行の %.1f%%" % (len(EVENTS), content_ev, content_ev / len(script) * 100))
+for cf in (4, 4.5, 5):
+    fr = sum(max(40, int(len(tx) * cf)) + 6 for _, tx, _ in script) + 90
+    print("CHAR_FRAMES=%s -> %d frames / %.1f min" % (cf, fr, fr / 30 / 60))
+print("OK scriptData.ts 生成")
