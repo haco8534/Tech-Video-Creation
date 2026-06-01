@@ -1,12 +1,11 @@
 // [4] Remotion 実装 — zip_bomb（オブジェクト中心ステージ・白テーマ）
 // design_spec.md の event とライフサイクル契約をコードへ翻訳したもの。
 // セリフ＋event データは scriptData.ts（script.md から _gen_script.py で生成）。
-// 対話字幕は SCRIPT 全行から自動描画（04_remotion.md §7）。
-// 背骨は「指示書（軽い）↔ 実行された体積（重い）」の対比。各画面はこれを加工する。
-// 画面に重ねる文字は 数値／固有名詞／1 語ラベル のみ（04_remotion.md 画面内テキストの規律）。
+// 背骨は「小さな指示カード」と、それが吐き出す「展開バー」の非対称。
+// 各画面は、このカード→バーの膨張を別の仕組みで起こして見せる工程として連なる。
 
 import React from 'react';
-import { AbsoluteFill, useCurrentFrame, Easing } from 'remotion';
+import { AbsoluteFill, useCurrentFrame, Easing, Img, staticFile } from 'remotion';
 import { SCRIPT, AnimEvent, Speaker } from './scriptData';
 
 // ===== 固定ベース：白テーマ =====
@@ -14,24 +13,21 @@ const BG = '#f5f7fa';
 const SURFACE = '#ffffff';
 const SURFACE_SOFT = '#eef1f6';
 const EDGE = '#c4cedd';
-const EDGE_SOFT = '#dce1ea';
 const INK = '#243044';
 const SUB_INK = '#5d6b82';
 const DIM = '#9aa6b8';
 const SHADOW = '#243044';
 
 // ===== アクセント（zip 爆弾の語彙）=====
-const LIGHT = '#2f8fb3'; // 指示書・圧縮・やさしさ（軽い／親切）ティール
-const LIGHT_DARK = '#1f6a86';
-const LIGHT_SOFT = '#e2eff5';
-const HEAVY = '#d9543c'; // 実行された体積・脅威（重い）コーラル
-const HEAVY_DARK = '#b23a25';
-const HEAVY_SOFT = '#f7ddd6';
-const METER = '#d99a2b'; // 数値・倍率・天井 アンバー
-const METER_DARK = '#a8721a';
-const METER_SOFT = '#fbeece';
-const GUARD = '#3f9d57'; // 防御・打ち切り グリーン
-const GUARD_SOFT = '#dcefe0';
+const INDIGO = '#3b5bdb'; // 指示・圧縮・カード（軽い・攻める側）
+const INDIGO_DARK = '#2942b8';
+const INDIGO_SOFT = '#e3e8fc';
+const AMBER = '#e8973a'; // 展開しはじめ（重くなる）
+const AMBER_SOFT = '#fbe6cf';
+const RED = '#e03131'; // 巨大に展開・焼く（いちばん重い）
+const RED_SOFT = '#fbe0e0';
+const OKC = '#37b24d'; // すり抜けた（緑✓）
+const OKC_SOFT = '#d8f3dd';
 
 const FONT = '"Noto Sans JP","Hiragino Sans","Yu Gothic",sans-serif';
 const SPEAKER_COLOR: Record<Speaker, string> = {
@@ -44,10 +40,10 @@ const FS_TITLE = 60;
 const FS_SUB = 42;
 const FS_SPEAKER = 31;
 const FS_SCENE = 30;
-const FS_LABEL = 34;
-const FS_NUM = 46;
+const FS_LABEL = 33;
 const FS_NOTE = 28;
-const FS_TINY = 26;
+const FS_TINY = 27;
+const FS_BIG = 78;
 
 // ===== 台本とフレーム =====
 const CHAR_FRAMES = 4.5;
@@ -78,31 +74,23 @@ type Track<S> = Keyframe<S>[];
 
 const ease = Easing.bezier(0.4, 0, 0.2, 1);
 
-const blendNumeric = <S,>(a: S, b: S, t: number): S => {
-  const aR = a as unknown as Record<string, number>;
-  const bR = b as unknown as Record<string, number>;
-  const out: Record<string, number> = {};
-  for (const k in aR) out[k] = aR[k] + (bR[k] - aR[k]) * t;
-  return out as unknown as S;
-};
-
-const resolveTrack = <S,>(track: Track<S>, f: number): S => {
+const resolveTrack = (track: Track<{ v: number }>, f: number): number => {
   if (track.length === 0) throw new Error('empty track');
-  if (f <= track[0].f) return track[0].state;
+  if (f <= track[0].f) return track[0].state.v;
   for (let i = 0; i < track.length - 1; i++) {
     const a = track[i];
     const b = track[i + 1];
     if (f >= a.f && f <= b.f) {
       const t = ease((f - a.f) / Math.max(1, b.f - a.f));
-      return blendNumeric(a.state, b.state, t);
+      return a.state.v + (b.state.v - a.state.v) * t;
     }
   }
-  return track[track.length - 1].state;
+  return track[track.length - 1].state.v;
 };
 
-type Sc = { v: number };
-const sc = (pairs: [number, number][]): Track<Sc> => pairs.map(([f, v]) => ({ f, state: { v } }));
-const rv = (track: Track<Sc>, f: number): number => resolveTrack(track, f).v;
+const sc = (pairs: [number, number][]): Track<{ v: number }> =>
+  pairs.map(([f, v]) => ({ f, state: { v } }));
+const rv = (track: Track<{ v: number }>, f: number): number => resolveTrack(track, f);
 
 // ===== 数値ヘルパ =====
 const clamp = (x: number, lo = 0, hi = 1): number => Math.min(hi, Math.max(lo, x));
@@ -114,254 +102,210 @@ const hexLerp = (a: string, b: string, t: number): string => {
   const pb = [parseInt(b.slice(1, 3), 16), parseInt(b.slice(3, 5), 16), parseInt(b.slice(5, 7), 16)];
   return '#' + hex2(lerp(pa[0], pb[0], t)) + hex2(lerp(pa[1], pb[1], t)) + hex2(lerp(pa[2], pb[2], t));
 };
+// 展開バーの熱（重さ）：0=インディゴ → 0.5=アンバー → 1=レッド
+const heatColor = (h: number): string => {
+  const c = clamp(h);
+  return c < 0.5 ? hexLerp(INDIGO, AMBER, c * 2) : hexLerp(AMBER, RED, (c - 0.5) * 2);
+};
 
-// ===== 共通テキスト =====
-const T: React.FC<{
-  x: number;
-  y: number;
-  s: number;
-  fill: string;
-  w?: number;
-  opacity?: number;
-  anchor?: 'start' | 'middle' | 'end';
-  children: React.ReactNode;
-}> = ({ x, y, s, fill, w = 700, opacity = 1, anchor = 'middle', children }) => (
-  <text
-    x={x}
-    y={y}
-    fill={fill}
-    fontSize={s}
-    fontFamily={FONT}
-    fontWeight={w}
-    textAnchor={anchor}
-    dominantBaseline="central"
-    opacity={opacity}
-  >
-    {children}
+// ===== 舞台の基準 =====
+const ROAD_LIMIT = 940; // 画面右の溢れ縁
+const TXT = (x: number, y: number, t: string, col: string, size: number, w = 700, anchor: 'start' | 'middle' | 'end' = 'middle') => (
+  <text x={x} y={y} fill={col} fontSize={size} fontFamily={FONT} fontWeight={w} textAnchor={anchor} dominantBaseline="central">
+    {t}
   </text>
 );
 
-// ===== 舞台の基準 =====
-const STAGE_CY = -40;
-
 // ============================================================
-// 背骨の装置1：指示書カード（圧縮ファイル＝軽い）
+// 背骨1：指示カード（小さく軽い。圧縮ファイル＝指示書）
 // ============================================================
-const InstructionCard: React.FC<{
+const InstrCard: React.FC<{
   cx: number;
   cy: number;
-  w: number;
+  scale: number;
   opacity: number;
-  color: string;
-  soft: string;
-  label?: string;
-  caption?: string;
-  lift?: number;
-}> = ({ cx, cy, w, opacity, color, soft, label, caption, lift = 0 }) => {
+  lines?: number;
+  glow?: number;
+}> = ({ cx, cy, scale, opacity, lines = 3, glow = 0 }) => {
   if (opacity <= 0.001) return null;
-  const h = w * 1.22;
-  const y = cy - lift;
+  const w = 150 * scale;
+  const h = 188 * scale;
   const ox = cx - w / 2;
-  const oy = y - h / 2;
-  const fold = w * 0.26;
-  const d =
-    'M ' + ox + ' ' + oy +
-    ' L ' + (ox + w - fold) + ' ' + oy +
-    ' L ' + (ox + w) + ' ' + (oy + fold) +
-    ' L ' + (ox + w) + ' ' + (oy + h) +
-    ' L ' + ox + ' ' + (oy + h) + ' Z';
+  const oy = cy - h / 2;
+  const edge = hexLerp(INDIGO, '#7048e8', clamp(glow));
   return (
     <g opacity={opacity}>
-      <ellipse cx={cx} cy={cy + h / 2 + 16} rx={w * 0.42} ry={9} fill={SHADOW} opacity={0.08 + lift * 0.0006} />
-      <path d={d} fill={soft} stroke={color} strokeWidth={3.5} strokeLinejoin="round" />
-      <path
-        d={'M ' + (ox + w - fold) + ' ' + oy + ' L ' + (ox + w - fold) + ' ' + (oy + fold) + ' L ' + (ox + w) + ' ' + (oy + fold)}
-        fill="none"
-        stroke={color}
-        strokeWidth={3}
-        strokeLinejoin="round"
-      />
-      {/* 指示の行（中身を直接持たない＝細い行）*/}
-      {[0, 1, 2].map((i) => (
-        <line
+      <ellipse cx={cx} cy={oy + h + 10 * scale} rx={w * 0.5} ry={10 * scale} fill={SHADOW} opacity={0.1} />
+      <rect x={ox} y={oy} width={w} height={h} rx={14 * scale} fill={INDIGO_SOFT} stroke={edge} strokeWidth={4 * scale} />
+      <rect x={ox} y={oy} width={w} height={34 * scale} rx={14 * scale} fill={edge} />
+      <circle cx={ox + 18 * scale} cy={oy + 17 * scale} r={6 * scale} fill={SURFACE} opacity={0.85} />
+      {/* 中身＝短い指示行 */}
+      {Array.from({ length: lines }).map((_, i) => (
+        <rect
           key={i}
-          x1={ox + w * 0.16}
-          y1={oy + h * 0.5 + i * 18}
-          x2={ox + w * (i === 2 ? 0.6 : 0.82)}
-          y2={oy + h * 0.5 + i * 18}
-          stroke={color}
-          strokeWidth={3}
-          opacity={0.5}
+          x={ox + 18 * scale}
+          y={oy + 54 * scale + i * 30 * scale}
+          width={(w - 36 * scale) * (i % 2 === 0 ? 1 : 0.62)}
+          height={11 * scale}
+          rx={5 * scale}
+          fill={INDIGO}
+          opacity={0.55}
         />
       ))}
-      {label && <T x={cx} y={oy + h * 0.3} s={FS_LABEL} fill={color} w={800}>{label}</T>}
-      {caption && <T x={cx} y={oy + h + 30} s={FS_NOTE} fill={SUB_INK} w={700}>{caption}</T>}
     </g>
   );
 };
 
 // ============================================================
-// 背骨の装置2：実行された体積（律儀に展開した結果＝重い）
-// grow 0..1 で下から積み上がる
+// 背骨2：展開バー（カードから右へ伸びる。展開後のデータ＝重い）
+//   fullLen が ROAD_LIMIT を超えると画面外へ溢れる（torn edge）
 // ============================================================
-const COLS = 9;
-const ROWS = 7;
-const CELL = 30;
-const GAP = 4;
-const GRID_W = COLS * CELL + (COLS - 1) * GAP;
-const GRID_H = ROWS * CELL + (ROWS - 1) * GAP;
-
-const VolumeBlocks: React.FC<{
-  cx: number;
+const ExpandBar: React.FC<{
+  x0: number;
   cy: number;
+  fullLen: number;
+  h: number;
+  heat: number;
   opacity: number;
-  grow: number;
-  fill: string;
-  edge: string;
-}> = ({ cx, cy, opacity, grow, fill, edge }) => {
-  if (opacity <= 0.001) return null;
-  const total = COLS * ROWS;
-  const shown = grow * total;
-  const x0 = cx - GRID_W / 2;
-  const y0 = cy - GRID_H / 2;
-  const cells: React.ReactNode[] = [];
-  for (let r = 0; r < ROWS; r++) {
-    for (let c = 0; c < COLS; c++) {
-      const order = (ROWS - 1 - r) * COLS + c; // 下段から埋まる
-      const a = clamp(shown - order);
-      if (a <= 0.01) continue;
-      cells.push(
-        <rect
-          key={r * COLS + c}
-          x={x0 + c * (CELL + GAP)}
-          y={y0 + r * (CELL + GAP)}
-          width={CELL}
-          height={CELL}
-          rx={4}
-          fill={fill}
-          stroke={edge}
-          strokeWidth={2}
-          opacity={a}
-        />,
-      );
-    }
-  }
+}> = ({ x0, cy, fullLen, h, heat, opacity }) => {
+  if (opacity <= 0.001 || fullLen <= 1) return null;
+  const overflow = x0 + fullLen > ROAD_LIMIT;
+  const visLen = overflow ? ROAD_LIMIT - x0 : fullLen;
+  const col = heatColor(heat);
+  const soft = heat < 0.5 ? INDIGO_SOFT : heat < 0.85 ? AMBER_SOFT : RED_SOFT;
+  const ticks = Math.min(40, Math.floor(visLen / 26));
   return (
     <g opacity={opacity}>
-      <ellipse cx={cx} cy={y0 + GRID_H + 16} rx={GRID_W * 0.52} ry={12} fill={SHADOW} opacity={0.12 * grow} />
-      {cells}
-    </g>
-  );
-};
-
-// ============================================================
-// 展開の矢印（指示書 → 体積）
-// ============================================================
-const ExpandArrow: React.FC<{
-  x1: number;
-  x2: number;
-  y: number;
-  opacity: number;
-  color: string;
-  draw: number;
-  flip?: boolean;
-}> = ({ x1, x2, y, opacity, color, draw, flip = false }) => {
-  if (opacity <= 0.001 || draw <= 0.001) return null;
-  const sx = flip ? x2 : x1;
-  const ex = flip ? x1 : x2;
-  const tip = lerp(sx, ex, draw);
-  const dir = Math.sign(ex - sx) || 1;
-  return (
-    <g opacity={opacity}>
-      <line x1={sx} y1={y} x2={tip} y2={y} stroke={color} strokeWidth={7} strokeLinecap="round" />
-      {draw > 0.6 && (
-        <path
-          d={'M ' + (tip - dir * 22) + ' ' + (y - 13) + ' L ' + tip + ' ' + y + ' L ' + (tip - dir * 22) + ' ' + (y + 13)}
-          fill="none"
-          stroke={color}
-          strokeWidth={7}
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        />
+      <rect x={x0} y={cy - h / 2} width={visLen} height={h} rx={6} fill={soft} stroke={col} strokeWidth={3} />
+      {/* 反復のきざみ（中身が単調に詰まっている） */}
+      {Array.from({ length: ticks }).map((_, i) => (
+        <line key={i} x1={x0 + 14 + i * 26} y1={cy - h / 2 + 6} x2={x0 + 14 + i * 26} y2={cy + h / 2 - 6} stroke={col} strokeWidth={2} opacity={0.4} />
+      ))}
+      {overflow && (
+        <g>
+          {/* 破れた右端＝画面外へ続く */}
+          <path
+            d={
+              'M ' + ROAD_LIMIT + ' ' + (cy - h / 2) +
+              ' l -14 ' + h * 0.22 + ' l 14 ' + h * 0.22 + ' l -14 ' + h * 0.22 + ' l 14 ' + h * 0.22 +
+              ' L ' + ROAD_LIMIT + ' ' + (cy + h / 2)
+            }
+            fill={BG}
+            stroke={col}
+            strokeWidth={3}
+            strokeLinejoin="round"
+          />
+          {[0, 1, 2].map((i) => (
+            <path key={i} d={'M ' + (ROAD_LIMIT - 6 + i * 18) + ' ' + (cy - 12) + ' l 14 12 l -14 12'} fill="none" stroke={col} strokeWidth={5} strokeLinecap="round" strokeLinejoin="round" opacity={0.8 - i * 0.22} />
+          ))}
+        </g>
       )}
     </g>
   );
 };
 
 // ============================================================
-// 倍率ゲージ（縦・天井つき）
+// 検査レンズ（虫めがね）。verdict: 0=判定前 / +1=✓すり抜け / -1=✗止めた
 // ============================================================
-const RatioGauge: React.FC<{
-  cx: number;
-  cy: number;
-  opacity: number;
-  fill: number; // 0..1（天井に対する到達度）
-  ceilLabel: string;
-  capped: number; // 0..1 天井ラインの強調
-}> = ({ cx, cy, opacity, fill, ceilLabel, capped }) => {
+const Lens: React.FC<{ cx: number; cy: number; scale: number; opacity: number; verdict: number }> = ({
+  cx,
+  cy,
+  scale,
+  opacity,
+  verdict,
+}) => {
   if (opacity <= 0.001) return null;
-  const h = 320;
-  const w = 92;
-  const top = cy - h / 2;
-  const inner = h - 16;
-  const fillH = clamp(fill) * inner;
+  const r = 52 * scale;
+  const col = verdict > 0.5 ? OKC : verdict < -0.5 ? RED : SUB_INK;
   return (
     <g opacity={opacity}>
-      <rect x={cx - w / 2} y={top} width={w} height={h} rx={14} fill={SURFACE} stroke={EDGE} strokeWidth={2.5} />
+      <circle cx={cx} cy={cy} r={r} fill={SURFACE} opacity={0.35} />
+      <circle cx={cx} cy={cy} r={r} fill="none" stroke={col} strokeWidth={7 * scale} />
       <rect
-        x={cx - w / 2 + 8}
-        y={top + 8 + (inner - fillH)}
-        width={w - 16}
-        height={fillH}
-        rx={8}
-        fill={METER_SOFT}
-        stroke={METER}
-        strokeWidth={2}
+        x={cx + r * 0.62}
+        y={cy + r * 0.62}
+        width={42 * scale}
+        height={15 * scale}
+        rx={7 * scale}
+        fill={col}
+        transform={'rotate(45 ' + (cx + r * 0.62) + ' ' + (cy + r * 0.62) + ')'}
       />
-      {/* 天井ライン */}
-      <line
-        x1={cx - w / 2 - 18}
-        y1={top + 12}
-        x2={cx + w / 2 + 18}
-        y2={top + 12}
-        stroke={hexLerp(METER, HEAVY, clamp(capped))}
-        strokeWidth={5}
-        strokeDasharray={capped > 0.5 ? '0' : '8 8'}
-      />
-      <T x={cx} y={top - 24} s={FS_NUM} fill={hexLerp(METER_DARK, HEAVY_DARK, clamp(capped))} w={900}>
-        {ceilLabel}
-      </T>
+      {verdict > 0.5 && (
+        <path d={'M ' + (cx - r * 0.42) + ' ' + cy + ' L ' + (cx - r * 0.06) + ' ' + (cy + r * 0.36) + ' L ' + (cx + r * 0.48) + ' ' + (cy - r * 0.34)} fill="none" stroke={OKC} strokeWidth={8 * scale} strokeLinecap="round" strokeLinejoin="round" />
+      )}
+      {verdict < -0.5 && (
+        <g stroke={RED} strokeWidth={8 * scale} strokeLinecap="round">
+          <line x1={cx - r * 0.4} y1={cy - r * 0.4} x2={cx + r * 0.4} y2={cy + r * 0.4} />
+          <line x1={cx + r * 0.4} y1={cy - r * 0.4} x2={cx - r * 0.4} y2={cy + r * 0.4} />
+        </g>
+      )}
     </g>
   );
 };
 
 // ============================================================
-// 文字タイル（文字列・ゼロ列）
+// ディスク円盤（開いた側の資源。crush 0=無事 / 1=潰れて赤）
 // ============================================================
-const CharTile: React.FC<{ cx: number; cy: number; s: number; opacity: number; ch: string; on: boolean }> = ({
+const DiskStack: React.FC<{ cx: number; cy: number; scale: number; opacity: number; crush: number }> = ({
   cx,
   cy,
-  s,
+  scale,
   opacity,
-  ch,
-  on,
+  crush,
 }) => {
   if (opacity <= 0.001) return null;
+  const rx = 70 * scale;
+  const sq = 1 - crush * 0.6;
+  const ry = 18 * scale * sq;
+  const gap = 34 * scale * sq;
+  const col = hexLerp(SUB_INK, RED, clamp(crush));
+  const fill = hexLerp(SURFACE_SOFT, RED_SOFT, clamp(crush));
+  return (
+    <g opacity={opacity} transform={'rotate(' + crush * 6 + ' ' + cx + ' ' + cy + ')'}>
+      {[0, 1, 2].map((i) => {
+        const dy = (i - 1) * gap;
+        return (
+          <g key={i}>
+            <ellipse cx={cx} cy={cy + dy + gap} rx={rx} ry={ry} fill={fill} stroke={col} strokeWidth={3} />
+            <rect x={cx - rx} y={cy + dy} width={rx * 2} height={gap} fill={fill} stroke={col} strokeWidth={3} />
+          </g>
+        );
+      })}
+      <ellipse cx={cx} cy={cy - gap} rx={rx} ry={ry} fill={hexLerp(SURFACE, RED_SOFT, clamp(crush))} stroke={col} strokeWidth={3} />
+      {crush > 0.4 && TXT(cx, cy - gap, '✗', RED, 40 * scale, 800)}
+    </g>
+  );
+};
+
+// ============================================================
+// 天秤（軽い指示／重い展開の非対称）。tilt -1..+1（＋でバー側が下がる）
+// ============================================================
+const Balance: React.FC<{ cx: number; cy: number; scale: number; opacity: number; tilt: number }> = ({
+  cx,
+  cy,
+  scale,
+  opacity,
+  tilt,
+}) => {
+  if (opacity <= 0.001) return null;
+  const arm = 150 * scale;
+  const drop = tilt * 40 * scale;
+  const lx = cx - arm;
+  const rx = cx + arm;
+  const ly = cy + drop;
+  const ry = cy - drop;
   return (
     <g opacity={opacity}>
-      <rect
-        x={cx - s / 2}
-        y={cy - s / 2}
-        width={s}
-        height={s}
-        rx={7}
-        fill={on ? LIGHT_SOFT : SURFACE}
-        stroke={on ? LIGHT : EDGE}
-        strokeWidth={2.5}
-      />
-      <T x={cx} y={cy} s={s * 0.5} fill={on ? LIGHT_DARK : SUB_INK} w={800}>
-        {ch}
-      </T>
+      <line x1={cx} y1={cy} x2={cx} y2={cy + 70 * scale} stroke={SUB_INK} strokeWidth={6 * scale} />
+      <path d={'M ' + (cx - 34 * scale) + ' ' + (cy + 70 * scale) + ' L ' + (cx + 34 * scale) + ' ' + (cy + 70 * scale)} stroke={SUB_INK} strokeWidth={6 * scale} strokeLinecap="round" />
+      <line x1={lx} y1={ly} x2={rx} y2={ry} stroke={SUB_INK} strokeWidth={6 * scale} strokeLinecap="round" />
+      <circle cx={cx} cy={cy} r={9 * scale} fill={SUB_INK} />
+      {/* 軽い側（指示・カード） */}
+      <line x1={lx} y1={ly} x2={lx} y2={ly + 26 * scale} stroke={DIM} strokeWidth={3 * scale} />
+      <path d={'M ' + (lx - 30 * scale) + ' ' + (ly + 26 * scale) + ' A 30 16 0 0 0 ' + (lx + 30 * scale) + ' ' + (ly + 26 * scale)} fill={INDIGO_SOFT} stroke={INDIGO} strokeWidth={3 * scale} />
+      {/* 重い側（展開バー） */}
+      <line x1={rx} y1={ry} x2={rx} y2={ry + 26 * scale} stroke={DIM} strokeWidth={3 * scale} />
+      <path d={'M ' + (rx - 34 * scale) + ' ' + (ry + 26 * scale) + ' A 34 18 0 0 0 ' + (rx + 34 * scale) + ' ' + (ry + 26 * scale)} fill={RED_SOFT} stroke={RED} strokeWidth={3 * scale} />
     </g>
   );
 };
@@ -371,20 +315,19 @@ const CharTile: React.FC<{ cx: number; cy: number; s: number; opacity: number; c
 // ============================================================
 const sceneStarts = {
   intro: 0,
-  comp: F('scene.comp.in'),
-  recur: F('scene.recur.in'),
-  single: F('scene.single.in'),
-  trigger: F('scene.trigger.in'),
+  body1: F('scene.body1.in'),
+  body2: F('scene.body2.in'),
+  body3: F('scene.body3.in'),
   outro: F('scene.outro.in'),
 };
 
 const introVis = sc([
   [0, 1],
-  [sceneStarts.comp, 1],
-  [sceneStarts.comp + CROSSFADE, 0],
+  [sceneStarts.body1, 1],
+  [sceneStarts.body1 + CROSSFADE, 0],
   [TOTAL_FRAMES, 0],
 ]);
-const midVis = (sN: number, sNext: number): Track<Sc> =>
+const midVis = (sN: number, sNext: number): Track<{ v: number }> =>
   sc([
     [sN, 0],
     [sN + CROSSFADE, 1],
@@ -392,451 +335,153 @@ const midVis = (sN: number, sNext: number): Track<Sc> =>
     [sNext + CROSSFADE, 0],
     [TOTAL_FRAMES, 0],
   ]);
-const compVis = midVis(sceneStarts.comp, sceneStarts.recur);
-const recurVis = midVis(sceneStarts.recur, sceneStarts.single);
-const singleVis = midVis(sceneStarts.single, sceneStarts.trigger);
-const triggerVis = midVis(sceneStarts.trigger, sceneStarts.outro);
+const body1Vis = midVis(sceneStarts.body1, sceneStarts.body2);
+const body2Vis = midVis(sceneStarts.body2, sceneStarts.body3);
+const body3Vis = midVis(sceneStarts.body3, sceneStarts.outro);
 const outroVis = sc([
   [sceneStarts.outro, 0],
   [sceneStarts.outro + CROSSFADE, 1],
   [TOTAL_FRAMES, 1],
 ]);
 
-const fadeIn = (start: number): Track<Sc> => sc([[start + 8, 0], [start + CROSSFADE + 16, 1]]);
+const MAIN_CY = -40; // 主役の図の中心 y（字幕帯 326 の上）
 
 // ============================================================
-// 画面1 — 序論「軽い指示書／重い実行」
+// 画面1 — 序論「軽い指示・重い展開」
 // ============================================================
-const I_CARD = { cx: -468, cy: STAGE_CY, w: 168 };
-const I_BLK = { cx: 322, cy: STAGE_CY };
-const I_ARROW_Y = STAGE_CY;
-const I_ARROW_X1 = I_CARD.cx + I_CARD.w / 2 + 14;
-const I_ARROW_X2 = I_BLK.cx - GRID_W / 2 - 14;
+const i_in = sc([[8, 0], [44, 1]]);
+const i_bar = sc([
+  [F('intro.reveal'), 0],
+  [F('intro.reveal') + 70, 1900],
+]);
+const i_heat = sc([
+  [F('intro.reveal'), 0],
+  [F('intro.reveal') + 70, 1],
+]);
+const i_scale = sc([[F('intro.scale'), 0], [F('intro.scale') + 40, 1]]);
+const i_crush = sc([
+  [F('intro.crush'), 0],
+  [F('intro.crush') + 56, 1],
+  [F('intro.weight'), 1],
+  [F('intro.weight') + 40, 0],
+]);
+const i_name = sc([[F('intro.name'), 0], [F('intro.name') + 42, 1]]);
+const i_weight = sc([[F('intro.weight'), 0], [F('intro.weight') + 50, 1]]);
 
-const introIn = fadeIn(0);
-const introExpand = sc([[F('intro.expand'), 0], [F('intro.expand') + 70, 1]]);
-const introGrow = sc([
-  [F('intro.expand') + 12, 0],
-  [F('intro.expand') + 92, 1],
-  [F('intro.paper'), 1],
-  [F('intro.paper') + 10, 0.6],
-  [F('intro.paper') + 80, 1],
-  [TOTAL_FRAMES, 1],
-]);
-const introSize = sc([[F('intro.size'), 0], [F('intro.size') + 34, 1]]);
-const introRatio = sc([[F('intro.ratio'), 0], [F('intro.ratio') + 44, 1]]);
-const introName = sc([[F('intro.name'), 0], [F('intro.name') + 40, 1]]);
-const introLift = sc([
-  [F('intro.asym'), 0],
-  [F('intro.asym') + 50, 26],
-  [TOTAL_FRAMES, 26],
-]);
-const introPaper = sc([[F('intro.paper'), 0], [F('intro.paper') + 40, 1]]);
+const CARD_X = -640;
+const BAR_X0 = -540;
 
 const SceneIntro: React.FC<{ f: number; vis: number }> = ({ f, vis }) => {
   if (vis <= 0.001) return null;
-  const inA = rv(introIn, f);
-  const draw = rv(introExpand, f);
-  const grow = rv(introGrow, f);
-  const size = rv(introSize, f);
-  const ratio = rv(introRatio, f);
-  const name = rv(introName, f);
-  const lift = rv(introLift, f);
-  const paper = rv(introPaper, f);
+  const inA = rv(i_in, f);
+  const barLen = rv(i_bar, f);
+  const heat = rv(i_heat, f);
+  const scaleN = rv(i_scale, f);
+  const crush = rv(i_crush, f);
+  const name = rv(i_name, f);
+  const weight = rv(i_weight, f);
 
   return (
     <g opacity={vis}>
-      <ExpandArrow x1={I_ARROW_X1} x2={I_ARROW_X2} y={I_ARROW_Y} opacity={inA} color={DIM} draw={draw} />
-      <InstructionCard
-        cx={I_CARD.cx}
-        cy={I_CARD.cy}
-        w={I_CARD.w}
-        opacity={inA}
-        color={LIGHT}
-        soft={LIGHT_SOFT}
-        label={size > 0.5 ? '42 KB' : undefined}
-        caption={name > 0.5 ? '42.zip' : undefined}
-        lift={lift}
-      />
-      <VolumeBlocks cx={I_BLK.cx} cy={I_BLK.cy} opacity={inA * clamp(draw * 2)} grow={grow} fill={HEAVY_SOFT} edge={HEAVY} />
+      {/* 展開バー（重い） */}
+      <ExpandBar x0={BAR_X0} cy={MAIN_CY} fullLen={barLen} h={120} heat={heat} opacity={inA} />
 
-      {/* 倍率の数値（叩き直し）*/}
-      {ratio > 0.05 && (
-        <g opacity={ratio}>
-          <T x={I_BLK.cx} y={I_BLK.cy - GRID_H / 2 - 64} s={FS_NUM} fill={HEAVY_DARK} w={900}>4.5 PB</T>
-          <T x={I_BLK.cx} y={I_BLK.cy - GRID_H / 2 - 24} s={FS_NOTE} fill={SUB_INK} w={700}>1000 億倍</T>
+      {/* 数値の叩き */}
+      {scaleN > 0.02 && (
+        <g opacity={scaleN}>
+          {TXT(120, MAIN_CY - 116, '4.5 PB', RED, FS_BIG, 800)}
+          {TXT(120, MAIN_CY - 56, '= GB × 100万', SUB_INK, FS_NOTE, 700)}
         </g>
       )}
 
-      {/* 紙に1億回書け の言い換え（指示は軽い）*/}
-      {paper > 0.05 && (
-        <T x={I_CARD.cx} y={I_CARD.cy - lift - I_CARD.w * 0.72} s={FS_NOTE} fill={LIGHT_DARK} opacity={paper} w={800}>
-          ×1 億
-        </T>
+      {/* 開いた側のディスク（潰れる） */}
+      <DiskStack cx={812} cy={MAIN_CY + 6} scale={1} opacity={inA * clamp(crush * 2.4)} crush={crush} />
+
+      {/* 指示カード（軽い・終始小さい） */}
+      <InstrCard cx={CARD_X} cy={MAIN_CY} scale={0.86} opacity={inA} lines={3} glow={name} />
+      {TXT(CARD_X, MAIN_CY + 116, '42 KB', INDIGO_DARK, FS_NOTE, 700)}
+      {name > 0.05 && (
+        <g opacity={name}>
+          {TXT(CARD_X, MAIN_CY - 116, 'zip爆弾', INDIGO_DARK, FS_LABEL, 800)}
+        </g>
+      )}
+
+      {/* 軽い／重いの天秤 */}
+      {weight > 0.02 && (
+        <g opacity={weight}>
+          <Balance cx={0} cy={206} scale={0.86} opacity={1} tilt={weight} />
+          {TXT(-150, 300, '軽い', INDIGO_DARK, FS_NOTE, 700)}
+          {TXT(150, 300, '重い', RED, FS_NOTE, 700)}
+        </g>
       )}
     </g>
   );
 };
 
 // ============================================================
-// 画面2 — 圧縮の正体「コピー指示への畳み込み」と「1段の天井」
+// 画面2 — ボディ1「圧縮＝指示書」
 // ============================================================
-const C_STR_Y = -250;
-const C_STR_S = 56;
-const C_CARD = { cx: -330, cy: 70, w: 200 };
-const C_GAUGE = { cx: 540, cy: 30 };
-const ABC = 'ABCABCABCABCABC'.split('');
-
-const compIn = fadeIn(sceneStarts.comp);
-const compStr = sc([[F('comp.string'), 0], [F('comp.string') + 48, 1]]);
-const compFold = sc([[F('comp.fold'), 0], [F('comp.fold') + 64, 1]]);
-const compName = sc([[F('comp.lz77'), 0], [F('comp.lz77') + 36, 1]]);
-const compDeflate = sc([[F('comp.deflate'), 0], [F('comp.deflate') + 36, 1]]);
-const compZeros = sc([[F('comp.zeros'), 0], [F('comp.zeros') + 50, 1]]);
-const compGauge = sc([[F('comp.ceiling'), 0], [F('comp.ceiling') + 56, 1]]);
-const compFillGauge = sc([
-  [F('comp.ceiling') + 10, 0],
-  [F('comp.ceiling') + 80, 1],
-  [TOTAL_FRAMES, 1],
+const b1_in = sc([[sceneStarts.body1 + 8, 0], [sceneStarts.body1 + CROSSFADE + 18, 1]]);
+const b1_collapse = sc([
+  [F('b1.collapse'), 0],
+  [F('b1.collapse') + 60, 1],
 ]);
-const compWall = sc([[F('comp.wall'), 0], [F('comp.wall') + 46, 1]]);
+const b1_instr = sc([[F('b1.instr'), 0], [F('b1.instr') + 42, 1]]);
+const b1_backref = sc([[F('b1.backref'), 0], [F('b1.backref') + 54, 1]]);
+const b1_lz77 = sc([[F('b1.lz77'), 0], [F('b1.lz77') + 42, 1]]);
+const b1_mono = sc([[F('b1.monotone'), 0], [F('b1.monotone') + 48, 1]]);
 
-const SceneComp: React.FC<{ f: number; vis: number }> = ({ f, vis }) => {
+const SceneBody1: React.FC<{ f: number; vis: number }> = ({ f, vis }) => {
   if (vis <= 0.001) return null;
-  const inA = rv(compIn, f);
-  const str = rv(compStr, f);
-  const fold = rv(compFold, f);
-  const nm = rv(compName, f);
-  const defl = rv(compDeflate, f);
-  const zeros = rv(compZeros, f);
-  const gauge = rv(compGauge, f);
-  const gfill = rv(compFillGauge, f);
-  const wall = rv(compWall, f);
+  const inA = rv(b1_in, f);
+  const collapse = rv(b1_collapse, f);
+  const instr = rv(b1_instr, f);
+  const backref = rv(b1_backref, f);
+  const lz77 = rv(b1_lz77, f);
+  const mono = rv(b1_mono, f);
 
-  const isZero = zeros > 0.5;
-  const chars = isZero ? Array.from({ length: ABC.length }, () => '0') : ABC;
-  const totalW = (ABC.length - 1) * (C_STR_S + 8);
-  // 畳み込み：先頭3文字を残し、残りはカードへ吸い込まれる
-  const keep = 3;
+  // 長いバー（「あ」×1000）→ 畳まれて小さな指示カードへ
+  const longLen = lerp(1480, 150, collapse);
+  const barX0 = -740;
+  const cardCx = barX0 + 75;
 
   return (
     <g opacity={vis}>
-      {/* 文字列の帯（先頭以外は畳まれて退く）*/}
-      {chars.map((ch, i) => {
-        const x = -totalW / 2 + i * (C_STR_S + 8);
-        const folded = i >= keep ? fold : 0;
-        const op = str * (1 - folded) * (isZero ? 1 : 1);
-        const yy = C_STR_Y + folded * 80;
-        return (
-          <CharTile key={i} cx={lerp(x, C_CARD.cx, folded)} cy={lerp(C_STR_Y, yy, 0)} s={C_STR_S} opacity={op} ch={ch} on />
-        );
-      })}
-      {str > 0.5 && fold < 0.5 && (
-        <T x={0} y={C_STR_Y - 64} s={FS_NOTE} fill={SUB_INK} opacity={str * (1 - fold)}>
-          {isZero ? '0 が 10 億' : '15 文字'}
-        </T>
-      )}
-
-      {/* コピー指示カード（戻り矢印つき）*/}
-      <g opacity={clamp(fold * 1.2)}>
-        <InstructionCard
-          cx={C_CARD.cx}
-          cy={C_CARD.cy}
-          w={C_CARD.w}
-          opacity={clamp(fold * 1.2)}
-          color={LIGHT}
-          soft={LIGHT_SOFT}
-          label={defl > 0.5 ? 'DEFLATE' : nm > 0.5 ? 'LZ77' : undefined}
-        />
-        {/* 戻ってコピー の弧 */}
-        <path
-          d={'M ' + (C_CARD.cx + 40) + ' ' + (C_CARD.cy - C_CARD.w * 0.5) + ' Q ' + (C_CARD.cx + 150) + ' ' + (C_CARD.cy - C_CARD.w * 0.5 - 70) + ' ' + (C_CARD.cx - 30) + ' ' + (C_CARD.cy - C_CARD.w * 0.5)}
-          fill="none"
-          stroke={LIGHT_DARK}
-          strokeWidth={5}
-          strokeLinecap="round"
-        />
-        <path
-          d={'M ' + (C_CARD.cx - 10) + ' ' + (C_CARD.cy - C_CARD.w * 0.5 - 16) + ' L ' + (C_CARD.cx - 30) + ' ' + (C_CARD.cy - C_CARD.w * 0.5) + ' L ' + (C_CARD.cx - 8) + ' ' + (C_CARD.cy - C_CARD.w * 0.5 + 12)}
-          fill="none"
-          stroke={LIGHT_DARK}
-          strokeWidth={5}
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        />
-      </g>
-
-      {/* 倍率ゲージ：1段の天井 1032× */}
-      <RatioGauge cx={C_GAUGE.cx} cy={C_GAUGE.cy} opacity={gauge} fill={gfill} ceilLabel="1032×" capped={wall} />
-      {wall > 0.3 && (
-        <T x={C_GAUGE.cx} y={C_GAUGE.cy + 200} s={FS_NOTE} fill={HEAVY_DARK} opacity={wall} w={800}>
-          1 段の壁
-        </T>
-      )}
-    </g>
-  );
-};
-
-// ============================================================
-// 画面3 — 再帰型と、その封じ
-// ============================================================
-const recurIn = fadeIn(sceneStarts.recur);
-const recurDouble = sc([[F('recur.double'), 0], [F('recur.double') + 50, 1]]);
-const recurDoubleOut = sc([
-  [F('recur.random'), 1],
-  [F('recur.random') + 46, 0],
-]);
-const recurNest = sc([[F('recur.nest'), 0], [F('recur.nest') + 60, 1]]);
-const recurStack = sc([[F('recur.stack'), 0], [F('recur.stack') + 80, 1]]);
-const recurPeta = sc([[F('recur.peta'), 0], [F('recur.peta') + 50, 1]]);
-const recurDepth = sc([[F('recur.depth'), 0], [F('recur.depth') + 50, 1]]);
-const recurObsolete = sc([[F('recur.obsolete'), 0], [F('recur.obsolete') + 56, 1]]);
-
-// 入れ子ツリー：3 段の分岐（×16 ラベルで表す）
-const TREE_TOP = -330;
-const TREE_LV = [
-  { y: TREE_TOP, xs: [0] },
-  { y: TREE_TOP + 130, xs: [-300, 0, 300] },
-  { y: TREE_TOP + 260, xs: [-420, -300, -180, -120, 0, 120, 180, 300, 420] },
-];
-
-const SceneRecur: React.FC<{ f: number; vis: number }> = ({ f, vis }) => {
-  if (vis <= 0.001) return null;
-  const inA = rv(recurIn, f);
-  const dbl = rv(recurDouble, f) * rv(recurDoubleOut, f);
-  const nest = rv(recurNest, f);
-  const stack = rv(recurStack, f);
-  const peta = rv(recurPeta, f);
-  const depth = rv(recurDepth, f);
-  const obs = rv(recurObsolete, f);
-
-  const levelOn = (lv: number): number => {
-    if (lv === 0) return clamp(nest * 2);
-    if (lv === 1) return clamp(nest * 1.4 - 0.2);
-    return clamp(stack * 1.2);
-  };
-  const cutY = TREE_TOP + 195;
-
-  return (
-    <g opacity={vis}>
-      {/* 二重圧縮の殻（重ねても効かない）*/}
-      {dbl > 0.02 && (
-        <g opacity={dbl}>
-          {[0, 1, 2].map((i) => (
-            <rect
-              key={i}
-              x={-150 + i * 14}
-              y={STAGE_CY - 110 + i * 14}
-              width={300 - i * 28}
-              height={220 - i * 28}
-              rx={14}
-              fill={i === 2 ? SURFACE : 'none'}
-              stroke={DIM}
-              strokeWidth={3}
-            />
-          ))}
-        </g>
-      )}
-
-      {/* 入れ子ツリー */}
-      {nest > 0.02 && (
-        <g>
-          {/* 枝 */}
-          {TREE_LV[1].xs.map((x, i) => (
-            <line
-              key={'b1' + i}
-              x1={TREE_LV[0].xs[0]}
-              y1={TREE_LV[0].y + 34}
-              x2={x}
-              y2={TREE_LV[1].y - 34}
-              stroke={LIGHT}
-              strokeWidth={3}
-              opacity={levelOn(1) * 0.7}
-            />
-          ))}
-          {TREE_LV[2].xs.map((x, i) => {
-            const parent = TREE_LV[1].xs[Math.floor(i / 3)];
-            return (
-              <line
-                key={'b2' + i}
-                x1={parent}
-                y1={TREE_LV[1].y + 28}
-                x2={x}
-                y2={TREE_LV[2].y - 28}
-                stroke={hexLerp(LIGHT, DIM, obs)}
-                strokeWidth={2.5}
-                opacity={levelOn(2) * 0.6}
-              />
-            );
-          })}
-          {/* ノード */}
-          {TREE_LV.map((lv, li) =>
-            lv.xs.map((x, i) => {
-              const on = levelOn(li);
-              if (on <= 0.02) return null;
-              const greyed = li === 2 && obs > 0.3 ? obs : 0;
-              const r = li === 0 ? 34 : li === 1 ? 26 : 18;
-              return (
-                <g key={'n' + li + '_' + i} opacity={on}>
-                  <rect
-                    x={x - r}
-                    y={lv.y - r}
-                    width={r * 2}
-                    height={r * 2}
-                    rx={6}
-                    fill={hexLerp(LIGHT_SOFT, SURFACE_SOFT, greyed)}
-                    stroke={hexLerp(LIGHT, DIM, greyed)}
-                    strokeWidth={3}
-                  />
-                </g>
-              );
-            }),
-          )}
-          {/* ×16 ラベル */}
-          {nest > 0.5 && (
-            <T x={360} y={TREE_LV[1].y - 60} s={FS_LABEL} fill={LIGHT_DARK} opacity={clamp(nest * 2 - 0.6)} w={900}>
-              ×16
-            </T>
-          )}
-          {stack > 0.4 && (
-            <T x={520} y={TREE_LV[2].y} s={FS_NOTE} fill={LIGHT_DARK} opacity={clamp(stack * 1.6 - 0.4)}>
-              5 段
-            </T>
-          )}
-        </g>
-      )}
-
-      {/* 深さ打ち切り線＋封じ */}
-      {depth > 0.02 && (
-        <g opacity={depth}>
-          <line x1={-560} y1={cutY} x2={560} y2={cutY} stroke={HEAVY} strokeWidth={5} strokeDasharray="14 10" />
-          <T x={-560} y={cutY - 30} s={FS_NOTE} fill={HEAVY_DARK} anchor="start">展開深さの上限</T>
-          {obs > 0.05 && (
-            <rect x={-600} y={cutY} width={1200} height={TREE_TOP + 320 - cutY} fill={SURFACE} opacity={0.55 * obs} />
-          )}
-        </g>
-      )}
-
-      {/* 結果の数値 */}
-      {peta > 0.05 && (
-        <g opacity={peta}>
-          <T x={0} y={250} s={FS_NUM} fill={HEAVY_DARK} w={900}>≈ 100 万個 × 1000 倍 = 4.5 PB</T>
-        </g>
-      )}
-    </g>
-  );
-};
-
-// ============================================================
-// 画面4 — 単発型（目次の細工）
-// ============================================================
-const singleIn = fadeIn(sceneStarts.single);
-const singleFifield = sc([[F('single.fifield'), 0], [F('single.fifield') + 36, 1]]);
-const singleStruct = sc([[F('single.struct'), 0], [F('single.struct') + 60, 1]]);
-const singleTail = sc([[F('single.tail'), 0], [F('single.tail') + 50, 1]]);
-const singlePoint = sc([[F('single.point'), 0], [F('single.point') + 64, 1]]);
-const singleMulti = sc([[F('single.multi'), 0], [F('single.multi') + 90, 1]]);
-const singleTera = sc([[F('single.tera'), 0], [F('single.tera') + 50, 1]]);
-const singleDepth = sc([[F('single.depth1'), 0], [F('single.depth1') + 50, 1]]);
-
-const ZIP_Y = -300;
-const ZIP_X0 = -760;
-const ZIP_X1 = 760;
-const DIR_X = 520; // 巻末目次
-const DATA = { cx: -60, cy: 60 }; // 単一の実体
-const STACK_X = 540; // 書き出されたファイル
-const ENTRY_X = -560;
-
-const SceneSingle: React.FC<{ f: number; vis: number }> = ({ f, vis }) => {
-  if (vis <= 0.001) return null;
-  const inA = rv(singleIn, f);
-  const fif = rv(singleFifield, f);
-  const struct = rv(singleStruct, f);
-  const tail = rv(singleTail, f);
-  const point = rv(singlePoint, f);
-  const multi = rv(singleMulti, f);
-  const tera = rv(singleTera, f);
-  const depth = rv(singleDepth, f);
-
-  const entries = [0, 1, 2, 3];
-  const eY = (i: number) => -110 + i * 96;
-
-  return (
-    <g opacity={vis}>
-      {/* zip の帯（本文＋巻末目次）*/}
-      <g opacity={inA}>
-        <rect x={ZIP_X0} y={ZIP_Y - 34} width={ZIP_X1 - ZIP_X0} height={68} rx={12} fill={SURFACE} stroke={EDGE} strokeWidth={2.5} />
-        {[0, 1, 2].map((i) => (
-          <rect key={i} x={ZIP_X0 + 30 + i * 240} y={ZIP_Y - 22} width={210} height={44} rx={8} fill={LIGHT_SOFT} stroke={LIGHT} strokeWidth={2} />
+      {/* 畳まれる前の長いバー（中身そのもの） */}
+      <g opacity={inA * (1 - collapse)}>
+        <rect x={barX0} y={MAIN_CY - 56} width={longLen} height={112} rx={8} fill={SURFACE} stroke={EDGE} strokeWidth={3} />
+        {Array.from({ length: 26 }).map((_, i) => (
+          <text key={i} x={barX0 + 30 + i * 55} y={MAIN_CY} fill={hexLerp(SUB_INK, INDIGO, mono)} fontSize={40} fontFamily={FONT} fontWeight={700} textAnchor="middle" dominantBaseline="central" opacity={clamp(1 - collapse * 1.4)}>
+            あ
+          </text>
         ))}
-        <T x={ZIP_X0 + 360} y={ZIP_Y + 64} s={FS_NOTE} fill={SUB_INK}>本文</T>
-        {/* 巻末目次 */}
-        <rect
-          x={DIR_X - 10}
-          y={ZIP_Y - 34}
-          width={ZIP_X1 - DIR_X - 20}
-          height={68}
-          rx={12}
-          fill={hexLerp(SURFACE, METER_SOFT, clamp(struct))}
-          stroke={hexLerp(EDGE, METER, clamp(struct))}
-          strokeWidth={3}
-        />
-        <T x={(DIR_X + ZIP_X1) / 2 - 15} y={ZIP_Y} s={FS_NOTE} fill={struct > 0.4 ? METER_DARK : SUB_INK} w={800}>目次</T>
-        {struct > 0.4 && <T x={(DIR_X + ZIP_X1) / 2 - 15} y={ZIP_Y + 64} s={FS_TINY} fill={SUB_INK} opacity={struct}>セントラルディレクトリ</T>}
+        {TXT(barX0 + longLen / 2, MAIN_CY - 92, '「あ」が千個ならぶ', SUB_INK, FS_NOTE, 700)}
       </g>
 
-      {fif > 0.1 && <T x={0} y={ZIP_Y - 78} s={FS_NOTE} fill={LIGHT_DARK} opacity={fif} w={800}>Fifield, 2019</T>}
-
-      {/* 巻末を読む視線 */}
-      {tail > 0.05 && (
-        <path
-          d={'M ' + 0 + ' ' + (ZIP_Y + 90) + ' Q ' + 400 + ' ' + (ZIP_Y + 60) + ' ' + ((DIR_X + ZIP_X1) / 2 - 15) + ' ' + (ZIP_Y + 40)}
-          fill="none"
-          stroke={METER}
-          strokeWidth={3.5}
-          strokeDasharray="8 8"
-          opacity={tail}
-        />
-      )}
-
-      {/* 目次エントリ群（すべて同じ実体を指す）*/}
-      {point > 0.02 &&
-        entries.map((i) => {
-          const ap = clamp(point * 5 - i - 0.2);
-          if (ap <= 0.02) return null;
-          return (
-            <g key={i} opacity={ap}>
-              <rect x={ENTRY_X - 70} y={eY(i) - 28} width={140} height={56} rx={8} fill={METER_SOFT} stroke={METER} strokeWidth={2.5} />
-              <T x={ENTRY_X} y={eY(i)} s={FS_NOTE} fill={METER_DARK} w={700}>{'#' + (i + 1)}</T>
-              <line x1={ENTRY_X + 74} y1={eY(i)} x2={DATA.cx - 78} y2={DATA.cy} stroke={METER} strokeWidth={3} opacity={0.8} />
+      {/* 畳まれた後の指示カード＋「×千」 */}
+      {collapse > 0.05 && (
+        <g opacity={collapse}>
+          <InstrCard cx={cardCx} cy={MAIN_CY} scale={0.78} opacity={1} lines={2} glow={instr} />
+          {/* 後方参照の弧（自分の直前へ戻って繰り返す） */}
+          {backref > 0.02 && (
+            <g opacity={backref}>
+              <rect x={cardCx - 30} y={MAIN_CY + 18} width={32} height={32} rx={6} fill={INDIGO_SOFT} stroke={INDIGO} strokeWidth={3} />
+              <path d={'M ' + (cardCx + 90) + ' ' + (MAIN_CY + 34) + ' q 120 -90 0 -130 q -120 -40 -100 60'} fill="none" stroke={INDIGO} strokeWidth={5} strokeLinecap="round" />
+              <path d={'M ' + (cardCx - 18) + ' ' + (MAIN_CY - 30) + ' l 8 -22 l 18 14'} fill="none" stroke={INDIGO} strokeWidth={5} strokeLinecap="round" strokeLinejoin="round" />
+              {TXT(cardCx + 120, MAIN_CY + 96, '元はひと並びだけ', INDIGO_DARK, FS_TINY, 700)}
             </g>
-          );
-        })}
-
-      {/* 単一の実体 */}
-      {point > 0.05 && (
-        <g opacity={clamp(point * 1.4)}>
-          <rect x={DATA.cx - 76} y={DATA.cy - 60} width={152} height={120} rx={12} fill={LIGHT_SOFT} stroke={LIGHT} strokeWidth={3.5} />
-          <T x={DATA.cx} y={DATA.cy} s={FS_NOTE} fill={LIGHT_DARK} w={800}>1 実体</T>
+          )}
+          {TXT(cardCx, MAIN_CY - 124, '× 千', INDIGO_DARK, FS_LABEL, 800)}
+          {instr > 0.1 && TXT(cardCx, MAIN_CY + 126, '指示書', INDIGO_DARK, FS_NOTE, 700)}
         </g>
       )}
 
-      {/* 書き出されたファイルの山 */}
-      {multi > 0.02 && (
-        <VolumeBlocks cx={STACK_X} cy={DATA.cy} opacity={clamp(multi * 1.4)} grow={multi} fill={HEAVY_SOFT} edge={HEAVY} />
-      )}
-      {point > 0.2 && <line x1={DATA.cx + 78} y1={DATA.cy} x2={STACK_X - GRID_W / 2 - 8} y2={DATA.cy} stroke={HEAVY} strokeWidth={5} strokeLinecap="round" opacity={clamp(multi * 1.5)} />}
-
-      {/* 数値 */}
-      {tera > 0.05 && (
-        <T x={STACK_X} y={DATA.cy - GRID_H / 2 - 36} s={FS_NUM} fill={HEAVY_DARK} opacity={tera} w={900}>10 MB → 281 TB</T>
-      )}
-
-      {/* 深さ1で素通り */}
-      {depth > 0.05 && (
-        <g opacity={depth}>
-          <line x1={-150} y1={250} x2={150} y2={250} stroke={DIM} strokeWidth={5} strokeDasharray="14 10" />
-          <T x={0} y={210} s={FS_NOTE} fill={SUB_INK}>深さ 1</T>
+      {/* LZ77 / DEFLATE ラベル */}
+      {lz77 > 0.05 && (
+        <g opacity={lz77}>
+          <rect x={120} y={MAIN_CY - 40} width={520} height={80} rx={14} fill={SURFACE} stroke={INDIGO} strokeWidth={3} />
+          {TXT(380, MAIN_CY, 'LZ77 / DEFLATE', INDIGO_DARK, FS_LABEL, 800)}
+          {TXT(380, MAIN_CY + 80, '「前を指して繰り返せ」', SUB_INK, FS_NOTE, 700)}
         </g>
       )}
     </g>
@@ -844,143 +489,193 @@ const SceneSingle: React.FC<{ f: number; vis: number }> = ({ f, vis }) => {
 };
 
 // ============================================================
-// 画面5 — 律儀さが、引き金
+// 画面3 — ボディ2「一枚では爆弾になれない／入れ子と検知」
 // ============================================================
-const triggerIn = fadeIn(sceneStarts.trigger);
-const triggerHuman = sc([[F('trigger.human'), 0], [F('trigger.human') + 44, 1]]);
-const triggerHumanOut = sc([[F('trigger.auto'), 1], [F('trigger.auto') + 44, 0]]);
-const triggerAuto = sc([[F('trigger.auto'), 0], [F('trigger.auto') + 70, 1]]);
-const triggerRes = sc([[F('trigger.resource'), 0], [F('trigger.resource') + 60, 1]]);
-const triggerResFill = sc([
-  [F('trigger.resource') + 10, 0],
-  [F('trigger.dos'), 1],
-  [TOTAL_FRAMES, 1],
+const b2_in = sc([[sceneStarts.body2 + 8, 0], [sceneStarts.body2 + CROSSFADE + 18, 1]]);
+const b2_ceil = sc([[F('b2.ceiling'), 0], [F('b2.ceiling') + 50, 1]]);
+const b2_small = sc([[F('b2.small'), 0], [F('b2.small') + 42, 1]]);
+const b2_single = sc([
+  [sceneStarts.body2, 1],
+  [F('b2.nest'), 1],
+  [F('b2.nest') + 44, 0],
 ]);
-const triggerDos = sc([[F('trigger.dos'), 0], [F('trigger.dos') + 50, 1]]);
-const triggerWho = sc([[F('trigger.who'), 0], [F('trigger.who') + 70, 1]]);
-const triggerIrony = sc([[F('trigger.irony'), 0], [F('trigger.irony') + 50, 1]]);
-const triggerCut = sc([[F('trigger.cut'), 0], [F('trigger.cut') + 56, 1]]);
-const triggerLimit = sc([[F('trigger.limit'), 0], [F('trigger.limit') + 46, 1]]);
-const triggerRatio = sc([[F('trigger.ratio'), 0], [F('trigger.ratio') + 50, 1]]);
+const b2_nest = sc([[F('b2.nest'), 0], [F('b2.nest') + 60, 1]]);
+const b2_zip42 = sc([[F('b2.zip42'), 0], [F('b2.zip42') + 50, 1]]);
+const b2_tail = sc([[F('b2.tail'), 0], [F('b2.tail') + 56, 1]]);
+const b2_detect = sc([[F('b2.detect'), 0], [F('b2.detect') + 50, 1]]);
 
-const GEAR = { cx: -120, cy: STAGE_CY };
-const RES_X = 560;
-const RES_LABELS = ['ディスク', 'メモリ', 'CPU'];
-const WHO_LABELS = ['アンチウイルス', 'メールGW', 'アップロード検査'];
-
-const Gear: React.FC<{ cx: number; cy: number; r: number; opacity: number; color: string; soft: string }> = ({
-  cx,
-  cy,
-  r,
-  opacity,
-  color,
-  soft,
-}) => {
-  if (opacity <= 0.001) return null;
-  const teeth = 10;
-  const pts: string[] = [];
-  for (let i = 0; i < teeth; i++) {
-    const a0 = (i / teeth) * Math.PI * 2;
-    const a1 = ((i + 0.5) / teeth) * Math.PI * 2;
-    pts.push((cx + Math.cos(a0) * (r + 12)).toFixed(1) + ',' + (cy + Math.sin(a0) * (r + 12)).toFixed(1));
-    pts.push((cx + Math.cos(a1) * r).toFixed(1) + ',' + (cy + Math.sin(a1) * r).toFixed(1));
-  }
-  return (
-    <g opacity={opacity}>
-      <polygon points={pts.join(' ')} fill={soft} stroke={color} strokeWidth={3.5} />
-      <circle cx={cx} cy={cy} r={r * 0.5} fill={SURFACE} stroke={color} strokeWidth={3} />
-    </g>
-  );
-};
-
-const SceneTrigger: React.FC<{ f: number; vis: number }> = ({ f, vis }) => {
+const SceneBody2: React.FC<{ f: number; vis: number }> = ({ f, vis }) => {
   if (vis <= 0.001) return null;
-  const inA = rv(triggerIn, f);
-  const human = rv(triggerHuman, f) * rv(triggerHumanOut, f);
-  const auto = rv(triggerAuto, f);
-  const res = rv(triggerRes, f);
-  const resFill = rv(triggerResFill, f);
-  const dos = rv(triggerDos, f);
-  const who = rv(triggerWho, f);
-  const irony = rv(triggerIrony, f);
-  const cut = rv(triggerCut, f);
-  const limit = rv(triggerLimit, f);
-  const ratio = rv(triggerRatio, f);
+  const inA = rv(b2_in, f);
+  const ceil = rv(b2_ceil, f);
+  const small = rv(b2_small, f);
+  const single = rv(b2_single, f);
+  const nest = rv(b2_nest, f);
+  const zip42 = rv(b2_zip42, f);
+  const tail = rv(b2_tail, f);
+  const detect = rv(b2_detect, f);
 
-  const gearColor = hexLerp(LIGHT, HEAVY, clamp(Math.max(irony, dos)));
-  const gearSoft = hexLerp(LIGHT_SOFT, HEAVY_SOFT, clamp(Math.max(irony, dos)));
+  // 一枚の指示：バーが ×1032 の定規で頭打ち
+  const ceilX = -120;
+  const barLen = lerp(70, ceilX - (-740), clamp(ceil * 1.1));
+  const N = 5; // 入れ子段数
 
   return (
     <g opacity={vis}>
-      {/* 人間の手（深刻にならない側・薄く退く）*/}
-      {human > 0.02 && (
-        <g opacity={human}>
-          <rect x={-160} y={STAGE_CY - 60} width={120} height={120} rx={12} fill={SURFACE} stroke={DIM} strokeWidth={3} />
+      {/* 一枚の指示書（天井つき） */}
+      <g opacity={inA * single}>
+        <InstrCard cx={-700} cy={MAIN_CY} scale={0.64} opacity={1} lines={2} />
+        <ExpandBar x0={-630} cy={MAIN_CY} fullLen={barLen} h={92} heat={0.15} opacity={1} />
+        {/* ×1032 の定規（壁） */}
+        {ceil > 0.05 && (
+          <g opacity={ceil}>
+            <line x1={ceilX} y1={MAIN_CY - 96} x2={ceilX} y2={MAIN_CY + 96} stroke={SUB_INK} strokeWidth={5} strokeDasharray="10 9" />
+            {TXT(ceilX, MAIN_CY - 128, '× 1032 が天井', SUB_INK, FS_NOTE, 800)}
+          </g>
+        )}
+        {small > 0.05 && TXT(ceilX + 230, MAIN_CY, '42 KB → 43 MB', AMBER, FS_LABEL, 800)}
+        {small > 0.3 && TXT(ceilX + 230, MAIN_CY + 70, 'これでは潰れない', SUB_INK, FS_NOTE, 700)}
+      </g>
+
+      {/* 入れ子（指示書のなかに指示書 ×5段） */}
+      {nest > 0.02 && (
+        <g opacity={nest}>
+          {Array.from({ length: N }).map((_, i) => {
+            const s = 1 - i * 0.17;
+            const ap = clamp(nest * (N + 1) - i);
+            if (ap <= 0.01) return null;
+            return <InstrCard key={i} cx={-470 + i * 6} cy={MAIN_CY} scale={0.96 * s} opacity={ap} lines={2} />;
+          })}
+          {TXT(-470, MAIN_CY - 168, '指示書のなかに、指示書', INDIGO_DARK, FS_NOTE, 700)}
+          {zip42 > 0.05 && (
+            <g opacity={zip42}>
+              {TXT(330, MAIN_CY - 64, '× 16 を 5段', SUB_INK, FS_NOTE, 700)}
+              {TXT(330, MAIN_CY + 2, '≈ 100万倍', INDIGO_DARK, FS_LABEL, 800)}
+              {TXT(330, MAIN_CY + 78, '42.zip = 4.5 PB', RED, FS_LABEL, 800)}
+            </g>
+          )}
         </g>
       )}
 
-      {/* 検査機（歯車）＋呑み込む指示書 */}
-      <Gear cx={GEAR.cx} cy={GEAR.cy} r={70} opacity={inA} color={gearColor} soft={gearSoft} />
-      <T x={GEAR.cx} y={GEAR.cy} s={FS_NOTE} fill={gearColor} w={800} opacity={inA}>検査</T>
-
-      {/* 律儀に展開された体積（歯車から膨らむ）*/}
-      {auto > 0.02 && (
-        <VolumeBlocks cx={GEAR.cx + 360} cy={GEAR.cy} opacity={clamp(auto * 1.4)} grow={clamp(auto)} fill={HEAVY_SOFT} edge={HEAVY} />
-      )}
-      {auto > 0.1 && (
-        <line x1={GEAR.cx + 78} y1={GEAR.cy} x2={GEAR.cx + 360 - GRID_W / 2 - 8} y2={GEAR.cy} stroke={HEAVY} strokeWidth={5} strokeLinecap="round" opacity={clamp(auto * 1.6)} />
-      )}
-
-      {/* 資源バー（ディスク・メモリ・CPU）*/}
-      {res > 0.02 && (
-        <g opacity={clamp(res * 1.3) * (1 - clamp(cut * 1.2 - 0.4))}>
-          {RES_LABELS.map((lb, i) => {
-            const by = -150 + i * 95;
-            const lvl = clamp(resFill * (1 + i * 0.1));
+      {/* 尻尾（開けるたび、また圧縮ファイル） */}
+      {tail > 0.02 && (
+        <g opacity={tail}>
+          {[0, 1, 2, 3].map((i) => {
+            const ap = clamp(tail * 5 - i - 0.4);
+            if (ap <= 0.01) return null;
+            const x = -560 + i * 150;
             return (
-              <g key={i}>
-                <T x={RES_X - 150} y={by} s={FS_TINY} fill={SUB_INK} anchor="end">{lb}</T>
-                <rect x={RES_X - 130} y={by - 18} width={260} height={36} rx={8} fill={SURFACE} stroke={EDGE} strokeWidth={2} />
-                <rect x={RES_X - 126} y={by - 14} width={252 * lvl} height={28} rx={6} fill={hexLerp(METER, HEAVY, lvl)} />
+              <g key={i} opacity={ap}>
+                <rect x={x - 40} y={MAIN_CY + 150} width={80} height={64} rx={8} fill={INDIGO_SOFT} stroke={INDIGO} strokeWidth={3} />
+                {i < 3 && <path d={'M ' + (x + 48) + ' ' + (MAIN_CY + 182) + ' l 46 0'} stroke={SUB_INK} strokeWidth={4} strokeLinecap="round" markerEnd="" />}
+                {i < 3 && <path d={'M ' + (x + 86) + ' ' + (MAIN_CY + 174) + ' l 10 8 l -10 8'} fill="none" stroke={SUB_INK} strokeWidth={4} strokeLinecap="round" strokeLinejoin="round" />}
               </g>
             );
           })}
+          {TXT(-260, MAIN_CY + 250, '開けても、また圧縮ファイル', SUB_INK, FS_NOTE, 700)}
         </g>
       )}
 
-      {/* サービス停止 */}
-      {dos > 0.1 && (
-        <T x={GEAR.cx} y={GEAR.cy + 130} s={FS_NOTE} fill={HEAVY_DARK} opacity={dos} w={800}>停止</T>
-      )}
+      {/* 検査が尻尾を捉えて止める（赤✗） */}
+      <Lens cx={520} cy={MAIN_CY + 182} scale={1} opacity={detect} verdict={-detect} />
+      {detect > 0.4 && TXT(520, MAIN_CY + 270, 'この尻尾で見破られる', RED, FS_NOTE, 800)}
+    </g>
+  );
+};
 
-      {/* 検査する側の役割（順に灯る）*/}
-      {who > 0.02 &&
-        WHO_LABELS.map((lb, i) => {
-          const ap = clamp(who * 4 - i - 0.2);
-          if (ap <= 0.02) return null;
-          const wx = -680 + i * 0;
-          const wy = -150 + i * 80;
+// ============================================================
+// 画面4 — ボディ3「重ねずに重ねる（overlapping）」
+// ============================================================
+const b3_in = sc([[sceneStarts.body3 + 8, 0], [sceneStarts.body3 + CROSSFADE + 18, 1]]);
+const b3_toc = sc([[F('b3.toc'), 0], [F('b3.toc') + 50, 1]]);
+const b3_normal = sc([[F('b3.normal'), 0], [F('b3.normal') + 48, 1]]);
+const b3_overlap = sc([[F('b3.overlap'), 0], [F('b3.overlap') + 60, 1]]);
+const b3_expand = sc([[F('b3.expand'), 0], [F('b3.expand') + 64, 1900]]);
+const b3_expandHeat = sc([[F('b3.expand'), 0], [F('b3.expand') + 64, 1]]);
+const b3_evade = sc([[F('b3.evade'), 0], [F('b3.evade') + 50, 1]]);
+const b3_power = sc([[F('b3.power'), 0], [F('b3.power') + 48, 1]]);
+
+const TOC_N = 6;
+const SceneBody3: React.FC<{ f: number; vis: number }> = ({ f, vis }) => {
+  if (vis <= 0.001) return null;
+  const inA = rv(b3_in, f);
+  const toc = rv(b3_toc, f);
+  const normal = rv(b3_normal, f);
+  const overlap = rv(b3_overlap, f);
+  const expandLen = rv(b3_expand, f);
+  const expandHeat = rv(b3_expandHeat, f);
+  const evade = rv(b3_evade, f);
+  const power = rv(b3_power, f);
+
+  const tocY = MAIN_CY - 150;
+  const dataY = MAIN_CY + 110;
+  const itemX = (i: number) => -560 + i * 180;
+  const oneTargetX = 0;
+
+  return (
+    <g opacity={vis}>
+      {/* 目次の項目列 */}
+      {Array.from({ length: TOC_N }).map((_, i) => {
+        const ap = clamp(inA * (TOC_N + 1) - i);
+        if (ap <= 0.01) return null;
+        return (
+          <g key={i} opacity={ap}>
+            <rect x={itemX(i) - 64} y={tocY - 26} width={128} height={52} rx={9} fill={INDIGO_SOFT} stroke={INDIGO} strokeWidth={3} />
+            {TXT(itemX(i), tocY, '項目' + (i + 1), INDIGO_DARK, FS_TINY, 700)}
+          </g>
+        );
+      })}
+      {TXT(-700, tocY, '目次', SUB_INK, FS_NOTE, 800, 'end')}
+
+      {/* 指し矢印（散→束） */}
+      {toc > 0.02 &&
+        Array.from({ length: TOC_N }).map((_, i) => {
+          // normal=別々の塊 / overlap=ひとつの塊へ束ねる
+          const sepX = itemX(i);
+          const tx = lerp(sepX, oneTargetX, clamp(overlap));
+          const ap = clamp(toc * (TOC_N + 1) - i) * (1 - 0.5 * evade);
+          const col = overlap > 0.3 ? hexLerp(SUB_INK, INDIGO, overlap) : SUB_INK;
           return (
-            <g key={i} opacity={ap * (1 - clamp(cut * 1.4 - 0.5))}>
-              <rect x={wx - 10} y={wy - 28} width={250} height={56} rx={10} fill={LIGHT_SOFT} stroke={LIGHT} strokeWidth={2.5} />
-              <T x={wx + 115} y={wy} s={FS_TINY} fill={LIGHT_DARK} w={700}>{lb}</T>
-              <line x1={wx + 240} y1={wy} x2={GEAR.cx - 80} y2={GEAR.cy} stroke={LIGHT} strokeWidth={2} strokeDasharray="6 7" opacity={0.5} />
-            </g>
+            <line key={i} x1={sepX} y1={tocY + 28} x2={tx} y2={dataY - 46} stroke={col} strokeWidth={3.5} opacity={ap * 0.85} />
           );
         })}
 
-      {/* 防御：打ち切り線＋上限 */}
-      {cut > 0.05 && (
-        <g opacity={cut}>
-          <line x1={GEAR.cx + 200} y1={GEAR.cy - 200} x2={GEAR.cx + 200} y2={GEAR.cy + 200} stroke={GUARD} strokeWidth={7} strokeLinecap="round" />
-          {limit > 0.1 && <T x={GEAR.cx + 200} y={GEAR.cy - 240} s={FS_NOTE} fill={GUARD} opacity={limit} w={800}>サイズ・時間・深さの上限</T>}
+      {/* データ領域：normal=散らばる塊 / overlap=ひとかたまり */}
+      {Array.from({ length: TOC_N }).map((_, i) => {
+        const sepX = itemX(i);
+        const tx = lerp(sepX, oneTargetX, clamp(overlap));
+        const ap = clamp(toc * (TOC_N + 1) - i);
+        // overlap が進むと重なって1個に見える
+        const op = ap * (1 - clamp(overlap * 1.3 - 0.3) * (i === Math.floor(TOC_N / 2) ? 0 : 1));
+        if (op <= 0.01) return null;
+        return (
+          <rect key={i} x={tx - 52} y={dataY - 40} width={104} height={80} rx={10} fill={AMBER_SOFT} stroke={AMBER} strokeWidth={3} opacity={op} />
+        );
+      })}
+      {normal > 0.05 && overlap < 0.3 && TXT(0, dataY + 92, 'ふつう：別々の中身を指す', SUB_INK, FS_NOTE, 700)}
+      {overlap > 0.4 && expandLen < 50 && TXT(0, dataY + 92, '全項目が、同じひとかたまりを指す', INDIGO_DARK, FS_NOTE, 800)}
+
+      {/* 一塊が ×千 に展開（背骨のバー再登場） */}
+      {expandLen > 5 && (
+        <g>
+          <ExpandBar x0={-540} cy={dataY} fullLen={expandLen} h={92} heat={expandHeat} opacity={1} />
+          {TXT(-440, dataY - 86, '一個ぶんが ×千', RED, FS_NOTE, 800)}
         </g>
       )}
 
-      {/* 圧縮率メーター（振り切れ＝隔離）*/}
-      {ratio > 0.05 && (
-        <g opacity={ratio}>
-          <T x={-680} y={250} s={FS_NOTE} fill={GUARD} anchor="start" w={800}>圧縮率 &gt; 1000× → 隔離</T>
+      {/* 検査をすり抜ける（緑✓・層は一枚） */}
+      <Lens cx={640} cy={MAIN_CY - 150} scale={0.92} opacity={evade} verdict={evade} />
+      {evade > 0.4 && (
+        <g opacity={evade}>
+          {TXT(640, MAIN_CY - 250, '層は一枚＝尻尾なし', OKC, FS_NOTE, 800)}
+          {TXT(640, MAIN_CY - 210, 'すり抜ける', OKC, FS_NOTE, 700)}
+        </g>
+      )}
+
+      {power > 0.05 && (
+        <g opacity={power}>
+          {TXT(560, dataY + 60, '46 MB → 4.5 PB', RED, FS_LABEL, 800)}
+          {TXT(560, dataY + 116, '一段のまま・同じ威力', SUB_INK, FS_NOTE, 700)}
         </g>
       )}
     </g>
@@ -988,87 +683,124 @@ const SceneTrigger: React.FC<{ f: number; vis: number }> = ({ f, vis }) => {
 };
 
 // ============================================================
-// 画面6 — 結論（やさしさ→武器の反転、同じ家族）
+// 画面5 — 結論「軽さが武器・ウイルスへ」
 // ============================================================
-const outroIn = fadeIn(sceneStarts.outro);
-const outroKind = sc([[F('outro.kindness'), 0], [F('outro.kindness') + 50, 1]]);
-const outroWeapon = sc([[F('outro.weapon'), 0], [F('outro.weapon') + 60, 1]]);
-const outroFamily = sc([[F('outro.family'), 0], [F('outro.family') + 50, 1]]);
-const outroRedos = sc([[F('outro.redos'), 0], [F('outro.redos') + 50, 1]]);
-const outroCommon = sc([[F('outro.common'), 0], [F('outro.common') + 56, 1]]);
+const o_in = sc([[sceneStarts.outro + 8, 0], [sceneStarts.outro + CROSSFADE + 18, 1]]);
+const o_recap = sc([[F('outro.recap'), 0], [F('outro.recap') + 50, 1]]);
+const o_burn = sc([
+  [F('outro.burn'), 0],
+  [F('outro.burn') + 56, 1],
+  [F('outro.virus'), 1],
+  [F('outro.virus') + 40, 0],
+]);
+const o_virus = sc([[F('outro.virus'), 0], [F('outro.virus') + 60, 1]]);
+const o_host = sc([[F('outro.host'), 0], [F('outro.host') + 70, 1]]);
+const o_loop = sc([
+  [F('outro.loopback'), 0],
+  [F('outro.loopback') + 50, 1],
+  [F('outro.end'), 1],
+  [F('outro.end') + 40, 0],
+]);
+const o_end = sc([[F('outro.end'), 0], [F('outro.end') + 64, 1]]);
 
-const O_CARD = { cx: -430, cy: -110, w: 158 };
-const O_BLK = { cx: 320, cy: -110 };
-const FAM = [
-  { x: -480, name: 'zip 爆弾' },
-  { x: 0, name: 'Billion Laughs' },
-  { x: 480, name: 'ReDoS' },
-];
-const FAM_Y = 230;
+const Virus: React.FC<{ cx: number; cy: number; scale: number; opacity: number }> = ({ cx, cy, scale, opacity }) => {
+  if (opacity <= 0.001) return null;
+  const r = 46 * scale;
+  const pts = Array.from({ length: 6 })
+    .map((_, i) => {
+      const a = (Math.PI / 3) * i - Math.PI / 2;
+      return cx + r * Math.cos(a) + ',' + (cy + r * Math.sin(a));
+    })
+    .join(' ');
+  return (
+    <g opacity={opacity}>
+      <polygon points={pts} fill={INDIGO_SOFT} stroke={INDIGO} strokeWidth={4 * scale} />
+      {Array.from({ length: 6 }).map((_, i) => {
+        const a = (Math.PI / 3) * i - Math.PI / 2;
+        const x1 = cx + r * Math.cos(a);
+        const y1 = cy + r * Math.sin(a);
+        const x2 = cx + (r + 16 * scale) * Math.cos(a);
+        const y2 = cy + (r + 16 * scale) * Math.sin(a);
+        return (
+          <g key={i}>
+            <line x1={x1} y1={y1} x2={x2} y2={y2} stroke={INDIGO} strokeWidth={3 * scale} />
+            <circle cx={x2} cy={y2} r={5 * scale} fill={INDIGO} />
+          </g>
+        );
+      })}
+    </g>
+  );
+};
 
 const SceneOutro: React.FC<{ f: number; vis: number }> = ({ f, vis }) => {
   if (vis <= 0.001) return null;
-  const inA = rv(outroIn, f);
-  const kind = rv(outroKind, f);
-  const weapon = rv(outroWeapon, f);
-  const family = rv(outroFamily, f);
-  const redos = rv(outroRedos, f);
-  const common = rv(outroCommon, f);
+  const inA = rv(o_in, f);
+  const recap = rv(o_recap, f);
+  const burn = rv(o_burn, f);
+  const virus = rv(o_virus, f);
+  const host = rv(o_host, f);
+  const loop = rv(o_loop, f);
+  const end = rv(o_end, f);
 
-  const famOn = (i: number): number => {
-    if (i === 0) return clamp(family * 1.6);
-    if (i === 1) return clamp(family * 1.4 - 0.2);
-    return clamp(redos * 1.4);
-  };
+  // recap/burn 期はカード中心、virus 期はカプシド＋細胞、end 期は天秤
+  // end が立ち上がると、前局面の装置（ウイルス・細胞・弱点文）は退場する
+  const endFade = clamp(end * 2.4); // 前局面は end の前半で素早く退場
+  const endShow = clamp(end * 1.9 - 0.75); // 天秤は退場後に登場（同時表示を避ける）
+  const cardCx = lerp(0, -440, clamp(virus * 1.2));
+  const cellCx = 360;
 
   return (
     <g opacity={vis}>
-      {/* 背骨の対比（カード↔塊）の回帰 */}
-      <ExpandArrow
-        x1={O_CARD.cx + O_CARD.w / 2 + 14}
-        x2={O_BLK.cx - GRID_W / 2 - 14}
-        y={O_CARD.cy}
-        opacity={inA}
-        color={weapon > 0.4 ? HEAVY : DIM}
-        draw={1}
-        flip={weapon > 0.4}
-      />
-      <InstructionCard
-        cx={O_CARD.cx}
-        cy={O_CARD.cy}
-        w={O_CARD.w}
-        opacity={inA}
-        color={LIGHT}
-        soft={LIGHT_SOFT}
-        caption={kind > 0.4 ? 'やさしさ' : undefined}
-      />
-      <VolumeBlocks cx={O_BLK.cx} cy={O_BLK.cy} opacity={inA} grow={1} fill={HEAVY_SOFT} edge={HEAVY} />
-      {weapon > 0.3 && (
-        <T x={O_BLK.cx} y={O_BLK.cy + GRID_H / 2 + 36} s={FS_NOTE} fill={HEAVY_DARK} opacity={weapon} w={800}>武器</T>
+      {/* 指示カード（→ カプシドへモーフ） */}
+      <InstrCard cx={cardCx} cy={MAIN_CY} scale={lerp(0.92, 0.62, clamp(virus))} opacity={inA * (1 - clamp(virus * 1.4 - 0.4))} lines={recap > 0.4 ? 1 : 3} glow={0} />
+      {recap > 0.3 && virus < 0.2 && TXT(0, MAIN_CY + 150, '中身は、短い指示だけ', INDIGO_DARK, FS_NOTE, 700)}
+
+      {/* burn：指示が資源を焼く */}
+      {burn > 0.02 && (
+        <g opacity={burn}>
+          <path d={'M ' + 90 + ' ' + MAIN_CY + ' l 180 0'} stroke={RED} strokeWidth={6} strokeLinecap="round" strokeDasharray="10 10" />
+          <path d={'M ' + 262 + ' ' + (MAIN_CY - 10) + ' l 16 10 l -16 10'} fill="none" stroke={RED} strokeWidth={6} strokeLinecap="round" strokeLinejoin="round" />
+          <DiskStack cx={420} cy={MAIN_CY + 4} scale={0.92} opacity={1} crush={burn} />
+          {TXT(420, MAIN_CY + 116, '開いた側の資源を焼く', RED, FS_NOTE, 700)}
+        </g>
       )}
 
-      {/* 同じ非対称の家族 */}
-      {family > 0.02 &&
-        FAM.map((fm, i) => {
-          const ap = famOn(i);
-          if (ap <= 0.02) return null;
-          return (
-            <g key={i} opacity={ap}>
-              <rect x={fm.x - 150} y={FAM_Y - 44} width={300} height={88} rx={14} fill={SURFACE} stroke={i === 0 ? HEAVY : EDGE} strokeWidth={i === 0 ? 3.5 : 2.5} />
-              {/* 軽い指示→重い実行 の小アイコン */}
-              <rect x={fm.x - 116} y={FAM_Y - 16} width={22} height={32} rx={3} fill={LIGHT_SOFT} stroke={LIGHT} strokeWidth={2} />
-              <path d={'M ' + (fm.x - 86) + ' ' + FAM_Y + ' L ' + (fm.x - 58) + ' ' + FAM_Y} stroke={DIM} strokeWidth={3} strokeLinecap="round" />
-              {[0, 1, 2, 3].map((k) => (
-                <rect key={k} x={fm.x - 52 + (k % 2) * 18} y={FAM_Y - 16 + Math.floor(k / 2) * 18} width={15} height={15} rx={2} fill={HEAVY_SOFT} stroke={HEAVY} strokeWidth={1.5} />
-              ))}
-              <T x={fm.x + 50} y={FAM_Y} s={FS_TINY} fill={INK} w={700}>{fm.name}</T>
-              {/* 共通の防御＝打ち切り線 */}
-              {common > 0.05 && (
-                <line x1={fm.x - 150} y1={FAM_Y + 60} x2={fm.x + 150} y2={FAM_Y + 60} stroke={GUARD} strokeWidth={5} strokeLinecap="round" opacity={clamp(common * 1.4 - i * 0.15)} />
-              )}
-            </g>
-          );
-        })}
+      {/* virus：カプシド＋細胞、host で律儀に量産 */}
+      {virus > 0.05 && endFade < 0.98 && (
+        <g opacity={virus * (1 - endFade)}>
+          <Virus cx={cardCx} cy={MAIN_CY} scale={0.92} opacity={1} />
+          {TXT(cardCx, MAIN_CY + 116, 'ウイルス（指示書）', INDIGO_DARK, FS_NOTE, 700)}
+          {/* 細胞 */}
+          <circle cx={cellCx} cy={MAIN_CY} r={170} fill={OKC_SOFT} stroke={OKC} strokeWidth={4} opacity={0.9} />
+          <circle cx={cellCx} cy={MAIN_CY} r={150} fill="none" stroke={OKC} strokeWidth={2} strokeDasharray="6 8" opacity={0.6} />
+          {TXT(cellCx, MAIN_CY + 210, '細胞（律儀に実行する側）', SUB_INK, FS_NOTE, 700)}
+          {/* 量産されるコピー */}
+          {host > 0.02 &&
+            [0, 1, 2, 3].map((i) => {
+              const ap = clamp(host * 5 - i - 0.4);
+              if (ap <= 0.01) return null;
+              const a = (Math.PI / 2) * i - Math.PI / 4;
+              return <Virus key={i} cx={cellCx + 78 * Math.cos(a)} cy={MAIN_CY + 78 * Math.sin(a)} scale={0.5} opacity={ap} />;
+            })}
+        </g>
+      )}
+
+      {/* loopback：律儀さが弱点 */}
+      {loop > 0.05 && virus > 0.3 && endFade < 0.98 && (
+        <g opacity={loop * (1 - endFade)}>
+          {TXT(0, 250, '律儀に実行する側の真面目さが、そのまま弱点になる', INK, FS_NOTE, 800)}
+        </g>
+      )}
+
+      {/* end：軽い／重いの極端な天秤＋締め */}
+      {endShow > 0.02 && (
+        <g opacity={endShow}>
+          <Balance cx={0} cy={MAIN_CY - 30} scale={1.08} opacity={1} tilt={1} />
+          {TXT(-200, MAIN_CY + 110, '軽い指示', INDIGO_DARK, FS_NOTE, 700)}
+          {TXT(220, MAIN_CY - 80, '重い結果', RED, FS_NOTE, 700)}
+          {TXT(0, 232, 'いちばん軽いものが、いちばん重い結果を生む', INDIGO_DARK, FS_LABEL, 800)}
+        </g>
+      )}
     </g>
   );
 };
@@ -1078,10 +810,9 @@ const SceneOutro: React.FC<{ f: number; vis: number }> = ({ f, vis }) => {
 // ============================================================
 const SCENE_TITLES: { start: number; text: string }[] = [
   { start: sceneStarts.intro, text: '序論' },
-  { start: sceneStarts.comp, text: '01 圧縮の正体' },
-  { start: sceneStarts.recur, text: '02 再帰型と、その封じ' },
-  { start: sceneStarts.single, text: '03 単発型' },
-  { start: sceneStarts.trigger, text: '04 律儀さが、引き金' },
+  { start: sceneStarts.body1, text: '01 圧縮は、データでなく指示書' },
+  { start: sceneStarts.body2, text: '02 一枚の指示書では、爆弾になれない' },
+  { start: sceneStarts.body3, text: '03 重ねずに、重ねる' },
   { start: sceneStarts.outro, text: '結論' },
 ];
 
@@ -1089,17 +820,8 @@ const SceneTitle: React.FC<{ text: string; opacity: number }> = ({ text, opacity
   if (opacity <= 0.001) return null;
   return (
     <g opacity={opacity}>
-      <rect x={-918} y={-504} width={10} height={36} rx={5} fill={LIGHT} />
-      <text
-        x={-890}
-        y={-485}
-        fill={SUB_INK}
-        fontSize={FS_SCENE}
-        fontFamily={FONT}
-        fontWeight={700}
-        textAnchor="start"
-        dominantBaseline="central"
-      >
+      <rect x={-918} y={-504} width={10} height={36} rx={5} fill={INDIGO} />
+      <text x={-890} y={-485} fill={SUB_INK} fontSize={FS_SCENE} fontFamily={FONT} fontWeight={700} textAnchor="start" dominantBaseline="central">
         {text}
       </text>
     </g>
@@ -1124,46 +846,105 @@ const wrapLine = (text: string, single: number): string[] => {
   return [text.slice(0, cut), text.slice(cut)];
 };
 
-const Subtitle: React.FC<{ frame: number }> = ({ frame }) => {
+// 現在の行（字幕・口パク・表情で共有）
+const lineAt = (frame: number): number => {
   let idx = 0;
   for (let i = 0; i < SCRIPT.length; i++) if (frame >= lineStarts[i]) idx = i;
+  return idx;
+};
+
+// ============================================================
+// 立ち絵（05_finishing.md・HTML オーバーレイ）
+//   配置値・画像セットは FigureLayout.tsx を正典に移植
+// ============================================================
+const VARIANTS = ['default', 'normal2', 'normal3', 'normal4'] as const;
+const CHAR_DIR: Record<Speaker, string> = { ずんだもん: 'zundamon', めたん: 'metan' };
+const FLAP = 5; // モック口パク：開 FLAP / 閉 FLAP（後で音声駆動 isMouthOpen に差替）
+
+// その話者の最新行 index（表情差分の巡回キー）
+const lastLineOf = (frame: number, sp: Speaker): number => {
+  let idx = 0;
+  for (let i = 0; i < SCRIPT.length; i++)
+    if (SCRIPT[i].speaker === sp && frame >= lineStarts[i]) idx = i;
+  return idx;
+};
+// モック口パク：セリフ区間中だけ一定間隔で開閉
+const isMouthOpen = (frame: number): boolean =>
+  Math.floor((frame - lineStarts[lineAt(frame)]) / FLAP) % 2 === 0;
+
+const charSrc = (sp: Speaker, frame: number, speaking: boolean): string => {
+  const v = VARIANTS[lastLineOf(frame, sp) % VARIANTS.length];
+  const mouth = speaking && isMouthOpen(frame) ? 'open' : 'close';
+  return `characters/${CHAR_DIR[sp]}/${v}-${mouth}.png`;
+};
+
+const Characters: React.FC<{ frame: number }> = ({ frame }) => {
+  const cur = SCRIPT[lineAt(frame)].speaker;
+  const base: React.CSSProperties = {
+    position: 'absolute',
+    width: 340,
+    zIndex: 30, // 字幕帯(zIndex 25)より前面
+    filter: 'drop-shadow(0 6px 20px rgba(36,48,68,0.18))',
+    pointerEvents: 'none',
+  };
+  return (
+    <>
+      <div style={{ ...base, left: 10, bottom: -130, transform: 'scaleX(-1)' }}>
+        <Img src={staticFile(charSrc('めたん', frame, cur === 'めたん'))} style={{ width: '100%', height: 'auto' }} />
+      </div>
+      <div style={{ ...base, right: 10, bottom: -60 }}>
+        <Img src={staticFile(charSrc('ずんだもん', frame, cur === 'ずんだもん'))} style={{ width: '100%', height: 'auto' }} />
+      </div>
+    </>
+  );
+};
+
+// ===== 対話字幕（04_remotion.md §7・必須・HTML 帯／最前面）=====
+const SubtitleBand: React.FC<{ frame: number }> = ({ frame }) => {
+  const idx = lineAt(frame);
   const line = SCRIPT[idx];
   const op = clamp((frame - lineStarts[idx]) / 8);
   const rows = wrapLine(line.text, 25);
   return (
-    <g>
-      <rect x={-892} y={326} width={1784} height={280} rx={20} fill={SURFACE} opacity={0.72} />
-      <rect x={-892} y={326} width={1784} height={3} fill={EDGE} />
-      <g opacity={op}>
-        <text
-          x={0}
-          y={378}
-          fill={SPEAKER_COLOR[line.speaker]}
-          fontSize={FS_SPEAKER}
-          fontFamily={FONT}
-          fontWeight={800}
-          textAnchor="middle"
-          dominantBaseline="central"
-        >
+    <div
+      style={{
+        position: 'absolute',
+        top: 866,
+        left: 68,
+        width: 1784,
+        height: 280,
+        backgroundColor: 'rgba(255,255,255,0.72)',
+        borderTop: `3px solid ${EDGE}`,
+        borderRadius: '20px 20px 0 0',
+        zIndex: 25,
+      }}
+    >
+      <div
+        style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          width: '100%',
+          height: 214,
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+          gap: 10,
+          opacity: op,
+          fontFamily: FONT,
+        }}
+      >
+        <div style={{ fontSize: FS_SPEAKER, fontWeight: 800, color: SPEAKER_COLOR[line.speaker] }}>
           {line.speaker}
-        </text>
+        </div>
         {rows.map((r, i) => (
-          <text
-            key={i}
-            x={0}
-            y={(rows.length === 2 ? 434 : 456) + i * 56}
-            fill={INK}
-            fontSize={FS_SUB}
-            fontFamily={FONT}
-            fontWeight={600}
-            textAnchor="middle"
-            dominantBaseline="central"
-          >
+          <div key={i} style={{ fontSize: FS_SUB, fontWeight: 600, color: INK, lineHeight: 1.1 }}>
             {r}
-          </text>
+          </div>
         ))}
-      </g>
-    </g>
+      </div>
+    </div>
   );
 };
 
@@ -1183,7 +964,7 @@ export const ZipBomb: React.FC = () => {
     <AbsoluteFill style={{ backgroundColor: BG }}>
       <svg width={1920} height={1080} viewBox="-960 -540 1920 1080">
         <defs>
-          <radialGradient id="zb_bgglow" cx="50%" cy="34%" r="82%">
+          <radialGradient id="zb_bgglow" cx="50%" cy="36%" r="80%">
             <stop offset="0%" stopColor="#ffffff" />
             <stop offset="100%" stopColor="#e9edf3" />
           </radialGradient>
@@ -1191,15 +972,16 @@ export const ZipBomb: React.FC = () => {
         <rect x={-960} y={-540} width={1920} height={1080} fill="url(#zb_bgglow)" />
 
         <SceneIntro f={f} vis={rv(introVis, f)} />
-        <SceneComp f={f} vis={rv(compVis, f)} />
-        <SceneRecur f={f} vis={rv(recurVis, f)} />
-        <SceneSingle f={f} vis={rv(singleVis, f)} />
-        <SceneTrigger f={f} vis={rv(triggerVis, f)} />
+        <SceneBody1 f={f} vis={rv(body1Vis, f)} />
+        <SceneBody2 f={f} vis={rv(body2Vis, f)} />
+        <SceneBody3 f={f} vis={rv(body3Vis, f)} />
         <SceneOutro f={f} vis={rv(outroVis, f)} />
 
         <SceneTitle text={SCENE_TITLES[titleIdx].text} opacity={titleOpacity} />
-        <Subtitle frame={f} />
       </svg>
+
+      <Characters frame={f} />
+      <SubtitleBand frame={f} />
     </AbsoluteFill>
   );
 };
