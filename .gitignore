@@ -1,6 +1,12 @@
 # Dependencies
 node_modules/
 
+# Python (manim venv / caches)
+.venv/
+venv/
+__pycache__/
+*.pyc
+
 # Media files (heavy)
 *.mp4
 *.mkv
