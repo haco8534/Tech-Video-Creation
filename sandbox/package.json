@@ -1,0 +1,9 @@
+{
+  "private": true,
+  "scripts": {
+    "dev": "npm --prefix engine run dev",
+    "lint": "npm --prefix engine run lint",
+    "build": "npm --prefix engine run build",
+    "render": "npm --prefix engine exec remotion render"
+  }
+}

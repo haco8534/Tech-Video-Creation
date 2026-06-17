@@ -91,7 +91,3 @@ const SHARED_BOX = { cx: 630, cy: 225, w: 260, h: 110 };
 ## 確認
 
 `preview` / Studio / still snapshot で先に通し見する。mp4 レンダは重いので最後。
-
-## 参考実装
-
-`sandbox/experiments/public_key_crypto/Composition.tsx`

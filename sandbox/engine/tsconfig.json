@@ -1,0 +1,35 @@
+{
+  "compilerOptions": {
+    "target": "ES2018",
+    "module": "commonjs",
+    "jsx": "react-jsx",
+    "strict": true,
+    "noEmit": true,
+    "lib": [
+      "es2015"
+    ],
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "noUnusedLocals": false,
+    "baseUrl": ".",
+    "paths": {
+      "@components/*": ["src/components/*"],
+      "@project/*": ["../*"],
+      "react": ["node_modules/react"],
+      "react/*": ["node_modules/react/*"],
+      "remotion": ["node_modules/remotion"],
+      "remotion/*": ["node_modules/remotion/*"],
+      "@remotion/*": ["node_modules/@remotion/*"],
+      "@remotion/google-fonts/*": ["node_modules/@remotion/google-fonts/dist/cjs/*"]
+    },
+    "typeRoots": ["node_modules/@types"]
+  },
+  "include": [
+    "src/**/*",
+    "../experiments/**/*"
+  ],
+  "exclude": [
+    "remotion.config.ts"
+  ]
+}

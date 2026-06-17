@@ -1,1691 +1,1537 @@
-// [4] Remotion 実装 — image_generation（オブジェクト中心ステージ・白テーマ）
-// design_spec.md の event とライフサイクル契約をコードへ翻訳したもの。
-// セリフ＋event データは scriptData.ts（script.md から _gen_script.py で生成）。
-// 対話字幕は SCRIPT 全行から自動描画。
-// 背骨は「1024×1024 のマス目盤面」。装置はそれが姿を変える工程として連なる。
-
 import React from 'react';
-import { AbsoluteFill, useCurrentFrame, Easing } from 'remotion';
-import { SCRIPT, AnimEvent, Speaker } from './scriptData';
+import { AbsoluteFill, Audio, Easing, Img, staticFile, useCurrentFrame } from 'remotion';
+import { loadFont } from '@remotion/google-fonts/ZenMaruGothic';
+import { SCRIPT, type Speaker } from './scriptData';
+import { AUDIO, LINE_STARTS, TOTAL_FRAMES as AUDIO_TOTAL_FRAMES, VOICE_SRC } from './audioData';
 
-// ===== 固定ベース：白テーマ =====
-const BG = '#f5f7fa';
-const SURFACE = '#ffffff';
-const SURFACE_SOFT = '#eef1f6';
-const SURFACE_DIM = '#e6ebf2';
-const EDGE = '#c4cedd';
-const EDGE_SOFT = '#dce1ea';
-const GRID = '#eaeef4';
+const { fontFamily } = loadFont();
+export const TOTAL_FRAMES = AUDIO_TOTAL_FRAMES;
+
+// ---------- 色の語彙 ----------
+// 紙＝白い面とインク。意味色は4つだけ：
+// ミント＝言葉が指す目的地、グレー＝ノイズ（未確定の色の可能性）、
+// アンバー＝自分で足したから答えを知っているもの、レッド/ブルー＝束ねる属性。
+const BG = '#f4f6fa';
 const INK = '#243044';
-const SUB_INK = '#5d6b82';
-const DIM = '#9aa6b8';
-const SHADOW = '#243044';
+const SUB = '#7b8aa0';
+const MINT = '#0fa57d';
+const MINT_SOFT = 'rgba(15,165,125,0.16)';
+const NOISE = '#9aa6b8';
+const AMBER = '#f59e0b';
+const RED = '#e54848';
+const BLUE = '#3b82f6';
+const CARD_LINE = 'rgba(36,48,68,0.10)';
 
-// ===== アクセント（image_generation の語彙）=====
-const SUBJECT = '#6a4fb6';        // 盤面・絵そのもの（ヴァイオレット）
-const SUBJECT_DARK = '#4a3686';
-const SUBJECT_SOFT = '#ece6f7';
-const DIFFUSION = '#c8458b';      // 拡散モデル（ローズ）
-const DIFFUSION_DARK = '#933064';
-const DIFFUSION_SOFT = '#f7e0ed';
-const AUTOREG = '#1e9c7f';        // 自己回帰モデル（エメラルド）
-const AUTOREG_DARK = '#136c58';
-const AUTOREG_SOFT = '#d8eee7';
-const VOID = '#4a5366';           // 砂嵐・困難
-const VOID_DARK = '#2e3543';
-const VOID_SOFT = '#dde1e8';
-const HOPE = '#d99a2b';           // 易しい・学べる・OK
-const HOPE_DARK = '#a8721a';
-const HOPE_SOFT = '#fbeece';
-
-const FONT = '"Noto Sans JP","Hiragino Sans","Yu Gothic",sans-serif';
-const SPEAKER_COLOR: Record<Speaker, string> = {
-  めたん: '#d6336c',
-  ずんだもん: '#2f9e44',
+// ---------- event → frame ----------
+const EVENT_FRAME: Record<string, number> = {};
+SCRIPT.forEach((l, i) => {
+    if (l.event) EVENT_FRAME[l.event] = LINE_STARTS[i];
+});
+const ev = (name: string): number => {
+    const f = EVENT_FRAME[name];
+    if (f === undefined) throw new Error(`unknown event: ${name}`);
+    return f;
 };
 
-// ===== 文字サイズ（固定ベース・下限つき）=====
-const FS_TITLE = 86;
-const FS_METHOD = 64;
-const FS_SUB = 44;
-const FS_SPEAKER = 36;
-const FS_LABEL = 50;
-const FS_NOTE = 42;
-const FS_TINY = 34;
+// ---------- トラック補間 ----------
+const ease = Easing.bezier(0.4, 0, 0.2, 1);
 
-// ===== 台本とフレーム =====
-const CHAR_FRAMES = 4;
-const PAUSE_FRAMES = 6;
-const MIN_LINE_FRAMES = 40;
-const TAIL_FRAMES = 90;
-const CROSSFADE = 30;
-
-const lineDurations = SCRIPT.map(
-  (l) => Math.round(Math.max(MIN_LINE_FRAMES, l.text.length * CHAR_FRAMES)) + PAUSE_FRAMES,
-);
-const lineStarts: number[] = [];
-lineDurations.reduce((acc, d, i) => ((lineStarts[i] = acc), acc + d), 0);
-
-export const TOTAL_FRAMES =
-  lineStarts[SCRIPT.length - 1] + lineDurations[SCRIPT.length - 1] + TAIL_FRAMES;
-
-const eventFrame = (e: AnimEvent): number => {
-  const i = SCRIPT.findIndex((l) => l.event === e);
-  if (i < 0) throw new Error('event not found: ' + e);
-  return lineStarts[i];
-};
-const F = eventFrame;
-
-// ===== トラック補間機構 =====
 type Keyframe<S> = { f: number; state: S };
 type Track<S> = Keyframe<S>[];
 
-const ease = Easing.bezier(0.4, 0, 0.2, 1);
-
 const blendNumeric = <S,>(a: S, b: S, t: number): S => {
-  const aR = a as unknown as Record<string, number>;
-  const bR = b as unknown as Record<string, number>;
-  const out: Record<string, number> = {};
-  for (const k in aR) out[k] = aR[k] + (bR[k] - aR[k]) * t;
-  return out as unknown as S;
+    const aR = a as unknown as Record<string, number>;
+    const bR = b as unknown as Record<string, number>;
+    const out: Record<string, number> = {};
+    for (const k in aR) out[k] = aR[k] + (bR[k] - aR[k]) * t;
+    return out as unknown as S;
 };
 
-const resolveTrack = <S,>(track: Track<S>, f: number): S => {
-  if (track.length === 0) throw new Error('empty track');
-  if (f <= track[0].f) return track[0].state;
-  for (let i = 0; i < track.length - 1; i++) {
-    const a = track[i];
-    const b = track[i + 1];
-    if (f >= a.f && f <= b.f) {
-      const t = ease((f - a.f) / Math.max(1, b.f - a.f));
-      return blendNumeric(a.state, b.state, t);
-    }
-  }
-  return track[track.length - 1].state;
-};
-
-type Sc = { v: number };
-const sc = (pairs: [number, number][]): Track<Sc> => pairs.map(([f, v]) => ({ f, state: { v } }));
-const rv = (track: Track<Sc>, f: number): number => resolveTrack(track, f).v;
-
-// ===== 数値ヘルパ =====
-const clamp = (x: number, lo = 0, hi = 1): number => Math.min(hi, Math.max(lo, x));
-const lerp = (a: number, b: number, t: number): number => a + (b - a) * t;
-const hex2 = (n: number): string =>
-  ('0' + Math.max(0, Math.min(255, Math.round(n))).toString(16)).slice(-2);
-const hexLerp = (a: string, b: string, t: number): string => {
-  const pa = [parseInt(a.slice(1, 3), 16), parseInt(a.slice(3, 5), 16), parseInt(a.slice(5, 7), 16)];
-  const pb = [parseInt(b.slice(1, 3), 16), parseInt(b.slice(3, 5), 16), parseInt(b.slice(5, 7), 16)];
-  return '#' + hex2(lerp(pa[0], pb[0], t)) + hex2(lerp(pa[1], pb[1], t)) + hex2(lerp(pa[2], pb[2], t));
-};
-
-// 決定論的擬似乱数（盤面のマスごとに固定）
-const seedRand = (i: number, j: number, salt: number): number => {
-  let h = (i * 374761393) ^ (j * 668265263) ^ (salt * 1274126177);
-  h = (h ^ (h >>> 13)) >>> 0;
-  h = Math.imul(h, 1274126177) >>> 0;
-  h = (h ^ (h >>> 16)) >>> 0;
-  return h / 4294967295;
-};
-
-// ===== 背景の薄い格子（全画面常駐の質感）=====
-const BgGrid: React.FC = () => {
-  const lines: React.ReactElement[] = [];
-  const step = 40;
-  for (let x = -960 + step; x < 960; x += step) {
-    lines.push(<line key={'vx' + x} x1={x} y1={-540} x2={x} y2={540} stroke={GRID} strokeWidth={1} opacity={0.6} />);
-  }
-  for (let y = -540 + step; y < 540; y += step) {
-    lines.push(<line key={'hx' + y} x1={-960} y1={y} x2={960} y2={y} stroke={GRID} strokeWidth={1} opacity={0.6} />);
-  }
-  return <g>{lines}</g>;
-};
-
-// ============================================================
-// 盤面（マス目）— 背骨。砂嵐度・パッチ埋め率・カーソル位置で姿を変える
-// ============================================================
-type BoardProps = {
-  cx: number;
-  cy: number;
-  size: number;     // 盤面の外形サイズ（正方形）
-  n: number;        // 1辺のマス数
-  opacity: number;
-  sandStorm: number;     // 0..1
-  patchFill: number;     // 0..1（左上から右下へ）
-  patchColor?: string;   // パッチが埋まる色（既定 SUBJECT）
-  patchSoft?: string;    // パッチが埋まる色（薄め）
-  showGrid?: boolean;
-  gridStrength?: number; // 罫線の濃さ（0..1）
-  edgeStrength?: number; // 外枠の太さ（0..1）
-  salt?: number;         // 砂嵐の固定パターン用
-  edgeColor?: string;
-};
-
-const Board: React.FC<BoardProps> = ({
-  cx, cy, size, n, opacity, sandStorm, patchFill,
-  patchColor = SUBJECT, patchSoft = SUBJECT_SOFT,
-  showGrid = true, gridStrength = 1, edgeStrength = 1, salt = 0,
-  edgeColor = EDGE,
-}) => {
-  if (opacity <= 0.001) return null;
-  const cell = size / n;
-  const x0 = cx - size / 2;
-  const y0 = cy - size / 2;
-  const cells: React.ReactElement[] = [];
-  const totalCells = n * n;
-  const filledCount = Math.floor(patchFill * totalCells);
-  if (sandStorm > 0.001 || patchFill > 0.001) {
-    for (let j = 0; j < n; j++) {
-      for (let i = 0; i < n; i++) {
-        const idx = j * n + i;
-        const filled = idx < filledCount;
-        let fill: string | null = null;
-        if (filled) {
-          const r = seedRand(i, j, salt + 7);
-          fill = hexLerp(patchSoft, patchColor, 0.3 + r * 0.5);
-        } else if (sandStorm > 0.001) {
-          const r = seedRand(i, j, salt);
-          const gray = hexLerp('#ffffff', VOID, 0.15 + r * 0.55);
-          fill = hexLerp('#ffffff', gray, sandStorm);
+const resolve = <S,>(track: Track<S>, f: number): S => {
+    if (f <= track[0].f) return track[0].state;
+    for (let i = 0; i < track.length - 1; i++) {
+        const a = track[i], b = track[i + 1];
+        if (f >= a.f && f <= b.f) {
+            const t = ease((f - a.f) / Math.max(1, b.f - a.f));
+            return blendNumeric(a.state, b.state, t);
         }
-        if (fill) {
-          cells.push(
-            <rect key={'c' + idx} x={x0 + i * cell} y={y0 + j * cell} width={cell + 0.5} height={cell + 0.5} fill={fill} />,
-          );
-        }
-      }
     }
-  }
+    return track[track.length - 1].state;
+};
 
-  const lines: React.ReactElement[] = [];
-  if (showGrid && gridStrength > 0.01) {
-    const lw = 0.5 + gridStrength * 0.8;
-    for (let k = 1; k < n; k++) {
-      lines.push(<line key={'gv' + k} x1={x0 + k * cell} y1={y0} x2={x0 + k * cell} y2={y0 + size} stroke={EDGE_SOFT} strokeWidth={lw} opacity={0.55 + gridStrength * 0.35} />);
-      lines.push(<line key={'gh' + k} x1={x0} y1={y0 + k * cell} x2={x0 + size} y2={y0 + k * cell} stroke={EDGE_SOFT} strokeWidth={lw} opacity={0.55 + gridStrength * 0.35} />);
-    }
-  }
+// 一発の進行（0→1）。登場・描き起こし用
+const prog = (f: number, start: number, dur: number): number =>
+    ease(Math.min(1, Math.max(0, (f - start) / Math.max(1, dur))));
 
-  return (
-    <g opacity={opacity}>
-      <rect x={x0} y={y0} width={size} height={size} rx={6} fill={SURFACE} stroke={edgeColor} strokeWidth={2 + edgeStrength * 2} />
-      {cells}
-      {lines}
-      {/* 四隅マーカー */}
-      <circle cx={x0} cy={y0} r={3} fill={edgeColor} />
-      <circle cx={x0 + size} cy={y0} r={3} fill={edgeColor} />
-      <circle cx={x0} cy={y0 + size} r={3} fill={edgeColor} />
-      <circle cx={x0 + size} cy={y0 + size} r={3} fill={edgeColor} />
+// 決定論の擬似乱数（Math.random はレンダ毎にズレるので使わない）
+const rnd = (i: number, salt = 0): number => {
+    const x = Math.sin(i * 127.1 + salt * 311.7) * 43758.5453;
+    return x - Math.floor(x);
+};
+
+// ---------- プリミティブ ----------
+
+// 白い紙カード
+const Paper: React.FC<{
+    x: number; y: number; w: number; h: number; o?: number; rx?: number; fill?: string;
+}> = ({ x, y, w, h, o = 1, rx = 18, fill = '#ffffff' }) => (
+    <rect x={x - w / 2} y={y - h / 2} width={w} height={h} rx={rx}
+        fill={fill} stroke={CARD_LINE} strokeWidth={2} opacity={o} filter="url(#soft)" />
+);
+
+// プロンプト札（ミントの耳付き白カード）
+const PromptCard: React.FC<{
+    x: number; y: number; s?: number; o?: number; text: string; w?: number;
+}> = ({ x, y, s = 1, o = 1, text, w = 460 }) => (
+    <g transform={`translate(${x},${y}) scale(${s})`} opacity={o}>
+        <rect x={-w / 2} y={-52} width={w} height={104} rx={20}
+            fill="#fff" stroke={CARD_LINE} strokeWidth={2} filter="url(#soft)" />
+        <rect x={-w / 2 + 16} y={-30} width={10} height={60} rx={5} fill={MINT} />
+        <text x={-w / 2 + 48} y={13} fontSize={36} fontWeight={700} fill={INK}>{text}</text>
     </g>
-  );
-};
+);
 
-// ============================================================
-// 猫の線画（SUBJECT 色のシンプルな輪郭）
-// ============================================================
-const CatLine: React.FC<{ cx: number; cy: number; size: number; opacity: number; color?: string }> = ({
-  cx, cy, size, opacity, color = SUBJECT,
-}) => {
-  if (opacity <= 0.001) return null;
-  const s = size / 100;
-  const sw = Math.max(3, 4 * s);
-  return (
-    <g opacity={opacity} transform={`translate(${cx} ${cy}) scale(${s})`}>
-      {/* 左耳 */}
-      <path d="M -42 -16 L -48 -50 L -22 -30 Z" fill={color} opacity={0.95} />
-      {/* 右耳 */}
-      <path d="M 42 -16 L 48 -50 L 22 -30 Z" fill={color} opacity={0.95} />
-      {/* 顔 */}
-      <path
-        d="M -44 -16 Q -44 22 0 26 Q 44 22 44 -16 Q 44 -36 0 -36 Q -44 -36 -44 -16 Z"
-        fill="none"
-        stroke={color}
-        strokeWidth={sw}
-        strokeLinejoin="round"
-      />
-      {/* 目 */}
-      <ellipse cx={-16} cy={-10} rx={4.5} ry={6} fill={color} />
-      <ellipse cx={16} cy={-10} rx={4.5} ry={6} fill={color} />
-      {/* 鼻 */}
-      <path d="M -3 4 L 3 4 L 0 9 Z" fill={color} />
-      {/* 口 */}
-      <path d="M 0 9 Q -6 14 -10 11 M 0 9 Q 6 14 10 11" fill="none" stroke={color} strokeWidth={sw * 0.7} strokeLinecap="round" />
-      {/* ひげ */}
-      <line x1={-20} y1={2} x2={-44} y2={-2} stroke={color} strokeWidth={sw * 0.5} strokeLinecap="round" />
-      <line x1={-20} y1={6} x2={-44} y2={8} stroke={color} strokeWidth={sw * 0.5} strokeLinecap="round" />
-      <line x1={20} y1={2} x2={44} y2={-2} stroke={color} strokeWidth={sw * 0.5} strokeLinecap="round" />
-      <line x1={20} y1={6} x2={44} y2={8} stroke={color} strokeWidth={sw * 0.5} strokeLinecap="round" />
-      {/* 体（座った姿） */}
-      <path
-        d="M -30 22 Q -38 50 -28 56 L 28 56 Q 38 50 30 22"
-        fill="none"
-        stroke={color}
-        strokeWidth={sw}
-        strokeLinejoin="round"
-      />
-      {/* しっぽ */}
-      <path d="M 30 40 Q 50 36 48 22" fill="none" stroke={color} strokeWidth={sw} strokeLinecap="round" />
-    </g>
-  );
-};
-
-// ============================================================
-// プロンプト枠（序論）
-// ============================================================
-const PromptFrame: React.FC<{ cx: number; cy: number; opacity: number; show: number }> = ({
-  cx, cy, opacity, show,
-}) => {
-  if (opacity <= 0.001) return null;
-  const w = 290;
-  const h = 110;
-  return (
-    <g opacity={opacity}>
-      <rect x={cx - w / 2} y={cy - h / 2} width={w} height={h} rx={14} fill={SURFACE} stroke={SUB_INK} strokeWidth={3} />
-      {/* ふきだしのしっぽ */}
-      <path d={`M ${cx + w / 2 - 28} ${cy + h / 2 - 4} L ${cx + w / 2 + 24} ${cy + h / 2 + 22} L ${cx + w / 2 - 8} ${cy + h / 2 - 4} Z`} fill={SURFACE} stroke={SUB_INK} strokeWidth={3} strokeLinejoin="round" />
-      <text x={cx - w / 2 + 20} y={cy - 22} fill={DIM} fontSize={FS_TINY - 4} fontFamily={FONT} fontWeight={600}>
-        プロンプト
-      </text>
-      <text x={cx} y={cy + 18} fill={INK} fontSize={FS_LABEL} fontFamily={FONT} fontWeight={700} textAnchor="middle" dominantBaseline="middle" opacity={show}>
-        「猫の写真」
-      </text>
-    </g>
-  );
-};
-
-// ============================================================
-// 「？」マーク（VOID 色、大きく）
-// ============================================================
-const QMark: React.FC<{ cx: number; cy: number; size: number; opacity: number; color?: string }> = ({
-  cx, cy, size, opacity, color = VOID,
-}) => {
-  if (opacity <= 0.001) return null;
-  return (
-    <text x={cx} y={cy} fill={color} fontSize={size} fontFamily={FONT} fontWeight={900} textAnchor="middle" dominantBaseline="central" opacity={opacity}>
-      ？
-    </text>
-  );
-};
-
-// ============================================================
-// 「✗」マーク（VOID 色、盤面の上にかぶさる）
-// ============================================================
-const XMark: React.FC<{ cx: number; cy: number; size: number; opacity: number; color?: string }> = ({
-  cx, cy, size, opacity, color = VOID,
-}) => {
-  if (opacity <= 0.001) return null;
-  const r = size * 0.42;
-  return (
-    <g opacity={opacity}>
-      <line x1={cx - r} y1={cy - r} x2={cx + r} y2={cy + r} stroke={color} strokeWidth={size * 0.12} strokeLinecap="round" />
-      <line x1={cx + r} y1={cy - r} x2={cx - r} y2={cy + r} stroke={color} strokeWidth={size * 0.12} strokeLinecap="round" />
-    </g>
-  );
-};
-
-// ============================================================
-// 色帯（DIFFUSION/AUTOREG）
-// ============================================================
-const ColorBand: React.FC<{ cx: number; cy: number; w: number; h: number; color: string; opacity: number }> = ({
-  cx, cy, w, h, color, opacity,
-}) => {
-  if (opacity <= 0.001) return null;
-  return (
-    <g opacity={opacity}>
-      <rect x={cx - w / 2} y={cy - h / 2} width={w} height={h} rx={h / 2} fill={color} />
-    </g>
-  );
-};
-
-// ============================================================
-// 数値帯（盤面の上：数式・補足）
-// ============================================================
-const NumberBar: React.FC<{ cx: number; cy: number; text: string; opacity: number; fontSize?: number }> = ({
-  cx, cy, text, opacity, fontSize = FS_NOTE,
-}) => {
-  if (opacity <= 0.001) return null;
-  const w = Math.max(420, text.length * fontSize * 1.05 + 56);
-  const h = fontSize * 1.65;
-  return (
-    <g opacity={opacity}>
-      <rect x={cx - w / 2} y={cy - h / 2} width={w} height={h} rx={h / 2} fill={SURFACE} stroke={EDGE} strokeWidth={2} />
-      <text x={cx} y={cy} fill={INK} fontSize={fontSize} fontFamily={FONT} fontWeight={700} textAnchor="middle" dominantBaseline="central">
-        {text}
-      </text>
-    </g>
-  );
-};
-
-// ============================================================
-// 方式名カード（ボディ3・ボディ4 冒頭：大きく現れて畳まれる）
-// ============================================================
-const MethodCard: React.FC<{ cx: number; cy: number; name: string; subtitle: string; color: string; soft: string; opacity: number; scale: number }> = ({
-  cx, cy, name, subtitle, color, soft, opacity, scale,
-}) => {
-  if (opacity <= 0.001) return null;
-  const fs = FS_METHOD * scale;
-  const fsSub = FS_NOTE * scale;
-  const w = Math.max(560, name.length * fs * 1.05 + 80) * scale;
-  const h = (fs + fsSub + 56) * scale;
-  return (
-    <g opacity={opacity}>
-      <rect x={cx - w / 2} y={cy - h / 2 + 5} width={w} height={h} rx={20 * scale} fill={SHADOW} opacity={0.08} />
-      <rect x={cx - w / 2} y={cy - h / 2} width={w} height={h} rx={20 * scale} fill={SURFACE} stroke={color} strokeWidth={3.5 * scale} />
-      <rect x={cx - w / 2} y={cy - h / 2} width={10 * scale} height={h} rx={5 * scale} fill={color} />
-      <rect x={cx + w / 2 - 10 * scale} y={cy - h / 2} width={10 * scale} height={h} rx={5 * scale} fill={color} />
-      <rect x={cx - w / 2 + 16 * scale} y={cy - h / 2} width={w - 32 * scale} height={h * 0.18} fill={soft} />
-      <text x={cx} y={cy - fsSub * 0.5} fill={color} fontSize={fs} fontFamily={FONT} fontWeight={900} textAnchor="middle" dominantBaseline="central">
-        {name}
-      </text>
-      <text x={cx} y={cy + fs * 0.45} fill={SUB_INK} fontSize={fsSub} fontFamily={FONT} fontWeight={600} textAnchor="middle" dominantBaseline="central">
-        {subtitle}
-      </text>
-    </g>
-  );
-};
-
-// ============================================================
-// 学習ペア（拡散：完成 ↑↓ 汚れた／自己回帰：完成 ↑↓ パッチ列）
-// ============================================================
-type LearnPairProps = {
-  cx: number;
-  cy: number;
-  miniSize: number;
-  opacity: number;
-  topRender: (cx: number, cy: number, size: number) => React.ReactNode;
-  bottomRender: (cx: number, cy: number, size: number) => React.ReactNode;
-  arrowColor?: string;
-};
-const LearnPair: React.FC<LearnPairProps> = ({ cx, cy, miniSize, opacity, topRender, bottomRender, arrowColor = HOPE }) => {
-  if (opacity <= 0.001) return null;
-  const gap = miniSize * 0.4;
-  const topY = cy - miniSize / 2 - gap / 2;
-  const botY = cy + miniSize / 2 + gap / 2;
-  return (
-    <g opacity={opacity}>
-      <rect x={cx - miniSize * 0.66} y={topY - miniSize * 0.5 - 6} width={miniSize * 1.32} height={miniSize * 2 + gap + 12} rx={12} fill="none" stroke={arrowColor} strokeWidth={2} strokeDasharray="6 6" opacity={0.6} />
-      {topRender(cx, topY, miniSize)}
-      {bottomRender(cx, botY, miniSize)}
-      {/* 双方向矢印 */}
-      <line x1={cx} y1={topY + miniSize / 2 + 6} x2={cx} y2={botY - miniSize / 2 - 6} stroke={arrowColor} strokeWidth={4} />
-      <path d={`M ${cx - 8} ${topY + miniSize / 2 + 12} L ${cx} ${topY + miniSize / 2 + 4} L ${cx + 8} ${topY + miniSize / 2 + 12}`} fill="none" stroke={arrowColor} strokeWidth={4} strokeLinejoin="round" strokeLinecap="round" />
-      <path d={`M ${cx - 8} ${botY - miniSize / 2 - 12} L ${cx} ${botY - miniSize / 2 - 4} L ${cx + 8} ${botY - miniSize / 2 - 12}`} fill="none" stroke={arrowColor} strokeWidth={4} strokeLinejoin="round" strokeLinecap="round" />
-    </g>
-  );
-};
-
-// ============================================================
-// 数珠（小矢印が並んだ連鎖）— ボディ2
-// ============================================================
-type ChainProps = {
-  cx: number;
-  cy: number;
-  width: number;
-  count: number;
-  reveal: number;        // 0..1 で左から右へ
-  color: string;
-  withCheck: number;     // 各小矢印に✓を付ける度合
-  opacity: number;
-};
-const Chain: React.FC<ChainProps> = ({ cx, cy, width, count, reveal, color, withCheck, opacity }) => {
-  if (opacity <= 0.001) return null;
-  const step = width / count;
-  const x0 = cx - width / 2;
-  const items: React.ReactElement[] = [];
-  for (let i = 0; i < count; i++) {
-    const ap = clamp(reveal * count - i + 0.2);
-    if (ap <= 0.01) continue;
-    const sx = x0 + i * step + step * 0.12;
-    const ex = x0 + (i + 1) * step - step * 0.12;
-    items.push(
-      <g key={'k' + i} opacity={ap}>
-        <line x1={sx} y1={cy} x2={ex - step * 0.18} y2={cy} stroke={color} strokeWidth={5} strokeLinecap="round" />
-        <path d={`M ${ex - step * 0.32} ${cy - step * 0.13} L ${ex - step * 0.05} ${cy} L ${ex - step * 0.32} ${cy + step * 0.13}`} fill="none" stroke={color} strokeWidth={5} strokeLinejoin="round" strokeLinecap="round" />
-        {withCheck > 0.05 && ap > 0.5 && (
-          <g opacity={withCheck}>
-            <circle cx={(sx + ex) / 2} cy={cy - step * 0.55} r={step * 0.18} fill={HOPE_SOFT} stroke={HOPE} strokeWidth={2} />
-            <path d={`M ${(sx + ex) / 2 - step * 0.08} ${cy - step * 0.55} L ${(sx + ex) / 2 - step * 0.02} ${cy - step * 0.5} L ${(sx + ex) / 2 + step * 0.1} ${cy - step * 0.62}`} fill="none" stroke={HOPE_DARK} strokeWidth={3} strokeLinecap="round" strokeLinejoin="round" />
-          </g>
+// 目的地マーカー（ミントのピン）。ring=0..1 で着地の波紋を一度だけ出す
+const Pin: React.FC<{ x: number; y: number; s?: number; o?: number; ring?: number }> = ({
+    x, y, s = 1, o = 1, ring = 0,
+}) => (
+    <g transform={`translate(${x},${y}) scale(${s})`} opacity={o}>
+        {ring > 0 && ring < 1 && (
+            <circle cx={0} cy={0} r={14 + ring * 46} fill="none" stroke={MINT}
+                strokeWidth={3} opacity={(1 - ring) * 0.8} />
         )}
-      </g>,
-    );
-  }
-  return <g opacity={opacity}>{items}</g>;
-};
-
-// ============================================================
-// 共通点ドット（右側に縦に並ぶ3つの丸＋表題）
-// ============================================================
-const CommonDot: React.FC<{ cx: number; cy: number; lit: number; label: string; opacity: number }> = ({
-  cx, cy, lit, label, opacity,
-}) => {
-  if (opacity <= 0.001) return null;
-  const fill = hexLerp(SURFACE, HOPE_SOFT, clamp(lit));
-  const stroke = hexLerp(DIM, HOPE, clamp(lit));
-  return (
-    <g opacity={opacity}>
-      <circle cx={cx} cy={cy} r={28} fill={fill} stroke={stroke} strokeWidth={3 + lit * 2} />
-      {lit > 0.4 && (
-        <path d={`M ${cx - 11} ${cy} L ${cx - 3} ${cy + 8} L ${cx + 12} ${cy - 9}`} fill="none" stroke={HOPE_DARK} strokeWidth={4} strokeLinecap="round" strokeLinejoin="round" opacity={clamp(lit * 1.6 - 0.4)} />
-      )}
-      {lit > 0.2 && (
-        <text x={cx + 50} y={cy} fill={hexLerp(SUB_INK, HOPE_DARK, clamp(lit))} fontSize={FS_NOTE} fontFamily={FONT} fontWeight={800} textAnchor="start" dominantBaseline="central" opacity={clamp(lit * 1.5)}>
-          {label}
-        </text>
-      )}
+        <path d="M 0 0 C -22 -26 -26 -40 -26 -52 A 26 26 0 1 1 26 -52 C 26 -40 22 -26 0 0 Z"
+            fill={MINT} />
+        <circle cx={0} cy={-52} r={10} fill="#fff" />
     </g>
-  );
-};
+);
 
-// ============================================================
-// 画面可視性
-// ============================================================
-const sceneStarts = {
-  intro: 0,
-  body1: F('scene.body1.in'),
-  body2: F('scene.body2.in'),
-  body3: F('scene.body3.in'),
-  body4: F('scene.body4.in'),
-  body5: F('scene.body5.in'),
-  outro: F('scene.outro.in'),
-};
-
-const introVis = sc([
-  [0, 1],
-  [sceneStarts.body1, 1],
-  [sceneStarts.body1 + CROSSFADE, 0],
-  [TOTAL_FRAMES, 0],
-]);
-const midVis = (sN: number, sNext: number): Track<Sc> =>
-  sc([
-    [sN, 0],
-    [sN + CROSSFADE, 1],
-    [sNext, 1],
-    [sNext + CROSSFADE, 0],
-    [TOTAL_FRAMES, 0],
-  ]);
-const body1Vis = midVis(sceneStarts.body1, sceneStarts.body2);
-const body2Vis = midVis(sceneStarts.body2, sceneStarts.body3);
-const body3Vis = midVis(sceneStarts.body3, sceneStarts.body4);
-const body4Vis = midVis(sceneStarts.body4, sceneStarts.body5);
-const body5Vis = midVis(sceneStarts.body5, sceneStarts.outro);
-const outroVis = sc([
-  [sceneStarts.outro, 0],
-  [sceneStarts.outro + CROSSFADE, 1],
-  [TOTAL_FRAMES, 1],
-]);
-
-// 主役の盤面の基準
-const BOARD_CY = -150;
-const BOARD_SIZE_MAIN = 460;
-const BOARD_N_MAIN = 12;
-
-// ============================================================
-// 画面1 — 序論
-// ============================================================
-const introIn = sc([
-  [10, 0],
-  [50, 1],
-]);
-const introPromptTyped = sc([
-  [F('intro.prompt'), 0],
-  [F('intro.prompt') + 18, 1],
-]);
-const introCat = sc([
-  [F('intro.prompt') + 22, 0],
-  [F('intro.prompt') + 30, 1],
-  [F('intro.giveup'), 1],
-  [F('intro.giveup') + 30, 0],
-]);
-const introQ = sc([
-  [F('intro.q'), 0],
-  [F('intro.q') + 32, 1],
-  [F('intro.giveup'), 1],
-  [F('intro.giveup') + 40, 0],
-]);
-const introXFlash = sc([
-  [F('intro.giveup'), 0],
-  [F('intro.giveup') + 8, 1],
-  [F('intro.giveup') + 26, 1],
-  [F('intro.giveup') + 44, 0],
-]);
-const introBands = sc([
-  [F('intro.twocolors'), 0],
-  [F('intro.twocolors') + 36, 1],
-]);
-const introTitle = sc([
-  [F('intro.title'), 0],
-  [F('intro.title') + 40, 1],
-]);
-const introPromptArrow = sc([
-  [F('intro.prompt') + 12, 0],
-  [F('intro.prompt') + 26, 1],
-  [F('intro.giveup'), 1],
-  [F('intro.giveup') + 24, 0],
-]);
-
-const SceneIntro: React.FC<{ f: number; vis: number }> = ({ f, vis }) => {
-  if (vis <= 0.001) return null;
-  const inA = rv(introIn, f);
-  const typed = rv(introPromptTyped, f);
-  const cat = rv(introCat, f);
-  const q = rv(introQ, f);
-  const x = rv(introXFlash, f);
-  const bands = rv(introBands, f);
-  const titleA = rv(introTitle, f);
-  const arrowA = rv(introPromptArrow, f);
-
-  const boardCx = 110;
-  const boardCy = BOARD_CY;
-  const promptCx = -500;
-  const promptCy = boardCy;
-  const qCx = boardCx + BOARD_SIZE_MAIN / 2 + 150;
-  const qCy = boardCy - BOARD_SIZE_MAIN / 2 - 10;
-
-  return (
-    <g opacity={vis}>
-      <PromptFrame cx={promptCx} cy={promptCy} opacity={inA} show={typed} />
-      {/* プロンプト→盤面の矢印 */}
-      {arrowA > 0.02 && (
-        <g opacity={arrowA}>
-          <line x1={promptCx + 160} y1={promptCy} x2={boardCx - BOARD_SIZE_MAIN / 2 - 16} y2={boardCy} stroke={SUB_INK} strokeWidth={4} strokeLinecap="round" />
-          <path d={`M ${boardCx - BOARD_SIZE_MAIN / 2 - 36} ${boardCy - 12} L ${boardCx - BOARD_SIZE_MAIN / 2 - 16} ${boardCy} L ${boardCx - BOARD_SIZE_MAIN / 2 - 36} ${boardCy + 12}`} fill="none" stroke={SUB_INK} strokeWidth={4} strokeLinejoin="round" strokeLinecap="round" />
-        </g>
-      )}
-      <Board cx={boardCx} cy={boardCy} size={BOARD_SIZE_MAIN} n={BOARD_N_MAIN} opacity={inA} sandStorm={0} patchFill={0} salt={11} />
-      <CatLine cx={boardCx} cy={boardCy + 8} size={BOARD_SIZE_MAIN * 0.7} opacity={cat * inA} />
-      <XMark cx={boardCx} cy={boardCy} size={BOARD_SIZE_MAIN * 0.7} opacity={x} />
-      <QMark cx={qCx} cy={qCy} size={170} opacity={q * inA} />
-
-      {/* 色帯（拡散・自己回帰） — 盤面の真下、タイトルとは別の y 帯 */}
-      <ColorBand cx={boardCx - 90} cy={boardCy + BOARD_SIZE_MAIN / 2 + 38} w={120} h={22} color={DIFFUSION} opacity={bands * inA} />
-      <ColorBand cx={boardCx + 90} cy={boardCy + BOARD_SIZE_MAIN / 2 + 38} w={120} h={22} color={AUTOREG} opacity={bands * inA} />
-
-      {/* タイトル — 色帯の下 */}
-      <g opacity={titleA * inA}>
-        <text x={0} y={186} fill={SUBJECT_DARK} fontSize={FS_TITLE} fontFamily={FONT} fontWeight={900} textAnchor="middle" dominantBaseline="central">
-          画像生成AI
-        </text>
-        <line x1={-260} y1={224} x2={260} y2={224} stroke={SUBJECT} strokeWidth={4} />
-        <text x={0} y={260} fill={SUB_INK} fontSize={FS_SUB} fontFamily={FONT} fontWeight={600} textAnchor="middle" dominantBaseline="central">
-          実は、一発で当てるのは諦めている
-        </text>
-      </g>
-    </g>
-  );
-};
-
-// ============================================================
-// 画面2 — ボディ1：一発で当てるという無謀
-// ============================================================
-const b1In = sc([
-  [sceneStarts.body1 + 8, 0],
-  [sceneStarts.body1 + CROSSFADE + 18, 1],
-]);
-const b1Edge = sc([
-  [sceneStarts.body1, 0],
-  [sceneStarts.body1 + CROSSFADE + 30, 1],
-]);
-const b1CountBar = sc([
-  [F('b1.count'), 0],
-  [F('b1.count') + 30, 1],
-  [F('b1.sea'), 1],
-  [F('b1.sea') + 30, 0],
-]);
-const b1Rgb = sc([
-  [F('b1.rgb'), 0],
-  [F('b1.rgb') + 30, 1],
-  [F('b1.sea'), 1],
-  [F('b1.sea') + 30, 0],
-]);
-const b1Sea = sc([
-  [F('b1.sea'), 0],
-  [F('b1.sea') + 120, 1],
-]);
-const b1Storm = sc([
-  [F('b1.sea'), 0],
-  [F('b1.sea') + 60, 1],
-  [F('b1.point'), 1],
-  [F('b1.point') + 40, 0.4],
-]);
-const b1Point = sc([
-  [F('b1.point'), 0],
-  [F('b1.point') + 40, 1],
-]);
-const b1Strike = sc([
-  [F('b1.allatonce'), 0],
-  [F('b1.allatonce') + 50, 1],
-]);
-const b1Abandon = sc([
-  [F('b1.abandon'), 0],
-  [F('b1.abandon') + 32, 1],
-]);
-const b1SeaDim = sc([
-  [F('b1.abandon'), 0],
-  [F('b1.abandon') + 50, 1],
-]);
-
-const SmallBoard: React.FC<{ cx: number; cy: number; size: number; n: number; sandStorm: number; opacity: number; salt: number; isCat?: boolean }> = ({ cx, cy, size, n, sandStorm, opacity, salt, isCat = false }) => {
-  if (opacity <= 0.001) return null;
-  return (
-    <g opacity={opacity}>
-      <Board cx={cx} cy={cy} size={size} n={n} opacity={1} sandStorm={sandStorm} patchFill={0} salt={salt} showGrid={false} edgeStrength={0} edgeColor={EDGE_SOFT} />
-      {isCat && <CatLine cx={cx} cy={cy + 2} size={size * 0.7} opacity={1} />}
-    </g>
-  );
-};
-
-const PossibilitySea: React.FC<{ reveal: number; opacity: number; dim: number }> = ({ reveal, opacity, dim }) => {
-  if (opacity <= 0.001) return null;
-  // 主盤面の周囲に 24 個の縮小盤面を散らす（重ならない配置）
-  const positions: { x: number; y: number; salt: number }[] = [];
-  const ring1 = [-820, -680, -540, -400, 400, 540, 680, 820];
-  const yTop = -320;
-  const yBot = 130;
-  ring1.forEach((x, i) => positions.push({ x, y: yTop + (i % 2 === 0 ? -30 : 30), salt: 100 + i }));
-  ring1.forEach((x, i) => positions.push({ x, y: yBot + (i % 2 === 0 ? -30 : 30), salt: 200 + i }));
-  // 上下の追加列
-  [-820, -540, 540, 820].forEach((x, i) => positions.push({ x, y: -440, salt: 300 + i }));
-  [-820, -540, 540, 820].forEach((x, i) => positions.push({ x, y: 240, salt: 400 + i }));
-  const dimColor = lerp(1, 0.5, dim);
-  return (
-    <g opacity={opacity}>
-      {positions.map((p, i) => {
-        const ap = clamp(reveal * positions.length * 1.5 - i * 0.6) * dimColor;
-        if (ap <= 0.02) return null;
-        return <SmallBoard key={i} cx={p.x} cy={p.y} size={106} n={7} sandStorm={1} opacity={ap} salt={p.salt} />;
-      })}
-    </g>
-  );
-};
-
-const RgbStack: React.FC<{ cx: number; cy: number; opacity: number }> = ({ cx, cy, opacity }) => {
-  if (opacity <= 0.001) return null;
-  const sz = 130;
-  return (
-    <g opacity={opacity}>
-      <rect x={cx - sz / 2} y={cy - sz / 2} width={sz} height={sz} rx={8} fill={SUBJECT_SOFT} stroke={SUBJECT} strokeWidth={3} />
-      <text x={cx} y={cy - sz / 2 - 20} fill={SUB_INK} fontSize={FS_TINY} fontFamily={FONT} fontWeight={700} textAnchor="middle">1マス</text>
-      {/* 3本の色棒 */}
-      <rect x={cx + sz / 2 + 24} y={cy - 60} width={150} height={26} rx={4} fill="#e0383b" />
-      <rect x={cx + sz / 2 + 24} y={cy - 18} width={150} height={26} rx={4} fill="#2da64a" />
-      <rect x={cx + sz / 2 + 24} y={cy + 24} width={150} height={26} rx={4} fill="#2b6dd8" />
-      <text x={cx + sz / 2 + 99} y={cy - 47} fill={SURFACE} fontSize={FS_TINY - 6} fontFamily={FONT} fontWeight={800} textAnchor="middle" dominantBaseline="central">R 256</text>
-      <text x={cx + sz / 2 + 99} y={cy - 5} fill={SURFACE} fontSize={FS_TINY - 6} fontFamily={FONT} fontWeight={800} textAnchor="middle" dominantBaseline="central">G 256</text>
-      <text x={cx + sz / 2 + 99} y={cy + 37} fill={SURFACE} fontSize={FS_TINY - 6} fontFamily={FONT} fontWeight={800} textAnchor="middle" dominantBaseline="central">B 256</text>
-      <text x={cx + 90} y={cy + 96} fill={INK} fontSize={FS_NOTE} fontFamily={FONT} fontWeight={700} textAnchor="middle">256³ ≈ 1600万 色</text>
-    </g>
-  );
-};
-
-const StrikeArrow: React.FC<{ targetX: number; targetY: number; progress: number; opacity: number }> = ({ targetX, targetY, progress, opacity }) => {
-  if (opacity <= 0.001) return null;
-  // 画面外（左上）から targetX, targetY 手前まで飛ぶ
-  const startX = -1080;
-  const startY = -560;
-  const wallOffset = 140;
-  const tx = lerp(startX, targetX - wallOffset, clamp(progress * 1.2));
-  const ty = lerp(startY, targetY - wallOffset * 0.7, clamp(progress * 1.2));
-  return (
-    <g opacity={opacity}>
-      <line x1={startX} y1={startY} x2={tx} y2={ty} stroke={INK} strokeWidth={10} strokeLinecap="round" />
-      <path d={`M ${tx - 24} ${ty - 6} L ${tx + 4} ${ty + 4} L ${tx - 8} ${ty + 22} Z`} fill={INK} />
-      {/* 壁 */}
-      {progress > 0.6 && (
-        <g opacity={clamp(progress * 2 - 1)}>
-          <path
-            d={`M ${tx + 14} ${ty - 36} L ${tx + 60} ${ty - 16} L ${tx + 38} ${ty + 6} L ${tx + 74} ${ty + 28} L ${tx + 46} ${ty + 50} L ${tx + 78} ${ty + 70}`}
-            fill="none"
-            stroke={VOID}
-            strokeWidth={9}
-            strokeLinejoin="round"
-            strokeLinecap="round"
-          />
-        </g>
-      )}
-    </g>
-  );
-};
-
-const SceneBody1: React.FC<{ f: number; vis: number }> = ({ f, vis }) => {
-  if (vis <= 0.001) return null;
-  const inA = rv(b1In, f);
-  const edge = rv(b1Edge, f);
-  const numBar = rv(b1CountBar, f);
-  const rgb = rv(b1Rgb, f);
-  const seaR = rv(b1Sea, f);
-  const storm = rv(b1Storm, f);
-  const pt = rv(b1Point, f);
-  const strike = rv(b1Strike, f);
-  const abandon = rv(b1Abandon, f);
-  const seaDim = rv(b1SeaDim, f);
-
-  const boardCx = 0;
-  const boardCy = -50;
-  const seaOp = inA * (1 - clamp(rgb * 1.2)) * clamp(seaR * 2);
-
-  return (
-    <g opacity={vis}>
-      {/* 可能性の海（中央盤面の周囲） */}
-      <PossibilitySea reveal={seaR} opacity={seaOp} dim={seaDim} />
-
-      {/* 中央の盤面 */}
-      <Board cx={boardCx} cy={boardCy} size={BOARD_SIZE_MAIN} n={BOARD_N_MAIN} opacity={inA} sandStorm={storm} patchFill={0} salt={21} gridStrength={lerp(1, 0.5, storm)} edgeStrength={edge} edgeColor={lerp(0, 1, pt) > 0.5 ? SUBJECT : EDGE} />
-
-      {/* 中央に猫が立つ瞬間（point） */}
-      <CatLine cx={boardCx} cy={boardCy + 8} size={BOARD_SIZE_MAIN * 0.65} opacity={pt * inA} />
-
-      {/* 数値帯：100万マス */}
-      <NumberBar cx={boardCx} cy={boardCy - BOARD_SIZE_MAIN / 2 - 50} text="1024 × 1024 ≈ 100万 マス" opacity={numBar * inA * (1 - rgb)} />
-
-      {/* RGB 拡大表示 */}
-      <g transform={`translate(${boardCx + BOARD_SIZE_MAIN / 2 + 80} ${boardCy - 60})`}>
-        <RgbStack cx={0} cy={0} opacity={rgb * inA} />
-      </g>
-
-      {/* 一発当ての矢印（壁にぶつかる） */}
-      <StrikeArrow targetX={boardCx} targetY={boardCy} progress={strike} opacity={inA} />
-
-      {/* 諦め印 */}
-      <XMark cx={boardCx} cy={boardCy} size={BOARD_SIZE_MAIN * 0.55} opacity={abandon * inA} />
-    </g>
-  );
-};
-
-// ============================================================
-// 画面3 — ボディ2：バラし方、二つ
-// ============================================================
-const b2In = sc([
-  [sceneStarts.body2 + 8, 0],
-  [sceneStarts.body2 + CROSSFADE + 18, 1],
-]);
-const b2Tiny = sc([
-  [sceneStarts.body2, 0],
-  [sceneStarts.body2 + CROSSFADE + 24, 1],
-]);
-const b2Split = sc([
-  [F('b2.split'), 0],
-  [F('b2.split') + 80, 1],
-]);
-const b2Easy = sc([
-  [F('b2.easy'), 0],
-  [F('b2.easy') + 40, 1],
-]);
-const b2Cat = sc([
-  [F('b2.cat'), 0],
-  [F('b2.cat') + 36, 1],
-]);
-const b2Learn = sc([
-  [F('b2.learnable'), 0],
-  [F('b2.learnable') + 50, 1],
-]);
-const b2Fork = sc([
-  [F('b2.fork'), 0],
-  [F('b2.fork') + 50, 1],
-]);
-const b2Diff = sc([
-  [F('b2.diffSide'), 0],
-  [F('b2.diffSide') + 60, 1],
-]);
-const b2Auto = sc([
-  [F('b2.autoSide'), 0],
-  [F('b2.autoSide') + 60, 1],
-]);
-const b2Preview = sc([
-  [F('b2.preview'), 0],
-  [F('b2.preview') + 36, 1],
-]);
-
-const BigStrike: React.FC<{ cx: number; cy: number; opacity: number; ng: number }> = ({ cx, cy, opacity, ng }) => {
-  if (opacity <= 0.001) return null;
-  const w = 220;
-  return (
-    <g opacity={opacity}>
-      <line x1={cx - w / 2} y1={cy} x2={cx + w / 2 - 24} y2={cy} stroke={INK} strokeWidth={14} strokeLinecap="round" />
-      <path d={`M ${cx + w / 2 - 40} ${cy - 18} L ${cx + w / 2} ${cy} L ${cx + w / 2 - 40} ${cy + 18}`} fill="none" stroke={INK} strokeWidth={14} strokeLinejoin="round" strokeLinecap="round" />
-      <XMark cx={cx} cy={cy - 60} size={48} opacity={ng} />
-    </g>
-  );
-};
-
-const FillingMiniBoard: React.FC<{ cx: number; cy: number; size: number; fill: number; opacity: number }> = ({
-  cx, cy, size, fill, opacity,
-}) => {
-  if (opacity <= 0.001) return null;
-  return <Board cx={cx} cy={cy} size={size} n={6} opacity={opacity} sandStorm={0} patchFill={fill} salt={31 + Math.floor(cx)} showGrid={false} edgeStrength={0} edgeColor={EDGE_SOFT} />;
-};
-
-const FadingMiniBoard: React.FC<{ cx: number; cy: number; size: number; storm: number; opacity: number }> = ({
-  cx, cy, size, storm, opacity,
-}) => {
-  if (opacity <= 0.001) return null;
-  return <Board cx={cx} cy={cy} size={size} n={6} opacity={opacity} sandStorm={storm} patchFill={0} salt={51 + Math.floor(cx)} showGrid={false} edgeStrength={0} edgeColor={EDGE_SOFT} />;
-};
-
-const SceneBody2: React.FC<{ f: number; vis: number }> = ({ f, vis }) => {
-  if (vis <= 0.001) return null;
-  const inA = rv(b2In, f);
-  const tiny = rv(b2Tiny, f);
-  const splitA = rv(b2Split, f);
-  const easyA = rv(b2Easy, f);
-  const catA = rv(b2Cat, f);
-  const learnA = rv(b2Learn, f);
-  const forkA = rv(b2Fork, f);
-  const diffA = rv(b2Diff, f);
-  const autoA = rv(b2Auto, f);
-  const previewA = rv(b2Preview, f);
-
-  // ボディ1のこだま（左下に縮んだ姿）
-  const echoX = -780;
-  const echoY = 130;
-  const echoSz = 120;
-  // 大矢印（中央左寄り）
-  const bigX = -440;
-  const bigY = -150;
-  // 数珠（中央〜右）
-  const chainCx = 150;
-  const chainCy = -150;
-  const chainW = 980;
-  const chainCount = 10;
-
-  // 分岐後の上半分（DIFFUSION）と下半分（AUTOREG）
-  const upY = -250;
-  const dnY = -50;
-  const splitProgress = clamp(forkA);
-
-  // 分岐後の小盤面列（拡散側／自己回帰側）
-  const miniRow = Array.from({ length: 6 });
-  const miniW = 110;
-  const miniGap = 14;
-  const rowW = miniRow.length * miniW + (miniRow.length - 1) * miniGap;
-  const rowX0 = chainCx - chainW / 2 + miniW / 2;
-
-  return (
-    <g opacity={vis}>
-      {/* ボディ1のこだま */}
-      <g opacity={tiny * inA * (1 - clamp(previewA * 1.3))}>
-        <Board cx={echoX} cy={echoY} size={echoSz} n={6} opacity={1} sandStorm={1} patchFill={0} salt={61} showGrid={false} edgeStrength={0} edgeColor={EDGE_SOFT} />
-        <XMark cx={echoX} cy={echoY} size={echoSz * 0.7} opacity={0.85} />
-        <text x={echoX} y={echoY + echoSz / 2 + 28} fill={SUB_INK} fontSize={FS_TINY - 4} fontFamily={FONT} fontWeight={700} textAnchor="middle">一発当て</text>
-      </g>
-
-      {/* 大矢印（一発当ての象徴） */}
-      <g opacity={splitA * inA * (1 - previewA)}>
-        <BigStrike cx={bigX} cy={bigY} opacity={1} ng={learnA} />
-        {splitA > 0.4 && (
-          <text x={bigX} y={bigY - 110} fill={INK} fontSize={FS_NOTE} fontFamily={FONT} fontWeight={800} textAnchor="middle">
-            =
-          </text>
-        )}
-      </g>
-
-      {/* 数珠（連鎖） */}
-      <g opacity={(1 - previewA) * (1 - splitProgress) * inA}>
-        <Chain cx={chainCx} cy={chainCy} width={chainW} count={chainCount} reveal={splitA} color={SUB_INK} withCheck={learnA} opacity={1} />
-      </g>
-
-      {/* 数珠の右端の猫 */}
-      <g opacity={catA * inA * (1 - splitProgress) * (1 - previewA)}>
-        <SmallBoard cx={chainCx + chainW / 2 + 50} cy={chainCy} size={120} n={6} sandStorm={0} opacity={1} salt={71} isCat />
-      </g>
-
-      {/* 「易しい」バッジ */}
-      {easyA > 0.05 && (
-        <g opacity={easyA * inA * (1 - splitProgress) * (1 - previewA)}>
-          <rect x={chainCx + 220} y={chainCy - 90} width={150} height={60} rx={30} fill={HOPE_SOFT} stroke={HOPE} strokeWidth={3} />
-          <text x={chainCx + 295} y={chainCy - 60} fill={HOPE_DARK} fontSize={FS_LABEL} fontFamily={FONT} fontWeight={900} textAnchor="middle" dominantBaseline="central">易しい</text>
-        </g>
-      )}
-
-      {/* 分岐後の上下二本 */}
-      {/* 上半分：拡散側 */}
-      <g opacity={forkA * inA * (1 - previewA)}>
-        <Chain cx={chainCx} cy={upY} width={chainW} count={chainCount} reveal={1} color={DIFFUSION} withCheck={0} opacity={1} />
-        {diffA > 0.05 && (
-          <g opacity={diffA}>
-            {miniRow.map((_, i) => {
-              const cx = rowX0 + i * (miniW + miniGap);
-              const storm = 1 - i / (miniRow.length - 1);
-              const isCat = i === miniRow.length - 1;
-              return (
-                <g key={'d' + i}>
-                  <FadingMiniBoard cx={cx} cy={upY + 100} size={miniW} storm={storm} opacity={1} />
-                  {isCat && <CatLine cx={cx} cy={upY + 100} size={miniW * 0.7} opacity={1} />}
-                </g>
-              );
-            })}
-          </g>
-        )}
-      </g>
-
-      {/* 下半分：自己回帰側 */}
-      <g opacity={forkA * inA * (1 - previewA)}>
-        <Chain cx={chainCx} cy={dnY} width={chainW} count={chainCount} reveal={1} color={AUTOREG} withCheck={0} opacity={1} />
-        {autoA > 0.05 && (
-          <g opacity={autoA}>
-            {miniRow.map((_, i) => {
-              const cx = rowX0 + i * (miniW + miniGap);
-              const fillR = (i + 1) / miniRow.length;
-              const isCat = i === miniRow.length - 1;
-              return (
-                <g key={'a' + i}>
-                  <FillingMiniBoard cx={cx} cy={dnY + 100} size={miniW} fill={fillR} opacity={1} />
-                  {isCat && <CatLine cx={cx} cy={dnY + 100} size={miniW * 0.7} opacity={1} />}
-                </g>
-              );
-            })}
-          </g>
-        )}
-      </g>
-    </g>
-  );
-};
-
-// ============================================================
-// 画面4 — ボディ3：拡散モデル
-// ============================================================
-const b3CardBig = sc([
-  [sceneStarts.body3, 0],
-  [sceneStarts.body3 + CROSSFADE, 1],
-  [F('b3.start'), 1],
-  [F('b3.start') + 30, 0],
-]);
-const b3Step = (which: number): Track<Sc> => {
-  // 6個の小盤面の登場タイミング
-  const f0 = F('b3.start');
-  const f1 = F('b3.subtract');
-  const f2 = F('b3.more');
-  const f3 = F('b3.more') + 30;
-  const f4 = F('b3.count');
-  const f5 = F('b3.count') + 30;
-  const fs = [f0, f1, f2, f3, f4, f5];
-  const ft = fs[which];
-  return sc([
-    [ft, 0],
-    [ft + 40, 1],
-  ]);
-};
-const b3AxisLine = sc([
-  [F('b3.count'), 0],
-  [F('b3.count') + 50, 1],
-]);
-const b3Highlight = sc([
-  [F('b3.howq'), 0],
-  [F('b3.howq') + 14, 1],
-  [F('b3.howq') + 50, 1],
-  [F('b3.howq') + 70, 0],
-]);
-const b3Learn = sc([
-  [F('b3.learn'), 0],
-  [F('b3.learn') + 60, 1],
-  [F('b3.identity'), 1],
-  [F('b3.identity') + 40, 0],
-]);
-const b3Pairs = sc([
-  [F('b3.pairs'), 0],
-  [F('b3.pairs') + 70, 1],
-  [F('b3.identity'), 1],
-  [F('b3.identity') + 40, 0],
-]);
-const b3IdentFlash = sc([
-  [F('b3.identity') + 36, 0],
-  [F('b3.identity') + 52, 1],
-  [F('b3.identity') + 90, 1],
-  [F('b3.identity') + 120, 0],
-]);
-const b3Products = sc([
-  [F('b3.products'), 0],
-  [F('b3.products') + 40, 1],
-]);
-
-const SceneBody3: React.FC<{ f: number; vis: number }> = ({ f, vis }) => {
-  if (vis <= 0.001) return null;
-  const cardBig = rv(b3CardBig, f);
-  const steps = [0, 1, 2, 3, 4, 5].map((i) => rv(b3Step(i), f));
-  const axis = rv(b3AxisLine, f);
-  const hl = rv(b3Highlight, f);
-  const learn = rv(b3Learn, f);
-  const pairs = rv(b3Pairs, f);
-  const ident = rv(b3IdentFlash, f);
-  const prod = rv(b3Products, f);
-
-  // 時間軸列の配置
-  const rowY = -50;
-  const miniSize = 175;
-  const gap = 24;
-  const total = 6 * miniSize + 5 * gap;
-  const x0 = -total / 2 + miniSize / 2;
-  const xs = Array.from({ length: 6 }).map((_, i) => x0 + i * (miniSize + gap));
-  const storms = [1, 0.83, 0.66, 0.5, 0.33, 0];
-
-  return (
-    <g opacity={vis}>
-      {/* 大方式名カード（本編冒頭で1度だけ） */}
-      <g opacity={cardBig}>
-        <MethodCard cx={0} cy={-50} name="拡散モデル" subtitle="時間軸 — ノイズを少しずつ引く" color={DIFFUSION} soft={DIFFUSION_SOFT} opacity={1} scale={1.3} />
-      </g>
-
-      {/* 時間軸列 */}
-      {xs.map((cx, i) => {
-        const ap = steps[i];
-        if (ap <= 0.01) return null;
-        const isLast = i === 5;
-        const stormI = storms[i];
-        const flashAdd = ident * 0.4;
-        return (
-          <g key={'s' + i} opacity={ap}>
-            <Board cx={cx} cy={rowY} size={miniSize} n={8} opacity={1} sandStorm={stormI} patchFill={0} salt={101 + i} showGrid={false} edgeStrength={i === 2 ? 0 : 0} edgeColor={hexLerp(EDGE, DIFFUSION, flashAdd + (i === 2 ? hl * 0.7 : 0))} />
-            {isLast && <CatLine cx={cx} cy={rowY + 2} size={miniSize * 0.7} opacity={1} />}
-            {i === 2 && hl > 0.02 && (
-              <rect x={cx - miniSize / 2 - 6} y={rowY - miniSize / 2 - 6} width={miniSize + 12} height={miniSize + 12} rx={10} fill="none" stroke={DIFFUSION} strokeWidth={4 + hl * 4} opacity={hl} />
-            )}
-            {i < 5 && ap > 0.5 && (
-              <g opacity={ap}>
-                <line x1={cx + miniSize / 2 + 2} y1={rowY} x2={cx + miniSize / 2 + gap - 4} y2={rowY} stroke={DIFFUSION} strokeWidth={4} strokeLinecap="round" />
-                <path d={`M ${cx + miniSize / 2 + gap - 14} ${rowY - 7} L ${cx + miniSize / 2 + gap - 2} ${rowY} L ${cx + miniSize / 2 + gap - 14} ${rowY + 7}`} fill="none" stroke={DIFFUSION} strokeWidth={4} strokeLinejoin="round" strokeLinecap="round" />
-              </g>
-            )}
-          </g>
-        );
-      })}
-
-      {/* 時間軸線 */}
-      {axis > 0.05 && (
-        <g opacity={axis}>
-          <line x1={xs[0] - miniSize / 2} y1={rowY + miniSize / 2 + 36} x2={xs[5] + miniSize / 2} y2={rowY + miniSize / 2 + 36} stroke={DIFFUSION} strokeWidth={6} strokeLinecap="round" />
-          <path d={`M ${xs[5] + miniSize / 2 + 8} ${rowY + miniSize / 2 + 28} L ${xs[5] + miniSize / 2 + 26} ${rowY + miniSize / 2 + 36} L ${xs[5] + miniSize / 2 + 8} ${rowY + miniSize / 2 + 44}`} fill="none" stroke={DIFFUSION} strokeWidth={6} strokeLinejoin="round" strokeLinecap="round" />
-          <text x={(xs[0] + xs[5]) / 2} y={rowY + miniSize / 2 + 84} fill={DIFFUSION_DARK} fontSize={FS_NOTE} fontFamily={FONT} fontWeight={800} textAnchor="middle">
-            20 〜 50 ステップで完成
-          </text>
-        </g>
-      )}
-
-      {/* 学習ペア（右端の上） */}
-      {learn > 0.05 && (
-        <g opacity={learn}>
-          <LearnPair
-            cx={xs[5]}
-            cy={rowY - miniSize / 2 - 220}
-            miniSize={120}
-            opacity={1}
-            topRender={(c, cy, sz) => (
-              <g key="top">
-                <Board cx={c} cy={cy} size={sz} n={8} opacity={1} sandStorm={0} patchFill={0} salt={201} showGrid={false} edgeColor={EDGE_SOFT} edgeStrength={0} />
-                <CatLine cx={c} cy={cy + 2} size={sz * 0.7} opacity={1} />
-              </g>
-            )}
-            bottomRender={(c, cy, sz) => (
-              <g key="bot">
-                <Board cx={c} cy={cy} size={sz} n={8} opacity={1} sandStorm={0.5} patchFill={0} salt={202} showGrid={false} edgeColor={EDGE_SOFT} edgeStrength={0} />
-              </g>
-            )}
-          />
-          <text x={xs[5]} y={rowY - miniSize / 2 - 30} fill={HOPE_DARK} fontSize={FS_TINY - 2} fontFamily={FONT} fontWeight={700} textAnchor="middle">
-            汚す手順を逆向きに学ぶ
-          </text>
-        </g>
-      )}
-
-      {/* ペアの複製（3組） */}
-      {pairs > 0.1 && (
-        <g opacity={pairs}>
-          {[-2, -1].map((d, idx) => {
-            const c = xs[5] + d * 180;
+// ノイズ雲（グレーの粒群）。spread=1 が標準散布
+const NoiseBall: React.FC<{
+    cx: number; cy: number; r: number; n?: number; o?: number; seed?: number; spread?: number;
+}> = ({ cx, cy, r, n = 60, o = 1, seed = 1, spread = 1 }) => (
+    <g opacity={o}>
+        {Array.from({ length: n }, (_, i) => {
+            const a = rnd(i, seed) * Math.PI * 2;
+            const d = r * Math.sqrt(rnd(i, seed + 7)) * spread;
+            const pr = 3.5 + rnd(i, seed + 13) * 4;
+            const dark = rnd(i, seed + 19) > 0.75;
             return (
-              <g key={'p' + idx}>
-                <LearnPair
-                  cx={c}
-                  cy={rowY - miniSize / 2 - 220}
-                  miniSize={120}
-                  opacity={1}
-                  topRender={(cc, cy, sz) => (
-                    <g key="t">
-                      <Board cx={cc} cy={cy} size={sz} n={8} opacity={1} sandStorm={0} patchFill={0.6 + idx * 0.15} salt={210 + idx} showGrid={false} edgeColor={EDGE_SOFT} edgeStrength={0} />
-                    </g>
-                  )}
-                  bottomRender={(cc, cy, sz) => (
-                    <g key="b">
-                      <Board cx={cc} cy={cy} size={sz} n={8} opacity={1} sandStorm={0.4 + idx * 0.2} patchFill={0} salt={220 + idx} showGrid={false} edgeColor={EDGE_SOFT} edgeStrength={0} />
-                    </g>
-                  )}
-                />
-              </g>
+                <circle key={i} cx={cx + Math.cos(a) * d} cy={cy + Math.sin(a) * d * 0.82}
+                    r={pr} fill={dark ? '#7d8aa0' : NOISE} opacity={0.5 + rnd(i, seed + 23) * 0.5} />
             );
-          })}
-        </g>
-      )}
-
-      {/* 製品名 */}
-      {prod > 0.05 && (
-        <g opacity={prod}>
-          <text x={0} y={rowY + miniSize / 2 + 144} fill={SUB_INK} fontSize={FS_NOTE} fontFamily={FONT} fontWeight={700} textAnchor="middle">
-            Stable Diffusion / Midjourney / DALL-E
-          </text>
-        </g>
-      )}
+        })}
     </g>
-  );
-};
+);
 
-// ============================================================
-// 画面5 — ボディ4：自己回帰モデル
-// ============================================================
-const b4CardBig = sc([
-  [sceneStarts.body4, 0],
-  [sceneStarts.body4 + CROSSFADE, 1],
-  [F('b4.empty'), 1],
-  [F('b4.empty') + 30, 0],
-]);
-const b4Board = sc([
-  [F('b4.empty'), 0],
-  [F('b4.empty') + 40, 1],
-]);
-const b4Count = sc([
-  [F('b4.count'), 0],
-  [F('b4.count') + 40, 1],
-]);
-const b4FillStart = sc([
-  [F('b4.fillStart'), 0],
-  [F('b4.fillStart') + 50, 0.05],
-]);
-const b4Cursor = sc([
-  [F('b4.fillStart'), 0],
-  [F('b4.fillStart') + 30, 1],
-]);
-const b4Predict = sc([
-  [F('b4.predict'), 0],
-  [F('b4.predict') + 40, 1],
-]);
-const b4Unfurl = sc([
-  [F('b4.gpt'), 0],
-  [F('b4.gpt') + 60, 1],
-]);
-const b4Unroll = sc([
-  [F('b4.unroll'), 0],
-  [F('b4.unroll') + 50, 1],
-]);
-const b4FillMid = sc([
-  [sceneStarts.body4, 0],
-  [F('b4.fromAll'), 0.05],
-  [F('b4.fromAll') + 60, 0.4],
-]);
-const b4LearnGroup = sc([
-  [F('b4.learn'), 0],
-  [F('b4.learn') + 60, 1],
-  [F('b4.fullCat'), 1],
-  [F('b4.fullCat') + 60, 0],
-]);
-const b4FillFull = sc([
-  [sceneStarts.body4, 0],
-  [F('b4.fullCat'), 0],
-  [F('b4.fullCat') + 60, 1],
-]);
-const b4Products = sc([
-  [F('b4.products'), 0],
-  [F('b4.products') + 40, 1],
-]);
-
-// パッチ列の展開図（右側に並ぶ16x16=256個の小マス、ただし簡略表現）
-const UnrollStrip: React.FC<{ cx: number; cy: number; w: number; h: number; rows: number; cols: number; fill: number; opacity: number }> = ({
-  cx, cy, w, h, rows, cols, fill, opacity,
-}) => {
-  if (opacity <= 0.001) return null;
-  const cell = Math.min(w / cols, h / rows);
-  const x0 = cx - (cell * cols) / 2;
-  const y0 = cy - (cell * rows) / 2;
-  const total = rows * cols;
-  const filledCount = Math.floor(fill * total);
-  const cells: React.ReactElement[] = [];
-  for (let i = 0; i < total; i++) {
-    const r = Math.floor(i / cols);
-    const c = i % cols;
-    const filled = i < filledCount;
-    const cellOp = filled ? 1 : 0.18;
-    const col = filled ? hexLerp(SUBJECT_SOFT, SUBJECT, 0.3 + seedRand(c, r, 33) * 0.5) : SURFACE_SOFT;
-    cells.push(
-      <rect key={i} x={x0 + c * cell + 0.5} y={y0 + r * cell + 0.5} width={cell - 1} height={cell - 1} fill={col} opacity={cellOp} />,
+// 潜在作業台（少しパースの付いた白い面）
+const Workbench: React.FC<{
+    x: number; y: number; w: number; h: number; o?: number;
+}> = ({ x, y, w, h, o = 1 }) => {
+    const sk = w * 0.09; // 上辺を少し狭めて面に見せる
+    return (
+        <g opacity={o}>
+            <path d={`M ${x - w / 2 + sk} ${y - h / 2} L ${x + w / 2 - sk} ${y - h / 2}
+                L ${x + w / 2} ${y + h / 2} L ${x - w / 2} ${y + h / 2} Z`}
+                fill="#ffffff" stroke={CARD_LINE} strokeWidth={2} filter="url(#soft)" />
+            {[0.25, 0.5, 0.75].map((t) => (
+                <line key={t}
+                    x1={x - w / 2 + sk + (w - 2 * sk) * t - (sk * (t - 0.5) * -2) * 0}
+                    y1={y - h / 2}
+                    x2={x - w / 2 + w * t}
+                    y2={y + h / 2}
+                    stroke="rgba(36,48,68,0.05)" strokeWidth={2} />
+            ))}
+            <line x1={x - w / 2 + sk / 2} y1={y} x2={x + w / 2 - sk / 2} y2={y}
+                stroke="rgba(36,48,68,0.05)" strokeWidth={2} />
+        </g>
     );
-  }
-  return (
-    <g opacity={opacity}>
-      <rect x={x0 - 4} y={y0 - 4} width={cell * cols + 8} height={cell * rows + 8} rx={6} fill={SURFACE} stroke={AUTOREG} strokeWidth={2} />
-      {cells}
-    </g>
-  );
 };
 
-const SceneBody4: React.FC<{ f: number; vis: number }> = ({ f, vis }) => {
-  if (vis <= 0.001) return null;
-  const cardBig = rv(b4CardBig, f);
-  const board = rv(b4Board, f);
-  const count = rv(b4Count, f);
-  const fillStartA = rv(b4FillStart, f);
-  const cursor = rv(b4Cursor, f);
-  const predict = rv(b4Predict, f);
-  const unfurl = rv(b4Unfurl, f);
-  const unroll = rv(b4Unroll, f);
-  const fillMid = rv(b4FillMid, f);
-  const learnG = rv(b4LearnGroup, f);
-  const fillFull = rv(b4FillFull, f);
-  const products = rv(b4Products, f);
-
-  // 盤面：左寄せ（右に展開図用の余白）
-  const boardCx = -380;
-  const boardCy = -50;
-  const boardSize = 460;
-  const n = 16;
-  const cell = boardSize / n;
-
-  // パッチ埋め率（段階で増える）
-  const totalFill = Math.max(fillStartA, fillMid, fillFull);
-
-  // 展開図
-  const stripCx = 350;
-  const stripCy = -50;
-  const stripW = 540;
-  const stripH = 60;
-
-  // 現在カーソル位置（盤面側）
-  const cursorIdx = Math.min(n * n - 1, Math.floor(totalFill * n * n));
-  const cursorR = Math.floor(cursorIdx / n);
-  const cursorC = cursorIdx % n;
-  const cursorX = boardCx - boardSize / 2 + cursorC * cell + cell / 2;
-  const cursorY = boardCy - boardSize / 2 + cursorR * cell + cell / 2;
-
-  return (
-    <g opacity={vis}>
-      {/* 大方式名カード（本編冒頭で1度だけ） */}
-      <g opacity={cardBig}>
-        <MethodCard cx={0} cy={-50} name="自己回帰モデル" subtitle="空間軸 — マスを左上から埋める" color={AUTOREG} soft={AUTOREG_SOFT} opacity={1} scale={1.2} />
-      </g>
-
-      {/* 主盤面（パッチ列） */}
-      <Board cx={boardCx} cy={boardCy} size={boardSize} n={n} opacity={board} sandStorm={0} patchFill={totalFill} patchColor={SUBJECT} patchSoft={SUBJECT_SOFT} salt={301} edgeStrength={0.4} edgeColor={AUTOREG} />
-
-      {/* 完成猫オーバーレイ */}
-      <CatLine cx={boardCx} cy={boardCy + 4} size={boardSize * 0.7} opacity={fillFull * 0.95} />
-
-      {/* 数値帯 */}
-      <NumberBar cx={boardCx} cy={boardCy - boardSize / 2 - 40} text="16×16 px / パッチ ／ 64×64 ≈ 4096 パッチ" opacity={count} fontSize={FS_NOTE - 4} />
-
-      {/* カーソル */}
-      {cursor > 0.05 && totalFill < 0.95 && (
-        <g opacity={cursor}>
-          <rect x={cursorX - cell / 2 - 3} y={cursorY - cell / 2 - 3} width={cell + 6} height={cell + 6} rx={3} fill="none" stroke={AUTOREG} strokeWidth={4} />
-          <circle cx={cursorX} cy={cursorY} r={cell * 0.18} fill={AUTOREG} />
-        </g>
-      )}
-
-      {/* 吸い込み矢（埋まった最後 → 次） */}
-      {predict > 0.05 && totalFill > 0.01 && totalFill < 0.95 && (
-        <g opacity={predict}>
-          {(() => {
-            const prevIdx = Math.max(0, cursorIdx - 1);
-            const pr = Math.floor(prevIdx / n);
-            const pc = prevIdx % n;
-            const px = boardCx - boardSize / 2 + pc * cell + cell / 2;
-            const py = boardCy - boardSize / 2 + pr * cell + cell / 2;
-            return (
-              <g>
-                <path d={`M ${px} ${py} Q ${(px + cursorX) / 2} ${py - 18} ${cursorX} ${cursorY}`} fill="none" stroke={AUTOREG} strokeWidth={3.5} />
-                <path d={`M ${cursorX - 8} ${cursorY - 4} L ${cursorX + 1} ${cursorY + 1} L ${cursorX - 6} ${cursorY + 8}`} fill="none" stroke={AUTOREG} strokeWidth={3.5} strokeLinejoin="round" strokeLinecap="round" />
-              </g>
-            );
-          })()}
-        </g>
-      )}
-
-      {/* 展開図 */}
-      <UnrollStrip cx={stripCx} cy={stripCy} w={stripW} h={stripH} rows={4} cols={32} fill={totalFill} opacity={unfurl} />
-
-      {/* 「= 文章の列」比喩 */}
-      {unroll > 0.05 && (
-        <g opacity={unroll}>
-          <text x={stripCx} y={stripCy + 80} fill={AUTOREG_DARK} fontSize={FS_NOTE} fontFamily={FONT} fontWeight={800} textAnchor="middle">
-            = 文章の列（GPT と同じ機械）
-          </text>
-        </g>
-      )}
-
-      {/* 盤面と展開図をつなぐ「ほどける」矢印 */}
-      {unfurl > 0.05 && (
-        <g opacity={unfurl}>
-          <path d={`M ${boardCx + boardSize / 2 + 12} ${boardCy} Q ${(boardCx + stripCx) / 2} ${boardCy - 80} ${stripCx - stripW / 2 - 12} ${stripCy}`} fill="none" stroke={AUTOREG} strokeWidth={3} strokeDasharray="6 7" />
-        </g>
-      )}
-
-      {/* 学習ペア */}
-      {learnG > 0.05 && (
-        <g opacity={learnG}>
-          <LearnPair
-            cx={stripCx}
-            cy={-260}
-            miniSize={100}
-            opacity={1}
-            topRender={(c, cy, sz) => (
-              <g key="top">
-                <Board cx={c} cy={cy} size={sz} n={12} opacity={1} sandStorm={0} patchFill={1} patchColor={SUBJECT} patchSoft={SUBJECT_SOFT} salt={401} showGrid={false} edgeColor={EDGE_SOFT} edgeStrength={0} />
-                <CatLine cx={c} cy={cy + 2} size={sz * 0.7} opacity={1} />
-              </g>
+// 生成画像タイル：簡略化した「赤い靴を履いた猫」。noise=1 で砂嵐、0 で完成
+const CatTile: React.FC<{
+    x: number; y: number; s?: number; o?: number; noise?: number; seed?: number;
+    detail?: number; // 1=ひげ等の細部あり 0=細部が崩れた状態
+}> = ({ x, y, s = 1, o = 1, noise = 0, seed = 3, detail = 1 }) => {
+    const W = 240, H = 240;
+    const catO = 1 - noise * 0.92;
+    return (
+        <g transform={`translate(${x},${y}) scale(${s})`} opacity={o}>
+            <rect x={-W / 2} y={-H / 2} width={W} height={H} rx={16}
+                fill="#fff" stroke={CARD_LINE} strokeWidth={2} filter="url(#soft)" />
+            {/* 背景（空と床） */}
+            <rect x={-W / 2 + 10} y={-H / 2 + 10} width={W - 20} height={H * 0.58}
+                rx={10} fill="#e8f1fb" opacity={catO} />
+            <rect x={-W / 2 + 10} y={-H / 2 + 10 + H * 0.58} width={W - 20} height={H - 20 - H * 0.58}
+                rx={10} fill="#f3ede2" opacity={catO} />
+            {/* 猫 */}
+            <g opacity={catO}>
+                <ellipse cx={0} cy={34} rx={46} ry={52} fill="#8d99ab" />
+                <circle cx={0} cy={-32} r={38} fill="#9aa5b6" />
+                <path d="M -34 -52 L -26 -86 L -8 -60 Z" fill="#9aa5b6" />
+                <path d="M 34 -52 L 26 -86 L 8 -60 Z" fill="#9aa5b6" />
+                <circle cx={-14} cy={-36} r={4.5} fill={INK} />
+                <circle cx={14} cy={-36} r={4.5} fill={INK} />
+                <path d="M -6 -24 Q 0 -18 6 -24" stroke={INK} strokeWidth={3} fill="none" strokeLinecap="round" />
+                {/* ひげ＝細部。detail が下がると崩れる */}
+                <g opacity={detail} stroke={INK} strokeWidth={2.5} strokeLinecap="round">
+                    <line x1={-24} y1={-28} x2={-46} y2={-32} />
+                    <line x1={-24} y1={-22} x2={-46} y2={-20} />
+                    <line x1={24} y1={-28} x2={46} y2={-32} />
+                    <line x1={24} y1={-22} x2={46} y2={-20} />
+                </g>
+                <g opacity={1 - detail}>
+                    <line x1={-26} y1={-28} x2={-40} y2={-14} stroke={RED} strokeWidth={2.5} />
+                    <line x1={26} y1={-26} x2={38} y2={-38} stroke={RED} strokeWidth={2.5} />
+                </g>
+                {/* 赤い靴 */}
+                <ellipse cx={-22} cy={92} rx={22} ry={12} fill={RED} />
+                <ellipse cx={22} cy={92} rx={22} ry={12} fill={RED} />
+            </g>
+            {/* ノイズ被せ */}
+            {noise > 0.02 && (
+                <g opacity={noise}>
+                    <rect x={-W / 2 + 6} y={-H / 2 + 6} width={W - 12} height={H - 12} rx={12}
+                        fill="#eef1f6" opacity={0.7} />
+                    {Array.from({ length: 70 }, (_, i) => (
+                        <circle key={i}
+                            cx={-W / 2 + 14 + rnd(i, seed) * (W - 28)}
+                            cy={-H / 2 + 14 + rnd(i, seed + 5) * (H - 28)}
+                            r={3 + rnd(i, seed + 9) * 4}
+                            fill={rnd(i, seed + 11) > 0.7 ? '#7d8aa0' : NOISE}
+                            opacity={0.5 + rnd(i, seed + 15) * 0.5} />
+                    ))}
+                </g>
             )}
-            bottomRender={(c, cy, sz) => (
-              <g key="bot">
-                <rect x={c - sz * 0.85} y={cy - sz * 0.2} width={sz * 1.7} height={sz * 0.4} rx={4} fill={SURFACE} stroke={AUTOREG} strokeWidth={2} />
-                {Array.from({ length: 18 }).map((_, i) => (
-                  <rect key={i} x={c - sz * 0.85 + 4 + i * (sz * 1.7 - 8) / 18} y={cy - sz * 0.15} width={(sz * 1.7 - 8) / 18 - 2} height={sz * 0.3} fill={hexLerp(SUBJECT_SOFT, SUBJECT, 0.3 + seedRand(i, 0, 77) * 0.5)} />
+        </g>
+    );
+};
+
+// 生成画像タイル（掴み）：簡略化した「白い猫・宇宙服・ラーメン屋」。それっぽい絵＝結果像
+const HookTile: React.FC<{
+    x: number; y: number; s?: number; o?: number; noise?: number; seed?: number;
+}> = ({ x, y, s = 1, o = 1, noise = 0, seed = 2 }) => {
+    const W = 240, H = 240;
+    const c = 1 - noise * 0.92; // 中身の不透明度（ノイズで溶ける）
+    return (
+        <g transform={`translate(${x},${y}) scale(${s})`} opacity={o}>
+            <rect x={-W / 2} y={-H / 2} width={W} height={H} rx={16}
+                fill="#fff" stroke={CARD_LINE} strokeWidth={2} filter="url(#soft)" />
+            {/* 背景：ラーメン屋（暖色の壁＋木のカウンター＋のれん＋赤提灯） */}
+            <g opacity={c}>
+                <rect x={-110} y={-110} width={220} height={132} rx={10} fill="#e7c3a6" />
+                <rect x={-110} y={22} width={220} height={88} rx={10} fill="#d6ae80" />
+                <rect x={-110} y={-110} width={220} height={26} fill="#c4564a" />
+                {[-72, -26, 20, 66].map((lx, i) => (
+                    <line key={i} x1={lx} y1={-110} x2={lx} y2={-84} stroke="#fff" strokeWidth={3} opacity={0.7} />
                 ))}
-              </g>
+                <g>
+                    <ellipse cx={76} cy={-48} rx={21} ry={27} fill="#d8453a" />
+                    <rect x={67} y={-77} width={18} height={6} rx={3} fill="#7a2b22" />
+                    <rect x={67} y={-26} width={18} height={6} rx={3} fill="#7a2b22" />
+                    {[-9, 0, 9].map((rx, i) => (
+                        <line key={i} x1={76 + rx} y1={-71} x2={76 + rx} y2={-26} stroke="#a8362c" strokeWidth={2} />
+                    ))}
+                </g>
+            </g>
+            {/* 白い猫 */}
+            <g opacity={c}>
+                <ellipse cx={0} cy={40} rx={42} ry={48} fill="#fbfaf7" stroke="#d8cfbe" strokeWidth={2} />
+                <path d="M -30 -52 L -22 -84 L -6 -58 Z" fill="#fbfaf7" stroke="#d8cfbe" strokeWidth={2} />
+                <path d="M 30 -52 L 22 -84 L 6 -58 Z" fill="#fbfaf7" stroke="#d8cfbe" strokeWidth={2} />
+                <circle cx={0} cy={-30} r={34} fill="#fdfdfb" stroke="#d8cfbe" strokeWidth={2} />
+                <circle cx={-12} cy={-32} r={4.5} fill={INK} />
+                <circle cx={12} cy={-32} r={4.5} fill={INK} />
+                <path d="M -5 -22 Q 0 -17 5 -22" stroke={INK} strokeWidth={2.5} fill="none" strokeLinecap="round" />
+                <g stroke="#c7bda9" strokeWidth={2} strokeLinecap="round">
+                    <line x1={-20} y1={-24} x2={-40} y2={-28} />
+                    <line x1={20} y1={-24} x2={40} y2={-28} />
+                </g>
+            </g>
+            {/* 宇宙服：首リング＋ヘルメットのドーム＋アンテナ */}
+            <g opacity={c}>
+                <rect x={-30} y={2} width={60} height={16} rx={8} fill="#cdd8e6" stroke="#aebccd" strokeWidth={2} />
+                <circle cx={0} cy={-34} r={48} fill="rgba(210,230,245,0.22)" stroke="#bcd0e0" strokeWidth={2.5} />
+                <path d="M -28 -58 A 48 48 0 0 1 6 -80" fill="none" stroke="#ffffff" strokeWidth={5} strokeLinecap="round" opacity={0.7} />
+                <line x1={30} y1={-70} x2={40} y2={-86} stroke="#aebccd" strokeWidth={3} strokeLinecap="round" />
+                <circle cx={41} cy={-88} r={4} fill="#d8453a" />
+            </g>
+            {/* ラーメン丼（前）＋湯気 */}
+            <g opacity={c}>
+                <path d="M -34 92 A 34 16 0 0 0 34 92 Z" fill="#d8453a" />
+                <ellipse cx={0} cy={92} rx={34} ry={9} fill="#f1e4cf" />
+                <path d="M -22 90 q 10 -6 20 0 q 10 6 20 0" fill="none" stroke="#e6c178" strokeWidth={3} />
+                <path d="M -8 78 q 6 -8 0 -16" fill="none" stroke="#cbb89a" strokeWidth={2.5} opacity={0.7} />
+                <path d="M 10 78 q 6 -8 0 -16" fill="none" stroke="#cbb89a" strokeWidth={2.5} opacity={0.7} />
+            </g>
+            {/* ノイズ被せ */}
+            {noise > 0.02 && (
+                <g opacity={noise}>
+                    <rect x={-W / 2 + 6} y={-H / 2 + 6} width={W - 12} height={H - 12} rx={12}
+                        fill="#eef1f6" opacity={0.7} />
+                    {Array.from({ length: 70 }, (_, i) => (
+                        <circle key={i}
+                            cx={-W / 2 + 14 + rnd(i, seed) * (W - 28)}
+                            cy={-H / 2 + 14 + rnd(i, seed + 5) * (H - 28)}
+                            r={3 + rnd(i, seed + 9) * 4}
+                            fill={rnd(i, seed + 11) > 0.7 ? '#7d8aa0' : NOISE}
+                            opacity={0.5 + rnd(i, seed + 15) * 0.5} />
+                    ))}
+                </g>
             )}
-          />
-          <text x={stripCx} y={-160} fill={HOPE_DARK} fontSize={FS_TINY - 2} fontFamily={FONT} fontWeight={700} textAnchor="middle">
-            完成画像 → パッチ列に並べ替える
-          </text>
         </g>
-      )}
-
-      {/* 製品名 */}
-      {products > 0.05 && (
-        <g opacity={products}>
-          <text x={boardCx} y={boardCy + boardSize / 2 + 50} fill={SUB_INK} fontSize={FS_NOTE} fontFamily={FONT} fontWeight={700} textAnchor="middle">
-            GPT-4o / Gemini 画像生成
-          </text>
-        </g>
-      )}
-    </g>
-  );
+    );
 };
 
-// ============================================================
-// 画面6 — ボディ5：軸が違うだけ
-// ============================================================
-const b5In = sc([
-  [sceneStarts.body5 + 8, 0],
-  [sceneStarts.body5 + CROSSFADE + 18, 1],
-]);
-const b5Dots = sc([
-  [F('b5.dots'), 0],
-  [F('b5.dots') + 36, 1],
-]);
-const b5Dot1 = sc([
-  [F('b5.dot1'), 0],
-  [F('b5.dot1') + 40, 1],
-]);
-const b5Dot2 = sc([
-  [F('b5.dot2'), 0],
-  [F('b5.dot2') + 40, 1],
-]);
-const b5Dot3 = sc([
-  [F('b5.dot3'), 0],
-  [F('b5.dot3') + 40, 1],
-]);
-const b5Shrink = sc([
-  [F('b5.axisCalls'), 1],
-  [F('b5.axisCalls') + 40, 0.7],
-]);
-const b5Vert = sc([
-  [F('b5.vert'), 0],
-  [F('b5.vert') + 50, 1],
-]);
-const b5Horz = sc([
-  [F('b5.horz'), 0],
-  [F('b5.horz') + 50, 1],
-]);
-const b5Mid = sc([
-  [F('b5.midpoints'), 0],
-  [F('b5.midpoints') + 50, 1],
-]);
-const b5DiffStrength = sc([
-  [F('b5.diffStrength') + 14, 0],
-  [F('b5.diffStrength') + 32, 1],
-  [F('b5.diffStrength') + 70, 1],
-  [F('b5.diffStrength') + 100, 0],
-]);
-const b5Split = sc([
-  [F('b5.split'), 0],
-  [F('b5.split') + 40, 1],
-]);
-
-const SceneBody5: React.FC<{ f: number; vis: number }> = ({ f, vis }) => {
-  if (vis <= 0.001) return null;
-  const inA = rv(b5In, f);
-  const dots = rv(b5Dots, f);
-  const d1 = rv(b5Dot1, f);
-  const d2 = rv(b5Dot2, f);
-  const d3 = rv(b5Dot3, f);
-  const shrink = rv(b5Shrink, f);
-  const vert = rv(b5Vert, f);
-  const horz = rv(b5Horz, f);
-  const midA = rv(b5Mid, f);
-  const diffF = rv(b5DiffStrength, f);
-  const split = rv(b5Split, f);
-
-  const originCx = -300;
-  const originCy = -80;
-  const mainSize = 240 * shrink;
-  const axisV = 220;
-  const axisH = 360;
-
-  // ドットの位置（右寄り）
-  const dotsCx = 360;
-  const dotsCyArr = [-240, -100, 40];
-
-  return (
-    <g opacity={vis * inA}>
-      {/* 主盤面（原点・猫） */}
-      <Board cx={originCx} cy={originCy} size={mainSize} n={10} opacity={1} sandStorm={0} patchFill={0} salt={501} edgeStrength={0.3} />
-      <CatLine cx={originCx} cy={originCy + 2} size={mainSize * 0.7} opacity={1} />
-
-      {/* 縦軸（DIFFUSION） */}
-      {vert > 0.02 && (
-        <g opacity={vert}>
-          <line x1={originCx} y1={originCy - axisV * vert} x2={originCx} y2={originCy + axisV * vert} stroke={DIFFUSION} strokeWidth={9 + diffF * 4} strokeLinecap="round" />
-          <path d={`M ${originCx - 12} ${originCy - axisV + 18} L ${originCx} ${originCy - axisV} L ${originCx + 12} ${originCy - axisV + 18}`} fill="none" stroke={DIFFUSION} strokeWidth={6} strokeLinejoin="round" strokeLinecap="round" />
-          {/* 端の小盤面 */}
-          <SmallBoard cx={originCx} cy={originCy - axisV - 90} size={130} n={8} sandStorm={1} opacity={vert} salt={511} />
-          <text x={originCx} y={originCy - axisV - 170} fill={DIFFUSION_DARK} fontSize={FS_TINY} fontFamily={FONT} fontWeight={800} textAnchor="middle">ノイズ多い</text>
+// 矢印（根元から伸びる）。t=描画進行、bend=ミント誘導の曲がり（度）
+const Arrow: React.FC<{
+    x1: number; y1: number; x2: number; y2: number; t?: number; o?: number;
+    color?: string; w?: number; bend?: number;
+}> = ({ x1, y1, x2, y2, t = 1, o = 1, color = INK, w = 5, bend = 0 }) => {
+    if (t <= 0.01) return null;
+    const ang = Math.atan2(y2 - y1, x2 - x1) + (bend * Math.PI) / 180;
+    const len = Math.hypot(x2 - x1, y2 - y1) * t;
+    const ex = x1 + Math.cos(ang) * len;
+    const eyy = y1 + Math.sin(ang) * len;
+    const hs = Math.min(16, len * 0.4);
+    return (
+        <g opacity={o}>
+            <line x1={x1} y1={y1} x2={ex} y2={eyy} stroke={color} strokeWidth={w} strokeLinecap="round" />
+            {t > 0.55 && (
+                <path d={`M ${ex} ${eyy} L ${ex - hs * Math.cos(ang - 0.45)} ${eyy - hs * Math.sin(ang - 0.45)}
+                    M ${ex} ${eyy} L ${ex - hs * Math.cos(ang + 0.45)} ${eyy - hs * Math.sin(ang + 0.45)}`}
+                    stroke={color} strokeWidth={w} strokeLinecap="round" fill="none" />
+            )}
         </g>
-      )}
-      {/* 横軸（AUTOREG） */}
-      {horz > 0.02 && (
-        <g opacity={horz}>
-          <line x1={originCx - axisH * horz} y1={originCy} x2={originCx + axisH * horz} y2={originCy} stroke={AUTOREG} strokeWidth={9} strokeLinecap="round" />
-          <path d={`M ${originCx + axisH - 18} ${originCy - 12} L ${originCx + axisH} ${originCy} L ${originCx + axisH - 18} ${originCy + 12}`} fill="none" stroke={AUTOREG} strokeWidth={6} strokeLinejoin="round" strokeLinecap="round" />
-          {/* 端の小盤面 */}
-          <SmallBoard cx={originCx + axisH + 100} cy={originCy} size={130} n={12} sandStorm={0} opacity={horz} salt={521} />
-          <Board cx={originCx + axisH + 100} cy={originCy} size={130} n={12} opacity={horz} sandStorm={0} patchFill={1} patchColor={SUBJECT} patchSoft={SUBJECT_SOFT} salt={521} showGrid={false} edgeColor={EDGE_SOFT} edgeStrength={0} />
-          <CatLine cx={originCx + axisH + 100} cy={originCy + 2} size={130 * 0.7} opacity={horz} />
-          <text x={originCx + axisH + 100} y={originCy + 110} fill={AUTOREG_DARK} fontSize={FS_TINY} fontFamily={FONT} fontWeight={800} textAnchor="middle">全パッチ埋</text>
-          <SmallBoard cx={originCx - axisH - 100} cy={originCy} size={130} n={12} sandStorm={0} opacity={horz} salt={522} />
-          <text x={originCx - axisH - 100} y={originCy + 110} fill={AUTOREG_DARK} fontSize={FS_TINY} fontFamily={FONT} fontWeight={800} textAnchor="middle">空白</text>
-        </g>
-      )}
-      {/* 中点小盤面（拡散側＝時間軸列縮小／自己回帰側＝パッチ列縮小） */}
-      {midA > 0.05 && (
-        <g opacity={midA}>
-          {/* 縦軸中点：時間軸列の縮小 */}
-          {[0, 1, 2].map((i) => (
-            <Board key={'mv' + i} cx={originCx + 50 + i * 32} cy={originCy - axisV / 2} size={28} n={4} opacity={1} sandStorm={1 - i * 0.5} patchFill={0} salt={531 + i} showGrid={false} edgeColor={EDGE_SOFT} edgeStrength={0} />
-          ))}
-          {/* 横軸中点：パッチ列の縮小 */}
-          {[0, 1, 2].map((i) => (
-            <Board key={'mh' + i} cx={originCx + axisH / 2 + 50 + i * 32} cy={originCy + 50} size={28} n={4} opacity={1} sandStorm={0} patchFill={(i + 1) / 3} patchColor={SUBJECT} patchSoft={SUBJECT_SOFT} salt={541 + i} showGrid={false} edgeColor={EDGE_SOFT} edgeStrength={0} />
-          ))}
-        </g>
-      )}
-      {/* 補助ラベル */}
-      {split > 0.05 && (
-        <g opacity={split}>
-          <text x={originCx + 16} y={originCy + axisV + 36} fill={DIFFUSION_DARK} fontSize={FS_NOTE - 2} fontFamily={FONT} fontWeight={700} textAnchor="start">お絵かき特化</text>
-          <text x={originCx + axisH + 100} y={originCy + 156} fill={AUTOREG_DARK} fontSize={FS_NOTE - 2} fontFamily={FONT} fontWeight={700} textAnchor="middle">テキストと混ぜる</text>
-        </g>
-      )}
-
-      {/* 共通点ドット */}
-      <g opacity={dots}>
-        {[0, 1, 2].map((i) => (
-          <circle key={'b' + i} cx={dotsCx} cy={dotsCyArr[i]} r={28} fill={SURFACE} stroke={DIM} strokeWidth={3} />
-        ))}
-      </g>
-      <CommonDot cx={dotsCx} cy={dotsCyArr[0]} lit={d1} label="易しい一手の連鎖" opacity={dots} />
-      <CommonDot cx={dotsCx} cy={dotsCyArr[1]} lit={d2} label="前を見て次を当てる" opacity={dots} />
-      <CommonDot cx={dotsCx} cy={dotsCyArr[2]} lit={d3} label="逆方向の学習" opacity={dots} />
-    </g>
-  );
+    );
 };
 
-// ============================================================
-// 画面7 — 結論
-// ============================================================
-const outroIn = sc([
-  [sceneStarts.outro + 8, 0],
-  [sceneStarts.outro + CROSSFADE + 18, 1],
-]);
-const outroChain = sc([
-  [F('outro.chain'), 0],
-  [F('outro.chain') + 30, 0.45],
-  [F('outro.chain') + 70, 0.45],
-  [F('outro.chain') + 110, 0],
-]);
-const outroAxesFlash = sc([
-  [F('outro.axes'), 0],
-  [F('outro.axes') + 14, 1],
-  [F('outro.axes') + 60, 1],
-  [F('outro.axes') + 90, 0],
-]);
-const outroQ = sc([
-  [F('outro.q'), 0],
-  [F('outro.q') + 40, 1],
-  [F('outro.end'), 1],
-  [F('outro.end') + 40, 0],
-]);
-const outroEnd = sc([
-  [F('outro.end'), 0],
-  [F('outro.end') + 40, 1],
-]);
-
-const SceneOutro: React.FC<{ f: number; vis: number }> = ({ f, vis }) => {
-  if (vis <= 0.001) return null;
-  const inA = rv(outroIn, f);
-  const chainA = rv(outroChain, f);
-  const flash = rv(outroAxesFlash, f);
-  const q = rv(outroQ, f);
-  const end = rv(outroEnd, f);
-
-  const originCx = 0;
-  const originCy = -120;
-  const mainSize = 280;
-  const axisV = 220;
-  const axisH = 380;
-
-  return (
-    <g opacity={vis * inA}>
-      {/* 二軸の十字＋盤面 */}
-      <line x1={originCx} y1={originCy - axisV} x2={originCx} y2={originCy + axisV} stroke={DIFFUSION} strokeWidth={9 + flash * 5} strokeLinecap="round" />
-      <line x1={originCx - axisH} y1={originCy} x2={originCx + axisH} y2={originCy} stroke={AUTOREG} strokeWidth={9 + flash * 5} strokeLinecap="round" />
-      <path d={`M ${originCx - 12} ${originCy - axisV + 18} L ${originCx} ${originCy - axisV} L ${originCx + 12} ${originCy - axisV + 18}`} fill="none" stroke={DIFFUSION} strokeWidth={6} strokeLinejoin="round" strokeLinecap="round" />
-      <path d={`M ${originCx + axisH - 18} ${originCy - 12} L ${originCx + axisH} ${originCy} L ${originCx + axisH - 18} ${originCy + 12}`} fill="none" stroke={AUTOREG} strokeWidth={6} strokeLinejoin="round" strokeLinecap="round" />
-
-      <Board cx={originCx} cy={originCy} size={mainSize} n={10} opacity={1} sandStorm={0} patchFill={0} salt={601} edgeStrength={0.4} />
-      <CatLine cx={originCx} cy={originCy + 2} size={mainSize * 0.7} opacity={1} />
-
-      {/* 数珠のこだま */}
-      {chainA > 0.02 && (
-        <g opacity={chainA}>
-          <Chain cx={originCx + 320} cy={originCy + 180} width={520} count={8} reveal={1} color={SUB_INK} withCheck={0} opacity={1} />
+// 1語タグ（白ピル）
+const Tag: React.FC<{
+    x: number; y: number; text: string; o?: number; color?: string; s?: number; fontSize?: number;
+}> = ({ x, y, text, o = 1, color = INK, s = 1, fontSize = 30 }) => {
+    const w = text.length * fontSize * 0.62 + 44;
+    return (
+        <g transform={`translate(${x},${y}) scale(${s})`} opacity={o}>
+            <rect x={-w / 2} y={-27} width={w} height={54} rx={27}
+                fill="#fff" stroke={color === INK ? CARD_LINE : color} strokeWidth={2.5} filter="url(#soft)" />
+            <text x={0} y={fontSize * 0.36} fontSize={fontSize} fontWeight={800} fill={color} textAnchor="middle">{text}</text>
         </g>
-      )}
+    );
+};
 
-      {/* 「？」（序論のこだま） */}
-      <QMark cx={originCx + 220} cy={originCy - 160} size={140} opacity={q} />
-
-      {/* 締めの一文 — 字幕帯の上余白に収める（y < 320） */}
-      {end > 0.05 && (
-        <g opacity={end}>
-          <text x={0} y={216} fill={SUBJECT_DARK} fontSize={FS_TITLE - 10} fontFamily={FONT} fontWeight={900} textAnchor="middle" dominantBaseline="central">
-            諦め方が、賢い
-          </text>
-          <line x1={-200} y1={250} x2={200} y2={250} stroke={SUBJECT} strokeWidth={3} />
-          <text x={0} y={284} fill={SUB_INK} fontSize={FS_NOTE - 4} fontFamily={FONT} fontWeight={600} textAnchor="middle" dominantBaseline="central">
-            画面全体の砂嵐を薄めるか／マスを順に埋めるか
-          </text>
+// 役割ボックス（エンコーダ／デコーダ／モデル）
+const RoleBox: React.FC<{
+    x: number; y: number; w: number; h: number; label: string; o?: number; flip?: boolean;
+}> = ({ x, y, w, h, label, o = 1, flip = false }) => {
+    const t = flip ? 0.28 : 0; // flip=デコーダ（狭→広）
+    const u = flip ? 0 : 0.28;
+    return (
+        <g opacity={o}>
+            <path d={`M ${x - w / 2} ${y - h / 2 + h * t} L ${x + w / 2} ${y - h / 2 + h * u}
+                L ${x + w / 2} ${y + h / 2 - h * u} L ${x - w / 2} ${y + h / 2 - h * t} Z`}
+                fill="#fff" stroke={INK} strokeWidth={3} filter="url(#soft)" />
+            <text x={x} y={y + 11} fontSize={30} fontWeight={800} fill={INK} textAnchor="middle">{label}</text>
         </g>
-      )}
-    </g>
-  );
+    );
 };
 
-// ============================================================
-// 対話字幕（必須）
-// ============================================================
-const wrapLine = (text: string, single: number): string[] => {
-  if (text.length <= single) return [text];
-  const mid = Math.floor(text.length / 2);
-  let cut = mid;
-  for (let d = 0; d < mid; d++) {
-    if (text[mid + d] === '、' || text[mid + d] === '。') {
-      cut = mid + d + 1;
-      break;
-    }
-    if (text[mid - d] === '、' || text[mid - d] === '。') {
-      cut = mid - d + 1;
-      break;
-    }
-  }
-  return [text.slice(0, cut), text.slice(cut)];
+// ---------- 画面 1: intro ----------
+// 文字だけのプロンプトが、絵師の手ではなく目的地マーカーとノイズ雲を動かす装置として現れる
+const SceneIntro: React.FC<{ f: number; o: number }> = ({ f, o }) => {
+    const s1 = ev('scene.intro.in');
+    const gap = ev('intro.text_image.gap');
+    const artist = ev('intro.artist.cross');
+    const dest = ev('intro.destination.noise');
+    const q = ev('intro.question');
+
+    const CARD = { x: -430, y: -150 };
+    const FRAME = { x: 430, y: -100, w: 300, h: 300 };
+
+    const cardIn = prog(f, s1 + 6, 26);
+    const frameIn = prog(f, s1 + 22, 26);
+    const gapIn = prog(f, gap, 34);
+    const artistIn = prog(f, artist + 6, 20);
+    const crossIn = prog(f, artist + 34, 16);
+    const artistOut = 1 - prog(f, artist + 150, 20);
+    const markerIn = prog(f, dest + 4, 28);
+    const lineT = prog(f, dest + 30, 40);
+    const hookToNoise = prog(f, dest + 2, 30); // それっぽい絵 → ノイズへほどける
+    const zoom = prog(f, q + 4, 44); // 問いの状態：マーカーと雲が中央へ
+
+    const others = 1 - zoom * 0.7;
+    // マーカー：カードの上 → 中央左へ
+    const mx = CARD.x + (-170 - CARD.x) * zoom;
+    const my = CARD.y - 84 + (-40 - (CARD.y - 84)) * zoom;
+    // ノイズ雲：枠の中 → 中央右へ拡大
+    const nx = FRAME.x + (190 - FRAME.x) * zoom;
+    const ny = FRAME.y + (-40 - FRAME.y) * zoom;
+    const nr = 100 + 60 * zoom;
+
+    const promptChars = '白い猫、宇宙服、ラーメン屋'.split('');
+    const PALETTE = ['#cfe3f7', '#f7e3cf', '#e3f7d8', '#f7d8e3', '#e3d8f7', '#d8f0f7'];
+
+    return (
+        <g opacity={o}>
+            {/* 画像枠と、その中に生成された「それっぽい絵」 */}
+            <g opacity={frameIn * others * (1 - zoom)}>
+                <HookTile x={FRAME.x} y={FRAME.y} s={1.18} noise={hookToNoise} seed={2} />
+            </g>
+            {/* 像がほどけたノイズ雲（問いで中央へ移り拡大） */}
+            <NoiseBall cx={nx} cy={ny} r={nr} n={70} seed={2} o={frameIn * zoom} />
+            {/* プロンプト札 */}
+            <g opacity={others}>
+                <PromptCard x={CARD.x} y={CARD.y} o={cardIn} text="白い猫、宇宙服、ラーメン屋" w={500} />
+            </g>
+            {/* 断絶：文字の並び vs 色の点の並び */}
+            <g opacity={gapIn * others}>
+                <path d="M 0 -300 L -14 -240 L 14 -180 L -14 -120 L 14 -60 L -14 0 L 14 60 L 0 120"
+                    fill="none" stroke={SUB} strokeWidth={4} strokeDasharray="14 10" />
+                {promptChars.map((c, i) => (
+                    <g key={i} transform={`translate(${CARD.x - 270 + i * 45},${60})`}
+                        opacity={prog(f, gap + 8 + i * 2, 14)}>
+                        <rect x={-19} y={-24} width={38} height={48} rx={8}
+                            fill="#fff" stroke={CARD_LINE} strokeWidth={2} />
+                        <text x={0} y={11} fontSize={28} fontWeight={700} fill={INK} textAnchor="middle">{c}</text>
+                    </g>
+                ))}
+                {Array.from({ length: 30 }, (_, i) => {
+                    const col = i % 6, row = Math.floor(i / 6);
+                    return (
+                        <rect key={i} x={FRAME.x - 132 + col * 45} y={70 + row * 45 - 24}
+                            width={40} height={40} rx={4}
+                            fill={PALETTE[Math.floor(rnd(i, 31) * PALETTE.length)]}
+                            opacity={prog(f, gap + 10 + i * 1.2, 12)} />
+                    );
+                })}
+            </g>
+            {/* 絵師の幻 → バツ */}
+            {artistOut > 0.01 && (
+                <g transform="translate(0,-330)" opacity={artistIn * artistOut * others}>
+                    <circle cx={0} cy={-34} r={26} fill="none" stroke={SUB} strokeWidth={4} />
+                    <path d="M -30 40 Q 0 -6 30 40" fill="none" stroke={SUB} strokeWidth={4} />
+                    <line x1={26} y1={6} x2={58} y2={-30} stroke={SUB} strokeWidth={4} strokeLinecap="round" />
+                    <line x1={52} y1={-36} x2={64} y2={-24} stroke={SUB} strokeWidth={7} strokeLinecap="round" />
+                    <g opacity={crossIn}>
+                        <line x1={-54} y1={-70} x2={54 * crossIn * 2 - 54} y2={crossIn * 2 * 124 - 70}
+                            stroke={RED} strokeWidth={7} strokeLinecap="round" opacity={0.8} />
+                        <line x1={54} y1={-70} x2={54 - 108 * crossIn} y2={-70 + 124 * crossIn}
+                            stroke={RED} strokeWidth={7} strokeLinecap="round" opacity={0.8} />
+                    </g>
+                </g>
+            )}
+            {/* 目的地マーカーと誘導線 */}
+            {markerIn > 0.01 && (
+                <>
+                    <Pin x={mx} y={my} s={(0.7 + 0.5 * zoom) * markerIn} o={markerIn} ring={prog(f, dest + 8, 50)} />
+                    <line x1={mx + 30} y1={my - 30} x2={mx + 30 + (nx - nr * 0.7 - mx - 30) * lineT}
+                        y2={my - 30 + (ny - my + 30) * lineT}
+                        stroke={MINT} strokeWidth={4} strokeDasharray="12 10" opacity={markerIn * 0.9} />
+                </>
+            )}
+        </g>
+    );
 };
 
-const Subtitle: React.FC<{ frame: number }> = ({ frame }) => {
-  let idx = 0;
-  for (let i = 0; i < SCRIPT.length; i++) if (frame >= lineStarts[i]) idx = i;
-  const line = SCRIPT[idx];
-  const op = clamp((frame - lineStarts[idx]) / 8);
-  const rows = wrapLine(line.text, 26);
-  return (
-    <g>
-      <rect x={-900} y={326} width={1800} height={210} rx={20} fill={SURFACE} opacity={0.78} />
-      <rect x={-900} y={326} width={1800} height={3} fill={EDGE} />
-      <g opacity={op}>
-        <text x={0} y={372} fill={SPEAKER_COLOR[line.speaker]} fontSize={FS_SPEAKER} fontFamily={FONT} fontWeight={800} textAnchor="middle" dominantBaseline="central">
-          {line.speaker}
-        </text>
-        {rows.map((r, i) => (
-          <text key={i} x={0} y={(rows.length === 2 ? 432 : 460) + i * 54} fill={INK} fontSize={FS_SUB} fontFamily={FONT} fontWeight={600} textAnchor="middle" dominantBaseline="central">
-            {r}
-          </text>
-        ))}
-      </g>
-    </g>
-  );
+// ---------- 画面 2: prompt_map ----------
+// 文章と画像が同じ地図に置かれ、プロンプトは「このへんの絵へ向かう」座標として効く
+const SceneMap: React.FC<{ f: number; o: number }> = ({ f, o }) => {
+    const s2 = ev('scene.prompt_map.in');
+    const pairs = ev('map.pairs.in');
+    const align = ev('map.align');
+    const nearfar = ev('map.near_far');
+    const destm = ev('map.destination');
+    const bias = ev('map.bias');
+    const towork = ev('map.to_workspace');
+
+    const MAP = { cx: 0, cy: -50, w: 1040, h: 500 };
+    const p2m = prog(f, s2 + 40, 50);       // 命令書 → 地図
+    const paperIn = prog(f, s2 + 6, 24);
+    const shrink = prog(f, towork + 10, 50); // 地図が縮み作業台がせり上がる
+
+    // 紙のサイズ → 地図のサイズへ
+    const pw = 380 + (MAP.w - 380) * p2m;
+    const ph = 460 + (MAP.h - 460) * p2m;
+
+    // ペア（画像チップ＋説明文チップ）：上の列 → 地図上の点へ
+    const PAIRS = [
+        { img: { x: -420, y: -420 }, txt: { x: -180, y: -420 }, dotI: { x: -250, y: -170 }, dotT: { x: -212, y: -148 }, label: 'a cat on a sofa', kind: 'cat' },
+        { img: { x: 160, y: -420 }, txt: { x: 410, y: -420 }, dotI: { x: 210, y: 30 }, dotT: { x: 252, y: 54 }, label: 'ramen in a bowl', kind: 'ramen' },
+    ] as const;
+    const alignT = prog(f, align + 6, 44);
+
+    // 近い・遠い：黒猫ペアが寄る／消防車が離れる
+    const nfT = prog(f, nearfar + 6, 40);
+    const fireX = -60 + (440 - -60) * nfT;
+    const fireY = -60 + (130 - -60) * nfT;
+
+    const pinIn = prog(f, destm + 10, 30);
+    const biasIn = prog(f, bias + 6, 30);
+    const PIN = { x: 40, y: -90 };
+
+    const mapScale = 1 - 0.22 * shrink;
+    const mapDy = -70 * shrink;
+
+    return (
+        <g opacity={o}>
+            <g transform={`translate(0,${mapDy}) scale(${mapScale})`}>
+                {/* 命令書の紙 ⇄ 地図面 */}
+                <g opacity={paperIn}>
+                    <rect x={MAP.cx - pw / 2} y={MAP.cy - ph / 2} width={pw} height={ph} rx={20}
+                        fill="#fff" stroke={CARD_LINE} strokeWidth={2} filter="url(#soft)" />
+                    {/* 命令書の箇条線（地図化で消える） */}
+                    <g opacity={(1 - p2m) * paperIn}>
+                        {[0, 1, 2, 3, 4].map((i) => (
+                            <g key={i}>
+                                <circle cx={MAP.cx - 130} cy={MAP.cy - 150 + i * 70} r={7} fill={SUB} />
+                                <line x1={MAP.cx - 100} y1={MAP.cy - 150 + i * 70}
+                                    x2={MAP.cx + 140 - (i % 2) * 50} y2={MAP.cy - 150 + i * 70}
+                                    stroke={SUB} strokeWidth={6} strokeLinecap="round" opacity={0.55} />
+                            </g>
+                        ))}
+                    </g>
+                    {/* 地図のグリッドと等高線 */}
+                    <g opacity={p2m}>
+                        {[1, 2, 3, 4, 5].map((i) => (
+                            <line key={`v${i}`} x1={MAP.cx - MAP.w / 2 + (MAP.w / 6) * i} y1={MAP.cy - MAP.h / 2 + 8}
+                                x2={MAP.cx - MAP.w / 2 + (MAP.w / 6) * i} y2={MAP.cy + MAP.h / 2 - 8}
+                                stroke="rgba(36,48,68,0.06)" strokeWidth={2} />
+                        ))}
+                        {[1, 2].map((i) => (
+                            <line key={`h${i}`} x1={MAP.cx - MAP.w / 2 + 8} y1={MAP.cy - MAP.h / 2 + (MAP.h / 3) * i}
+                                x2={MAP.cx + MAP.w / 2 - 8} y2={MAP.cy - MAP.h / 2 + (MAP.h / 3) * i}
+                                stroke="rgba(36,48,68,0.06)" strokeWidth={2} />
+                        ))}
+                        <path d={`M ${MAP.cx - 380} ${MAP.cy + 60} Q ${MAP.cx - 250} ${MAP.cy - 60} ${MAP.cx - 90} ${MAP.cy - 20}
+                            T ${MAP.cx + 240} ${MAP.cy - 90}`}
+                            fill="none" stroke={MINT_SOFT} strokeWidth={5} />
+                        <path d={`M ${MAP.cx - 300} ${MAP.cy + 170} Q ${MAP.cx - 80} ${MAP.cy + 90} ${MAP.cx + 160} ${MAP.cy + 150}`}
+                            fill="none" stroke={MINT_SOFT} strokeWidth={5} />
+                    </g>
+                </g>
+                {/* 画像・説明文ペア → 地図上の点 */}
+                {PAIRS.map((p, pi) => {
+                    const inT = prog(f, pairs + 8 + pi * 14, 24);
+                    const ix = p.img.x + (p.dotI.x - p.img.x) * alignT;
+                    const iy = p.img.y + (p.dotI.y - p.img.y) * alignT;
+                    const tx = p.txt.x + (p.dotT.x - p.txt.x) * alignT;
+                    const ty = p.txt.y + (p.dotT.y - p.txt.y) * alignT;
+                    const chip = 1 - alignT;
+                    return (
+                        <g key={pi} opacity={inT}>
+                            {/* 画像チップ → 塗り点 */}
+                            <g transform={`translate(${ix},${iy})`}>
+                                <g opacity={chip}>
+                                    <rect x={-62} y={-52} width={124} height={104} rx={14}
+                                        fill="#fff" stroke={CARD_LINE} strokeWidth={2} filter="url(#soft)" />
+                                    {p.kind === 'cat' ? (
+                                        <g>
+                                            <circle cx={0} cy={2} r={26} fill="#9aa5b6" />
+                                            <path d="M -22 -14 L -18 -36 L -6 -20 Z" fill="#9aa5b6" />
+                                            <path d="M 22 -14 L 18 -36 L 6 -20 Z" fill="#9aa5b6" />
+                                            <circle cx={-9} cy={0} r={3} fill={INK} />
+                                            <circle cx={9} cy={0} r={3} fill={INK} />
+                                        </g>
+                                    ) : (
+                                        <g>
+                                            <path d="M -30 6 A 30 30 0 0 0 30 6 Z" fill="#e8b06a" />
+                                            <ellipse cx={0} cy={4} rx={30} ry={7} fill="#f3ede2" />
+                                            <line x1={10} y1={-26} x2={22} y2={2} stroke={SUB} strokeWidth={4} strokeLinecap="round" />
+                                            <line x1={20} y1={-28} x2={30} y2={0} stroke={SUB} strokeWidth={4} strokeLinecap="round" />
+                                        </g>
+                                    )}
+                                </g>
+                                <circle cx={0} cy={0} r={11} fill={INK} opacity={alignT} />
+                            </g>
+                            {/* 説明文チップ → 輪の点 */}
+                            <g transform={`translate(${tx},${ty})`}>
+                                <g opacity={chip}>
+                                    <rect x={-110} y={-32} width={220} height={64} rx={14}
+                                        fill="#fff" stroke={CARD_LINE} strokeWidth={2} filter="url(#soft)" />
+                                    <text x={0} y={8} fontSize={26} fontWeight={700} fill={SUB} textAnchor="middle">{p.label}</text>
+                                </g>
+                                <circle cx={0} cy={0} r={10} fill="none" stroke={MINT} strokeWidth={5} opacity={alignT} />
+                            </g>
+                            {/* 対のしるし */}
+                            <line x1={ix} y1={iy} x2={tx} y2={ty} stroke={SUB} strokeWidth={3}
+                                strokeDasharray="6 7" opacity={chip > 0.5 ? inT * 0.7 : alignT * 0.7} />
+                        </g>
+                    );
+                })}
+                {/* 近くへ・遠くへ */}
+                <g opacity={prog(f, nearfar, 20)}>
+                    <g transform={`translate(${-330 + 60 * nfT},${-60 - 60 * nfT})`}>
+                        <circle cx={0} cy={0} r={11} fill={INK} />
+                        <text x={-24} y={-22} fontSize={30} fontWeight={800} fill={INK} textAnchor="end">黒猫</text>
+                    </g>
+                    <g transform={`translate(${-200 - 60 * nfT},${-30 - 84 * nfT})`}>
+                        <circle cx={0} cy={0} r={10} fill="none" stroke={MINT} strokeWidth={5} />
+                    </g>
+                    <g transform={`translate(${fireX},${fireY})`}>
+                        <circle cx={0} cy={0} r={11} fill={SUB} />
+                        <text x={0} y={42} fontSize={30} fontWeight={800} fill={SUB} textAnchor="middle">消防車</text>
+                    </g>
+                </g>
+                {/* プロンプト札 → 目的地マーカー */}
+                {pinIn > 0.01 && (
+                    <g>
+                        <circle cx={PIN.x} cy={PIN.y} r={64 * pinIn} fill={MINT_SOFT} />
+                        <Pin x={PIN.x} y={PIN.y + 30} s={pinIn} o={pinIn} ring={prog(f, destm + 24, 50)} />
+                    </g>
+                )}
+                {/* 学習データの傾向＝偏り雲 */}
+                <g opacity={biasIn * 0.9}>
+                    <ellipse cx={PIN.x + 60} cy={PIN.y - 14} rx={190} ry={120} fill={NOISE} opacity={0.14} />
+                    {Array.from({ length: 26 }, (_, i) => (
+                        <circle key={i}
+                            cx={PIN.x + 60 + (rnd(i, 41) - 0.35) * 320}
+                            cy={PIN.y - 14 + (rnd(i, 43) - 0.5) * 200}
+                            r={4 + rnd(i, 47) * 3} fill={NOISE} opacity={0.5} />
+                    ))}
+                </g>
+            </g>
+            {/* 下からせり上がる潜在作業台（次画面の主役の予告） */}
+            {shrink > 0.01 && (
+                <Workbench x={0} y={420 - 160 * shrink} w={560} h={200} o={shrink} />
+            )}
+        </g>
+    );
 };
 
-// ============================================================
-// メイン
-// ============================================================
+// ---------- 画面 3: latent ----------
+// 巨大なピクセル面は圧縮され、潜在作業台で作った形が最後に見える画像へ戻る
+const SceneLatent: React.FC<{ f: number; o: number }> = ({ f, o }) => {
+    const s3 = ev('scene.latent.in');
+    const toobig = ev('latent.too_big');
+    const compress = ev('latent.compress');
+    const encode = ev('latent.encode');
+    const decode = ev('latent.decode');
+    const tradeoff = ev('latent.tradeoff');
+    const nocolor = ev('latent.no_coloring');
+
+    const PALETTE = ['#cfe3f7', '#f7e3cf', '#e3f7d8', '#f7d8e3', '#e3d8f7', '#d8f0f7'];
+    const BENCH = { x: 0, y: 60, w: 520, h: 230 };
+
+    const gridIn = prog(f, s3 + 6, 36);
+    const denseIn = prog(f, toobig + 6, 36);
+    const comp = prog(f, compress + 10, 56);     // 格子 → 作業台へ畳む
+    const encT = prog(f, encode + 10, 50);       // エンコード流れ
+    const decT = prog(f, decode + 10, 50);       // デコード流れ
+    // 軽量化トレードオフ：縮みすぎ → 崩れ → 戻す
+    const benchSq = resolve<{ s: number; broke: number }>([
+        { f: tradeoff, state: { s: 1, broke: 0 } },
+        { f: tradeoff + 40, state: { s: 0.55, broke: 0 } },
+        { f: tradeoff + 70, state: { s: 0.55, broke: 1 } },
+        { f: tradeoff + 150, state: { s: 0.55, broke: 1 } },
+        { f: tradeoff + 190, state: { s: 1, broke: 0 } },
+    ], f);
+    const clear = prog(f, nocolor + 10, 36);     // 装置の退場
+    const cloudIn = prog(f, nocolor + 30, 30);
+
+    // 巨大格子（12×6）。圧縮で作業台の位置へ縮む
+    const gw = 1180, gh = 620, cols = 12, rows = 6;
+    const gridScale = 1 - (1 - BENCH.w / gw) * comp;
+    const gridY = -120 + (BENCH.y - -120) * comp;
+    const gridO = gridIn * (1 - comp);
+
+    const sideO = Math.min(encT > 0 ? 1 : 0, prog(f, encode + 4, 24)) * (1 - clear);
+    const decO = prog(f, decode + 4, 24) * (1 - clear);
+
+    // エンコードの運び玉（タイル → 箱 → 台）
+    const carry = (t: number, from: { x: number; y: number }, mid: { x: number; y: number }, to: { x: number; y: number }) => {
+        if (t <= 0 || t >= 1) return null;
+        const seg = t < 0.5 ? t / 0.5 : (t - 0.5) / 0.5;
+        const a = t < 0.5 ? from : mid;
+        const b = t < 0.5 ? mid : to;
+        return { x: a.x + (b.x - a.x) * seg, y: a.y + (b.y - a.y) * seg - Math.sin(seg * Math.PI) * 40 };
+    };
+    const TILE_L = { x: -620, y: -80 };
+    const ENC = { x: -330, y: -60 };
+    const DEC = { x: 330, y: -60 };
+    const TILE_R = { x: 620, y: -80 };
+    const encBall = carry(encT, TILE_L, ENC, { x: BENCH.x, y: BENCH.y - 30 });
+    const decBall = carry(decT, { x: BENCH.x, y: BENCH.y - 30 }, DEC, TILE_R);
+
+    return (
+        <g opacity={o}>
+            {/* 巨大ピクセル格子 */}
+            {gridO > 0.01 && (
+                <g transform={`translate(0,${gridY}) scale(${gridScale})`} opacity={gridO}>
+                    {Array.from({ length: cols * rows }, (_, i) => {
+                        const c = i % cols, r = Math.floor(i / cols);
+                        return (
+                            <rect key={i}
+                                x={-gw / 2 + c * (gw / cols) + 3} y={-gh / 2 + r * (gh / rows) + 3}
+                                width={gw / cols - 6} height={gh / rows - 6} rx={6}
+                                fill={PALETTE[Math.floor(rnd(i, 53) * PALETTE.length)]}
+                                opacity={prog(f, s3 + 6 + (i % 17) * 2, 16)} />
+                        );
+                    })}
+                    {/* 増殖＝倍密度の層 */}
+                    <g opacity={denseIn}>
+                        {Array.from({ length: cols * rows * 4 }, (_, i) => {
+                            const c = i % (cols * 2), r = Math.floor(i / (cols * 2));
+                            return (
+                                <rect key={i}
+                                    x={-gw / 2 + c * (gw / cols / 2) + 2} y={-gh / 2 + r * (gh / rows / 2) + 2}
+                                    width={gw / cols / 2 - 4} height={gh / rows / 2 - 4} rx={3}
+                                    fill={PALETTE[Math.floor(rnd(i, 59) * PALETTE.length)]}
+                                    opacity={prog(f, toobig + 6 + (i % 23), 14) * 0.95} />
+                            );
+                        })}
+                    </g>
+                </g>
+            )}
+            {/* 点数の物量（数値のみ） */}
+            <g opacity={denseIn * (1 - comp)}>
+                <text x={320} y={-440} fontSize={48} fontWeight={900} fill={INK} textAnchor="middle">1024 × 1024 = 100万+ 点</text>
+            </g>
+            {/* 潜在作業台 */}
+            {comp > 0.3 && (
+                <g transform={`translate(${BENCH.x},${BENCH.y}) scale(${benchSq.s})`} opacity={prog(f, compress + 30, 30)}>
+                    <Workbench x={0} y={0} w={BENCH.w} h={BENCH.h} />
+                    {/* 台上の潜在表現＝粗い形（エンコードで現れる） */}
+                    <g opacity={Math.max(comp > 0.9 ? 0.35 : 0, encT > 0.55 ? 1 : 0.35) * (1 - clear * 0.0)}>
+                        {Array.from({ length: 12 }, (_, i) => {
+                            const c = i % 4, r = Math.floor(i / 4);
+                            const broke = benchSq.broke;
+                            return (
+                                <rect key={i}
+                                    x={-110 + c * 56 + (rnd(i, 61) - 0.5) * 20 * broke}
+                                    y={-66 + r * 48 + (rnd(i, 67) - 0.5) * 20 * broke}
+                                    width={44} height={36} rx={8}
+                                    fill={i % 3 === 0 ? '#b8c6d9' : '#cdd8e6'}
+                                    opacity={0.9 - broke * 0.3} />
+                            );
+                        })}
+                    </g>
+                </g>
+            )}
+            {/* エンコーダ側 */}
+            <g opacity={sideO}>
+                <CatTile x={TILE_L.x} y={TILE_L.y} s={0.9} />
+                <RoleBox x={ENC.x} y={ENC.y} w={170} h={170} label="エンコーダ" />
+                <Arrow x1={TILE_L.x + 130} y1={TILE_L.y} x2={ENC.x - 100} y2={ENC.y} t={prog(f, encode + 6, 20)} color={SUB} />
+                <Arrow x1={ENC.x + 100} y1={ENC.y} x2={BENCH.x - 200} y2={BENCH.y - 60} t={prog(f, encode + 26, 20)} color={SUB} />
+            </g>
+            {encBall && <circle cx={encBall.x} cy={encBall.y} r={16} fill={MINT} opacity={0.9} />}
+            {/* デコーダ側 */}
+            <g opacity={decO}>
+                <RoleBox x={DEC.x} y={DEC.y} w={170} h={170} label="デコーダ" flip />
+                <CatTile x={TILE_R.x} y={TILE_R.y} s={0.9} o={prog(f, decode + 40, 24)}
+                    noise={(1 - decT) * 0.4} detail={1 - benchSq.broke} />
+                <Arrow x1={BENCH.x + 200} y1={BENCH.y - 60} x2={DEC.x - 100} y2={DEC.y} t={prog(f, decode + 6, 20)} color={SUB} />
+                <Arrow x1={DEC.x + 100} y1={DEC.y} x2={TILE_R.x - 130} y2={TILE_R.y} t={prog(f, decode + 26, 20)} color={SUB} />
+            </g>
+            {decBall && <circle cx={decBall.x} cy={decBall.y} r={16} fill={MINT} opacity={0.9} />}
+            {/* 細部の崩れ（タイル右の赤しるしは CatTile.detail が出す） */}
+            {/* 最後：作業台とノイズ雲だけが残る */}
+            <NoiseBall cx={0} cy={BENCH.y - 90} r={86} n={50} seed={4} o={cloudIn} />
+        </g>
+    );
+};
+
+// ---------- 画面 4: denoise ----------
+// 砂嵐は一発で絵にならず、言葉の方向を見ながら小さな修正を何度も重ねて像になる
+const SceneDenoise: React.FC<{ f: number; o: number }> = ({ f, o }) => {
+    const s4 = ev('scene.denoise.in');
+    const fwd = ev('denoise.forward');
+    const ans = ev('denoise.answer');
+    const step = ev('denoise.step_power');
+    const nobig = ev('denoise.no_big_jump');
+    const chain = ev('denoise.chain');
+    const guide = ev('denoise.prompt_guidance');
+    const nextp = ev('denoise.next_problem');
+
+    // 中央の主役：作業台の上のノイズ雲（＝ノイズまみれの潜在タイル）
+    const main = resolve<{ noise: number; dim: number; s: number; y: number }>([
+        { f: s4, state: { noise: 1, dim: 0, s: 1.35, y: -100 } },
+        { f: s4 + 30, state: { noise: 1, dim: 1, s: 1.35, y: -100 } },
+        { f: fwd, state: { noise: 1, dim: 0.35, s: 1.35, y: -100 } },          // 学習の説明中は脇役
+        { f: step - 20, state: { noise: 1, dim: 0.35, s: 1.35, y: -100 } },
+        { f: step, state: { noise: 1, dim: 1, s: 1.35, y: -100 } },
+        { f: step + 60, state: { noise: 0.85, dim: 1, s: 1.35, y: -100 } },    // 一層だけ取れる
+        { f: chain, state: { noise: 0.85, dim: 1, s: 1.35, y: -100 } },
+        { f: chain + 40, state: { noise: 0.66, dim: 1, s: 1.35, y: -100 } },
+        { f: chain + 80, state: { noise: 0.48, dim: 1, s: 1.35, y: -100 } },
+        { f: chain + 120, state: { noise: 0.32, dim: 1, s: 1.35, y: -100 } },
+        { f: guide, state: { noise: 0.32, dim: 1, s: 1.35, y: -100 } },
+        { f: guide + 90, state: { noise: 0.06, dim: 1, s: 1.35, y: -100 } },   // 言葉を見ながら仕上がる
+        { f: nextp, state: { noise: 0.06, dim: 1, s: 1.35, y: -100 } },
+        { f: nextp + 40, state: { noise: 0.06, dim: 0.3, s: 1.0, y: -140 } },  // 退いて次の問題へ
+    ], f);
+    const mainIn = prog(f, s4 + 6, 30);
+
+    // 学習：きれいな画像 → 段階的に砂嵐（上の帯）
+    const STAGES = [0, 0.4, 0.75, 1];
+    const stageX = (i: number) => -560 + i * 250;
+    const ROW_Y = -300;
+    const fwdRowO = prog(f, fwd + 4, 24) * (1 - prog(f, step + 140, 30));
+    const ansT = prog(f, ans + 8, 30);
+
+    // 一発はぼやける（中段の脇見せ）
+    const bigT = prog(f, nobig + 8, 36);
+    const bigOut = 1 - prog(f, chain - 14, 14);
+
+    // 小さな矢印の列（作業台の下）
+    const N_ARROWS = 5;
+    const guideT = prog(f, guide + 20, 36);
+
+    const pcIn = prog(f, guide + 4, 26);
+    const PC = { x: -610, y: -330 };
+
+    const chipsIn = prog(f, nextp + 20, 30);
+
+    return (
+        <g opacity={o}>
+            <Workbench x={0} y={160} w={1060} h={210} o={mainIn} />
+            {/* 学習の帯：わざと壊す */}
+            <g opacity={fwdRowO}>
+                {STAGES.map((nz, i) => (
+                    <g key={i}>
+                        <CatTile x={stageX(i)} y={ROW_Y} s={0.58} noise={nz} seed={5 + i}
+                            o={prog(f, fwd + 8 + i * 16, 20)} />
+                        {i > 0 && (
+                            <Arrow x1={stageX(i - 1) + 80} y1={ROW_Y} x2={stageX(i) - 80} y2={ROW_Y}
+                                t={prog(f, fwd + 16 + i * 16, 16)} color={SUB} w={4} />
+                        )}
+                        {/* 降る粒（足すノイズ）。ans 以降はアンバー＝答えを知っている粒 */}
+                        {i > 0 && f > fwd + 8 + i * 16 && f < step && (
+                            <g>
+                                {Array.from({ length: 6 }, (_, k) => {
+                                    const t0 = fwd + 14 + i * 16 + k * 4;
+                                    const tt = prog(f, t0, 26);
+                                    if (tt <= 0 || tt >= 1) return null;
+                                    return (
+                                        <circle key={k}
+                                            cx={stageX(i) - 40 + rnd(k, 70 + i) * 80}
+                                            cy={ROW_Y - 130 + tt * 100}
+                                            r={5} fill={ansT > 0.3 ? AMBER : NOISE} opacity={1 - tt * 0.4} />
+                                    );
+                                })}
+                            </g>
+                        )}
+                    </g>
+                ))}
+                {/* 答え札：足した粒だけ分離してアンバーに光る */}
+                <g transform={`translate(${stageX(2)},${ROW_Y - 150 - ansT * 40})`} opacity={ansT}>
+                    <rect x={-78} y={-34} width={156} height={68} rx={14}
+                        fill="#fff" stroke={AMBER} strokeWidth={3} filter="url(#soft)" />
+                    {Array.from({ length: 7 }, (_, k) => (
+                        <circle key={k} cx={-54 + k * 18} cy={(rnd(k, 77) - 0.5) * 26} r={6} fill={AMBER} />
+                    ))}
+                </g>
+            </g>
+            {/* モデル箱：一層だけノイズを取る */}
+            <g opacity={prog(f, step + 4, 24) * (1 - prog(f, chain + 130, 30))}>
+                <RoleBox x={470} y={-130} w={180} h={120} label="モデル" />
+                <Arrow x1={250} y1={-160} x2={380} y2={-150} t={prog(f, step + 20, 18)} color={SUB} w={4} />
+                <Arrow x1={380} y1={-100} x2={260} y2={-80} t={prog(f, step + 40, 18)} color={MINT} w={4} />
+            </g>
+            {/* 一発で当てようとする大矢印 → ぼやけた平均 */}
+            {bigOut > 0.01 && bigT > 0.01 && (
+                <g opacity={bigT * bigOut}>
+                    <Arrow x1={-180} y1={120} x2={520} y2={300} t={bigT} color={SUB} w={9} />
+                    <g transform="translate(640,330) scale(0.55)" opacity={bigT}>
+                        <rect x={-120} y={-120} width={240} height={240} rx={16}
+                            fill="#dde3ec" stroke={CARD_LINE} strokeWidth={2} />
+                        <ellipse cx={0} cy={0} rx={70} ry={80} fill="#c2cbd9" filter="url(#blurry)" />
+                    </g>
+                    <line x1={560} y1={250} x2={720} y2={410} stroke={RED} strokeWidth={7} strokeLinecap="round" opacity={bigT > 0.8 ? 1 : 0} />
+                    <line x1={720} y1={250} x2={560} y2={410} stroke={RED} strokeWidth={7} strokeLinecap="round" opacity={bigT > 0.8 ? 1 : 0} />
+                </g>
+            )}
+            {/* 主役のノイズ雲（潜在タイル） */}
+            <g opacity={mainIn * (0.35 + 0.65 * main.dim)}>
+                <CatTile x={0} y={main.y} s={main.s} noise={main.noise} seed={9} />
+            </g>
+            {/* 小さな矢印の連なり：少しずつマシへ。言葉が来ると向きが曲がる */}
+            {f > chain && (
+                <g opacity={prog(f, chain + 6, 20) * (1 - chipsIn * 0.7)}>
+                    {Array.from({ length: N_ARROWS }, (_, i) => (
+                        <Arrow key={i}
+                            x1={-330 + i * 140} y1={210} x2={-330 + i * 140 + 92} y2={210}
+                            t={prog(f, chain + 10 + i * 22, 18)}
+                            color={guideT > 0.2 ? MINT : INK} w={5}
+                            bend={-10 * guideT} />
+                    ))}
+                </g>
+            )}
+            {/* プロンプト札と目的地マーカーが戻り、毎歩を導く */}
+            <g opacity={pcIn * (1 - chipsIn * 0.7)}>
+                <PromptCard x={PC.x} y={PC.y} s={0.82} text="赤い靴を履いた猫" w={430} />
+                <Pin x={PC.x + 250} y={PC.y + 10} s={0.8} o={pcIn} ring={prog(f, guide + 20, 50)} />
+                <line x1={PC.x + 250} y1={PC.y + 20} x2={PC.x + 250 + (-300 - (PC.x + 250)) * guideT}
+                    y2={PC.y + 20 + (195 - (PC.y + 20)) * guideT}
+                    stroke={MINT} strokeWidth={4} strokeDasharray="12 10" opacity={0.8} />
+            </g>
+            {/* 次の問題：属性の札だけが前面に残る */}
+            <g opacity={chipsIn}>
+                <g transform={`translate(-130,${40 - chipsIn * 20})`}>
+                    <rect x={-60} y={-60} width={120} height={120} rx={18} fill={RED} filter="url(#soft)" />
+                </g>
+                <g transform={`translate(130,${40 - chipsIn * 20})`}>
+                    <circle cx={0} cy={0} r={62} fill={BLUE} filter="url(#soft)" />
+                </g>
+                <Tag x={-130} y={150} text="赤い？" o={chipsIn} color={RED} />
+                <Tag x={130} y={150} text="青い？" o={chipsIn} color={BLUE} />
+            </g>
+        </g>
+    );
+};
+
+// ---------- 画面 5: binding ----------
+// 単語を知っていても、対象・属性・位置を正しい相手へ結びつけ損ねると絵が崩れる
+const SceneBinding: React.FC<{ f: number; o: number }> = ({ f, o }) => {
+    const s5 = ev('scene.binding.in');
+    const tags = ev('binding.tags');
+    const xattn = ev('binding.cross_attention');
+    const focus = ev('binding.local_focus');
+    const swap = ev('binding.swap_fail');
+    const fingers = ev('binding.text_fingers');
+    const answer = ev('binding.answer');
+    const tip = ev('binding.prompt_tip');
+
+    // 冒頭：左右の犬猫と、入れ替わる位置札
+    const introO = prog(f, s5 + 6, 24) * (1 - prog(f, xattn - 20, 20));
+    const swapT = resolve<{ t: number }>([
+        { f: s5 + 30, state: { t: 0 } },     // 札が逆に付いている
+        { f: s5 + 80, state: { t: 0 } },
+        { f: s5 + 110, state: { t: 1 } },    // 入れ替わって正しい位置へ
+    ], f).t;
+
+    // 中心：作りかけの画像タイルと単語タグ
+    const TILE = { x: 0, y: -90, s: 1.3 };
+    const tileIn = prog(f, xattn + 4, 28);
+    const tagRowIn = prog(f, tags + 6, 26);
+    const jp2en = prog(f, xattn + 20, 26); // 日本語タグ → 英語タグ
+    const TAGX = [-260, 0, 260];
+    const TAG_Y = -355;
+
+    // 領域アンカー（タイルのローカル座標 → 画面座標）
+    const at = (lx: number, ly: number) => ({ x: TILE.x + lx * TILE.s, y: TILE.y + ly * TILE.s });
+    const EAR = at(0, -78);
+    const FEET = at(0, 92);
+    const BGR = at(-86, -86);
+    const REGIONS = [
+        { p: EAR, tag: 1 },  // 耳 → cat
+        { p: FEET, tag: 0 }, // 足元 → red shoes
+        { p: BGR, tag: 2 },  // 背景 → ramen shop
+    ];
+    const linesT = prog(f, xattn + 40, 36);
+    // 順番に光る（一度ずつ）
+    const glow = (i: number) => {
+        const t = prog(f, focus + 10 + i * 50, 40);
+        return t > 0 && t < 1 ? Math.sin(t * Math.PI) : 0;
+    };
+
+    // 失敗例：色札が誤った対象へ飛ぶ
+    const swapIn = prog(f, swap + 6, 24) * (1 - prog(f, tip - 16, 16));
+    const flyT = prog(f, swap + 30, 36);
+    const CUBE = { x: -440, y: 150 };
+    const SPH = { x: -200, y: 150 };
+
+    // 看板文字と手：細部だけ赤く崩れる
+    const signIn = prog(f, fingers + 6, 24) * (1 - prog(f, answer - 16, 16));
+    const shake = (() => {
+        const t = prog(f, fingers + 26, 30);
+        return t > 0 && t < 1 ? Math.sin(t * Math.PI * 4) * (1 - t) * 3 : 0;
+    })();
+
+    // 二択 → 後者にチェック
+    const ansIn = prog(f, answer + 6, 24) * (1 - prog(f, tip - 16, 16));
+    const checkT = prog(f, answer + 50, 24);
+
+    // 工夫：タグが対象の近くへ整理され、線がほどける
+    const tipT = prog(f, tip + 10, 44);
+    const tagPos = (i: number) => {
+        // 整理後の位置：red shoes→足元横 / cat→頭横 / ramen shop→背景角
+        const organized = [
+            { x: FEET.x + 250, y: FEET.y },
+            { x: EAR.x + 260, y: EAR.y - 20 },
+            { x: BGR.x - 240, y: BGR.y - 30 },
+        ][i];
+        return {
+            x: TAGX[i] + (organized.x - TAGX[i]) * tipT,
+            y: TAG_Y + (organized.y - TAG_Y) * tipT,
+        };
+    };
+    const TAG_DEFS = [
+        { jp: '赤い', en: 'red shoes', color: RED },
+        { jp: '猫', en: 'cat', color: INK },
+        { jp: '靴', en: 'ramen shop', color: SUB },
+    ];
+
+    return (
+        <g opacity={o}>
+            {/* 冒頭の犬猫と位置札 */}
+            {introO > 0.01 && (
+                <g opacity={introO}>
+                    {/* 猫（左） */}
+                    <g transform="translate(-350,-40)">
+                        <circle cx={0} cy={10} r={70} fill="#9aa5b6" />
+                        <path d="M -56 -30 L -44 -86 L -16 -44 Z" fill="#9aa5b6" />
+                        <path d="M 56 -30 L 44 -86 L 16 -44 Z" fill="#9aa5b6" />
+                        <circle cx={-22} cy={0} r={6} fill={INK} />
+                        <circle cx={22} cy={0} r={6} fill={INK} />
+                    </g>
+                    {/* 犬（右） */}
+                    <g transform="translate(350,-40)">
+                        <circle cx={0} cy={10} r={70} fill="#c9b291" />
+                        <path d="M -62 -36 Q -78 18 -50 30 L -40 -30 Z" fill="#b89f7d" />
+                        <path d="M 62 -36 Q 78 18 50 30 L 40 -30 Z" fill="#b89f7d" />
+                        <circle cx={-22} cy={0} r={6} fill={INK} />
+                        <circle cx={22} cy={0} r={6} fill={INK} />
+                        <ellipse cx={0} cy={26} rx={12} ry={9} fill={INK} />
+                    </g>
+                    {/* 入れ替わる名札（最初は逆） */}
+                    <Tag x={-350 + 700 * (1 - swapT)} y={-210} text="猫" color={INK} />
+                    <Tag x={350 - 700 * (1 - swapT)} y={-210} text="犬" color={INK} />
+                </g>
+            )}
+            {/* 作りかけの画像タイル */}
+            <CatTile x={TILE.x} y={TILE.y} s={TILE.s} o={tileIn} noise={0.18} />
+            {/* 単語タグの列（日本語 → 英語へ差し替わる） */}
+            {TAG_DEFS.map((td, i) => {
+                const p = tagPos(i);
+                return (
+                    <g key={i}>
+                        <Tag x={p.x} y={p.y} text={td.jp} color={td.color}
+                            o={tagRowIn * (1 - jp2en)} />
+                        <Tag x={p.x} y={p.y} text={td.en} color={td.color}
+                            o={tagRowIn * jp2en * (glow(i) > 0.1 ? 1 : 0.92)} />
+                        {/* 束ねる線：タグ → 領域 */}
+                        {jp2en > 0.5 && (
+                            <line x1={p.x} y1={p.y + 28}
+                                x2={p.x + (REGIONS.find((r) => r.tag === i)!.p.x - p.x) * linesT}
+                                y2={p.y + 28 + (REGIONS.find((r) => r.tag === i)!.p.y - p.y - 28) * linesT}
+                                stroke={td.color} strokeWidth={3}
+                                strokeDasharray={tipT > 0.5 ? 'none' : '8 8'}
+                                opacity={0.35 + glow(i) * 0.65} />
+                        )}
+                    </g>
+                );
+            })}
+            {/* 領域の輪（順に光る） */}
+            {REGIONS.map((r, i) => (
+                <circle key={i} cx={r.p.x} cy={r.p.y} r={34 + glow(r.tag) * 8}
+                    fill="none" stroke={MINT} strokeWidth={4}
+                    opacity={linesT * (0.25 + glow(r.tag) * 0.75)} />
+            ))}
+            {/* 束ね損ねの失敗例 */}
+            {swapIn > 0.01 && (
+                <g opacity={swapIn}>
+                    <rect x={CUBE.x - 48} y={CUBE.y - 48} width={96} height={96} rx={12}
+                        fill={flyT > 0.6 ? BLUE : '#dfe5ee'} stroke={CARD_LINE} strokeWidth={2} />
+                    <circle cx={SPH.x} cy={SPH.y} r={50}
+                        fill={flyT > 0.6 ? RED : '#dfe5ee'} stroke={CARD_LINE} strokeWidth={2} />
+                    {/* 色札が交差して誤着 */}
+                    {flyT > 0 && flyT < 1 && (
+                        <g>
+                            <circle cx={CUBE.x + (SPH.x - CUBE.x) * flyT} cy={CUBE.y - 120 + 120 * flyT} r={16} fill={RED} />
+                            <circle cx={SPH.x + (CUBE.x - SPH.x) * flyT} cy={SPH.y - 120 + 120 * flyT} r={16} fill={BLUE} />
+                        </g>
+                    )}
+                    <g opacity={flyT > 0.8 ? 1 : 0}>
+                        <line x1={CUBE.x - 150} y1={CUBE.y - 90} x2={CUBE.x - 110} y2={CUBE.y - 50} stroke={RED} strokeWidth={6} strokeLinecap="round" />
+                        <line x1={CUBE.x - 110} y1={CUBE.y - 90} x2={CUBE.x - 150} y2={CUBE.y - 50} stroke={RED} strokeWidth={6} strokeLinecap="round" />
+                    </g>
+                </g>
+            )}
+            {/* 看板文字と手：細部が赤く崩れる */}
+            {signIn > 0.01 && (
+                <g transform={`translate(420,160) rotate(${shake})`} opacity={signIn}>
+                    <rect x={-170} y={-70} width={340} height={140} rx={14}
+                        fill="#fff" stroke={CARD_LINE} strokeWidth={2} filter="url(#soft)" />
+                    {/* 看板の字画（いくつかだけズレて赤い） */}
+                    <g strokeWidth={6} strokeLinecap="round" fill="none">
+                        <path d="M -130 -28 H -70 M -100 -28 V 30" stroke={INK} />
+                        <path d="M -40 -30 V 28 M -40 0 H 6" stroke={INK} />
+                        <path d="M 36 -26 H 96 M 44 4 L 102 14" stroke={RED} transform="rotate(8 66 -6)" />
+                        <path d="M 120 -24 L 148 30" stroke={RED} transform="rotate(-12 134 4)" />
+                    </g>
+                    {/* 手：指が一本多い */}
+                    <g transform="translate(0,108)">
+                        <ellipse cx={0} cy={18} rx={52} ry={30} fill="#f0d9c0" />
+                        {[-36, -18, 0, 18, 36].map((dx, i) => (
+                            <rect key={i} x={dx - 7} y={-26} width={14} height={42} rx={7} fill="#f0d9c0" />
+                        ))}
+                        <rect x={48} y={-20} width={14} height={38} rx={7} fill={RED} opacity={0.85} />
+                    </g>
+                </g>
+            )}
+            {/* 二択：知らない？ 束ね損ねる？ */}
+            {ansIn > 0.01 && (
+                <g opacity={ansIn}>
+                    <g opacity={1 - checkT * 0.65}>
+                        <Paper x={-470} y={-300} w={300} h={110} />
+                        <text x={-470} y={-288} fontSize={34} fontWeight={800} fill={INK} textAnchor="middle">知らない</text>
+                    </g>
+                    <Paper x={-470} y={-150} w={300} h={110} />
+                    <text x={-490} y={-138} fontSize={34} fontWeight={800} fill={INK} textAnchor="middle">束ね損ね</text>
+                    <path d={`M -370 -160 l ${14 * checkT} ${16 * checkT} l ${26 * checkT} ${-34 * checkT}`}
+                        fill="none" stroke={MINT} strokeWidth={9} strokeLinecap="round" strokeLinejoin="round" />
+                </g>
+            )}
+        </g>
+    );
+};
+
+// ---------- 画面 6: editing ----------
+// 一枚の画像を会話で直す流れへ変わり、欲しい箇所だけを制御する道具になる
+const SceneEditing: React.FC<{ f: number; o: number }> = ({ f, o }) => {
+    const s6 = ev('scene.editing.in');
+    const chat = ev('editing.chat');
+    const ctx = ev('editing.context');
+    const mask = ev('editing.mask_area');
+    const ctrl = ev('editing.control');
+    const limits = ev('editing.limits');
+    const verify = ev('editing.verify');
+
+    const TILE = { x: 40, y: -60, s: 1.25 };
+    const tileIn = prog(f, s6 + 4, 26);
+
+    // 単発ガチャ：サイコロと外れカード
+    const diceO = prog(f, s6 + 4, 24) * (1 - prog(f, ctrl + 6, 26));
+    const missT = (i: number) => prog(f, s6 + 40 + i * 26, 44);
+
+    // 会話チップ → 文脈束
+    const chatIn = prog(f, chat + 6, 26);
+    const ctxT = prog(f, ctx + 10, 40);
+    const ITEMS = [
+        { y0: -300 }, { y0: -150 }, { y0: 0 },
+    ];
+    const itemY = (i: number) => ITEMS[i].y0 + (-160 + i * 92 - ITEMS[i].y0) * ctxT;
+    const ITEM_X = -480;
+
+    // 背景だけ昼へ：マスクとピン
+    const maskT = prog(f, mask + 10, 44);
+    const hatchO = (() => {
+        const t = prog(f, mask + 4, 70);
+        return t > 0 && t < 1 ? Math.sin(t * Math.PI) : 0;
+    })();
+
+    // 制御：つまみパネル
+    const ctrlIn = prog(f, ctrl + 10, 28);
+    const knobT = prog(f, ctrl + 40, 30);
+    const PANEL = { x: 520, y: -160 };
+
+    // 制約チェックと確認印
+    const limIn = prog(f, limits + 8, 26);
+    const verIn = prog(f, verify + 8, 26);
+
+    // タイル背景の昼夜（夜＝暗い被せが剥がれる）
+    const bgTop = { x: TILE.x - 110 * TILE.s, y: TILE.y - 110 * TILE.s, w: 220 * TILE.s, h: 220 * TILE.s * 0.58 };
+
+    return (
+        <g opacity={o}>
+            {/* サイコロ（単発ガチャ） */}
+            {diceO > 0.01 && (
+                <g transform="translate(-440,-80)" opacity={diceO}>
+                    <rect x={-62} y={-62} width={124} height={124} rx={22}
+                        fill="#fff" stroke={INK} strokeWidth={3.5} filter="url(#soft)" />
+                    {[[-26, -26], [26, -26], [0, 0], [-26, 26], [26, 26]].map(([dx, dy], i) => (
+                        <circle key={i} cx={dx} cy={dy} r={9} fill={INK} />
+                    ))}
+                </g>
+            )}
+            {/* 外れカードが横へ流れる */}
+            {[0, 1].map((i) => {
+                const t = missT(i);
+                if (t <= 0 || t >= 1) return null;
+                return (
+                    <g key={i} opacity={(1 - t) * 0.7}>
+                        <CatTile x={TILE.x + 60 + t * 480} y={TILE.y - 20 + i * 40} s={0.6}
+                            noise={0.45 + i * 0.2} seed={20 + i} />
+                    </g>
+                );
+            })}
+            {/* 編集対象の画像カード */}
+            <CatTile x={TILE.x} y={TILE.y} s={TILE.s} o={tileIn} noise={0} />
+            {/* 夜の被せ：マスク修正で背景だけ昼になる */}
+            <rect x={bgTop.x + 10} y={bgTop.y + 10} width={bgTop.w - 20} height={bgTop.h}
+                rx={12} fill="#3c4a63" opacity={tileIn * 0.55 * (1 - maskT)} />
+            {/* マスクの斜線（修正の間だけ） */}
+            {hatchO > 0.01 && (
+                <g opacity={hatchO}>
+                    {Array.from({ length: 8 }, (_, i) => (
+                        <line key={i}
+                            x1={bgTop.x + 14 + i * 36} y1={bgTop.y + 8}
+                            x2={bgTop.x - 14 + i * 36} y2={bgTop.y + bgTop.h + 8}
+                            stroke={MINT} strokeWidth={4} opacity={0.7} />
+                    ))}
+                    <rect x={bgTop.x + 8} y={bgTop.y + 8} width={bgTop.w - 16} height={bgTop.h}
+                        rx={12} fill="none" stroke={MINT} strokeWidth={4} strokeDasharray="10 8" />
+                </g>
+            )}
+            {/* キャラ固定ピン */}
+            <Pin x={TILE.x} y={TILE.y - 58} s={0.55} o={maskT} ring={prog(f, mask + 30, 50)} />
+            {/* 会話で直す：吹き出し・参照画像・修正指示 → 一つの文脈束 */}
+            <g opacity={chatIn}>
+                {/* 吹き出し */}
+                <g transform={`translate(${ITEM_X},${itemY(0)})`}>
+                    <rect x={-110} y={-44} width={220} height={88} rx={20}
+                        fill="#fff" stroke={CARD_LINE} strokeWidth={2} filter="url(#soft)" />
+                    <path d={`M 96 30 L 130 58 L 86 44 Z`} fill="#fff" stroke={CARD_LINE} strokeWidth={2} />
+                    <line x1={-80} y1={-12} x2={70} y2={-12} stroke={SUB} strokeWidth={7} strokeLinecap="round" opacity={0.6} />
+                    <line x1={-80} y1={14} x2={20} y2={14} stroke={SUB} strokeWidth={7} strokeLinecap="round" opacity={0.6} />
+                </g>
+                {/* 参照画像チップ */}
+                <g transform={`translate(${ITEM_X},${itemY(1)})`} opacity={prog(f, ctx + 4, 20)}>
+                    <rect x={-64} y={-44} width={128} height={88} rx={14}
+                        fill="#fff" stroke={CARD_LINE} strokeWidth={2} filter="url(#soft)" />
+                    <circle cx={-22} cy={-8} r={13} fill="#e8b06a" />
+                    <path d="M -48 28 L -14 -2 L 12 22 L 30 8 L 52 28 Z" fill="#9aa5b6" />
+                </g>
+                {/* 修正指示チップ（鉛筆） */}
+                <g transform={`translate(${ITEM_X},${itemY(2)})`} opacity={prog(f, ctx + 14, 20)}>
+                    <rect x={-64} y={-40} width={128} height={80} rx={14}
+                        fill="#fff" stroke={CARD_LINE} strokeWidth={2} filter="url(#soft)" />
+                    <path d="M -28 22 L 18 -24 L 32 -10 L -14 36 L -32 40 Z" fill={AMBER} stroke={INK} strokeWidth={2} />
+                </g>
+                {/* 束ねる枠 */}
+                <rect x={ITEM_X - 140} y={-160 - 70} width={280} height={92 * 2 + 150}
+                    rx={26} fill="none" stroke={MINT} strokeWidth={4}
+                    strokeDasharray="14 10" opacity={ctxT} />
+                <Arrow x1={ITEM_X + 150} y1={-60} x2={TILE.x - 170} y2={TILE.y + 10}
+                    t={prog(f, ctx + 40, 24)} color={MINT} w={4} />
+            </g>
+            {/* 制御パネル：サイコロの代わりにつまみ */}
+            <g opacity={ctrlIn}>
+                <Paper x={PANEL.x} y={PANEL.y} w={300} h={220} />
+                <Pin x={PANEL.x} y={PANEL.y - 36} s={0.6} o={ctrlIn} />
+                {[0, 1].map((i) => (
+                    <g key={i}>
+                        <line x1={PANEL.x - 110} y1={PANEL.y + 30 + i * 52} x2={PANEL.x + 110} y2={PANEL.y + 30 + i * 52}
+                            stroke={CARD_LINE} strokeWidth={8} strokeLinecap="round" />
+                        <circle cx={PANEL.x - 60 + (i === 0 ? knobT * 120 : 40)} cy={PANEL.y + 30 + i * 52}
+                            r={16} fill={MINT} />
+                    </g>
+                ))}
+                <Arrow x1={PANEL.x - 150} y1={PANEL.y + 40} x2={TILE.x + 170} y2={TILE.y - 20}
+                    t={ctrlIn} color={MINT} w={4} />
+            </g>
+            {/* 制約チェック（いくつかは警告のまま） */}
+            <g opacity={limIn}>
+                {[0, 1, 2].map((i) => {
+                    const warn = i > 0;
+                    const x = -200 + i * 200;
+                    return (
+                        <g key={i} transform={`translate(${x},-400)`} opacity={prog(f, limits + 8 + i * 12, 18)}>
+                            <rect x={-80} y={-40} width={160} height={80} rx={16}
+                                fill="#fff" stroke={warn ? AMBER : MINT} strokeWidth={3.5} filter="url(#soft)" />
+                            {warn ? (
+                                <g stroke={AMBER} strokeWidth={7} strokeLinecap="round">
+                                    <line x1={0} y1={-20} x2={0} y2={8} />
+                                    <circle cx={0} cy={24} r={4.5} fill={AMBER} stroke="none" />
+                                </g>
+                            ) : (
+                                <path d="M -18 0 L -4 14 L 20 -16" fill="none" stroke={MINT} strokeWidth={7} strokeLinecap="round" strokeLinejoin="round" />
+                            )}
+                        </g>
+                    );
+                })}
+            </g>
+            {/* 出典・確認印（見た目と別レイヤーで照合） */}
+            <g opacity={verIn}>
+                <Paper x={520} y={120} w={250} h={160} />
+                <line x1={460} y1={84} x2={580} y2={84} stroke={SUB} strokeWidth={6} strokeLinecap="round" opacity={0.6} />
+                <line x1={460} y1={112} x2={560} y2={112} stroke={SUB} strokeWidth={6} strokeLinecap="round" opacity={0.6} />
+                <circle cx={560} cy={160} r={30} fill="none" stroke={MINT} strokeWidth={5} />
+                <path d="M 546 160 L 556 170 L 576 146" fill="none" stroke={MINT} strokeWidth={6} strokeLinecap="round" strokeLinejoin="round" />
+                <line x1={TILE.x + 180} y1={TILE.y + 60} x2={395} y2={110}
+                    stroke={SUB} strokeWidth={3.5} strokeDasharray="10 9" opacity={verIn} />
+            </g>
+        </g>
+    );
+};
+
+// ---------- 画面 7: outro ----------
+// 地図、潜在作業台、小さな修正を一つに重ね、自然な見た目と現実の正しさを分けて終える
+const SceneOutro: React.FC<{ f: number; o: number }> = ({ f, o }) => {
+    const s7 = ev('scene.outro.in');
+    const rmap = ev('outro.recap_map');
+    const rwork = ev('outro.recap_workspace');
+    const rsteps = ev('outro.recap_steps');
+    const rbind = ev('outro.binding');
+    const rsplit = ev('outro.truth_split');
+    const rfinal = ev('outro.final');
+
+    const MAPP = { x: -560, y: -160, w: 340, h: 260 };
+    const BENCH = { x: 0, y: 120, w: 430, h: 170 };
+    const TILE = { x: 560, y: -120, s: 1.0 };
+
+    const introIn = prog(f, s7 + 6, 28);
+    // 最初の違和感に戻る：掴みの「それっぽい絵」が戻り、作業場が立つ前に退場
+    const hookBook = prog(f, s7 + 6, 26) * (1 - prog(f, rwork - 4, 24));
+    // プロンプト札：中央上 → 地図上のマーカーへ
+    const cardT = prog(f, rmap + 10, 44);
+    const mapIn = prog(f, rmap + 4, 30);
+    const benchIn = prog(f, rwork + 8, 30);
+    // ノイズ雲：作業場で立ち上がり → 作業台 → 画像へ畳まれる
+    const cloud = resolve<{ x: number; y: number; r: number; fade: number }>([
+        { f: s7, state: { x: 120, y: -110, r: 96, fade: 0 } },
+        { f: rwork, state: { x: 120, y: -110, r: 96, fade: 0 } },
+        { f: rwork + 24, state: { x: 120, y: -120, r: 96, fade: 1 } },
+        { f: rwork + 54, state: { x: BENCH.x, y: BENCH.y - 70, r: 80, fade: 1 } },
+        { f: rsteps + 20, state: { x: BENCH.x, y: BENCH.y - 70, r: 80, fade: 1 } },
+        { f: rsteps + 70, state: { x: TILE.x, y: TILE.y, r: 50, fade: 0 } },
+    ], f);
+    const stepsT = prog(f, rsteps + 14, 40);
+    const tileNoise = 1 - prog(f, rsteps + 40, 50);
+    const tileIn = prog(f, rsteps + 30, 30);
+
+    const bindIn = prog(f, rbind + 10, 30);
+    const at = (lx: number, ly: number) => ({ x: TILE.x + lx * TILE.s, y: TILE.y + ly * TILE.s });
+    const BIND_TAGS = [
+        { text: '赤', color: RED, tx: TILE.x - 230, ty: TILE.y + 90, p: at(-22, 92) },
+        { text: '靴', color: INK, tx: TILE.x - 230, ty: TILE.y + 170, p: at(22, 92) },
+        { text: '猫', color: INK, tx: TILE.x - 230, ty: TILE.y + 10, p: at(0, -32) },
+    ];
+
+    // 見た目の面と正しさの面
+    const splitT = prog(f, rsplit + 12, 40);
+    const finalT = prog(f, rfinal + 10, 44);
+
+    return (
+        <g opacity={o}>
+            {/* プロンプト札（中央上） → 地図の目的地 */}
+            <g opacity={introIn}>
+                <PromptCard
+                    x={0 + (MAPP.x - 0) * cardT}
+                    y={-400 + (MAPP.y - 40 - -400) * cardT}
+                    s={1 - 0.55 * cardT}
+                    o={1 - cardT}
+                    text="白い猫、宇宙服、ラーメン屋" w={500} />
+            </g>
+            {/* 地図 */}
+            <g opacity={mapIn}>
+                <Paper x={MAPP.x} y={MAPP.y} w={MAPP.w} h={MAPP.h} rx={20} />
+                <path d={`M ${MAPP.x - 130} ${MAPP.y + 60} Q ${MAPP.x - 40} ${MAPP.y - 40} ${MAPP.x + 80} ${MAPP.y - 10}`}
+                    fill="none" stroke={MINT_SOFT} strokeWidth={5} />
+                <line x1={MAPP.x - MAPP.w / 2 + 14} y1={MAPP.y} x2={MAPP.x + MAPP.w / 2 - 14} y2={MAPP.y}
+                    stroke="rgba(36,48,68,0.06)" strokeWidth={2} />
+                <line x1={MAPP.x} y1={MAPP.y - MAPP.h / 2 + 14} x2={MAPP.x} y2={MAPP.y + MAPP.h / 2 - 14}
+                    stroke="rgba(36,48,68,0.06)" strokeWidth={2} />
+                <Pin x={MAPP.x + 30} y={MAPP.y + 10} s={0.75 * cardT} o={cardT}
+                    ring={prog(f, rmap + 44, 50)} />
+            </g>
+            {/* 掴みの結果像が戻る（最初の違和感） */}
+            {hookBook > 0.01 && <HookTile x={120} y={-110} s={1.0} o={hookBook} seed={2} />}
+            {/* 潜在作業台 */}
+            <Workbench x={BENCH.x} y={BENCH.y} w={BENCH.w} h={BENCH.h} o={benchIn} />
+            {/* ノイズ雲 */}
+            {cloud.fade > 0.01 && (
+                <NoiseBall cx={cloud.x} cy={cloud.y} r={cloud.r} n={56} seed={6} o={cloud.fade * introIn} />
+            )}
+            {/* 小さな修正の列：作業台 → 画像へ */}
+            {stepsT > 0.01 && (
+                <g>
+                    {[0, 1, 2].map((i) => (
+                        <Arrow key={i}
+                            x1={BENCH.x + 120 + i * 110} y1={BENCH.y - 60 - i * 50}
+                            x2={BENCH.x + 200 + i * 110} y2={BENCH.y - 95 - i * 50}
+                            t={prog(f, rsteps + 14 + i * 16, 18)} color={MINT} w={5} />
+                    ))}
+                </g>
+            )}
+            {/* 完成画像（見た目の面と正しさの面に割れる） */}
+            {tileIn > 0.01 && (
+                <g>
+                    {/* 正しさの面（奥・輪郭だけ） */}
+                    <g transform={`translate(${TILE.x + 36 * splitT},${TILE.y + 30 * splitT})`}
+                        opacity={splitT * (1 - finalT * 0.5)}>
+                        <rect x={-120} y={-120} width={240} height={240} rx={16}
+                            fill="#eef1f6" stroke={SUB} strokeWidth={3} strokeDasharray="12 9" />
+                        <text x={0} y={16} fontSize={44} fontWeight={900} fill={SUB} textAnchor="middle">?</text>
+                        <Tag x={0} y={160} text="正しさ" color={SUB} fontSize={28} />
+                    </g>
+                    {/* 見た目の面（手前） */}
+                    <g transform={`translate(${-36 * splitT},${-26 * splitT})`}>
+                        <CatTile x={TILE.x} y={TILE.y} s={TILE.s} o={tileIn} noise={tileNoise} seed={11} />
+                        {splitT > 0.2 && <Tag x={TILE.x} y={TILE.y - 170} text="見た目" color={INK} o={splitT} fontSize={28} />}
+                    </g>
+                </g>
+            )}
+            {/* 赤・靴・猫が正しい部位へ結ばれる */}
+            {bindIn > 0.01 && splitT < 0.5 && (
+                <g opacity={bindIn * (1 - splitT * 2)}>
+                    {BIND_TAGS.map((b, i) => (
+                        <g key={i}>
+                            <Tag x={b.tx} y={b.ty} text={b.text} color={b.color} s={0.85}
+                                o={prog(f, rbind + 10 + i * 14, 18)} />
+                            <line x1={b.tx + 40} y1={b.ty}
+                                x2={b.tx + 40 + (b.p.x - b.tx - 40) * prog(f, rbind + 24 + i * 14, 20)}
+                                y2={b.ty + (b.p.y - b.ty) * prog(f, rbind + 24 + i * 14, 20)}
+                                stroke={b.color} strokeWidth={3} opacity={0.8} />
+                        </g>
+                    ))}
+                </g>
+            )}
+            {/* 締め：目的地 → 作業台 → 画像が一直線に重なる */}
+            {finalT > 0.01 && (
+                <g opacity={finalT}>
+                    <path d={`M ${MAPP.x + 30} ${MAPP.y + 30} Q ${BENCH.x - 100} ${BENCH.y - 90} ${BENCH.x} ${BENCH.y - 40}
+                        Q ${BENCH.x + 160} ${BENCH.y + 10} ${TILE.x - 36 * splitT - 60} ${TILE.y - 26 * splitT + 60}`}
+                        fill="none" stroke={MINT} strokeWidth={5}
+                        strokeDasharray="1100"
+                        strokeDashoffset={1100 * (1 - finalT)} />
+                </g>
+            )}
+        </g>
+    );
+};
+
+// ---------- 画面切替・見出し ----------
+const SCENES = [
+    { key: 'intro', title: '文章から、なぜ絵が出るのか' },
+    { key: 'prompt_map', title: 'プロンプトは命令書ではなく目的地' },
+    { key: 'latent', title: '絵は最初からピクセルで描かない' },
+    { key: 'denoise', title: '砂嵐を一歩ずつ絵らしいほうへ' },
+    { key: 'binding', title: '言葉は効くが、くっつけ方で失敗する' },
+    { key: 'editing', title: '単発ガチャから編集の道具へ' },
+    { key: 'outro', title: '地図と作業場と小さな修正' },
+] as const;
+
+const XFADE = 18;
+const sceneVis = (i: number, f: number): number => {
+    const vin = i === 0 ? 1 : prog(f, ev(`scene.${SCENES[i].key}.in`), XFADE);
+    const vout = i === SCENES.length - 1 ? 0 : prog(f, ev(`scene.${SCENES[i + 1].key}.in`), XFADE);
+    return vin * (1 - vout);
+};
+
+// ---------- 仕上げ：見出し・床・立ち絵・字幕（HTML オーバーレイ） ----------
+
+const Header: React.FC<{ frame: number }> = ({ frame }) => (
+    <>
+        {SCENES.map((s, i) => {
+            const o = sceneVis(i, frame);
+            if (o <= 0.01) return null;
+            return (
+                <div key={s.key} style={{
+                    position: 'absolute', left: 40, top: 34, zIndex: 10, opacity: o * 0.8,
+                    background: 'rgba(255,255,255,0.78)', border: '4px solid #ff4281', borderRadius: 16,
+                    padding: '8px 22px', fontFamily,
+                }}>
+                    <span style={{
+                        fontSize: 32, fontWeight: 900, color: '#fff',
+                        WebkitTextStroke: '4px #ff4281', paintOrder: 'stroke fill',
+                    } as React.CSSProperties}>{s.title}</span>
+                </div>
+            );
+        })}
+    </>
+);
+
+const Floor: React.FC = () => (
+    <div style={{
+        position: 'absolute', left: 0, right: 0, bottom: 0, height: 300, zIndex: 15,
+        background: 'linear-gradient(to top, rgba(205,214,228,0.85), rgba(205,214,228,0))',
+        pointerEvents: 'none',
+    }} />
+);
+
+// いまの行（字幕・口パク・表情の共通計算）
+const lineAt = (f: number): number => {
+    let idx = 0;
+    for (let i = 0; i < SCRIPT.length; i++) if (f >= LINE_STARTS[i]) idx = i;
+    return idx;
+};
+const lastLineOf = (f: number, sp: Speaker): number => {
+    let idx = 0;
+    for (let i = 0; i < SCRIPT.length; i++)
+        if (SCRIPT[i].speaker === sp && f >= LINE_STARTS[i]) idx = i;
+    return idx;
+};
+const isMouthOpen = (f: number): boolean => {
+    const i = lineAt(f);
+    const local = f - LINE_STARTS[i];
+    return AUDIO[i].open.some(([a, b]) => local >= a && local < b);
+};
+
+const VARIANTS = ['default', 'normal2', 'normal3', 'normal4'] as const;
+const CHAR_DIR: Record<Speaker, string> = { ずんだもん: 'zundamon', めたん: 'metan' };
+
+const charSrc = (sp: Speaker, f: number, speaking: boolean): string => {
+    const v = VARIANTS[lastLineOf(f, sp) % VARIANTS.length];
+    const mouth = speaking && isMouthOpen(f) ? 'open' : 'close';
+    return `characters/${CHAR_DIR[sp]}/${v}-${mouth}.png`;
+};
+
+const Characters: React.FC<{ frame: number }> = ({ frame: f }) => {
+    const cur = SCRIPT[lineAt(f)].speaker;
+    const base: React.CSSProperties = {
+        position: 'absolute', width: 340, zIndex: 20,
+        filter: 'drop-shadow(0 6px 20px rgba(17,24,39,.18))', pointerEvents: 'none',
+    };
+    return (
+        <>
+            <div style={{ ...base, left: 10, bottom: -130, transform: 'scaleX(-1)' }}>
+                <Img src={staticFile(charSrc('めたん', f, cur === 'めたん'))} style={{ width: '100%' }} />
+            </div>
+            <div style={{ ...base, right: 10, bottom: -60 }}>
+                <Img src={staticFile(charSrc('ずんだもん', f, cur === 'ずんだもん'))} style={{ width: '100%' }} />
+            </div>
+        </>
+    );
+};
+
+const SPEAKER_COLOR: Record<Speaker, string> = { ずんだもん: '#22c55e', めたん: '#d6336c' };
+
+const SubtitleCard: React.FC<{ frame: number }> = ({ frame }) => {
+    const i = lineAt(frame);
+    const line = SCRIPT[i];
+    return (
+        <div style={{
+            position: 'absolute', left: 50, right: 50, bottom: 26, height: 200, zIndex: 25,
+            background: 'rgba(255,255,255,0.96)', borderRadius: 30,
+            border: '2px solid rgba(36,48,68,0.06)',
+            boxShadow: '0 18px 50px rgba(36,48,68,0.16)',
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            padding: '0 90px', fontFamily,
+        }}>
+            <div style={{
+                position: 'absolute', top: -24,
+                ...(line.speaker === 'めたん' ? { left: 64 } : { right: 64 }),
+                background: SPEAKER_COLOR[line.speaker], color: '#fff',
+                fontSize: 26, fontWeight: 900, padding: '8px 28px', borderRadius: 999,
+            }}>{line.speaker}</div>
+            <div style={{
+                fontSize: 48, fontWeight: 900, color: INK, textAlign: 'center', lineHeight: 1.42,
+            }}>{line.text}</div>
+        </div>
+    );
+};
+
+// ---------- メイン ----------
 export const ImageGeneration: React.FC = () => {
-  const f = useCurrentFrame();
-
-  return (
-    <AbsoluteFill style={{ backgroundColor: BG }}>
-      <svg width={1920} height={1080} viewBox="-960 -540 1920 1080">
-        <defs>
-          <radialGradient id="img_bgglow" cx="50%" cy="36%" r="80%">
-            <stop offset="0%" stopColor="#ffffff" />
-            <stop offset="100%" stopColor="#e9edf3" />
-          </radialGradient>
-        </defs>
-        <rect x={-960} y={-540} width={1920} height={1080} fill="url(#img_bgglow)" />
-        <BgGrid />
-
-        <SceneIntro f={f} vis={rv(introVis, f)} />
-        <SceneBody1 f={f} vis={rv(body1Vis, f)} />
-        <SceneBody2 f={f} vis={rv(body2Vis, f)} />
-        <SceneBody3 f={f} vis={rv(body3Vis, f)} />
-        <SceneBody4 f={f} vis={rv(body4Vis, f)} />
-        <SceneBody5 f={f} vis={rv(body5Vis, f)} />
-        <SceneOutro f={f} vis={rv(outroVis, f)} />
-
-        <Subtitle frame={f} />
-      </svg>
-    </AbsoluteFill>
-  );
+    const f = useCurrentFrame();
+    return (
+        <AbsoluteFill style={{ backgroundColor: BG }}>
+            <svg width={1920} height={1080} viewBox="-960 -540 1920 1080"
+                style={{ position: 'absolute', fontFamily }}>
+                <defs>
+                    <filter id="soft" x="-30%" y="-30%" width="160%" height="160%">
+                        <feDropShadow dx="0" dy="6" stdDeviation="10" floodColor="#243044" floodOpacity="0.10" />
+                    </filter>
+                    <filter id="blurry">
+                        <feGaussianBlur stdDeviation="9" />
+                    </filter>
+                </defs>
+                {sceneVis(0, f) > 0.01 && <SceneIntro f={f} o={sceneVis(0, f)} />}
+                {sceneVis(1, f) > 0.01 && <SceneMap f={f} o={sceneVis(1, f)} />}
+                {sceneVis(2, f) > 0.01 && <SceneLatent f={f} o={sceneVis(2, f)} />}
+                {sceneVis(3, f) > 0.01 && <SceneDenoise f={f} o={sceneVis(3, f)} />}
+                {sceneVis(4, f) > 0.01 && <SceneBinding f={f} o={sceneVis(4, f)} />}
+                {sceneVis(5, f) > 0.01 && <SceneEditing f={f} o={sceneVis(5, f)} />}
+                {sceneVis(6, f) > 0.01 && <SceneOutro f={f} o={sceneVis(6, f)} />}
+            </svg>
+            <Header frame={f} />
+            <Floor />
+            <Characters frame={f} />
+            <SubtitleCard frame={f} />
+            <Audio src={staticFile(VOICE_SRC)} />
+            <Audio src={staticFile('audio/bgm/340_long_BPM80.mp3')} volume={0.03} loop />
+        </AbsoluteFill>
+    );
 };
