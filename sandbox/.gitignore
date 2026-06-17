@@ -17,9 +17,6 @@ __pycache__/
 *.avi
 
 # Image files
-*.png
-*.jpg
-*.jpeg
 *.gif
 *.webp
 *.bmp
